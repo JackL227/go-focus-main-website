@@ -9,6 +9,9 @@ class MessageParticle {
   blinkRate: number;
   blinkTime: number;
   isQualified: boolean;
+  targetX: number | null;
+  targetY: number | null;
+  accelerationFactor: number;
   
   constructor(x: number, y: number, canvasHeight: number) {
     this.x = x;
@@ -22,13 +25,43 @@ class MessageParticle {
     this.blinkTime = Math.random() * Math.PI * 2;
     // Determine if this will be a qualified lead (roughly 30%)
     this.isQualified = Math.random() > 0.7;
+    this.targetX = null;
+    this.targetY = null;
+    this.accelerationFactor = 1.03;
+  }
+  
+  redirectToNode(x: number, y: number) {
+    this.targetX = x;
+    this.targetY = y;
+    this.speed = 1 + Math.random() * 1.5;
+    // Increase size and opacity for emphasis
+    this.size *= 1.2;
+    this.opacity = 0.8;
   }
   
   update() {
-    // Move message from left to center
-    this.x += this.speed;
-    // Subtle vertical movement
-    this.y += Math.sin(this.x * 0.01) * 0.2;
+    if (this.targetX !== null && this.targetY !== null) {
+      // Move toward the target (AI node)
+      const dx = this.targetX - this.x;
+      const dy = this.targetY - this.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      if (distance > 5) {
+        this.x += (dx / distance) * this.speed;
+        this.y += (dy / distance) * this.speed;
+        this.speed *= this.accelerationFactor; // Accelerate toward target
+      } else {
+        // Very close to target, move directly to it
+        this.x = this.targetX;
+        this.y = this.targetY;
+      }
+    } else {
+      // Normal left-to-right movement
+      this.x += this.speed;
+      // Subtle vertical movement
+      this.y += Math.sin(this.x * 0.01) * 0.2;
+    }
+    
     // Blink effect for emphasis
     this.blinkTime += this.blinkRate;
     return this.x;
