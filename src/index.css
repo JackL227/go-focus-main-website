@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -6,33 +7,33 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%; /* Black */
-    --foreground: 0 0% 81%; /* Grey */
+    --background: 0 0% 0%; /* Black (#000000) */
+    --foreground: 0 0% 78.4%; /* Grey (#cecece) */
     
-    --card: 0 0% 0%; /* Black */
-    --card-foreground: 0 0% 81%; /* Grey */
+    --card: 0 0% 0%; /* Black (#000000) */
+    --card-foreground: 0 0% 78.4%; /* Grey (#cecece) */
 
-    --popover: 0 0% 0%; /* Black */
-    --popover-foreground: 0 0% 81%; /* Grey */
+    --popover: 0 0% 0%; /* Black (#000000) */
+    --popover-foreground: 0 0% 78.4%; /* Grey (#cecece) */
 
     --primary: 210 100% 44%; /* Blue (#006eda) */
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 0 0% 81%; /* Grey (#cecece) */
+    --secondary: 0 0% 78.4%; /* Grey (#cecece) */
     --secondary-foreground: 0 0% 0%;
     
     --muted: 0 0% 40%; /* Dark grey */
-    --muted-foreground: 0 0% 81%;
+    --muted-foreground: 0 0% 78.4%;
     
-    --accent: 0 0% 0%; /* Black */
-    --accent-foreground: 0 0% 81%;
+    --accent: 0 0% 0%; /* Black (#000000) */
+    --accent-foreground: 0 0% 78.4%;
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 78.4%;
+    --input: 0 0% 78.4%;
+    --ring: 0 0% 78.4%;
 
     --radius: 0.5rem;
   }
