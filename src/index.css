@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -8,25 +7,25 @@
 @layer base {
   :root {
     --background: 0 0% 0%; /* Black */
-    --foreground: 0 0% 100%; /* White */
+    --foreground: 0 0% 81%; /* Grey */
     
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 0%; /* Black */
+    --card-foreground: 0 0% 81%; /* Grey */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 0%; /* Black */
+    --popover-foreground: 0 0% 81%; /* Grey */
 
-    --primary: 210 100% 44%; /* Blue */
+    --primary: 210 100% 44%; /* Blue (#006eda) */
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 0 0% 81%; /* Grey */
+    --secondary: 0 0% 81%; /* Grey (#cecece) */
     --secondary-foreground: 0 0% 0%;
     
     --muted: 0 0% 40%; /* Dark grey */
-    --muted-foreground: 0 0% 100%;
+    --muted-foreground: 0 0% 81%;
     
     --accent: 0 0% 0%; /* Black */
-    --accent-foreground: 0 0% 100%;
+    --accent-foreground: 0 0% 81%;
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
