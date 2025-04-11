@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { CheckCircle, ArrowRight, Calendar, Mail, User, MessageSquare } from 'lucide-react';
+import { CheckCircle, ArrowRight, Calendar, Mail, User, MessageSquare, Shield } from 'lucide-react';
 import { Button } from './ui/button';
 
 const CallToAction = () => {
@@ -12,37 +12,38 @@ const CallToAction = () => {
             {/* Left Column - CTA Content */}
             <div className="p-8 md:p-12">
               <span className="inline-block px-3 py-1 rounded-full bg-amber-100 text-trader-accent text-sm font-medium mb-4">
-                Get Started
+                Our Guarantee
               </span>
-              <h2 className="text-gradient-blue mb-4">Ready to Transform Your Trading?</h2>
+              <h2 className="text-gradient-blue mb-4">30+ Qualified Trading Leads in 90 Days—Or We Work For Free</h2>
               <p className="text-trader-gray-dark mb-6">
-                Schedule your free 30-minute strategy session to discuss your trading goals and see if this mentorship is right for you.
+                We're so confident in our AI agent's ability to transform your trading mentorship business that we offer an unprecedented guarantee.
               </p>
+              
+              <div className="glass-card p-5 mb-8 border border-blue-100 flex items-center">
+                <Shield size={24} className="text-trader-blue flex-shrink-0 mr-4" />
+                <p className="text-sm text-trader-blue font-medium">
+                  If our system doesn't deliver at least 30 qualified trading leads within 90 days, we'll continue working for you at no cost until we hit that target.
+                </p>
+              </div>
               
               <ul className="space-y-4 mb-8">
                 <li className="flex items-start gap-3">
                   <CheckCircle size={20} className="text-trader-green flex-shrink-0 mt-0.5" />
-                  <span className="text-trader-gray-dark">Analyze your current trading approach</span>
+                  <span className="text-trader-gray-dark">Free discovery call to assess your current situation</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle size={20} className="text-trader-green flex-shrink-0 mt-0.5" />
-                  <span className="text-trader-gray-dark">Identify your biggest obstacles to success</span>
+                  <span className="text-trader-gray-dark">Custom AI agent development using your content and voice</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle size={20} className="text-trader-green flex-shrink-0 mt-0.5" />
-                  <span className="text-trader-gray-dark">Create a personalized improvement roadmap</span>
+                  <span className="text-trader-gray-dark">Seamless integration with your GoHighLevel CRM & Calendly</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle size={20} className="text-trader-green flex-shrink-0 mt-0.5" />
-                  <span className="text-trader-gray-dark">Determine if we're a good fit to work together</span>
+                  <span className="text-trader-gray-dark">Ongoing optimization to improve qualification success rates</span>
                 </li>
               </ul>
-              
-              <div className="glass-card p-5 mb-8 border border-blue-100">
-                <p className="text-sm text-trader-blue font-medium">
-                  <span className="font-semibold">Note:</span> Mentorship spots are limited to ensure quality. Applications are reviewed on a first-come, first-served basis.
-                </p>
-              </div>
               
               <Button 
                 className="w-full bg-trader-accent hover:bg-trader-accent/90 text-white group text-base py-6"
@@ -93,27 +94,44 @@ const CallToAction = () => {
                 </div>
                 
                 <div>
-                  <label htmlFor="experience" className="block text-sm font-medium mb-2 text-white/90">Trading Experience</label>
+                  <label htmlFor="trading_niche" className="block text-sm font-medium mb-2 text-white/90">Trading Niche</label>
                   <select 
-                    id="experience" 
+                    id="trading_niche" 
                     className="w-full px-4 py-3 rounded-md bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-white/30"
                   >
-                    <option value="" className="bg-trader-blue">Select experience level</option>
-                    <option value="beginner" className="bg-trader-blue">Beginner (0-1 years)</option>
-                    <option value="intermediate" className="bg-trader-blue">Intermediate (1-3 years)</option>
-                    <option value="advanced" className="bg-trader-blue">Advanced (3+ years)</option>
+                    <option value="" className="bg-trader-blue">Select your trading focus</option>
+                    <option value="forex" className="bg-trader-blue">Forex</option>
+                    <option value="stocks" className="bg-trader-blue">Stocks</option>
+                    <option value="crypto" className="bg-trader-blue">Cryptocurrency</option>
+                    <option value="options" className="bg-trader-blue">Options</option>
+                    <option value="futures" className="bg-trader-blue">Futures</option>
+                    <option value="other" className="bg-trader-blue">Other</option>
                   </select>
                 </div>
                 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2 text-white/90">Message</label>
+                  <label htmlFor="followers" className="block text-sm font-medium mb-2 text-white/90">Social Media Followers</label>
+                  <select 
+                    id="followers" 
+                    className="w-full px-4 py-3 rounded-md bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-white/30"
+                  >
+                    <option value="" className="bg-trader-blue">Select follower range</option>
+                    <option value="under5k" className="bg-trader-blue">Under 5,000</option>
+                    <option value="5k-25k" className="bg-trader-blue">5,000 - 25,000</option>
+                    <option value="25k-100k" className="bg-trader-blue">25,000 - 100,000</option>
+                    <option value="100k+" className="bg-trader-blue">100,000+</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium mb-2 text-white/90">Current DM Challenge</label>
                   <div className="relative">
                     <MessageSquare className="absolute left-3 top-3 h-5 w-5 text-white/50" />
                     <textarea 
                       id="message" 
                       rows={4} 
                       className="w-full pl-10 pr-4 py-3 rounded-md bg-white/10 border border-white/20 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/30"
-                      placeholder="Tell me about your trading goals..."
+                      placeholder="Tell us about your current DM volume and challenges..."
                     ></textarea>
                   </div>
                 </div>

@@ -18,15 +18,15 @@ const HeroSection = () => {
           <div className="absolute -bottom-8 -right-8 w-64 h-64 bg-trader-blue/20 rounded-full blur-3xl" />
           
           <span className="inline-block px-4 py-2 rounded-full bg-white/90 shadow-sm text-trader-blue text-sm font-medium mb-6 opacity-0 animate-fade-in [animation-delay:100ms]">
-            Elevate Your Trading Journey
+            Exclusively For Trading Mentors
           </span>
           
           <h1 className="text-trader-blue mb-6 opacity-0 animate-fade-in [animation-delay:300ms] leading-tight">
-            Transform Market Chaos Into <span className="text-gradient-green">Clear Trading Strategy</span>
+            Drowning in DMs? <span className="text-gradient-green">Stop Losing High-Ticket Trading Clients</span>
           </h1>
           
           <p className="text-xl text-trader-gray-dark mb-8 opacity-0 animate-fade-in [animation-delay:600ms]">
-            Stop guessing. Start trading with confidence through personalized mentorship, proven risk management, and psychology mastery.
+            Our AI agent qualifies leads, books calls, and speaks in your voice—saving you hours while scaling your trading mentorship business.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-in [animation-delay:900ms]">
@@ -35,7 +35,7 @@ const HeroSection = () => {
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button size="lg" variant="outline" className="border-trader-blue text-trader-blue hover:bg-trader-blue/10">
-              Explore the Program
+              See How It Works
             </Button>
           </div>
         </div>
