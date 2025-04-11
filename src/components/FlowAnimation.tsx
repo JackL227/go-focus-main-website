@@ -20,120 +20,335 @@ const FlowAnimation = () => {
     setCanvasSize();
     window.addEventListener('resize', setCanvasSize);
     
-    // Line properties
-    const chaosLines = Array(4).fill(0).map(() => ({
-      points: Array(5).fill(0).map(() => Math.random() * 0.5 + 0.25), // Y position variations (0.25-0.75)
-      speed: (Math.random() * 0.5 + 1.0) / 100, // Different speeds
-      phase: Math.random() * 2 * Math.PI, // Different starting phases
-      opacity: 0.3 + Math.random() * 0.3, // Different opacities
-    }));
+    // Colors
+    const colors = {
+      primary: '#1E3A8A', // trader-blue
+      secondary: '#3B82F6', // trader-blue-light
+      accent: '#10B981', // trader-green-light
+      highlight: '#F59E0B', // trader-accent
+      faded: 'rgba(107, 114, 128, 0.5)', // trader-gray with opacity
+    };
     
-    const orderedLines = Array(2).fill(0).map(() => ({
-      baseY: 0.4 + Math.random() * 0.2, // Base Y position (0.4-0.6)
-      speed: (Math.random() * 0.3 + 0.8) / 100, // Consistent speed
-      amplitude: 0.03, // Small amplitude for slight movement
-      phase: Math.random() * 2 * Math.PI, // Different phases
-    }));
-    
-    // Center point (transformation point)
-    const centerX = canvas.width * 0.5;
-    const centerY = canvas.height * 0.5;
-    const centerRadius = 8;
-    
-    // Animation loop
-    let animationId: number;
-    let progress = 0;
-    
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      progress += 0.01;
+    // Message particles (input)
+    class MessageParticle {
+      x: number;
+      y: number;
+      size: number;
+      speed: number;
+      type: string;
+      opacity: number;
+      blinkRate: number;
+      blinkTime: number;
+      isQualified: boolean;
       
-      const drawChaosLines = () => {
-        chaosLines.forEach((line, lineIndex) => {
-          ctx.beginPath();
-          ctx.moveTo(0, canvas.height * 0.5); // Start at middle left
-          
-          // Draw chaotic lines (left side)
-          for (let i = 0; i <= 100; i++) {
-            const x = (i / 100) * centerX;
-            
-            // As we get closer to center, lines become more controlled
-            const controlFactor = Math.min(1, (centerX - x) / centerX);
-            
-            // Calculate y position with perlin-like noise
-            const y = canvas.height * (0.5 + (line.points[Math.floor(i/20) % line.points.length] - 0.5) * 
-                     controlFactor * Math.sin(progress * 2 + lineIndex * 0.7 + i * 0.03 + line.phase));
-            
-            ctx.lineTo(x, y);
-          }
-          
-          // Gradient from gray to blue
-          const gradient = ctx.createLinearGradient(0, 0, centerX, 0);
-          gradient.addColorStop(0, `rgba(160, 160, 160, ${line.opacity})`);
-          gradient.addColorStop(1, `rgba(59, 130, 246, ${line.opacity + 0.1})`);
-          
-          ctx.strokeStyle = gradient;
-          ctx.lineWidth = 2;
-          ctx.stroke();
-        });
-      };
+      constructor(x: number, y: number) {
+        this.x = x;
+        this.y = canvas.height * (0.3 + Math.random() * 0.4); // Keep within middle area
+        this.size = 3 + Math.random() * 5;
+        this.speed = 0.5 + Math.random() * 1.5;
+        // Message types: circle (DM), square (chat), diamond (question)
+        this.type = ['circle', 'square', 'diamond'][Math.floor(Math.random() * 3)];
+        this.opacity = 0.3 + Math.random() * 0.5;
+        this.blinkRate = 0.005 + Math.random() * 0.02;
+        this.blinkTime = Math.random() * Math.PI * 2;
+        // Determine if this will be a qualified lead (roughly 30%)
+        this.isQualified = Math.random() > 0.7;
+      }
       
-      const drawOrderedLines = () => {
-        orderedLines.forEach((line, lineIndex) => {
-          ctx.beginPath();
-          ctx.moveTo(centerX, centerY); // Start at center point
-          
-          // Draw ordered lines with slight upward trend (right side)
-          for (let i = 0; i <= 100; i++) {
-            const x = centerX + (i / 100) * (canvas.width - centerX);
-            const progressUp = i / 100; // Progress from left to right
-            
-            // Calculate trend (upward as we go right)
-            const trendUp = progressUp * canvas.height * 0.15;
-            
-            // Calculate y with slight wave
-            const y = canvas.height * line.baseY - trendUp + 
-                     Math.sin(progress + lineIndex * 2 + i * 0.03 + line.phase) * 
-                     canvas.height * line.amplitude;
-            
-            ctx.lineTo(x, y);
-          }
-          
-          // Green gradient
-          const gradient = ctx.createLinearGradient(centerX, 0, canvas.width, 0);
-          gradient.addColorStop(0, "rgba(59, 130, 246, 0.8)");
-          gradient.addColorStop(1, "rgba(16, 185, 129, 0.8)");
-          
-          ctx.strokeStyle = gradient;
-          ctx.lineWidth = 3;
-          ctx.stroke();
-        });
-      };
+      update() {
+        // Move message from left to center
+        this.x += this.speed;
+        // Subtle vertical movement
+        this.y += Math.sin(this.x * 0.01) * 0.2;
+        // Blink effect for emphasis
+        this.blinkTime += this.blinkRate;
+        return this.x;
+      }
       
-      const drawCenterPoint = () => {
-        // Glow effect
-        const gradient = ctx.createRadialGradient(
-          centerX, centerY, 0,
-          centerX, centerY, centerRadius * 3
-        );
-        gradient.addColorStop(0, "rgba(59, 130, 246, 0.8)");
-        gradient.addColorStop(1, "rgba(59, 130, 246, 0)");
+      draw(ctx: CanvasRenderingContext2D) {
+        const blinkOpacity = Math.sin(this.blinkTime) * 0.2 + 0.8;
+        ctx.globalAlpha = this.opacity * blinkOpacity;
         
+        if (this.type === 'circle') {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = this.isQualified ? colors.secondary : colors.faded;
+          ctx.fill();
+        } else if (this.type === 'square') {
+          ctx.fillStyle = this.isQualified ? colors.secondary : colors.faded;
+          ctx.fillRect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
+        } else if (this.type === 'diamond') {
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y - this.size);
+          ctx.lineTo(this.x + this.size, this.y);
+          ctx.lineTo(this.x, this.y + this.size);
+          ctx.lineTo(this.x - this.size, this.y);
+          ctx.closePath();
+          ctx.fillStyle = this.isQualified ? colors.secondary : colors.faded;
+          ctx.fill();
+        }
+        
+        ctx.globalAlpha = 1;
+      }
+    }
+    
+    // Lead particles (output)
+    class LeadParticle {
+      x: number;
+      y: number;
+      size: number;
+      speed: number;
+      type: string;
+      opacity: number;
+      trail: {x: number, y: number}[];
+      
+      constructor(x: number, y: number, type: string) {
+        this.x = x;
+        this.y = y;
+        this.size = 4 + Math.random() * 3;
+        this.speed = 1 + Math.random() * 1;
+        // Lead types: calendar, checkmark, dollar
+        this.type = type || ['calendar', 'checkmark', 'dollar'][Math.floor(Math.random() * 3)];
+        this.opacity = 0.8 + Math.random() * 0.2;
+        this.trail = [];
+        
+        // Add initial trail positions
+        for (let i = 0; i < 10; i++) {
+          this.trail.push({x: this.x - i * 2, y: this.y});
+        }
+      }
+      
+      update() {
+        // Move lead from center to right
+        this.x += this.speed;
+        // Subtle upward trend for success visualization
+        this.y -= 0.05;
+        
+        // Update trail
+        this.trail.push({x: this.x, y: this.y});
+        if (this.trail.length > 10) {
+          this.trail.shift();
+        }
+        
+        return this.x;
+      }
+      
+      draw(ctx: CanvasRenderingContext2D) {
+        // Draw trail
+        ctx.globalAlpha = 0.2;
         ctx.beginPath();
-        ctx.arc(centerX, centerY, centerRadius * 3, 0, Math.PI * 2);
+        ctx.moveTo(this.trail[0].x, this.trail[0].y);
+        for (let i = 1; i < this.trail.length; i++) {
+          ctx.lineTo(this.trail[i].x, this.trail[i].y);
+        }
+        ctx.strokeStyle = colors.accent;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+        
+        // Draw lead particle
+        ctx.globalAlpha = this.opacity;
+        
+        if (this.type === 'calendar') {
+          // Calendar icon
+          ctx.fillStyle = colors.accent;
+          ctx.fillRect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
+          
+          // Calendar details
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(this.x - this.size/3, this.y - this.size/4, this.size/1.5, this.size/2);
+        } else if (this.type === 'checkmark') {
+          // Checkmark circle
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size/1.5, 0, Math.PI * 2);
+          ctx.fillStyle = colors.accent;
+          ctx.fill();
+          
+          // Checkmark
+          ctx.beginPath();
+          ctx.moveTo(this.x - this.size/3, this.y);
+          ctx.lineTo(this.x - this.size/10, this.y + this.size/4);
+          ctx.lineTo(this.x + this.size/3, this.y - this.size/4);
+          ctx.lineWidth = this.size/5;
+          ctx.strokeStyle = '#FFFFFF';
+          ctx.stroke();
+        } else if (this.type === 'dollar') {
+          // Dollar circle
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size/1.5, 0, Math.PI * 2);
+          ctx.fillStyle = colors.highlight;
+          ctx.fill();
+          
+          // Dollar sign
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = `${this.size}px Arial`;
+          ctx.fillText('$', this.x - this.size/3, this.y + this.size/3);
+        }
+        
+        ctx.globalAlpha = 1;
+      }
+    }
+    
+    // AI Agent (central node)
+    class AINode {
+      x: number;
+      y: number;
+      size: number;
+      pulseRadius: number;
+      pulseOpacity: number;
+      pulseSpeed: number;
+      rotation: number;
+      rotationSpeed: number;
+      
+      constructor() {
+        this.x = canvas.width / 2;
+        this.y = canvas.height / 2;
+        this.size = Math.min(canvas.width, canvas.height) * 0.08; // Responsive size
+        this.pulseRadius = this.size;
+        this.pulseOpacity = 0.2;
+        this.pulseSpeed = 0.01;
+        this.rotation = 0;
+        this.rotationSpeed = 0.005;
+      }
+      
+      update() {
+        // Pulse effect
+        this.pulseRadius += this.pulseSpeed;
+        if (this.pulseRadius > this.size * 1.5) {
+          this.pulseRadius = this.size;
+        }
+        
+        // Rotation effect for inner elements
+        this.rotation += this.rotationSpeed;
+        if (this.rotation > Math.PI * 2) {
+          this.rotation = 0;
+        }
+      }
+      
+      draw(ctx: CanvasRenderingContext2D) {
+        // Draw outer pulse
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.pulseRadius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(30, 58, 138, ${this.pulseOpacity})`;
+        ctx.fill();
+        
+        // Draw main node
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        const gradient = ctx.createRadialGradient(
+          this.x, this.y, 0,
+          this.x, this.y, this.size
+        );
+        gradient.addColorStop(0, colors.secondary);
+        gradient.addColorStop(1, colors.primary);
         ctx.fillStyle = gradient;
         ctx.fill();
         
-        // Center point
+        // Draw inner rotating elements (abstract AI representation)
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        
+        // Inner circles
+        for (let i = 0; i < 3; i++) {
+          const angle = (Math.PI * 2 / 3) * i;
+          const orbitRadius = this.size * 0.5;
+          const x = Math.cos(angle) * orbitRadius;
+          const y = Math.sin(angle) * orbitRadius;
+          const circleSize = this.size * 0.15;
+          
+          ctx.beginPath();
+          ctx.arc(x, y, circleSize, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+          ctx.fill();
+        }
+        
+        // Core circle
         ctx.beginPath();
-        ctx.arc(centerX, centerY, centerRadius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(59, 130, 246, 1)";
+        ctx.arc(0, 0, this.size * 0.25, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
         ctx.fill();
-      };
+        
+        ctx.restore();
+      }
       
-      drawChaosLines();
-      drawOrderedLines();
-      drawCenterPoint();
+      processParticle(particle: MessageParticle): boolean {
+        // Check if particle is within processing range
+        const dx = this.x - particle.x;
+        const dy = this.y - particle.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        return distance < this.size * 1.2;
+      }
+    }
+    
+    // Animation variables
+    const messageParticles: MessageParticle[] = [];
+    const leadParticles: LeadParticle[] = [];
+    const aiNode = new AINode();
+    let animationId: number;
+    
+    // Create initial particles
+    const createInitialParticles = () => {
+      for (let i = 0; i < 15; i++) {
+        const x = -50 - Math.random() * 100;
+        const y = Math.random() * canvas.height;
+        messageParticles.push(new MessageParticle(x, y));
+      }
+    };
+    
+    createInitialParticles();
+    
+    // Animation loop
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Update and draw AI node
+      aiNode.update();
+      aiNode.draw(ctx);
+      
+      // Update and draw message particles
+      for (let i = messageParticles.length - 1; i >= 0; i--) {
+        const particle = messageParticles[i];
+        const x = particle.update();
+        particle.draw(ctx);
+        
+        // Check if particle reached AI node for processing
+        if (aiNode.processParticle(particle)) {
+          messageParticles.splice(i, 1);
+          
+          // If qualified, create a lead particle
+          if (particle.isQualified) {
+            leadParticles.push(new LeadParticle(aiNode.x, aiNode.y, 
+              ['calendar', 'checkmark', 'dollar'][Math.floor(Math.random() * 3)]
+            ));
+          }
+        }
+        
+        // Remove if off screen
+        if (x > canvas.width + 50) {
+          messageParticles.splice(i, 1);
+        }
+      }
+      
+      // Update and draw lead particles
+      for (let i = leadParticles.length - 1; i >= 0; i--) {
+        const particle = leadParticles[i];
+        const x = particle.update();
+        particle.draw(ctx);
+        
+        // Remove if off screen
+        if (x > canvas.width + 50) {
+          leadParticles.splice(i, 1);
+        }
+      }
+      
+      // Create new message particles at a controlled rate
+      if (Math.random() < 0.1 && messageParticles.length < 25) {
+        const x = -20;
+        const y = Math.random() * canvas.height;
+        messageParticles.push(new MessageParticle(x, y));
+      }
       
       animationId = requestAnimationFrame(animate);
     };
@@ -149,8 +364,8 @@ const FlowAnimation = () => {
   return (
     <canvas 
       ref={canvasRef} 
-      className="absolute inset-0 w-full h-full z-0"
-      style={{ opacity: 0.8 }}
+      className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-trader-blue/10 to-trader-green-light/5"
+      style={{ opacity: 0.9 }}
     />
   );
 };
