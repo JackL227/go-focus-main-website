@@ -27,6 +27,7 @@ const FlowAnimation = () => {
       accent: '#10B981', // trader-green-light
       highlight: '#F59E0B', // trader-accent
       faded: 'rgba(107, 114, 128, 0.5)', // trader-gray with opacity
+      analytics: '#8B5CF6', // purple for analytics
     };
     
     // Message particles (input)
@@ -101,16 +102,20 @@ const FlowAnimation = () => {
       type: string;
       opacity: number;
       trail: {x: number, y: number}[];
+      pulseSize: number;
+      pulseDir: number;
       
       constructor(x: number, y: number, type: string) {
         this.x = x;
         this.y = y;
         this.size = 4 + Math.random() * 3;
         this.speed = 1 + Math.random() * 1;
-        // Lead types: calendar, checkmark, dollar
-        this.type = type || ['calendar', 'checkmark', 'dollar'][Math.floor(Math.random() * 3)];
+        // Lead types: calendar, checkmark, dollar, analytics
+        this.type = type || ['calendar', 'checkmark', 'dollar', 'analytics'][Math.floor(Math.random() * 4)];
         this.opacity = 0.8 + Math.random() * 0.2;
         this.trail = [];
+        this.pulseSize = 0;
+        this.pulseDir = 1;
         
         // Add initial trail positions
         for (let i = 0; i < 10; i++) {
@@ -130,6 +135,14 @@ const FlowAnimation = () => {
           this.trail.shift();
         }
         
+        // Pulse effect for analytics
+        if (this.type === 'analytics') {
+          this.pulseSize += 0.05 * this.pulseDir;
+          if (this.pulseSize > 1 || this.pulseSize < 0) {
+            this.pulseDir *= -1;
+          }
+        }
+        
         return this.x;
       }
       
@@ -141,7 +154,10 @@ const FlowAnimation = () => {
         for (let i = 1; i < this.trail.length; i++) {
           ctx.lineTo(this.trail[i].x, this.trail[i].y);
         }
-        ctx.strokeStyle = colors.accent;
+        
+        const trailColor = this.type === 'analytics' ? colors.analytics : 
+                         this.type === 'calendar' ? colors.accent : colors.accent;
+        ctx.strokeStyle = trailColor;
         ctx.lineWidth = 1;
         ctx.stroke();
         ctx.globalAlpha = 1;
@@ -183,6 +199,43 @@ const FlowAnimation = () => {
           ctx.fillStyle = '#FFFFFF';
           ctx.font = `${this.size}px Arial`;
           ctx.fillText('$', this.x - this.size/3, this.y + this.size/3);
+        } else if (this.type === 'analytics') {
+          // Analytics icon - bar chart
+          const extraSize = this.pulseSize * 2;
+          
+          ctx.fillStyle = colors.analytics;
+          
+          // Bar chart icon
+          const barWidth = this.size/3;
+          const barSpacing = this.size/6;
+          const barBase = this.y + this.size/2;
+          
+          // First bar
+          const bar1Height = this.size * 0.5 + extraSize;
+          ctx.fillRect(
+            this.x - barWidth*1.5 - barSpacing, 
+            barBase - bar1Height, 
+            barWidth, 
+            bar1Height
+          );
+          
+          // Second bar
+          const bar2Height = this.size * 0.8 + extraSize;
+          ctx.fillRect(
+            this.x - barWidth/2, 
+            barBase - bar2Height, 
+            barWidth, 
+            bar2Height
+          );
+          
+          // Third bar
+          const bar3Height = this.size * 0.6 + extraSize;
+          ctx.fillRect(
+            this.x + barWidth/2 + barSpacing, 
+            barBase - bar3Height, 
+            barWidth, 
+            bar3Height
+          );
         }
         
         ctx.globalAlpha = 1;
@@ -199,6 +252,8 @@ const FlowAnimation = () => {
       pulseSpeed: number;
       rotation: number;
       rotationSpeed: number;
+      processingEffect: number;
+      processingDirection: number;
       
       constructor() {
         this.x = canvas.width / 2;
@@ -209,6 +264,8 @@ const FlowAnimation = () => {
         this.pulseSpeed = 0.01;
         this.rotation = 0;
         this.rotationSpeed = 0.005;
+        this.processingEffect = 0;
+        this.processingDirection = 1;
       }
       
       update() {
@@ -222,6 +279,12 @@ const FlowAnimation = () => {
         this.rotation += this.rotationSpeed;
         if (this.rotation > Math.PI * 2) {
           this.rotation = 0;
+        }
+        
+        // Processing effect
+        this.processingEffect += 0.02 * this.processingDirection;
+        if (this.processingEffect > 1 || this.processingEffect < 0) {
+          this.processingDirection *= -1;
         }
       }
       
@@ -244,6 +307,13 @@ const FlowAnimation = () => {
         ctx.fillStyle = gradient;
         ctx.fill();
         
+        // Draw processing indicator (ripple effect)
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size * (0.6 + this.processingEffect * 0.3), 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255, 255, 255, ${0.8 - this.processingEffect * 0.6})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        
         // Draw inner rotating elements (abstract AI representation)
         ctx.save();
         ctx.translate(this.x, this.y);
@@ -255,7 +325,7 @@ const FlowAnimation = () => {
           const orbitRadius = this.size * 0.5;
           const x = Math.cos(angle) * orbitRadius;
           const y = Math.sin(angle) * orbitRadius;
-          const circleSize = this.size * 0.15;
+          const circleSize = this.size * (0.12 + this.processingEffect * 0.05);
           
           ctx.beginPath();
           ctx.arc(x, y, circleSize, 0, Math.PI * 2);
@@ -265,7 +335,7 @@ const FlowAnimation = () => {
         
         // Core circle
         ctx.beginPath();
-        ctx.arc(0, 0, this.size * 0.25, 0, Math.PI * 2);
+        ctx.arc(0, 0, this.size * (0.22 + this.processingEffect * 0.05), 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
         ctx.fill();
         
@@ -319,9 +389,9 @@ const FlowAnimation = () => {
           
           // If qualified, create a lead particle
           if (particle.isQualified) {
-            leadParticles.push(new LeadParticle(aiNode.x, aiNode.y, 
-              ['calendar', 'checkmark', 'dollar'][Math.floor(Math.random() * 3)]
-            ));
+            // Determine what type of lead particle to create with more analytics
+            const leadType = ['calendar', 'checkmark', 'dollar', 'analytics'][Math.floor(Math.random() * 4)];
+            leadParticles.push(new LeadParticle(aiNode.x, aiNode.y, leadType));
           }
         }
         
