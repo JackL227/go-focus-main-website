@@ -8,32 +8,32 @@
 @layer base {
   :root {
     --background: 0 0% 0%; /* Black (#000000) */
-    --foreground: 0 0% 78.4%; /* Grey (#cecece) */
+    --foreground: 0 0% 80.8%; /* Grey (#cecece) */
     
     --card: 0 0% 0%; /* Black (#000000) */
-    --card-foreground: 0 0% 78.4%; /* Grey (#cecece) */
+    --card-foreground: 0 0% 80.8%; /* Grey (#cecece) */
 
     --popover: 0 0% 0%; /* Black (#000000) */
-    --popover-foreground: 0 0% 78.4%; /* Grey (#cecece) */
+    --popover-foreground: 0 0% 80.8%; /* Grey (#cecece) */
 
     --primary: 210 100% 44%; /* Blue (#006eda) */
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 0 0% 80.8%; /* Grey (#cecece) */
     
-    --secondary: 0 0% 78.4%; /* Grey (#cecece) */
-    --secondary-foreground: 0 0% 0%;
+    --secondary: 0 0% 80.8%; /* Grey (#cecece) */
+    --secondary-foreground: 0 0% 0%; /* Black (#000000) */
     
     --muted: 0 0% 40%; /* Dark grey */
-    --muted-foreground: 0 0% 78.4%;
+    --muted-foreground: 0 0% 80.8%; /* Grey (#cecece) */
     
     --accent: 0 0% 0%; /* Black (#000000) */
-    --accent-foreground: 0 0% 78.4%;
+    --accent-foreground: 0 0% 80.8%; /* Grey (#cecece) */
     
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 80.8%; /* Grey (#cecece) */
 
-    --border: 0 0% 78.4%;
-    --input: 0 0% 78.4%;
-    --ring: 0 0% 78.4%;
+    --border: 0 0% 80.8%; /* Grey (#cecece) */
+    --input: 0 0% 80.8%; /* Grey (#cecece) */
+    --ring: 0 0% 80.8%; /* Grey (#cecece) */
 
     --radius: 0.5rem;
   }
@@ -81,11 +81,11 @@
   }
 
   .btn-primary {
-    @apply bg-trader-blue text-white hover:bg-trader-blue/90 px-6 py-3 rounded-md font-medium transition-all transform hover:scale-105 hover:shadow-lg;
+    @apply bg-primary text-foreground hover:bg-primary/90 px-6 py-3 rounded-md font-medium transition-all transform hover:scale-105 hover:shadow-lg;
   }
 
   .btn-secondary {
-    @apply bg-trader-accent text-white hover:bg-trader-accent/90 px-6 py-3 rounded-md font-medium transition-all transform hover:scale-105 hover:shadow-lg;
+    @apply bg-secondary text-background hover:bg-secondary/90 px-6 py-3 rounded-md font-medium transition-all transform hover:scale-105 hover:shadow-lg;
   }
 
   .card-hover {
@@ -93,19 +93,19 @@
   }
   
   .text-gradient-blue {
-    @apply bg-gradient-to-r from-trader-blue to-trader-blue-light bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent;
   }
   
   .text-gradient-green {
-    @apply bg-gradient-to-r from-trader-green to-trader-green-light bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-foreground to-foreground bg-clip-text text-transparent;
   }
   
   .glass-card {
-    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-lg rounded-xl;
+    @apply bg-background/70 backdrop-blur-md border border-foreground/20 shadow-lg rounded-xl;
   }
   
   .subtle-border {
-    @apply border border-gray-100 shadow-sm;
+    @apply border border-foreground/20 shadow-sm;
   }
   
   .hover-lift {
@@ -113,7 +113,7 @@
   }
   
   .feature-icon-wrapper {
-    @apply p-3 rounded-full bg-blue-50 text-trader-blue inline-flex items-center justify-center mb-4;
+    @apply p-3 rounded-full bg-primary/10 text-primary inline-flex items-center justify-center mb-4;
   }
 }
 
@@ -124,15 +124,15 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #000000;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #444444;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #cecece;
 }

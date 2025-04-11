@@ -1,12 +1,12 @@
 
 // Define the colors for the animation
 export const animationColors = {
-  primary: '#1E3A8A', // trader-blue
-  secondary: '#3B82F6', // trader-blue-light
-  accent: '#10B981', // trader-green-light
-  highlight: '#F59E0B', // trader-accent
-  faded: 'rgba(107, 114, 128, 0.5)', // trader-gray with opacity
-  analytics: '#8B5CF6', // purple for analytics
+  primary: '#006eda', // blue
+  secondary: '#006eda', // blue
+  accent: '#006eda', // blue
+  highlight: '#006eda', // blue
+  faded: 'rgba(206, 206, 206, 0.5)', // grey with opacity
+  analytics: '#006eda', // blue
 };
 
 // Canvas sizing helper function

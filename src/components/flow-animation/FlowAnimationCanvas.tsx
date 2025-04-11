@@ -117,8 +117,7 @@ const FlowAnimationCanvas = () => {
   return (
     <canvas 
       ref={canvasRef} 
-      className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-trader-blue/10 to-trader-green-light/5"
-      style={{ opacity: 0.9 }}
+      className="absolute inset-0 w-full h-full z-0 bg-black"
     />
   );
 };

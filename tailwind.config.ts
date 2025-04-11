@@ -12,9 +12,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
+        border: '#cecece',
+        input: '#cecece',
+        ring: '#cecece',
         background: {
           DEFAULT: '#000000',
           foreground: '#cecece'
@@ -25,7 +25,7 @@ export default {
         },
         primary: {
           DEFAULT: '#006eda',
-          foreground: '#ffffff'
+          foreground: '#cecece'
         },
         secondary: {
           DEFAULT: '#cecece',
@@ -36,45 +36,35 @@ export default {
           foreground: 'hsl(var(--destructive-foreground))'
         },
         muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))'
+          DEFAULT: '#444444',
+          foreground: '#cecece'
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))'
+          DEFAULT: '#000000',
+          foreground: '#cecece'
         },
         popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))'
+          DEFAULT: '#000000',
+          foreground: '#cecece'
         },
         card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))'
-        },
-        sidebar: {
-          DEFAULT: 'hsl(var(--sidebar-background))',
-          foreground: 'hsl(var(--sidebar-foreground))',
-          primary: 'hsl(var(--sidebar-primary))',
-          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-          accent: 'hsl(var(--sidebar-accent))',
-          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-          border: 'hsl(var(--sidebar-border))',
-          ring: 'hsl(var(--sidebar-ring))'
+          DEFAULT: '#000000',
+          foreground: '#cecece'
         },
         trader: {
-          blue: '#1E3A8A',
-          'blue-light': '#3B82F6',
-          green: '#059669',
-          'green-light': '#10B981',
-          accent: '#F59E0B',
-          gray: '#6B7280',
-          'gray-light': '#E5E7EB',
-          'gray-dark': '#374151'
+          blue: '#006eda',
+          'blue-light': '#006eda',
+          green: '#006eda',
+          'green-light': '#006eda',
+          accent: '#006eda',
+          gray: '#cecece',
+          'gray-light': '#cecece',
+          'gray-dark': '#cecece'
         },
         dark: {
           background: '#000000',
-          text: '#ffffff',
-          muted: '#666666'
+          text: '#cecece',
+          muted: '#444444'
         }
       },
       borderRadius: {
