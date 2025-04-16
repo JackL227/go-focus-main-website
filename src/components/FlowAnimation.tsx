@@ -1,3 +1,3 @@
 
-import { FlowAnimationCanvas } from './flow-animation';
-export default FlowAnimationCanvas;
+import FlowAnimation from './flow-animation';
+export default FlowAnimation;

@@ -10,7 +10,6 @@ class AINode {
   rotationSpeed: number;
   processingEffect: number;
   processingDirection: number;
-  orbitElements: Array<{angle: number, speed: number, size: number, distance: number}>;
   
   constructor(canvasWidth: number, canvasHeight: number) {
     this.x = canvasWidth / 2;
@@ -23,17 +22,6 @@ class AINode {
     this.rotationSpeed = 0.005;
     this.processingEffect = 0;
     this.processingDirection = 1;
-    
-    // Create orbital elements around the AI node
-    this.orbitElements = [];
-    for (let i = 0; i < 5; i++) {
-      this.orbitElements.push({
-        angle: Math.random() * Math.PI * 2,
-        speed: 0.002 + Math.random() * 0.003,
-        size: 2 + Math.random() * 4,
-        distance: this.size * (0.8 + Math.random() * 0.5)
-      });
-    }
   }
   
   update() {
@@ -54,65 +42,26 @@ class AINode {
     if (this.processingEffect > 1 || this.processingEffect < 0) {
       this.processingDirection *= -1;
     }
-    
-    // Update orbit elements
-    this.orbitElements.forEach(el => {
-      el.angle += el.speed;
-      if (el.angle > Math.PI * 2) {
-        el.angle -= Math.PI * 2;
-      }
-    });
   }
   
   draw(ctx: CanvasRenderingContext2D, colors: Record<string, string>) {
-    // Draw outer glow pulses
-    for (let i = 0; i < 3; i++) {
-      const radius = this.pulseRadius * (1 + i * 0.3);
-      const opacity = this.pulseOpacity / (i + 1) * 1.5;
-      
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0, 196, 167, ${opacity})`; // Teal glow
-      ctx.fill();
-    }
+    // Draw outer pulse
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.pulseRadius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(30, 58, 138, ${this.pulseOpacity})`;
+    ctx.fill();
     
-    // Draw orbiting elements
-    this.orbitElements.forEach(el => {
-      const x = this.x + Math.cos(el.angle) * el.distance;
-      const y = this.y + Math.sin(el.angle) * el.distance;
-      
-      ctx.beginPath();
-      ctx.arc(x, y, el.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0, 196, 167, ${0.6 + Math.sin(el.angle * 2) * 0.4})`;
-      ctx.fill();
-      
-      // Draw connection line to core
-      ctx.beginPath();
-      ctx.moveTo(this.x, this.y);
-      ctx.lineTo(x, y);
-      ctx.strokeStyle = `rgba(0, 196, 167, ${0.2 + Math.sin(el.angle * 3) * 0.1})`;
-      ctx.lineWidth = 0.5;
-      ctx.stroke();
-    });
-    
-    // Draw main node with shadow for glow effect
-    ctx.shadowColor = colors.accent;
-    ctx.shadowBlur = 15;
-    
+    // Draw main node
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     const gradient = ctx.createRadialGradient(
       this.x, this.y, 0,
       this.x, this.y, this.size
     );
-    gradient.addColorStop(0, '#00c4a7'); // Teal core
-    gradient.addColorStop(0.7, colors.primary);
-    gradient.addColorStop(1, '#003d68'); // Darker blue edge
+    gradient.addColorStop(0, colors.secondary);
+    gradient.addColorStop(1, colors.primary);
     ctx.fillStyle = gradient;
     ctx.fill();
-    
-    // Reset shadow
-    ctx.shadowBlur = 0;
     
     // Draw processing indicator (ripple effect)
     ctx.beginPath();
@@ -143,15 +92,8 @@ class AINode {
     // Core circle
     ctx.beginPath();
     ctx.arc(0, 0, this.size * (0.22 + this.processingEffect * 0.05), 0, Math.PI * 2);
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
     ctx.fill();
-    
-    // Small "S" or logo in the center
-    ctx.fillStyle = '#00c4a7';
-    ctx.font = `bold ${this.size * 0.3}px Arial`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('S', 0, 0);
     
     ctx.restore();
   }
