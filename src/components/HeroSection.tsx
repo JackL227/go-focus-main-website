@@ -3,6 +3,7 @@ import React from 'react';
 import FluidAnimation from './FluidAnimation';
 import { Button } from './ui/button';
 import { ArrowDown, ArrowRight } from 'lucide-react';
+import { FlowAnimationCanvas } from './flow-animation';
 
 const HeroSection = () => {
   const scrollToAnimation = () => {
