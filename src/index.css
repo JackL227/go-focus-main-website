@@ -115,6 +115,14 @@
   .feature-icon-wrapper {
     @apply p-3 rounded-full bg-primary/10 text-primary inline-flex items-center justify-center mb-4;
   }
+
+  .fluid-bg {
+    @apply relative overflow-hidden;
+  }
+  
+  .fluid-bg::before {
+    @apply content-[''] absolute inset-0 bg-background opacity-80 z-10;
+  }
 }
 
 /* Scrollbar styling */
