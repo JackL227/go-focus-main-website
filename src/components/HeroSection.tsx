@@ -1,45 +1,74 @@
 
 import React from 'react';
-import FluidAnimation from './FluidAnimation';
 import { Button } from './ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
+import FluidAnimation from './FluidAnimation';
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[92vh] flex items-center">
+    <section className="relative min-h-screen flex items-center pt-24 pb-16">
       {/* Background animation */}
       <div className="absolute inset-0 overflow-hidden">
         <FluidAnimation />
       </div>
       
       {/* Gradient overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/60 to-background/80 z-[1]"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/70 to-background/80 z-[1]"></div>
       
-      <div className="container-custom relative z-10">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="absolute -top-16 -left-16 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
-          <div className="absolute -bottom-8 -right-8 w-64 h-64 bg-primary/20 rounded-full blur-3xl" />
+      <div className="container-custom relative z-10 py-16">
+        <div className="max-w-4xl mx-auto">
+          <div className="absolute -top-16 -left-16 w-64 h-64 bg-primary/20 rounded-full blur-3xl" />
+          <div className="absolute -bottom-32 -right-8 w-80 h-80 bg-[#00E676]/10 rounded-full blur-3xl" />
           
-          <span className="inline-block px-4 py-2 rounded-full bg-background/40 backdrop-blur-sm shadow-sm text-primary text-sm font-medium mb-6 opacity-0 animate-fade-in [animation-delay:100ms] border border-foreground/20">
-            Exclusively For Trading Mentors
-          </span>
+          {/* Hero Content */}
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-2 rounded-full bg-background/40 backdrop-blur-sm shadow-sm border border-foreground/20 text-primary text-sm font-medium mb-6 opacity-0 animate-fade-in [animation-delay:100ms]">
+              Performance-Based AI Automation Agency
+            </span>
+            
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 opacity-0 animate-fade-in [animation-delay:300ms] leading-tight">
+              AI Agents That Convert Leads Into Revenue — 
+              <span className="text-primary"> While You Sleep.</span>
+            </h1>
+            
+            <p className="text-xl text-foreground/90 mb-8 opacity-0 animate-fade-in [animation-delay:500ms] max-w-3xl mx-auto">
+              Go Focus AI builds custom AI closers and voice assistants that respond, qualify, follow-up, and book appointments 24/7.
+              <span className="block mt-2 text-primary/90">Built for Trading Mentors, Med Spas & Vehicle Aesthetic Experts.</span>
+            </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-4 opacity-0 animate-fade-in [animation-delay:700ms]">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-background group">
+                Book a Demo
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+              <Button size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 flex items-center">
+                <Play className="mr-2 h-4 w-4" />
+                See How It Works
+              </Button>
+            </div>
+          </div>
           
-          <h1 className="text-primary mb-6 opacity-0 animate-fade-in [animation-delay:300ms] leading-tight">
-            Drowning in DMs? <span className="text-foreground">Stop Losing High-Ticket Trading Clients</span>
-          </h1>
+          {/* Floating Speech Bubbles */}
+          <div className="relative h-40 sm:h-60 mt-8 mb-4 opacity-0 animate-fade-in [animation-delay:900ms]">
+            <div className="absolute left-0 top-0 glass-card p-4 max-w-[200px] animate-float [animation-delay:0ms] hover:scale-105 transition-transform">
+              <p className="text-sm">"How much is Botox?"</p>
+            </div>
+            <div className="absolute right-0 top-10 glass-card p-4 max-w-[220px] animate-float [animation-delay:1000ms] hover:scale-105 transition-transform">
+              <p className="text-sm">"What's the cost of this wrap?"</p>
+            </div>
+            <div className="absolute left-1/4 bottom-0 glass-card p-4 max-w-[240px] animate-float [animation-delay:1500ms] hover:scale-105 transition-transform">
+              <p className="text-sm">"Is your course beginner-friendly?"</p>
+            </div>
+            <div className="absolute right-1/4 top-1/3 glass-card p-4 max-w-[210px] animate-float [animation-delay:500ms] hover:scale-105 transition-transform">
+              <p className="text-sm">"Do you offer payment plans?"</p>
+            </div>
+          </div>
           
-          <p className="text-xl text-foreground mb-8 opacity-0 animate-fade-in [animation-delay:600ms]">
-            Our AI agent qualifies leads, books calls, and speaks in your voice—saving you hours while scaling your trading mentorship business.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row justify-center gap-4 opacity-0 animate-fade-in [animation-delay:900ms]">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-foreground">
-              Book Your Free Strategy Call
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10">
-              See How It Works
-            </Button>
+          {/* Subtle downward indication */}
+          <div className="text-center mt-8 opacity-0 animate-fade-in [animation-delay:1200ms]">
+            <div className="inline-block animate-bounce">
+              <ArrowRight className="h-6 w-6 transform rotate-90 text-primary/70" />
+            </div>
           </div>
         </div>
       </div>

@@ -3,16 +3,22 @@
 export const animationColors = {
   primary: '#006eda', // blue
   secondary: '#006eda', // blue
-  accent: '#006eda', // blue
-  highlight: '#006eda', // blue
-  faded: 'rgba(206, 206, 206, 0.5)', // grey with opacity
+  accent: '#00E676', // neon green
+  highlight: '#FFC107', // amber/gold
+  faded: 'rgba(120, 130, 150, 0.5)', // grey with opacity
   analytics: '#006eda', // blue
 };
 
 // Canvas sizing helper function
 export const setCanvasSize = (canvas: HTMLCanvasElement) => {
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
+  const parent = canvas.parentElement;
+  if (parent) {
+    canvas.width = parent.offsetWidth;
+    canvas.height = parent.offsetHeight;
+  } else {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
 };
 
 // Create initial particles

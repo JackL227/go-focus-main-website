@@ -11,10 +11,10 @@ class AINode {
   processingEffect: number;
   processingDirection: number;
   
-  constructor(canvasWidth: number, canvasHeight: number) {
-    this.x = canvasWidth / 2;
-    this.y = canvasHeight / 2;
-    this.size = Math.min(canvasWidth, canvasHeight) * 0.08; // Responsive size
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+    this.size = 40; // Fixed size for consistent appearance
     this.pulseRadius = this.size;
     this.pulseOpacity = 0.2;
     this.pulseSpeed = 0.01;
@@ -48,8 +48,12 @@ class AINode {
     // Draw outer pulse
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.pulseRadius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(30, 58, 138, ${this.pulseOpacity})`;
+    ctx.fillStyle = `rgba(0, 110, 218, ${this.pulseOpacity})`;
     ctx.fill();
+    
+    // Draw outer glow
+    ctx.shadowColor = colors.primary;
+    ctx.shadowBlur = 15;
     
     // Draw main node
     ctx.beginPath();
@@ -58,10 +62,14 @@ class AINode {
       this.x, this.y, 0,
       this.x, this.y, this.size
     );
-    gradient.addColorStop(0, colors.secondary);
-    gradient.addColorStop(1, colors.primary);
+    gradient.addColorStop(0, colors.primary);
+    gradient.addColorStop(1, '#003870');
     ctx.fillStyle = gradient;
     ctx.fill();
+    
+    // Reset shadow
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
     
     // Draw processing indicator (ripple effect)
     ctx.beginPath();
@@ -94,6 +102,14 @@ class AINode {
     ctx.arc(0, 0, this.size * (0.22 + this.processingEffect * 0.05), 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
     ctx.fill();
+    
+    // Logo text
+    ctx.font = `${this.size * 0.15}px Arial`;
+    ctx.fillStyle = '#003870';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Go Focus', 0, -4);
+    ctx.fillText('AI', 0, 4);
     
     ctx.restore();
   }

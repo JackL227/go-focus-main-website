@@ -24,17 +24,18 @@ const Navigation = () => {
     )}>
       <div className="container-custom flex items-center justify-between">
         <a href="/" className="font-bold text-2xl text-primary flex items-center gap-1">
-          <span className="text-primary">Trade</span>
-          <span className="text-foreground">PathMentor</span>
+          <span className="text-primary">Go</span>
+          <span className="text-foreground">Focus</span>
+          <span className="text-primary">AI</span>
         </a>
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#about" className="text-foreground hover:text-primary transition-colors font-medium">About</a>
-          <a href="#program" className="text-foreground hover:text-primary transition-colors font-medium">Program</a>
-          <a href="#testimonials" className="text-foreground hover:text-primary transition-colors font-medium">Results</a>
-          <Button className="bg-primary hover:bg-primary/90 text-background group">
-            Book a Call
+          <a href="#how-it-works" className="text-foreground hover:text-primary transition-colors font-medium">How It Works</a>
+          <a href="#results" className="text-foreground hover:text-primary transition-colors font-medium">Results</a>
+          <a href="#testimonials" className="text-foreground hover:text-primary transition-colors font-medium">Testimonials</a>
+          <Button className="bg-primary hover:bg-primary/90 text-foreground group">
+            Book a Demo
             <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </Button>
         </nav>
@@ -53,19 +54,19 @@ const Navigation = () => {
         <div className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md shadow-lg animate-fade-in">
           <div className="container-custom py-6 flex flex-col space-y-6">
             <a 
-              href="#about" 
+              href="#how-it-works" 
               className="text-foreground hover:text-primary transition-colors py-2 flex items-center justify-between group"
               onClick={() => setIsMenuOpen(false)}
             >
-              About
+              How It Works
               <ChevronRight className="h-4 w-4 text-foreground/50 transition-transform group-hover:translate-x-1" />
             </a>
             <a 
-              href="#program" 
+              href="#results" 
               className="text-foreground hover:text-primary transition-colors py-2 flex items-center justify-between group"
               onClick={() => setIsMenuOpen(false)}
             >
-              Program
+              Results
               <ChevronRight className="h-4 w-4 text-foreground/50 transition-transform group-hover:translate-x-1" />
             </a>
             <a 
@@ -73,14 +74,14 @@ const Navigation = () => {
               className="text-foreground hover:text-primary transition-colors py-2 flex items-center justify-between group"
               onClick={() => setIsMenuOpen(false)}
             >
-              Results
+              Testimonials
               <ChevronRight className="h-4 w-4 text-foreground/50 transition-transform group-hover:translate-x-1" />
             </a>
             <Button 
-              className="w-full bg-primary hover:bg-primary/90 text-background"
+              className="w-full bg-primary hover:bg-primary/90 text-foreground"
               onClick={() => setIsMenuOpen(false)}
             >
-              Book a Call
+              Book a Demo
             </Button>
           </div>
         </div>

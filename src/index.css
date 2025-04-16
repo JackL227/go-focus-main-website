@@ -7,33 +7,33 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%; /* Black (#000000) */
-    --foreground: 0 0% 80.8%; /* Grey (#cecece) */
+    --background: 220 30% 10%; /* Dark navy #101A29 */
+    --foreground: 0 0% 80.8%; /* Light grey #cecece */
     
-    --card: 0 0% 0%; /* Black (#000000) */
-    --card-foreground: 0 0% 80.8%; /* Grey (#cecece) */
+    --card: 220 30% 10%; /* Dark navy #101A29 */
+    --card-foreground: 0 0% 80.8%; /* Light grey #cecece */
 
-    --popover: 0 0% 0%; /* Black (#000000) */
-    --popover-foreground: 0 0% 80.8%; /* Grey (#cecece) */
+    --popover: 220 30% 10%; /* Dark navy #101A29 */
+    --popover-foreground: 0 0% 80.8%; /* Light grey #cecece */
 
-    --primary: 210 100% 44%; /* Blue (#006eda) */
-    --primary-foreground: 0 0% 80.8%; /* Grey (#cecece) */
+    --primary: 210 100% 44%; /* Blue #006eda */
+    --primary-foreground: 0 0% 0%; /* Black #000000 */
     
-    --secondary: 0 0% 80.8%; /* Grey (#cecece) */
-    --secondary-foreground: 0 0% 0%; /* Black (#000000) */
+    --secondary: 0 0% 80.8%; /* Light grey #cecece */
+    --secondary-foreground: 220 30% 10%; /* Dark navy #101A29 */
     
     --muted: 0 0% 40%; /* Dark grey */
-    --muted-foreground: 0 0% 80.8%; /* Grey (#cecece) */
+    --muted-foreground: 0 0% 80.8%; /* Light grey #cecece */
     
-    --accent: 0 0% 0%; /* Black (#000000) */
-    --accent-foreground: 0 0% 80.8%; /* Grey (#cecece) */
+    --accent: 142 70% 45%; /* Neon green #00E676 */
+    --accent-foreground: 0 0% 0%; /* Black #000000 */
     
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 80.8%; /* Grey (#cecece) */
+    --destructive-foreground: 0 0% 80.8%; /* Light grey #cecece */
 
-    --border: 0 0% 80.8%; /* Grey (#cecece) */
-    --input: 0 0% 80.8%; /* Grey (#cecece) */
-    --ring: 0 0% 80.8%; /* Grey (#cecece) */
+    --border: 0 0% 30%; /* Darker grey border */
+    --input: 0 0% 80.8%; /* Light grey #cecece */
+    --ring: 0 0% 80.8%; /* Light grey #cecece */
 
     --radius: 0.5rem;
   }
@@ -42,6 +42,10 @@
 @layer base {
   * {
     @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
   }
 
   body {
@@ -85,7 +89,7 @@
   }
 
   .btn-secondary {
-    @apply bg-secondary text-background hover:bg-secondary/90 px-6 py-3 rounded-md font-medium transition-all transform hover:scale-105 hover:shadow-lg;
+    @apply bg-transparent border border-primary text-primary hover:bg-primary/10 px-6 py-3 rounded-md font-medium transition-all transform hover:scale-105;
   }
 
   .card-hover {
@@ -97,15 +101,15 @@
   }
   
   .text-gradient-green {
-    @apply bg-gradient-to-r from-foreground to-foreground bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-accent to-accent bg-clip-text text-transparent;
   }
   
   .glass-card {
-    @apply bg-background/70 backdrop-blur-md border border-foreground/20 shadow-lg rounded-xl;
+    @apply bg-background/70 backdrop-blur-md border border-foreground/10 shadow-lg rounded-xl;
   }
   
   .subtle-border {
-    @apply border border-foreground/20 shadow-sm;
+    @apply border border-foreground/10 shadow-sm;
   }
   
   .hover-lift {
@@ -125,6 +129,47 @@
   }
 }
 
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-glow {
+    animation: glow 4s ease-in-out infinite;
+  }
+  
+  .animate-pulse-soft {
+    animation: pulse-soft 3s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    filter: brightness(1) blur(8px);
+  }
+  50% {
+    filter: brightness(1.2) blur(12px);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
@@ -132,15 +177,15 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: #0A1428;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #444444;
+  background: #2A3A4A;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #cecece;
+  background: #3A4A5A;
 }

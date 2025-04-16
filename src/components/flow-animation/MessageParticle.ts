@@ -74,10 +74,10 @@ class MessageParticle {
     if (this.type === 'circle') {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = this.isQualified ? colors.secondary : colors.faded;
+      ctx.fillStyle = this.isQualified ? colors.primary : colors.faded;
       ctx.fill();
     } else if (this.type === 'square') {
-      ctx.fillStyle = this.isQualified ? colors.secondary : colors.faded;
+      ctx.fillStyle = this.isQualified ? colors.primary : colors.faded;
       ctx.fillRect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
     } else if (this.type === 'diamond') {
       ctx.beginPath();
@@ -86,7 +86,7 @@ class MessageParticle {
       ctx.lineTo(this.x, this.y + this.size);
       ctx.lineTo(this.x - this.size, this.y);
       ctx.closePath();
-      ctx.fillStyle = this.isQualified ? colors.secondary : colors.faded;
+      ctx.fillStyle = this.isQualified ? colors.primary : colors.faded;
       ctx.fill();
     }
     

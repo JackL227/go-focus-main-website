@@ -30,7 +30,7 @@ const FluidAnimation = () => {
     canvas.height = height;
     
     // Animation settings
-    const particleCount = 40;
+    const particleCount = 30;
     let particles: Particle[] = [];
     
     class Particle {
@@ -46,10 +46,14 @@ const FluidAnimation = () => {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = Math.random() * 0.5 - 0.25;
-        this.vy = Math.random() * 0.5 - 0.25;
-        this.radius = Math.random() * 50 + 20;
-        this.color = '#006eda';
+        this.vx = Math.random() * 0.4 - 0.2;
+        this.vy = Math.random() * 0.4 - 0.2;
+        this.radius = Math.random() * 70 + 30;
+        
+        // Different colors for particles
+        const colors = ['#006eda', '#00E676', '#006eda'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        
         this.life = 0;
         this.maxLife = 100 + Math.random() * 100;
       }
@@ -92,17 +96,17 @@ const FluidAnimation = () => {
         this.life = 0;
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.radius = Math.random() * 50 + 20;
+        this.radius = Math.random() * 70 + 30;
       }
       
       draw() {
         if (!ctx) return;
         
-        const opacity = Math.min(1, this.life / 20) * (1 - Math.max(0, (this.life - (this.maxLife - 20)) / 20));
+        const opacity = Math.min(1, this.life / 20) * (1 - Math.max(0, (this.life - (this.maxLife - 20)) / 20)) * 0.3;
         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
         
-        gradient.addColorStop(0, `rgba(0, 110, 218, ${opacity * 0.4})`);
-        gradient.addColorStop(1, `rgba(0, 110, 218, 0)`);
+        gradient.addColorStop(0, `${this.color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`);
+        gradient.addColorStop(1, `${this.color}00`);
         
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -133,7 +137,7 @@ const FluidAnimation = () => {
       });
       
       // Apply blur effect
-      ctx.filter = 'blur(12px)';
+      ctx.filter = 'blur(30px)';
       ctx.drawImage(canvas, 0, 0);
       ctx.filter = 'none';
       
@@ -151,7 +155,7 @@ const FluidAnimation = () => {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full z-0"
-      style={{ backgroundColor: '#000000' }}
+      style={{ backgroundColor: '#050A14' }}
     />
   );
 };

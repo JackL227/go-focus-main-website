@@ -13,24 +13,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        border: '#cecece',
+        border: 'rgba(255, 255, 255, 0.1)',
         input: '#cecece',
         ring: '#cecece',
         background: {
-          DEFAULT: '#000000',
+          DEFAULT: '#071020', // Dark navy
           foreground: '#cecece'
         },
         foreground: {
-          DEFAULT: '#cecece',
+          DEFAULT: '#cecece', // Light grey
           secondary: '#000000'
         },
         primary: {
-          DEFAULT: '#006eda',
+          DEFAULT: '#006eda', // Blue
           foreground: '#cecece'
         },
         secondary: {
           DEFAULT: '#cecece',
-          foreground: '#000000'
+          foreground: '#071020'
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
@@ -41,31 +41,16 @@ export default {
           foreground: '#cecece'
         },
         accent: {
-          DEFAULT: '#000000',
-          foreground: '#cecece'
+          DEFAULT: '#00E676', // Neon green
+          foreground: '#071020'
         },
         popover: {
-          DEFAULT: '#000000',
+          DEFAULT: '#071020',
           foreground: '#cecece'
         },
         card: {
-          DEFAULT: '#000000',
+          DEFAULT: '#071020',
           foreground: '#cecece'
-        },
-        trader: {
-          blue: '#006eda',
-          'blue-light': '#006eda',
-          green: '#006eda',
-          'green-light': '#006eda',
-          accent: '#006eda',
-          gray: '#cecece',
-          'gray-light': '#cecece',
-          'gray-dark': '#cecece'
-        },
-        dark: {
-          background: '#000000',
-          text: '#cecece',
-          muted: '#444444'
         }
       },
       borderRadius: {

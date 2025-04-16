@@ -4,27 +4,27 @@ import { Mail, Phone, Shield, Facebook, Twitter, Instagram, Linkedin } from 'luc
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white pt-16 pb-8">
+    <footer className="bg-[#050A14] text-foreground pt-16 pb-8 border-t border-foreground/10">
       <div className="container-custom">
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold mb-6">TradePathMentor</h3>
-            <p className="text-gray-400 mb-6">
-              Professional trading mentorship to help you develop the skills, mindset, and strategies needed for consistent trading success.
+            <h3 className="text-xl font-bold mb-6">Go Focus AI</h3>
+            <p className="text-foreground/70 mb-6">
+              Performance-based AI automation agency building custom voice agents and lead-closing workflows for high-intent service businesses.
             </p>
             
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-foreground/50 hover:text-primary transition-colors">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-foreground/50 hover:text-primary transition-colors">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-foreground/50 hover:text-primary transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-foreground/50 hover:text-primary transition-colors">
                 <Linkedin size={20} />
               </a>
             </div>
@@ -35,22 +35,19 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-6">Quick Links</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#about" className="text-gray-400 hover:text-white transition-colors">About</a>
+                <a href="#how-it-works" className="text-foreground/70 hover:text-primary transition-colors">How It Works</a>
               </li>
               <li>
-                <a href="#program" className="text-gray-400 hover:text-white transition-colors">Program Details</a>
+                <a href="#results" className="text-foreground/70 hover:text-primary transition-colors">Industry Results</a>
               </li>
               <li>
-                <a href="#testimonials" className="text-gray-400 hover:text-white transition-colors">Testimonials</a>
+                <a href="#testimonials" className="text-foreground/70 hover:text-primary transition-colors">Testimonials</a>
               </li>
               <li>
-                <a href="#contact" className="text-gray-400 hover:text-white transition-colors">Contact</a>
+                <a href="#" className="text-foreground/70 hover:text-primary transition-colors">Privacy Policy</a>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+                <a href="#" className="text-foreground/70 hover:text-primary transition-colors">Terms of Service</a>
               </li>
             </ul>
           </div>
@@ -60,29 +57,29 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-6">Contact</h4>
             <ul className="space-y-4">
               <li className="flex items-center gap-3">
-                <Mail size={18} className="text-trader-blue-light" />
-                <a href="mailto:contact@tradepathentor.com" className="text-gray-400 hover:text-white transition-colors">
-                  contact@tradepathentor.com
+                <Mail size={18} className="text-primary" />
+                <a href="mailto:contact@gofocusai.com" className="text-foreground/70 hover:text-primary transition-colors">
+                  contact@gofocusai.com
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <Phone size={18} className="text-trader-blue-light" />
-                <a href="tel:+1234567890" className="text-gray-400 hover:text-white transition-colors">
+                <Phone size={18} className="text-primary" />
+                <a href="tel:+1234567890" className="text-foreground/70 hover:text-primary transition-colors">
                   (123) 456-7890
                 </a>
               </li>
             </ul>
             
-            <div className="mt-8 flex items-center gap-2 text-sm text-gray-400">
-              <Shield size={16} className="text-trader-blue-light" />
+            <div className="mt-8 flex items-center gap-2 text-sm text-foreground/70">
+              <Shield size={16} className="text-primary" />
               <span>Your data is always protected</span>
             </div>
           </div>
         </div>
         
         {/* Copyright */}
-        <div className="pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-          <p>&copy; {new Date().getFullYear()} TradePathMentor. All rights reserved.</p>
+        <div className="pt-8 border-t border-foreground/10 text-center text-foreground/50 text-sm">
+          <p>&copy; {new Date().getFullYear()} Go Focus AI. All rights reserved.</p>
         </div>
       </div>
     </footer>
