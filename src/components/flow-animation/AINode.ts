@@ -3,108 +3,141 @@ class AINode {
   x: number;
   y: number;
   size: number;
-  pulseRadius: number;
-  pulseOpacity: number;
-  pulseSpeed: number;
-  rotation: number;
-  rotationSpeed: number;
-  processingEffect: number;
-  processingDirection: number;
+  pulseValue: number;
+  pulseDirection: number;
+  glowIntensity: number;
+  rotationAngle: number;
+  particles: Array<{x: number, y: number, speed: number, size: number, opacity: number}>;
+  logoImage: HTMLImageElement | null;
+  logoLoaded: boolean;
   
   constructor(canvasWidth: number, canvasHeight: number) {
-    this.x = canvasWidth / 2;
-    this.y = canvasHeight / 2;
-    this.size = Math.min(canvasWidth, canvasHeight) * 0.08; // Responsive size
-    this.pulseRadius = this.size;
-    this.pulseOpacity = 0.2;
-    this.pulseSpeed = 0.01;
-    this.rotation = 0;
-    this.rotationSpeed = 0.005;
-    this.processingEffect = 0;
-    this.processingDirection = 1;
+    this.x = canvasWidth * 0.45; // Slightly left of center
+    this.y = canvasHeight * 0.5;
+    this.size = Math.min(canvasWidth, canvasHeight) * 0.05;
+    this.pulseValue = 0;
+    this.pulseDirection = 1;
+    this.glowIntensity = 0.7;
+    this.rotationAngle = 0;
+    this.particles = [];
+    this.logoImage = null;
+    this.logoLoaded = false;
+    
+    // Create orbiting particles
+    for (let i = 0; i < 20; i++) {
+      this.particles.push({
+        x: 0,
+        y: 0,
+        speed: 0.01 + Math.random() * 0.02,
+        size: 1 + Math.random() * 2,
+        opacity: 0.3 + Math.random() * 0.7
+      });
+    }
+    
+    // Load logo image
+    this.logoImage = new Image();
+    this.logoImage.src = '/lovable-uploads/8b31d02f-6dc6-4cdc-9888-4466c2749bd6.png';
+    this.logoImage.onload = () => {
+      this.logoLoaded = true;
+    };
   }
   
   update() {
-    // Pulse effect
-    this.pulseRadius += this.pulseSpeed;
-    if (this.pulseRadius > this.size * 1.5) {
-      this.pulseRadius = this.size;
+    // Pulsing animation
+    this.pulseValue += 0.03 * this.pulseDirection;
+    if (this.pulseValue > 1 || this.pulseValue < 0) {
+      this.pulseDirection *= -1;
     }
     
-    // Rotation effect for inner elements
-    this.rotation += this.rotationSpeed;
-    if (this.rotation > Math.PI * 2) {
-      this.rotation = 0;
-    }
+    // Rotate slightly
+    this.rotationAngle += 0.01;
     
-    // Processing effect
-    this.processingEffect += 0.02 * this.processingDirection;
-    if (this.processingEffect > 1 || this.processingEffect < 0) {
-      this.processingDirection *= -1;
+    // Update orbiting particles
+    for (const particle of this.particles) {
+      const angle = this.rotationAngle * particle.speed * 10;
+      const distance = this.size * (1.5 + Math.sin(this.pulseValue * Math.PI) * 0.3);
+      particle.x = this.x + Math.cos(angle) * distance;
+      particle.y = this.y + Math.sin(angle) * distance;
     }
   }
   
   draw(ctx: CanvasRenderingContext2D, colors: Record<string, string>) {
-    // Draw outer pulse
+    // Draw outer glow
+    const gradient = ctx.createRadialGradient(
+      this.x, this.y, 0,
+      this.x, this.y, this.size * 2
+    );
+    
+    const pulseIntensity = 0.5 + Math.sin(this.pulseValue * Math.PI) * 0.3;
+    
+    gradient.addColorStop(0, `rgba(255, 200, 50, ${0.8 * pulseIntensity})`);
+    gradient.addColorStop(0.5, `rgba(255, 150, 0, ${0.4 * pulseIntensity})`);
+    gradient.addColorStop(1, 'rgba(255, 100, 0, 0)');
+    
+    ctx.fillStyle = gradient;
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.pulseRadius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(30, 58, 138, ${this.pulseOpacity})`;
+    ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
     ctx.fill();
     
-    // Draw main node
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    const gradient = ctx.createRadialGradient(
+    // Draw inner core
+    const innerGradient = ctx.createRadialGradient(
       this.x, this.y, 0,
       this.x, this.y, this.size
     );
-    gradient.addColorStop(0, colors.secondary);
-    gradient.addColorStop(1, colors.primary);
-    ctx.fillStyle = gradient;
+    
+    innerGradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+    innerGradient.addColorStop(0.4, 'rgba(255, 220, 150, 0.8)');
+    innerGradient.addColorStop(1, 'rgba(255, 180, 50, 0.7)');
+    
+    ctx.fillStyle = innerGradient;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fill();
     
-    // Draw processing indicator (ripple effect)
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size * (0.6 + this.processingEffect * 0.3), 0, Math.PI * 2);
-    ctx.strokeStyle = `rgba(255, 255, 255, ${0.8 - this.processingEffect * 0.6})`;
-    ctx.lineWidth = 1;
-    ctx.stroke();
-    
-    // Draw inner rotating elements (abstract AI representation)
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.rotation);
-    
-    // Inner circles
-    for (let i = 0; i < 3; i++) {
-      const angle = (Math.PI * 2 / 3) * i;
-      const orbitRadius = this.size * 0.5;
-      const x = Math.cos(angle) * orbitRadius;
-      const y = Math.sin(angle) * orbitRadius;
-      const circleSize = this.size * (0.12 + this.processingEffect * 0.05);
-      
+    // Draw orbiting particles
+    for (const particle of this.particles) {
+      ctx.globalAlpha = particle.opacity * (0.7 + Math.sin(this.pulseValue * Math.PI) * 0.3);
+      ctx.fillStyle = 'rgba(255, 220, 150, 1)';
       ctx.beginPath();
-      ctx.arc(x, y, circleSize, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
       ctx.fill();
     }
     
-    // Core circle
-    ctx.beginPath();
-    ctx.arc(0, 0, this.size * (0.22 + this.processingEffect * 0.05), 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-    ctx.fill();
+    // Draw logo on top if loaded
+    if (this.logoLoaded && this.logoImage) {
+      try {
+        // Calculate size to maintain aspect ratio but fit within the orb
+        const aspectRatio = this.logoImage.width / this.logoImage.height;
+        let drawWidth = this.size * 1.2;
+        let drawHeight = drawWidth / aspectRatio;
+        
+        if (drawHeight > this.size * 1.2) {
+          drawHeight = this.size * 1.2;
+          drawWidth = drawHeight * aspectRatio;
+        }
+        
+        ctx.globalAlpha = 0.8 + Math.sin(this.pulseValue * Math.PI) * 0.2;
+        ctx.drawImage(
+          this.logoImage,
+          this.x - drawWidth / 2,
+          this.y - drawHeight / 2,
+          drawWidth,
+          drawHeight
+        );
+      } catch (e) {
+        console.error("Error drawing logo:", e);
+      }
+    }
     
-    ctx.restore();
+    ctx.globalAlpha = 1;
   }
   
-  processParticle(particle: {x: number, y: number}): boolean {
-    // Check if particle is within processing range
+  processParticle(particle: any): boolean {
     const dx = this.x - particle.x;
     const dy = this.y - particle.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
     
-    return distance < this.size * 1.2;
+    return distance < this.size;
   }
 }
 
