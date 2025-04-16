@@ -109,8 +109,12 @@ class MessageParticle {
     ctx.beginPath();
     ctx.arc(0, 0, this.size * 1.5, 0, Math.PI * 2);
     const glowGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size * 1.5);
-    glowGradient.addColorStop(0, `${color}${Math.floor(this.glowIntensity * 70).toString(16)}`);
+    
+    // Fix for the color format - ensure proper format for the color stops
+    const glowIntensityHex = Math.floor(this.glowIntensity * 70).toString(16).padStart(2, '0');
+    glowGradient.addColorStop(0, `${color}${glowIntensityHex}`);
     glowGradient.addColorStop(1, `${color}00`);
+    
     ctx.fillStyle = glowGradient;
     ctx.fill();
     
