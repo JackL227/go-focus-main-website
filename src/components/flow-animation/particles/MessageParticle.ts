@@ -101,11 +101,19 @@ class MessageParticle extends BaseParticle {
     
     // Draw glow effect first
     const color = this.isQualified ? colors.primary : colors.faded;
-    ctx.beginPath();
-    ctx.arc(0, 0, this.size * 1.5, 0, Math.PI * 2);
-    const glowGradient = createGlowEffect(ctx, color, this.glowIntensity, this.size);
-    ctx.fillStyle = glowGradient;
-    ctx.fill();
+    try {
+      const glowGradient = createGlowEffect(ctx, color, this.glowIntensity, this.size);
+      ctx.fillStyle = glowGradient;
+      ctx.beginPath();
+      ctx.arc(0, 0, this.size * 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    } catch (error) {
+      // Fallback if gradient creation fails
+      ctx.fillStyle = this.isQualified ? 'rgba(0, 110, 218, 0.5)' : 'rgba(120, 130, 150, 0.3)';
+      ctx.beginPath();
+      ctx.arc(0, 0, this.size * 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
     
     // Draw the main shape based on type
     if (this.type === 'circle') {

@@ -98,14 +98,24 @@ export const drawGlassmorphism = (ctx: CanvasRenderingContext2D, x: number, y: n
 
 // Create radial glow effect
 export const createGlow = (ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, color: string, intensity: number = 1) => {
-  const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-  gradient.addColorStop(0, color);
-  gradient.addColorStop(1, 'transparent');
-  
-  ctx.globalAlpha = 0.7 * intensity;
-  ctx.fillStyle = gradient;
-  ctx.beginPath();
-  ctx.arc(x, y, radius, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.globalAlpha = 1;
+  try {
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+    gradient.addColorStop(0, color);
+    gradient.addColorStop(1, 'transparent');
+    
+    ctx.globalAlpha = 0.7 * intensity;
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  } catch (error) {
+    // Fallback if gradient creation fails
+    ctx.globalAlpha = 0.7 * intensity;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
 };

@@ -50,6 +50,10 @@ export const useFlowAnimation = () => {
     const animate = () => {
       if (!ctx) return;
       
+      // Clear the canvas with a solid background color first
+      ctx.fillStyle = '#050A15';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
       drawBackground(ctx, canvas.width, canvas.height, bgParticles);
       
       // Draw glass panels to highlight the flow
@@ -65,11 +69,15 @@ export const useFlowAnimation = () => {
       // Connect glowing lines between AI node and outcome panels
       drawConnectionLines(ctx, aiNode, qualifiedPanel, bookedPanel, closedPanel);
       
-      // Update and draw message particles
-      updateMessageParticles(ctx, messageParticles, aiNode, qualifiedPanel, bookedPanel, closedPanel, leadParticles);
-      
-      // Update and draw lead particles
-      updateLeadParticles(ctx, leadParticles);
+      try {
+        // Update and draw message particles
+        updateMessageParticles(ctx, messageParticles, aiNode, qualifiedPanel, bookedPanel, closedPanel, leadParticles);
+        
+        // Update and draw lead particles
+        updateLeadParticles(ctx, leadParticles);
+      } catch (error) {
+        console.error('Error in particle animation:', error);
+      }
       
       // Create new message particles at a controlled rate
       if (Math.random() < 0.06 && messageParticles.length < 30) {
