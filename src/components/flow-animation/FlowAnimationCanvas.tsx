@@ -6,7 +6,7 @@ const FlowAnimationCanvas = () => {
   const canvasRef = useFlowAnimation();
   
   return (
-    <div className="w-full h-full relative">
+    <div className="w-full h-full flex justify-center items-center">
       <canvas 
         ref={canvasRef} 
         className="absolute inset-0"

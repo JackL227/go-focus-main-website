@@ -41,13 +41,16 @@ export const useFlowAnimation = () => {
       messageParticles = [];
       leadParticles = [];
       
-      // Center the AI node precisely
-      aiNode = new AINode(canvas.width / 2, canvas.height / 2);
+      // Center the AI node precisely in the middle
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      aiNode = new AINode(centerX, centerY);
       
-      // Create outcome panels with improved positioning that works with any screen size
-      qualifiedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.3, "Qualified", "checkmark");
-      bookedPanel = new OutcomePanel(canvas.width * 0.85, canvas.height * 0.5, "Booked Call", "calendar");
-      closedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.7, "Closed Deal", "smile");
+      // Position outcome panels around the central node
+      const panelDistance = Math.min(canvas.width, canvas.height) * 0.25;
+      qualifiedPanel = new OutcomePanel(centerX + panelDistance, centerY - panelDistance, "Qualified", "checkmark");
+      bookedPanel = new OutcomePanel(centerX + panelDistance, centerY, "Booked Call", "calendar");
+      closedPanel = new OutcomePanel(centerX + panelDistance, centerY + panelDistance, "Closed Deal", "smile");
       
       // Background particles
       bgParticles = createBackgroundParticles(canvas.width, canvas.height);
@@ -63,7 +66,7 @@ export const useFlowAnimation = () => {
     
     // Animation loop
     const animate = () => {
-      if (!ctx) return;
+      if (!ctx || !canvas) return;
       
       try {
         // Clear the canvas with a solid background color first

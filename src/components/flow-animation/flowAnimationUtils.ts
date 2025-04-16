@@ -15,7 +15,7 @@ export const animationColors = {
 
 // Canvas sizing helper function
 export const setCanvasSize = (canvas: HTMLCanvasElement) => {
-  const parent = canvas.parentElement;
+  const parent = canvas.parentElement?.parentElement;
   if (parent) {
     // Get parent dimensions
     const rect = parent.getBoundingClientRect();
@@ -46,6 +46,12 @@ export const setCanvasSize = (canvas: HTMLCanvasElement) => {
   if (ctx) {
     ctx.scale(dpr, dpr);
   }
+  
+  // Center the canvas in its container
+  canvas.style.position = 'absolute';
+  canvas.style.left = '50%';
+  canvas.style.top = '50%';
+  canvas.style.transform = 'translate(-50%, -50%)';
 };
 
 // Create initial particles
