@@ -3,8 +3,8 @@ import React, { useEffect, useRef } from 'react';
 import MessageParticle from './MessageParticle';
 import LeadParticle from './LeadParticle';
 import AINode from './AINode';
-import OutcomePanel from './OutcomePanel';
 import { animationColors, setCanvasSize, createInitialMessageParticles } from './flowAnimationUtils';
+import WordFormation from './WordFormation';
 
 const FlowAnimationCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,17 +26,7 @@ const FlowAnimationCanvas = () => {
     const messageParticles: MessageParticle[] = [];
     const leadParticles: LeadParticle[] = [];
     const aiNode = new AINode(canvas.width, canvas.height);
-    
-    // Create outcome panels positioned strategically around the AI node
-    const panelWidth = Math.min(canvas.width * 0.2, 180);
-    const panelHeight = Math.min(canvas.height * 0.12, 80);
-    
-    const panels = [
-      new OutcomePanel(canvas.width * 0.75, canvas.height * 0.3, panelWidth, panelHeight, "Qualified"),
-      new OutcomePanel(canvas.width * 0.65, canvas.height * 0.7, panelWidth, panelHeight, "Booked Call"),
-      new OutcomePanel(canvas.width * 0.85, canvas.height * 0.5, panelWidth, panelHeight, "Confirmed Treatment")
-    ];
-    
+    const wordFormation = new WordFormation(canvas.width * 0.35, canvas.height / 2, 'LEAD');
     let animationId: number;
     
     // Create initial particles
@@ -50,11 +40,8 @@ const FlowAnimationCanvas = () => {
       aiNode.update();
       aiNode.draw(ctx, animationColors);
       
-      // Update and draw outcome panels
-      panels.forEach(panel => {
-        panel.update();
-        panel.draw(ctx, animationColors);
-      });
+      // Draw the word formation
+      wordFormation.draw(ctx, animationColors);
       
       // Update and draw message particles
       for (let i = messageParticles.length - 1; i >= 0; i--) {
@@ -62,23 +49,23 @@ const FlowAnimationCanvas = () => {
         const x = particle.update();
         particle.draw(ctx, animationColors);
         
+        // Check if particle should join word formation
+        if (x > canvas.width * 0.25 && x < canvas.width * 0.4) {
+          if (wordFormation.attractParticle(particle)) {
+            messageParticles.splice(i, 1);
+            continue;
+          }
+        }
+        
         // Check if particle reached AI node for processing
         if (aiNode.processParticle(particle)) {
           messageParticles.splice(i, 1);
           
-          // If qualified, create a lead particle heading toward one of the panels
+          // If qualified, create a lead particle
           if (particle.isQualified) {
-            // Determine which panel to target based on random choice
-            const targetPanel = panels[Math.floor(Math.random() * panels.length)];
-            const leadType = targetPanel.label === "Qualified" ? "checkmark" : 
-                           targetPanel.label === "Booked Call" ? "calendar" : "dollar";
-            
-            const leadParticle = new LeadParticle(aiNode.x, aiNode.y, leadType);
-            leadParticle.setTarget(targetPanel.x, targetPanel.y);
-            leadParticles.push(leadParticle);
-            
-            // Notify the panel it's receiving a new lead (for animations)
-            targetPanel.receiveLead();
+            // Determine what type of lead particle to create with more analytics
+            const leadType = ['calendar', 'checkmark', 'dollar', 'analytics'][Math.floor(Math.random() * 4)];
+            leadParticles.push(new LeadParticle(aiNode.x, aiNode.y, leadType));
           }
         }
         
@@ -88,25 +75,32 @@ const FlowAnimationCanvas = () => {
         }
       }
       
+      // Process particles in word formation that should be released to AI node
+      const releasedParticles = wordFormation.releaseParticles();
+      if (releasedParticles.length > 0) {
+        releasedParticles.forEach(p => {
+          p.redirectToNode(aiNode.x, aiNode.y);
+          messageParticles.push(p);
+        });
+      }
+      
       // Update and draw lead particles
       for (let i = leadParticles.length - 1; i >= 0; i--) {
         const particle = leadParticles[i];
-        particle.update();
+        const x = particle.update();
         particle.draw(ctx, animationColors);
         
-        // Check if particle reached its target panel
-        if (particle.hasReachedTarget()) {
+        // Remove if off screen
+        if (x > canvas.width + 50) {
           leadParticles.splice(i, 1);
         }
       }
       
       // Create new message particles at a controlled rate
-      if (Math.random() < 0.05 && messageParticles.length < 20) {
+      if (Math.random() < 0.1 && messageParticles.length < 25) {
         const x = -20;
-        const y = Math.random() * canvas.height * 0.7 + canvas.height * 0.15; // Keep in middle area
-        const newParticle = new MessageParticle(x, y, canvas.height);
-        newParticle.type = 'lead'; // All new particles are "Lead" type
-        messageParticles.push(newParticle);
+        const y = Math.random() * canvas.height;
+        messageParticles.push(new MessageParticle(x, y, canvas.height));
       }
       
       animationId = requestAnimationFrame(animate);
@@ -123,7 +117,7 @@ const FlowAnimationCanvas = () => {
   return (
     <canvas 
       ref={canvasRef} 
-      className="absolute inset-0 w-full h-full z-0"
+      className="absolute inset-0 w-full h-full z-0 bg-black"
     />
   );
 };
