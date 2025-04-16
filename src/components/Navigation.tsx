@@ -23,10 +23,12 @@ const Navigation = () => {
       isScrolled ? "bg-background/95 backdrop-blur-sm shadow-sm py-3" : "bg-transparent py-5"
     )}>
       <div className="container-custom flex items-center justify-between">
-        <a href="/" className="font-bold text-2xl text-primary flex items-center gap-1">
-          <span className="text-primary">Go</span>
-          <span className="text-foreground">Focus</span>
-          <span className="text-primary">AI</span>
+        <a href="/" className="flex items-center gap-2">
+          <img 
+            src="/lovable-uploads/9dc911d9-ffea-4dc9-8c9f-53a8114665de.png" 
+            alt="Company Logo" 
+            className="h-8 w-auto" 
+          />
         </a>
         
         {/* Desktop Navigation */}
