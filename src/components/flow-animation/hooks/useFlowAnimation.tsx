@@ -1,6 +1,6 @@
 
 import { useEffect, useRef } from 'react';
-import MessageParticle from '../MessageParticle';
+import { MessageParticle } from '../particles';
 import LeadParticle from '../LeadParticle';
 import AINode from '../AINode';
 import OutcomePanel from '../OutcomePanel';
