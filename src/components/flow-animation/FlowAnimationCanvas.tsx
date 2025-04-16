@@ -27,25 +27,25 @@ const FlowAnimationCanvas = () => {
     const leadParticles: LeadParticle[] = [];
     const aiNode = new AINode(canvas.width / 2, canvas.height / 2);
     
-    // Create outcome panels
+    // Create outcome panels with clearer naming
     const qualifiedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.3, "Qualified", "checkmark");
     const bookedPanel = new OutcomePanel(canvas.width * 0.85, canvas.height * 0.5, "Booked Call", "calendar");
-    const confirmedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.7, "Confirmed Treatment", "smile");
+    const closedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.7, "Closed Deal", "smile"); // Renamed to "Closed Deal"
     
     // Background particles
     const bgParticles: {x: number; y: number; size: number; speed: number; opacity: number;}[] = [];
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 40; i++) { // More particles
       bgParticles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: Math.random() * 3 + 1,
+        size: Math.random() * 4 + 1, // Larger particles
         speed: Math.random() * 0.2 + 0.1,
-        opacity: Math.random() * 0.5 + 0.1
+        opacity: Math.random() * 0.5 + 0.2 // More visible
       });
     }
     
     // Create initial particles
-    messageParticles.push(...createInitialMessageParticles(10, MessageParticle, canvas.height));
+    messageParticles.push(...createInitialMessageParticles(15, MessageParticle, canvas.height)); // More initial particles
     
     let animationId: number;
     
@@ -91,8 +91,26 @@ const FlowAnimationCanvas = () => {
       bookedPanel.update();
       bookedPanel.draw(ctx, animationColors);
       
-      confirmedPanel.update();
-      confirmedPanel.draw(ctx, animationColors);
+      closedPanel.update();
+      closedPanel.draw(ctx, animationColors);
+      
+      // Connect lines between AI node and outcome panels
+      ctx.beginPath();
+      ctx.moveTo(aiNode.x, aiNode.y);
+      ctx.lineTo(qualifiedPanel.x, qualifiedPanel.y);
+      ctx.strokeStyle = 'rgba(0, 110, 218, 0.3)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.moveTo(aiNode.x, aiNode.y);
+      ctx.lineTo(bookedPanel.x, bookedPanel.y);
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.moveTo(aiNode.x, aiNode.y);
+      ctx.lineTo(closedPanel.x, closedPanel.y);
+      ctx.stroke();
       
       // Update and draw message particles
       for (let i = messageParticles.length - 1; i >= 0; i--) {
@@ -115,8 +133,8 @@ const FlowAnimationCanvas = () => {
             targetPanel = bookedPanel;
             bookedPanel.pulse();
           } else {
-            targetPanel = confirmedPanel;
-            confirmedPanel.pulse();
+            targetPanel = closedPanel;
+            closedPanel.pulse();
           }
           
           // Create a lead particle heading to the selected panel
@@ -149,11 +167,12 @@ const FlowAnimationCanvas = () => {
         }
       }
       
-      // Create new message particles at a controlled rate
-      if (Math.random() < 0.05 && messageParticles.length < 20) {
+      // Create new message particles at a controlled rate (more frequent)
+      if (Math.random() < 0.08 && messageParticles.length < 25) { // Increased rate and limit
         const x = -20;
         const y = canvas.height * (0.3 + Math.random() * 0.4); // Keep within middle area
-        messageParticles.push(new MessageParticle(x, y, canvas.height));
+        const newParticle = new MessageParticle(x, y, canvas.height);
+        messageParticles.push(newParticle);
       }
       
       animationId = requestAnimationFrame(animate);

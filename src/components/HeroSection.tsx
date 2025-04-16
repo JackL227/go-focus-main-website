@@ -48,22 +48,6 @@ const HeroSection = () => {
             </div>
           </div>
           
-          {/* Floating Speech Bubbles */}
-          <div className="relative h-40 sm:h-60 mt-8 mb-4 opacity-0 animate-fade-in [animation-delay:900ms]">
-            <div className="absolute left-0 top-0 glass-card p-4 max-w-[200px] animate-float [animation-delay:0ms] hover:scale-105 transition-transform">
-              <p className="text-sm">"How much is Botox?"</p>
-            </div>
-            <div className="absolute right-0 top-10 glass-card p-4 max-w-[220px] animate-float [animation-delay:1000ms] hover:scale-105 transition-transform">
-              <p className="text-sm">"What's the cost of this wrap?"</p>
-            </div>
-            <div className="absolute left-1/4 bottom-0 glass-card p-4 max-w-[240px] animate-float [animation-delay:1500ms] hover:scale-105 transition-transform">
-              <p className="text-sm">"Is your course beginner-friendly?"</p>
-            </div>
-            <div className="absolute right-1/4 top-1/3 glass-card p-4 max-w-[210px] animate-float [animation-delay:500ms] hover:scale-105 transition-transform">
-              <p className="text-sm">"Do you offer payment plans?"</p>
-            </div>
-          </div>
-          
           {/* Subtle downward indication */}
           <div className="text-center mt-8 opacity-0 animate-fade-in [animation-delay:1200ms]">
             <div className="inline-block animate-bounce">

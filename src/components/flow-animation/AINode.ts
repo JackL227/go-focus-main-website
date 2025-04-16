@@ -14,12 +14,12 @@ class AINode {
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
-    this.size = 40; // Fixed size for consistent appearance
+    this.size = 50; // Increased size for more prominence
     this.pulseRadius = this.size;
-    this.pulseOpacity = 0.2;
-    this.pulseSpeed = 0.01;
+    this.pulseOpacity = 0.3; // Increased opacity
+    this.pulseSpeed = 0.02; // Faster pulse
     this.rotation = 0;
-    this.rotationSpeed = 0.005;
+    this.rotationSpeed = 0.007; // Faster rotation
     this.processingEffect = 0;
     this.processingDirection = 1;
   }
@@ -27,7 +27,7 @@ class AINode {
   update() {
     // Pulse effect
     this.pulseRadius += this.pulseSpeed;
-    if (this.pulseRadius > this.size * 1.5) {
+    if (this.pulseRadius > this.size * 1.8) { // Larger pulse
       this.pulseRadius = this.size;
     }
     
@@ -38,22 +38,24 @@ class AINode {
     }
     
     // Processing effect
-    this.processingEffect += 0.02 * this.processingDirection;
+    this.processingEffect += 0.03 * this.processingDirection; // Faster processing effect
     if (this.processingEffect > 1 || this.processingEffect < 0) {
       this.processingDirection *= -1;
     }
   }
   
   draw(ctx: CanvasRenderingContext2D, colors: Record<string, string>) {
-    // Draw outer pulse
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.pulseRadius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(0, 110, 218, ${this.pulseOpacity})`;
-    ctx.fill();
+    // Draw multiple outer pulses for enhanced glow effect
+    for (let i = 0; i < 3; i++) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.pulseRadius - i * 10, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 110, 218, ${this.pulseOpacity - i * 0.05})`;
+      ctx.fill();
+    }
     
     // Draw outer glow
     ctx.shadowColor = colors.primary;
-    ctx.shadowBlur = 15;
+    ctx.shadowBlur = 20; // Enhanced glow
     
     // Draw main node
     ctx.beginPath();
@@ -63,9 +65,17 @@ class AINode {
       this.x, this.y, this.size
     );
     gradient.addColorStop(0, colors.primary);
+    gradient.addColorStop(0.7, '#0052a3');
     gradient.addColorStop(1, '#003870');
     ctx.fillStyle = gradient;
     ctx.fill();
+    
+    // Draw outer ring
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size * 1.1, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
     
     // Reset shadow
     ctx.shadowColor = 'transparent';
@@ -75,7 +85,7 @@ class AINode {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size * (0.6 + this.processingEffect * 0.3), 0, Math.PI * 2);
     ctx.strokeStyle = `rgba(255, 255, 255, ${0.8 - this.processingEffect * 0.6})`;
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 2;
     ctx.stroke();
     
     // Draw inner rotating elements (abstract AI representation)
@@ -83,33 +93,41 @@ class AINode {
     ctx.translate(this.x, this.y);
     ctx.rotate(this.rotation);
     
-    // Inner circles
-    for (let i = 0; i < 3; i++) {
-      const angle = (Math.PI * 2 / 3) * i;
-      const orbitRadius = this.size * 0.5;
+    // Inner circles (increased number)
+    for (let i = 0; i < 4; i++) {
+      const angle = (Math.PI * 2 / 4) * i;
+      const orbitRadius = this.size * 0.6;
       const x = Math.cos(angle) * orbitRadius;
       const y = Math.sin(angle) * orbitRadius;
-      const circleSize = this.size * (0.12 + this.processingEffect * 0.05);
+      const circleSize = this.size * (0.15 + this.processingEffect * 0.05);
       
       ctx.beginPath();
       ctx.arc(x, y, circleSize, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
       ctx.fill();
+      
+      // Connect to center
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(x, y);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
     }
     
     // Core circle
     ctx.beginPath();
-    ctx.arc(0, 0, this.size * (0.22 + this.processingEffect * 0.05), 0, Math.PI * 2);
+    ctx.arc(0, 0, this.size * (0.25 + this.processingEffect * 0.05), 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
     ctx.fill();
     
     // Logo text
-    ctx.font = `${this.size * 0.15}px Arial`;
+    ctx.font = `bold ${this.size * 0.18}px Arial`;
     ctx.fillStyle = '#003870';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('Go Focus', 0, -4);
-    ctx.fillText('AI', 0, 4);
+    ctx.fillText('Go Focus', 0, -5);
+    ctx.fillText('AI', 0, 5);
     
     ctx.restore();
   }

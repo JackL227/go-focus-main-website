@@ -15,18 +15,18 @@ class LeadParticle {
   constructor(x: number, y: number, type: string) {
     this.x = x;
     this.y = y;
-    this.size = 5 + Math.random() * 3;
+    this.size = 10 + Math.random() * 5; // Increased size for bigger cards
     this.speed = 1.5 + Math.random() * 1;
     // Lead types: calendar, checkmark, smile
     this.type = type || ['calendar', 'checkmark', 'smile'][Math.floor(Math.random() * 3)];
-    this.opacity = 0.8 + Math.random() * 0.2;
+    this.opacity = 0.9;
     this.trail = [];
     this.pulseSize = 0;
     this.pulseDir = 1;
     
     // Add initial trail positions
-    for (let i = 0; i < 10; i++) {
-      this.trail.push({x: this.x - i * 2, y: this.y});
+    for (let i = 0; i < 15; i++) { // Extended trail
+      this.trail.push({x: this.x - i * 3, y: this.y});
     }
   }
   
@@ -68,7 +68,7 @@ class LeadParticle {
     
     // Update trail
     this.trail.push({x: this.x, y: this.y});
-    if (this.trail.length > 10) {
+    if (this.trail.length > 15) { // Keep longer trail
       this.trail.shift();
     }
     
@@ -90,30 +90,30 @@ class LeadParticle {
       color = '#FFC107'; // Gold/amber
     }
     
-    // Draw trail
-    ctx.globalAlpha = 0.3;
+    // Draw trail with increased intensity
+    ctx.globalAlpha = 0.5; // Increased opacity
     ctx.beginPath();
     ctx.moveTo(this.trail[0].x, this.trail[0].y);
     for (let i = 1; i < this.trail.length; i++) {
       ctx.lineTo(this.trail[i].x, this.trail[i].y);
     }
     ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3; // Thicker trail
     ctx.stroke();
     ctx.globalAlpha = 1;
     
-    // Draw lead card
-    const cardWidth = this.size * 3;
-    const cardHeight = this.size * 2;
+    // Draw lead card with increased size
+    const cardWidth = this.size * 4;  // Bigger cards
+    const cardHeight = this.size * 2.5; // Bigger cards
     
     // Add glow effect
     ctx.shadowColor = color;
-    ctx.shadowBlur = 8;
+    ctx.shadowBlur = 12; // Enhanced glow
     
     // Draw card with rounded corners
     ctx.fillStyle = 'rgba(10, 20, 40, 0.8)';
     ctx.strokeStyle = color;
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 2;
     
     ctx.beginPath();
     ctx.roundRect(
@@ -121,7 +121,7 @@ class LeadParticle {
       this.y - cardHeight/2, 
       cardWidth, 
       cardHeight, 
-      3
+      5
     );
     ctx.fill();
     ctx.stroke();
@@ -131,7 +131,7 @@ class LeadParticle {
     ctx.shadowBlur = 0;
     
     // Draw label
-    ctx.font = `${this.size * 0.8}px Arial`;
+    ctx.font = `bold ${this.size * 1.2}px Arial`; // Larger, bolder font
     ctx.fillStyle = '#FFFFFF';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';

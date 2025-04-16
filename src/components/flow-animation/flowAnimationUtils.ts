@@ -24,10 +24,22 @@ export const setCanvasSize = (canvas: HTMLCanvasElement) => {
 // Create initial particles
 export const createInitialMessageParticles = (count: number, MessageParticle: any, canvasHeight: number) => {
   const particles = [];
+  
+  // Create particles at regular vertical intervals to fill the left side of the screen
+  const verticalSpacing = canvasHeight / count;
+  
   for (let i = 0; i < count; i++) {
-    const x = -50 - Math.random() * 100;
-    const y = Math.random() * canvasHeight;
-    particles.push(new MessageParticle(x, y, canvasHeight));
+    // Stagger the horizontal positions for a more natural flow
+    const horizontalOffset = Math.random() * 100;
+    const x = -50 - horizontalOffset;
+    
+    // Place them at regular intervals vertically with some randomness
+    const y = verticalSpacing * i + Math.random() * (verticalSpacing * 0.5);
+    
+    // Create particle with varying speeds
+    const particle = new MessageParticle(x, y, canvasHeight);
+    particles.push(particle);
   }
+  
   return particles;
 };
