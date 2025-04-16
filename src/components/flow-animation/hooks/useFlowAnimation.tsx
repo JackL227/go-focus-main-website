@@ -21,28 +21,45 @@ export const useFlowAnimation = () => {
     if (!ctx) return;
     
     // Set canvas to full width
-    const handleResize = () => setCanvasSize(canvas);
+    const handleResize = () => {
+      setCanvasSize(canvas);
+      initializeAnimation();
+    };
     
     handleResize();
     window.addEventListener('resize', handleResize);
     
     // Animation variables
-    const messageParticles: MessageParticle[] = [];
-    const leadParticles: LeadParticle[] = [];
-    const aiNode = new AINode(canvas.width / 2, canvas.height / 2);
+    let messageParticles: MessageParticle[] = [];
+    let leadParticles: LeadParticle[] = [];
+    let aiNode: AINode;
+    let qualifiedPanel: OutcomePanel;
+    let bookedPanel: OutcomePanel;
+    let closedPanel: OutcomePanel;
+    let bgParticles: any[] = [];
     
-    // Create outcome panels with improved positioning
-    const qualifiedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.3, "Qualified", "checkmark");
-    const bookedPanel = new OutcomePanel(canvas.width * 0.85, canvas.height * 0.5, "Booked Call", "calendar");
-    const closedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.7, "Closed Deal", "smile");
-    
-    // Background particles
-    const bgParticles = createBackgroundParticles(canvas.width, canvas.height);
-    
-    // Create initial particles
-    createInitialMessageParticles(20, MessageParticle, canvas.height).forEach(particle => {
-      messageParticles.push(particle);
-    });
+    // Initialize animation elements
+    function initializeAnimation() {
+      // Clear existing particles
+      messageParticles = [];
+      leadParticles = [];
+      
+      // Center the AI node
+      aiNode = new AINode(canvas.width / 2, canvas.height / 2);
+      
+      // Create outcome panels with improved positioning that works with any screen size
+      qualifiedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.3, "Qualified", "checkmark");
+      bookedPanel = new OutcomePanel(canvas.width * 0.85, canvas.height * 0.5, "Booked Call", "calendar");
+      closedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.7, "Closed Deal", "smile");
+      
+      // Background particles
+      bgParticles = createBackgroundParticles(canvas.width, canvas.height);
+      
+      // Create initial particles
+      createInitialMessageParticles(20, MessageParticle, canvas.height).forEach(particle => {
+        messageParticles.push(particle);
+      });
+    }
     
     let animationId: number;
     
@@ -90,6 +107,7 @@ export const useFlowAnimation = () => {
       animationId = requestAnimationFrame(animate);
     };
     
+    initializeAnimation();
     animate();
     
     return () => {

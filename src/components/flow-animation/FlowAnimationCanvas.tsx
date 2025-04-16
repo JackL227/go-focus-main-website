@@ -6,10 +6,13 @@ const FlowAnimationCanvas = () => {
   const canvasRef = useFlowAnimation();
   
   return (
-    <canvas 
-      ref={canvasRef} 
-      className="absolute inset-0 w-full h-full z-0"
-    />
+    <div className="w-full h-full flex justify-center items-center">
+      <canvas 
+        ref={canvasRef} 
+        className="w-full h-full absolute inset-0 z-0"
+        style={{ maxWidth: '100%' }}
+      />
+    </div>
   );
 };
 
