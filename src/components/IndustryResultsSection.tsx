@@ -1,6 +1,6 @@
 
 import React, { useRef, useEffect } from 'react';
-import { Briefcase, Spa, Car, ArrowUpRight } from 'lucide-react';
+import { Briefcase, Flower, Car, ArrowUpRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { cn } from '@/lib/utils';
 
@@ -20,7 +20,7 @@ const industries = [
   {
     id: 2,
     title: "Med Spas",
-    icon: Spa,
+    icon: Flower,
     description: "Qualify and book appointments for Botox, fillers, and aesthetic treatments.",
     results: [
       "45% increase in lead-to-appointment rate",
