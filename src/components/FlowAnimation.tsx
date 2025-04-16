@@ -4,10 +4,8 @@ import FlowAnimationCanvas from './flow-animation/FlowAnimationCanvas';
 
 const FlowAnimation = () => {
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <div className="w-full h-full flex-1">
-        <FlowAnimationCanvas />
-      </div>
+    <div className="w-full h-full">
+      <FlowAnimationCanvas />
     </div>
   );
 };

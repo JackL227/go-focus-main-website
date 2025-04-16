@@ -1,4 +1,5 @@
-import { MessageParticle } from './particles';
+
+import MessageParticle from './MessageParticle';
 
 interface LetterPoint {
   x: number;

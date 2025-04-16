@@ -11,29 +11,21 @@ class LeadParticle {
   pulseDir: number;
   targetX: number | null = null;
   targetY: number | null = null;
-  glowIntensity: number;
-  rotation: number;
-  rotationSpeed: number;
   
   constructor(x: number, y: number, type: string) {
     this.x = x;
     this.y = y;
-    this.size = 12 + Math.random() * 8; // Larger size for bigger cards
-    this.speed = 2 + Math.random() * 1.5; // Faster speed for more dynamic animation
+    this.size = 10 + Math.random() * 5; // Increased size for bigger cards
+    this.speed = 1.5 + Math.random() * 1;
     // Lead types: calendar, checkmark, smile
     this.type = type || ['calendar', 'checkmark', 'smile'][Math.floor(Math.random() * 3)];
     this.opacity = 0.9;
     this.trail = [];
     this.pulseSize = 0;
     this.pulseDir = 1;
-    this.glowIntensity = 0.8 + Math.random() * 0.4;
     
-    // Add rotation for visual interest
-    this.rotation = (Math.random() * 0.3) - 0.15; // Slight rotation
-    this.rotationSpeed = (Math.random() * 0.005) - 0.0025; // Very slow rotation
-    
-    // Add initial trail positions with more points for a smoother trail
-    for (let i = 0; i < 20; i++) { // Extended trail
+    // Add initial trail positions
+    for (let i = 0; i < 15; i++) { // Extended trail
       this.trail.push({x: this.x - i * 3, y: this.y});
     }
   }
@@ -74,12 +66,9 @@ class LeadParticle {
       this.x += this.speed;
     }
     
-    // Update rotation
-    this.rotation += this.rotationSpeed;
-    
     // Update trail
     this.trail.push({x: this.x, y: this.y});
-    if (this.trail.length > 20) { // Keep longer trail
+    if (this.trail.length > 15) { // Keep longer trail
       this.trail.shift();
     }
     
@@ -101,88 +90,63 @@ class LeadParticle {
       color = '#FFC107'; // Gold/amber
     }
     
-    // Draw trail with increased intensity and gradient
-    ctx.save();
-    
-    const trailLength = this.trail.length;
-    if (trailLength > 1) {
-      for (let i = 0; i < trailLength - 1; i++) {
-        const opacity = 0.7 * (i / trailLength);
-        const width = 3 * (i / trailLength) + 1;
-        
-        ctx.beginPath();
-        ctx.moveTo(this.trail[i].x, this.trail[i].y);
-        ctx.lineTo(this.trail[i+1].x, this.trail[i+1].y);
-        ctx.strokeStyle = `${color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`;
-        ctx.lineWidth = width;
-        ctx.stroke();
-      }
+    // Draw trail with increased intensity
+    ctx.globalAlpha = 0.5; // Increased opacity
+    ctx.beginPath();
+    ctx.moveTo(this.trail[0].x, this.trail[0].y);
+    for (let i = 1; i < this.trail.length; i++) {
+      ctx.lineTo(this.trail[i].x, this.trail[i].y);
     }
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3; // Thicker trail
+    ctx.stroke();
+    ctx.globalAlpha = 1;
     
-    // Apply rotation to the card
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.rotation);
-    
-    // Draw lead card with increased size and premium styling
+    // Draw lead card with increased size
     const cardWidth = this.size * 4;  // Bigger cards
     const cardHeight = this.size * 2.5; // Bigger cards
     
     // Add glow effect
     ctx.shadowColor = color;
-    ctx.shadowBlur = 15; // Enhanced glow
+    ctx.shadowBlur = 12; // Enhanced glow
     
-    // Draw card with rounded corners and glass morphism
-    const gradient = ctx.createLinearGradient(-cardWidth/2, -cardHeight/2, cardWidth/2, cardHeight/2);
-    gradient.addColorStop(0, 'rgba(20, 30, 50, 0.9)');
-    gradient.addColorStop(1, 'rgba(10, 20, 40, 0.8)');
-    
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.roundRect(-cardWidth/2, -cardHeight/2, cardWidth, cardHeight, 8);
-    ctx.fill();
-    
-    // Add border
-    ctx.strokeStyle = `${color}${Math.floor(this.glowIntensity * 255).toString(16).padStart(2, '0')}`;
+    // Draw card with rounded corners
+    ctx.fillStyle = 'rgba(10, 20, 40, 0.8)';
+    ctx.strokeStyle = color;
     ctx.lineWidth = 2;
-    ctx.stroke();
     
-    // Add glass highlight at the top
     ctx.beginPath();
-    ctx.roundRect(-cardWidth/2 + 5, -cardHeight/2 + 5, cardWidth - 10, cardHeight/4, 4);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.07)';
+    ctx.roundRect(
+      this.x - cardWidth/2, 
+      this.y - cardHeight/2, 
+      cardWidth, 
+      cardHeight, 
+      5
+    );
     ctx.fill();
+    ctx.stroke();
     
     // Reset shadow
     ctx.shadowColor = 'transparent';
     ctx.shadowBlur = 0;
     
-    // Draw LEAD label
+    // Draw label
     ctx.font = `bold ${this.size * 1.2}px Arial`; // Larger, bolder font
     ctx.fillStyle = '#FFFFFF';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('LEAD', 0, 0);
+    ctx.fillText('LEAD', this.x, this.y);
     
-    // Draw icon based on type if reached target
+    // Draw icon based on type
     if (this.hasReachedTarget() && this.targetX !== null) {
       // Draw success animation
       ctx.globalAlpha = this.pulseSize;
       ctx.beginPath();
-      ctx.arc(0, 0, this.size * 3 * (1 + this.pulseSize), 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, this.size * 3 * (1 + this.pulseSize), 0, Math.PI * 2);
       ctx.fillStyle = `${color}33`; // Semi-transparent
       ctx.fill();
-      
-      // Add ripple effects
-      ctx.beginPath();
-      ctx.arc(0, 0, this.size * 4 * (0.7 + this.pulseSize * 0.3), 0, Math.PI * 2);
-      ctx.strokeStyle = `${color}22`;
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      
       ctx.globalAlpha = 1;
     }
-    
-    ctx.restore();
   }
 }
 

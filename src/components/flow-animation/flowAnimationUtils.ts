@@ -7,51 +7,18 @@ export const animationColors = {
   highlight: '#FFC107', // amber/gold
   faded: 'rgba(120, 130, 150, 0.5)', // grey with opacity
   analytics: '#006eda', // blue
-  glassBg: 'rgba(15, 25, 45, 0.7)', // semi-transparent background for glass effect
-  glassBorder: 'rgba(255, 255, 255, 0.1)', // subtle white border for glass effect
-  shadow: 'rgba(0, 0, 0, 0.15)', // soft shadow
-  glow: 'rgba(0, 110, 218, 0.3)', // soft glow color
 };
 
 // Canvas sizing helper function
 export const setCanvasSize = (canvas: HTMLCanvasElement) => {
-  const parent = canvas.parentElement?.parentElement;
+  const parent = canvas.parentElement;
   if (parent) {
-    // Get parent dimensions
-    const rect = parent.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    canvas.width = parent.offsetWidth;
+    canvas.height = parent.offsetHeight;
   } else {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
   }
-  
-  // Set higher resolution for retina displays
-  const dpr = window.devicePixelRatio || 1;
-  
-  // Store logical size
-  const logicalWidth = canvas.width;
-  const logicalHeight = canvas.height;
-  
-  // Set physical size
-  canvas.width = logicalWidth * dpr;
-  canvas.height = logicalHeight * dpr;
-  
-  // Set display size
-  canvas.style.width = `${logicalWidth}px`;
-  canvas.style.height = `${logicalHeight}px`;
-  
-  // Scale the context
-  const ctx = canvas.getContext('2d');
-  if (ctx) {
-    ctx.scale(dpr, dpr);
-  }
-  
-  // Center the canvas in its container
-  canvas.style.position = 'absolute';
-  canvas.style.left = '50%';
-  canvas.style.top = '50%';
-  canvas.style.transform = 'translate(-50%, -50%)';
 };
 
 // Create initial particles
@@ -75,63 +42,4 @@ export const createInitialMessageParticles = (count: number, MessageParticle: an
   }
   
   return particles;
-};
-
-// Draw glassmorphism effect
-export const drawGlassmorphism = (ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number, colors: Record<string, string>) => {
-  // Save context state
-  ctx.save();
-  
-  // Create gradient for glass effect
-  const gradient = ctx.createLinearGradient(x, y, x, y + height);
-  gradient.addColorStop(0, 'rgba(255, 255, 255, 0.08)');
-  gradient.addColorStop(1, 'rgba(255, 255, 255, 0.02)');
-  
-  // Draw rounded rectangle for glass panel
-  ctx.beginPath();
-  ctx.roundRect(x, y, width, height, radius);
-  ctx.fillStyle = colors.glassBg;
-  ctx.fill();
-  
-  // Apply gradient overlay
-  ctx.fillStyle = gradient;
-  ctx.fill();
-  
-  // Add subtle border
-  ctx.strokeStyle = colors.glassBorder;
-  ctx.lineWidth = 1;
-  ctx.stroke();
-  
-  // Add shine effect at the top
-  ctx.beginPath();
-  ctx.roundRect(x + 5, y + 5, width - 10, height * 0.15, radius / 2);
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.07)';
-  ctx.fill();
-  
-  // Restore context state
-  ctx.restore();
-};
-
-// Create radial glow effect
-export const createGlow = (ctx: CanvasRenderingContext2D, x: number, y: number, radius: number, color: string, intensity: number = 1) => {
-  try {
-    const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-    gradient.addColorStop(0, color);
-    gradient.addColorStop(1, 'transparent');
-    
-    ctx.globalAlpha = 0.7 * intensity;
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.globalAlpha = 1;
-  } catch (error) {
-    // Fallback if gradient creation fails
-    ctx.globalAlpha = 0.7 * intensity;
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.globalAlpha = 1;
-  }
 };
