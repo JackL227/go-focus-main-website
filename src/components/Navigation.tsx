@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -27,7 +26,7 @@ const Navigation = () => {
           <img 
             src="/lovable-uploads/9dc911d9-ffea-4dc9-8c9f-53a8114665de.png" 
             alt="Company Logo" 
-            className="h-8 w-auto" 
+            className="h-16 w-auto" 
           />
         </a>
         
