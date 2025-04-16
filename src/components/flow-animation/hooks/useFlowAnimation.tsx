@@ -40,12 +40,16 @@ export const useFlowAnimation = () => {
     const bgParticles = createBackgroundParticles(canvas.width, canvas.height);
     
     // Create initial particles
-    messageParticles.push(...createInitialMessageParticles(20, MessageParticle, canvas.height));
+    createInitialMessageParticles(20, MessageParticle, canvas.height).forEach(particle => {
+      messageParticles.push(particle);
+    });
     
     let animationId: number;
     
     // Animation loop
     const animate = () => {
+      if (!ctx) return;
+      
       drawBackground(ctx, canvas.width, canvas.height, bgParticles);
       
       // Draw glass panels to highlight the flow

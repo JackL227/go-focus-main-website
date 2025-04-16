@@ -20,18 +20,17 @@ export const setCanvasSize = (canvas: HTMLCanvasElement) => {
     canvas.width = parent.offsetWidth;
     canvas.height = parent.offsetHeight;
   } else {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
   
   // Set higher resolution for retina displays
   const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
   
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
-  canvas.style.width = `${rect.width}px`;
-  canvas.style.height = `${rect.height}px`;
+  canvas.width = canvas.width * dpr;
+  canvas.height = canvas.height * dpr;
+  canvas.style.width = `${canvas.width / dpr}px`;
+  canvas.style.height = `${canvas.height / dpr}px`;
   
   const ctx = canvas.getContext('2d');
   if (ctx) {
