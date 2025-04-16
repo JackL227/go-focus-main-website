@@ -15,10 +15,12 @@ export const animationColors = {
 
 // Canvas sizing helper function
 export const setCanvasSize = (canvas: HTMLCanvasElement) => {
-  const parent = canvas.parentElement?.parentElement;
+  const parent = canvas.parentElement;
   if (parent) {
-    canvas.width = parent.offsetWidth;
-    canvas.height = parent.offsetHeight;
+    // Get parent dimensions
+    const rect = parent.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
   } else {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -27,21 +29,21 @@ export const setCanvasSize = (canvas: HTMLCanvasElement) => {
   // Set higher resolution for retina displays
   const dpr = window.devicePixelRatio || 1;
   
+  // Store logical size
   const logicalWidth = canvas.width;
   const logicalHeight = canvas.height;
   
+  // Set physical size
   canvas.width = logicalWidth * dpr;
   canvas.height = logicalHeight * dpr;
   
+  // Set display size
   canvas.style.width = `${logicalWidth}px`;
   canvas.style.height = `${logicalHeight}px`;
   
+  // Scale the context
   const ctx = canvas.getContext('2d');
   if (ctx) {
-    ctx.scale(dpr, dpr);
-    // Reset the logical size so drawing happens at the right scale
-    ctx.canvas.width = logicalWidth;
-    ctx.canvas.height = logicalHeight;
     ctx.scale(dpr, dpr);
   }
 };

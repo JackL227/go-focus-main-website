@@ -2,20 +2,36 @@
 // Functions for creating particle visual effects
 
 export const createGlowEffect = (ctx: CanvasRenderingContext2D, color: string, intensity: number = 1, size: number) => {
-  const gradient = ctx.createRadialGradient(0, 0, size * 0.2, 0, 0, size * 3);
-  
-  // Make sure we're using valid color formats
   try {
-    gradient.addColorStop(0, color);
-    gradient.addColorStop(0.5, `${color.substring(0, color.lastIndexOf(',') + 1)}0.5)`);
-    gradient.addColorStop(1, `${color.substring(0, color.lastIndexOf(',') + 1)}0)`);
+    const gradient = ctx.createRadialGradient(0, 0, size * 0.2, 0, 0, size * 3);
+    
+    // Safe color handling for different color formats
+    if (color.includes('rgba')) {
+      // Handle rgba format
+      const baseColor = color.substring(0, color.lastIndexOf(',') + 1);
+      gradient.addColorStop(0, color);
+      gradient.addColorStop(0.5, `${baseColor} 0.5)`);
+      gradient.addColorStop(1, `${baseColor} 0)`);
+    } else if (color.includes('rgb')) {
+      // Handle rgb format
+      gradient.addColorStop(0, color);
+      gradient.addColorStop(0.5, color.replace('rgb', 'rgba').replace(')', ', 0.5)'));
+      gradient.addColorStop(1, color.replace('rgb', 'rgba').replace(')', ', 0)'));
+    } else {
+      // Handle hex or named colors
+      gradient.addColorStop(0, color);
+      gradient.addColorStop(0.5, `${color}80`); // 50% opacity 
+      gradient.addColorStop(1, `${color}00`);   // 0% opacity
+    }
+    
+    return gradient;
   } catch (error) {
     // Fallback to simpler gradient if there's an error
-    gradient.addColorStop(0, color);
-    gradient.addColorStop(1, 'rgba(0,0,0,0)');
+    const fallbackGradient = ctx.createRadialGradient(0, 0, size * 0.2, 0, 0, size * 3);
+    fallbackGradient.addColorStop(0, '#006eda');
+    fallbackGradient.addColorStop(1, 'rgba(0, 110, 218, 0)');
+    return fallbackGradient;
   }
-  
-  return gradient;
 };
 
 export const drawBubbleShape = (ctx: CanvasRenderingContext2D, size: number, isQualified: boolean, colors: Record<string, string>) => {
