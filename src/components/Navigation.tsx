@@ -26,7 +26,7 @@ const Navigation = () => {
           <img 
             src="/lovable-uploads/9dc911d9-ffea-4dc9-8c9f-53a8114665de.png" 
             alt="Company Logo" 
-            className="h-24 w-auto" 
+            className="h-32 w-auto" 
           />
         </a>
         
