@@ -76,12 +76,7 @@ export default class OutcomePanel {
     
     // Add highlight to give 3D effect
     ctx.beginPath();
-    ctx.roundRect(x + 2, y + 2, width - 4, 10, {
-      upperLeft: 8,
-      upperRight: 8,
-      lowerLeft: 0,
-      lowerRight: 0
-    });
+    ctx.roundRect(x + 2, y + 2, width - 4, 10, 10);
     ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
     ctx.fill();
     

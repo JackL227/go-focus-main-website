@@ -32,7 +32,13 @@ const AnimationSection = () => {
 
   return (
     <section id="animation-section" className="relative min-h-[80vh] py-24 flex items-center">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#081020] to-[#0A1A30] z-0"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-[#071020] to-[#0A1A30] z-0">
+        {/* Abstract shapes for visual depth */}
+        <div className="absolute bottom-0 left-0 w-full h-1/2 opacity-40">
+          <div className="absolute top-0 left-[10%] w-64 h-64 rounded-full bg-primary/10 blur-3xl"></div>
+          <div className="absolute bottom-[20%] left-[60%] w-80 h-80 rounded-full bg-[#00E676]/5 blur-3xl"></div>
+        </div>
+      </div>
       
       <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
         <div className="text-center mb-12">
@@ -45,12 +51,12 @@ const AnimationSection = () => {
           </p>
         </div>
         
-        <div className="relative h-[550px] md:h-[600px] mt-8 overflow-hidden rounded-xl border border-primary/20 bg-background/5 shadow-xl">
+        <div className="relative h-[550px] md:h-[600px] mt-8 overflow-hidden rounded-xl border border-primary/20 shadow-xl bg-gradient-to-b from-[#050A15] to-[#0A1428]">
           <FlowAnimation />
           
           <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-background/90 to-background/0">
             <div className="flex flex-col md:flex-row justify-center gap-8 items-center text-center">
-              <div className="flex-1">
+              <div className="flex-1 glass-card p-4 hover-lift">
                 <div className="inline-block p-2 rounded-full bg-[#00E676]/20 text-[#00E676] mb-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -59,7 +65,7 @@ const AnimationSection = () => {
                 <h3 className="font-medium text-[#00E676]">Qualified</h3>
               </div>
               
-              <div className="flex-1">
+              <div className="flex-1 glass-card p-4 hover-lift">
                 <div className="inline-block p-2 rounded-full bg-primary/20 text-primary mb-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -68,7 +74,7 @@ const AnimationSection = () => {
                 <h3 className="font-medium text-primary">Booked Call</h3>
               </div>
               
-              <div className="flex-1">
+              <div className="flex-1 glass-card p-4 hover-lift">
                 <div className="inline-block p-2 rounded-full bg-[#FFC107]/20 text-[#FFC107] mb-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
