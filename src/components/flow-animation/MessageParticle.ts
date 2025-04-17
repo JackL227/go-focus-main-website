@@ -12,6 +12,7 @@ class MessageParticle {
   targetX: number | null;
   targetY: number | null;
   accelerationFactor: number;
+  trailPositions: {x: number, y: number}[];
   
   constructor(x: number, y: number, canvasHeight: number) {
     this.x = x;
@@ -28,6 +29,12 @@ class MessageParticle {
     this.targetX = null;
     this.targetY = null;
     this.accelerationFactor = 1.03;
+    this.trailPositions = [];
+    
+    // Initialize trail positions
+    for (let i = 0; i < 5; i++) {
+      this.trailPositions.push({x: this.x - i * 2, y: this.y});
+    }
   }
   
   redirectToNode(x: number, y: number) {
@@ -40,8 +47,14 @@ class MessageParticle {
   }
   
   update() {
+    // Update trail positions
+    this.trailPositions.unshift({x: this.x, y: this.y});
+    if (this.trailPositions.length > 5) {
+      this.trailPositions.pop();
+    }
+    
     if (this.targetX !== null && this.targetY !== null) {
-      // Move toward the target (AI node)
+      // Move toward the target (AI node) with acceleration
       const dx = this.targetX - this.x;
       const dy = this.targetY - this.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
@@ -56,10 +69,10 @@ class MessageParticle {
         this.y = this.targetY;
       }
     } else {
-      // Normal left-to-right movement
+      // Normal left-to-right movement with curved path
       this.x += this.speed;
-      // Subtle vertical movement
-      this.y += Math.sin(this.x * 0.01) * 0.2;
+      // Enhanced curved movement
+      this.y += Math.sin(this.x * 0.02) * 0.3;
     }
     
     // Blink effect for emphasis
@@ -69,28 +82,58 @@ class MessageParticle {
   
   draw(ctx: CanvasRenderingContext2D, colors: Record<string, string>) {
     const blinkOpacity = Math.sin(this.blinkTime) * 0.2 + 0.8;
-    ctx.globalAlpha = this.opacity * blinkOpacity;
+    const color = this.isQualified ? colors.primary : colors.faded;
     
-    if (this.type === 'circle') {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = this.isQualified ? colors.primary : colors.faded;
-      ctx.fill();
-    } else if (this.type === 'square') {
-      ctx.fillStyle = this.isQualified ? colors.primary : colors.faded;
-      ctx.fillRect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
-    } else if (this.type === 'diamond') {
-      ctx.beginPath();
-      ctx.moveTo(this.x, this.y - this.size);
-      ctx.lineTo(this.x + this.size, this.y);
-      ctx.lineTo(this.x, this.y + this.size);
-      ctx.lineTo(this.x - this.size, this.y);
-      ctx.closePath();
-      ctx.fillStyle = this.isQualified ? colors.primary : colors.faded;
-      ctx.fill();
+    // Draw light trail effect for motion emphasis
+    ctx.globalAlpha = this.opacity * 0.3;
+    for (let i = 1; i < this.trailPositions.length; i++) {
+      const fadeOpacity = (this.trailPositions.length - i) / this.trailPositions.length;
+      ctx.globalAlpha = this.opacity * fadeOpacity * 0.3;
+      
+      this.drawShape(
+        ctx,
+        color,
+        this.trailPositions[i].x,
+        this.trailPositions[i].y,
+        this.size * 0.7
+      );
+    }
+    
+    // Draw main shape
+    ctx.globalAlpha = this.opacity * blinkOpacity;
+    this.drawShape(ctx, color, this.x, this.y, this.size);
+    
+    // Add glow effect for qualified leads
+    if (this.isQualified) {
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 5;
+      this.drawShape(ctx, color, this.x, this.y, this.size * 0.7);
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = 'transparent';
     }
     
     ctx.globalAlpha = 1;
+  }
+  
+  private drawShape(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, size: number) {
+    if (this.type === 'circle') {
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    } else if (this.type === 'square') {
+      ctx.fillStyle = color;
+      ctx.fillRect(x - size/2, y - size/2, size, size);
+    } else if (this.type === 'diamond') {
+      ctx.beginPath();
+      ctx.moveTo(x, y - size);
+      ctx.lineTo(x + size, y);
+      ctx.lineTo(x, y + size);
+      ctx.lineTo(x - size, y);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
   }
 }
 

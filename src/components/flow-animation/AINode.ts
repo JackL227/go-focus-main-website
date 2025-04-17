@@ -10,6 +10,8 @@ class AINode {
   rotationSpeed: number;
   processingEffect: number;
   processingDirection: number;
+  logoImage: HTMLImageElement | null;
+  isLogoLoaded: boolean;
   
   constructor(x: number, y: number) {
     this.x = x;
@@ -22,6 +24,23 @@ class AINode {
     this.rotationSpeed = 0.007; // Faster rotation
     this.processingEffect = 0;
     this.processingDirection = 1;
+    this.logoImage = null;
+    this.isLogoLoaded = false;
+    
+    // Load the logo image
+    this.loadLogoImage();
+  }
+  
+  loadLogoImage() {
+    const img = new Image();
+    img.src = '/lovable-uploads/202c46b9-6e56-4ace-b904-a5bb54639d74.png';
+    img.onload = () => {
+      this.logoImage = img;
+      this.isLogoLoaded = true;
+    };
+    img.onerror = (err) => {
+      console.error("Failed to load logo image:", err);
+    };
   }
   
   update() {
@@ -70,6 +89,25 @@ class AINode {
     ctx.fillStyle = gradient;
     ctx.fill();
     
+    // Draw logo in the center instead of the text
+    if (this.isLogoLoaded && this.logoImage) {
+      const logoSize = this.size * 1.5;
+      ctx.save();
+      ctx.globalAlpha = 0.9;
+      
+      // Add subtle rotating effect
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rotation / 3); // Slower rotation than the particles
+      ctx.drawImage(
+        this.logoImage, 
+        -logoSize/2, 
+        -logoSize/2, 
+        logoSize, 
+        logoSize
+      );
+      ctx.restore();
+    }
+    
     // Draw outer ring
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size * 1.1, 0, Math.PI * 2);
@@ -88,46 +126,32 @@ class AINode {
     ctx.lineWidth = 2;
     ctx.stroke();
     
-    // Draw inner rotating elements (abstract AI representation)
+    // Draw orbital particles - these will still rotate around the logo
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(this.rotation);
     
     // Inner circles (increased number)
-    for (let i = 0; i < 4; i++) {
-      const angle = (Math.PI * 2 / 4) * i;
-      const orbitRadius = this.size * 0.6;
+    for (let i = 0; i < 6; i++) {
+      const angle = (Math.PI * 2 / 6) * i;
+      const orbitRadius = this.size * 0.8;
       const x = Math.cos(angle) * orbitRadius;
       const y = Math.sin(angle) * orbitRadius;
-      const circleSize = this.size * (0.15 + this.processingEffect * 0.05);
+      const circleSize = this.size * (0.12 + this.processingEffect * 0.05);
       
       ctx.beginPath();
       ctx.arc(x, y, circleSize, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.fillStyle = 'rgba(30, 174, 219, 0.8)'; // Neon teal
       ctx.fill();
       
-      // Connect to center
+      // Connect to center with luminous lines
       ctx.beginPath();
       ctx.moveTo(0, 0);
       ctx.lineTo(x, y);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgba(30, 174, 219, 0.4)'; // Semi-transparent neon teal
+      ctx.lineWidth = 1.5;
       ctx.stroke();
     }
-    
-    // Core circle
-    ctx.beginPath();
-    ctx.arc(0, 0, this.size * (0.25 + this.processingEffect * 0.05), 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-    ctx.fill();
-    
-    // Logo text
-    ctx.font = `bold ${this.size * 0.18}px Arial`;
-    ctx.fillStyle = '#003870';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Go Focus', 0, -5);
-    ctx.fillText('AI', 0, 5);
     
     ctx.restore();
   }

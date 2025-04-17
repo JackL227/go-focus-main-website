@@ -11,6 +11,7 @@ class LeadParticle {
   pulseDir: number;
   targetX: number | null = null;
   targetY: number | null = null;
+  hueRotate: number;
   
   constructor(x: number, y: number, type: string) {
     this.x = x;
@@ -23,6 +24,7 @@ class LeadParticle {
     this.trail = [];
     this.pulseSize = 0;
     this.pulseDir = 1;
+    this.hueRotate = Math.random() * 20; // Slight color variation
     
     // Add initial trail positions
     for (let i = 0; i < 15; i++) { // Extended trail
@@ -53,9 +55,12 @@ class LeadParticle {
       const distance = Math.sqrt(dx * dx + dy * dy);
       
       if (distance > 5) {
-        // Move towards target
-        this.x += (dx / distance) * this.speed;
-        this.y += (dy / distance) * this.speed;
+        // Move towards target with dynamic speed (slower at start, faster at end)
+        const progress = Math.max(0, 1 - distance / 100);
+        const speedMultiplier = 0.8 + progress * 0.7;
+        
+        this.x += (dx / distance) * this.speed * speedMultiplier;
+        this.y += (dy / distance) * this.speed * speedMultiplier;
       } else {
         // Very close to target, snap to it
         this.x = this.targetX;
@@ -66,7 +71,7 @@ class LeadParticle {
       this.x += this.speed;
     }
     
-    // Update trail
+    // Update trail with smoothing
     this.trail.push({x: this.x, y: this.y});
     if (this.trail.length > 15) { // Keep longer trail
       this.trail.shift();
@@ -90,16 +95,56 @@ class LeadParticle {
       color = '#FFC107'; // Gold/amber
     }
     
-    // Draw trail with increased intensity
+    // Draw fancy trail with increased intensity
     ctx.globalAlpha = 0.5; // Increased opacity
+    
+    // Draw glowing trail
+    ctx.lineWidth = 3; // Thicker trail
+    ctx.strokeStyle = color;
+    
+    // Create gradient for trail
+    const trailGradient = ctx.createLinearGradient(
+      this.trail[0].x, this.trail[0].y,
+      this.trail[this.trail.length - 1].x, this.trail[this.trail.length - 1].y
+    );
+    trailGradient.addColorStop(0, `${color}33`); // 20% opacity
+    trailGradient.addColorStop(0.5, `${color}66`); // 40% opacity
+    trailGradient.addColorStop(1, color); // Full opacity
+    
+    // Draw curved trail
     ctx.beginPath();
     ctx.moveTo(this.trail[0].x, this.trail[0].y);
-    for (let i = 1; i < this.trail.length; i++) {
-      ctx.lineTo(this.trail[i].x, this.trail[i].y);
+    
+    // Enhanced curved trail for smoother animation
+    for (let i = 1; i < this.trail.length - 2; i++) {
+      const xc = (this.trail[i].x + this.trail[i + 1].x) / 2;
+      const yc = (this.trail[i].y + this.trail[i + 1].y) / 2;
+      ctx.quadraticCurveTo(this.trail[i].x, this.trail[i].y, xc, yc);
     }
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 3; // Thicker trail
+    
+    // Handle the last two points separately to close the curve
+    if (this.trail.length > 2) {
+      const lastPoint = this.trail[this.trail.length - 1];
+      const secondLastPoint = this.trail[this.trail.length - 2];
+      ctx.quadraticCurveTo(
+        secondLastPoint.x, 
+        secondLastPoint.y, 
+        lastPoint.x, 
+        lastPoint.y
+      );
+    }
+    
+    ctx.strokeStyle = trailGradient;
     ctx.stroke();
+    ctx.globalAlpha = 1;
+    
+    // Add glow effect for trails
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 8;
+    ctx.globalAlpha = 0.3;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = 'transparent';
     ctx.globalAlpha = 1;
     
     // Draw lead card with increased size
@@ -108,10 +153,19 @@ class LeadParticle {
     
     // Add glow effect
     ctx.shadowColor = color;
-    ctx.shadowBlur = 12; // Enhanced glow
+    ctx.shadowBlur = 15; // Enhanced glow
     
-    // Draw card with rounded corners
-    ctx.fillStyle = 'rgba(10, 20, 40, 0.8)';
+    // Draw card with rounded corners and glassmorphism effect
+    const cardGradient = ctx.createLinearGradient(
+      this.x - cardWidth/2, 
+      this.y - cardHeight/2, 
+      this.x + cardWidth/2, 
+      this.y + cardHeight/2
+    );
+    cardGradient.addColorStop(0, 'rgba(20, 30, 50, 0.85)');
+    cardGradient.addColorStop(1, 'rgba(10, 20, 40, 0.9)');
+    
+    ctx.fillStyle = cardGradient;
     ctx.strokeStyle = color;
     ctx.lineWidth = 2;
     
@@ -126,18 +180,46 @@ class LeadParticle {
     ctx.fill();
     ctx.stroke();
     
+    // Add highlight to give 3D effect
+    ctx.beginPath();
+    ctx.roundRect(
+      this.x - cardWidth/2 + 2, 
+      this.y - cardHeight/2 + 2, 
+      cardWidth - 4, 
+      cardHeight/5, 
+      [4, 4, 0, 0]
+    );
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.fill();
+    
     // Reset shadow
     ctx.shadowColor = 'transparent';
     ctx.shadowBlur = 0;
     
-    // Draw label
-    ctx.font = `bold ${this.size * 1.2}px Arial`; // Larger, bolder font
+    // Draw label with icon based on type
+    ctx.font = `bold ${this.size * 1.2}px 'Poppins', Arial`; // Larger, bolder font
     ctx.fillStyle = '#FFFFFF';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('LEAD', this.x, this.y);
     
-    // Draw icon based on type
+    // Draw different icon based on type
+    const iconY = this.y - this.size * 0.2;
+    if (this.type === 'checkmark') {
+      // Checkmark icon
+      this.drawIcon(ctx, '✓', color, this.x, iconY);
+    } else if (this.type === 'calendar') {
+      // Calendar icon
+      this.drawIcon(ctx, '📅', color, this.x, iconY);
+    } else {
+      // Dollar sign icon
+      this.drawIcon(ctx, '$', color, this.x, iconY);
+    }
+    
+    // Draw "LEAD" text
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = `bold ${this.size}px 'Poppins', Arial`;
+    ctx.fillText('LEAD', this.x, this.y + this.size * 0.9);
+    
     if (this.hasReachedTarget() && this.targetX !== null) {
       // Draw success animation
       ctx.globalAlpha = this.pulseSize;
@@ -147,6 +229,23 @@ class LeadParticle {
       ctx.fill();
       ctx.globalAlpha = 1;
     }
+  }
+  
+  // Helper method to draw different icons
+  private drawIcon(ctx: CanvasRenderingContext2D, text: string, color: string, x: number, y: number) {
+    // First draw a subtle glow
+    ctx.globalAlpha = 0.8;
+    ctx.fillStyle = color;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 10;
+    ctx.font = `bold ${this.size * 1.4}px 'Poppins', Arial`;
+    ctx.fillText(text, x, y);
+    
+    // Then draw the actual text
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText(text, x, y);
   }
 }
 

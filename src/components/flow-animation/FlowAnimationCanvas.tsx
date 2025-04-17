@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MessageParticle from './MessageParticle';
 import LeadParticle from './LeadParticle';
 import AINode from './AINode';
@@ -8,6 +8,7 @@ import { animationColors, setCanvasSize, createInitialMessageParticles } from '.
 
 const FlowAnimationCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [hoveredPanel, setHoveredPanel] = useState<OutcomePanel | null>(null);
   
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -32,20 +33,46 @@ const FlowAnimationCanvas = () => {
     const bookedPanel = new OutcomePanel(canvas.width * 0.85, canvas.height * 0.5, "Booked Call", "calendar");
     const closedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.7, "Closed Deal", "smile"); // Renamed to "Closed Deal"
     
+    // Create array of all panels for hover detection
+    const allPanels = [qualifiedPanel, bookedPanel, closedPanel];
+    
     // Background particles
     const bgParticles: {x: number; y: number; size: number; speed: number; opacity: number;}[] = [];
-    for (let i = 0; i < 40; i++) { // More particles
+    for (let i = 0; i < 60; i++) { // More particles for a richer background
       bgParticles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 4 + 1, // Larger particles
-        speed: Math.random() * 0.2 + 0.1,
+        speed: Math.random() * 0.3 + 0.1,
         opacity: Math.random() * 0.5 + 0.2 // More visible
       });
     }
     
     // Create initial particles
-    messageParticles.push(...createInitialMessageParticles(15, MessageParticle, canvas.height)); // More initial particles
+    messageParticles.push(...createInitialMessageParticles(20, MessageParticle, canvas.height)); // More initial particles
+    
+    // Mouse interaction handlers
+    const handleMouseMove = (event: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+      
+      // Check for hover on panels
+      let foundHoveredPanel = null;
+      for (const panel of allPanels) {
+        if (panel.isPointInside(mouseX, mouseY)) {
+          foundHoveredPanel = panel;
+          panel.hover(true);
+        } else {
+          panel.hover(false);
+        }
+      }
+      
+      setHoveredPanel(foundHoveredPanel);
+      canvas.style.cursor = foundHoveredPanel ? 'pointer' : 'default';
+    };
+    
+    canvas.addEventListener('mousemove', handleMouseMove);
     
     let animationId: number;
     
@@ -53,17 +80,37 @@ const FlowAnimationCanvas = () => {
     const animate = () => {
       // Create gradient background
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, '#081020');
+      gradient.addColorStop(0, '#081020'); // Deep navy
       gradient.addColorStop(1, '#0A1A30');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Draw background particles
+      // Draw background particles with improved aesthetics
       bgParticles.forEach((particle, i) => {
+        // Create a subtle glow effect
+        ctx.shadowColor = 'rgba(30, 174, 219, 0.5)'; // Neon teal
+        ctx.shadowBlur = 4;
+        
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 110, 218, ${particle.opacity})`;
+        
+        // Use gradient for each particle to create depth
+        const particleGradient = ctx.createRadialGradient(
+          particle.x, particle.y, 0,
+          particle.x, particle.y, particle.size
+        );
+        
+        // Randomize colors between teal and blue for variety
+        const isBlue = i % 3 === 0;
+        particleGradient.addColorStop(0, isBlue ? 'rgba(30, 174, 219, 0.8)' : 'rgba(0, 110, 218, 0.8)');
+        particleGradient.addColorStop(1, 'rgba(0, 20, 50, 0.1)');
+        
+        ctx.fillStyle = particleGradient;
         ctx.fill();
+        
+        // Reset shadow
+        ctx.shadowBlur = 0;
+        ctx.shadowColor = 'transparent';
         
         // Move particles
         particle.x += particle.speed;
@@ -94,23 +141,47 @@ const FlowAnimationCanvas = () => {
       closedPanel.update();
       closedPanel.draw(ctx, animationColors);
       
-      // Connect lines between AI node and outcome panels
-      ctx.beginPath();
-      ctx.moveTo(aiNode.x, aiNode.y);
-      ctx.lineTo(qualifiedPanel.x, qualifiedPanel.y);
-      ctx.strokeStyle = 'rgba(0, 110, 218, 0.3)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
+      // Connect lines between AI node and outcome panels with enhanced styling
+      const drawConnectingLine = (toPanel: OutcomePanel) => {
+        ctx.beginPath();
+        
+        // Create curved paths for more interesting visuals
+        const startX = aiNode.x;
+        const startY = aiNode.y;
+        const endX = toPanel.x;
+        const endY = toPanel.y;
+        
+        // Calculate control points for curved lines
+        const cpX = (startX + endX) / 2 + Math.random() * 20 - 10;
+        const cpY = (startY + endY) / 2 + Math.random() * 20 - 10;
+        
+        ctx.moveTo(startX, startY);
+        ctx.quadraticCurveTo(cpX, cpY, endX, endY);
+        
+        // Create gradient for line
+        const lineGradient = ctx.createLinearGradient(startX, startY, endX, endY);
+        
+        let baseColor: string;
+        if (toPanel.type === 'checkmark') {
+          baseColor = 'rgba(0, 230, 118, '; // Green
+        } else if (toPanel.type === 'calendar') {
+          baseColor = 'rgba(0, 110, 218, '; // Blue
+        } else {
+          baseColor = 'rgba(255, 193, 7, '; // Gold
+        }
+        
+        lineGradient.addColorStop(0, `${baseColor}0.1)`);
+        lineGradient.addColorStop(0.5, `${baseColor}0.3)`);
+        lineGradient.addColorStop(1, `${baseColor}0.1)`);
+        
+        ctx.strokeStyle = lineGradient;
+        ctx.lineWidth = toPanel === hoveredPanel ? 2 : 1;
+        ctx.stroke();
+      };
       
-      ctx.beginPath();
-      ctx.moveTo(aiNode.x, aiNode.y);
-      ctx.lineTo(bookedPanel.x, bookedPanel.y);
-      ctx.stroke();
-      
-      ctx.beginPath();
-      ctx.moveTo(aiNode.x, aiNode.y);
-      ctx.lineTo(closedPanel.x, closedPanel.y);
-      ctx.stroke();
+      drawConnectingLine(qualifiedPanel);
+      drawConnectingLine(bookedPanel);
+      drawConnectingLine(closedPanel);
       
       // Update and draw message particles
       for (let i = messageParticles.length - 1; i >= 0; i--) {
@@ -168,7 +239,7 @@ const FlowAnimationCanvas = () => {
       }
       
       // Create new message particles at a controlled rate (more frequent)
-      if (Math.random() < 0.08 && messageParticles.length < 25) { // Increased rate and limit
+      if (Math.random() < 0.08 && messageParticles.length < 30) { // Increased rate and limit
         const x = -20;
         const y = canvas.height * (0.3 + Math.random() * 0.4); // Keep within middle area
         const newParticle = new MessageParticle(x, y, canvas.height);
@@ -183,6 +254,7 @@ const FlowAnimationCanvas = () => {
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
+      canvas.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
   
