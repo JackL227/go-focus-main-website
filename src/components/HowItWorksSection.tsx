@@ -1,110 +1,102 @@
 
-import React, { useRef, useEffect } from 'react';
-import { Bot, Workflow, Calendar } from 'lucide-react';
-import { cn } from '@/lib/utils';
-
-const steps = [
-  {
-    id: 1,
-    title: "We Build Your AI Agent",
-    description: "Voice, text & chat-based — fully customized to your offer. Our AI agents learn your business, offers, and pricing to handle inquiries with precision.",
-    icon: Bot,
-    delay: 0
-  },
-  {
-    id: 2,
-    title: "We Handle the Automation",
-    description: "From DMs, emails, and website forms to reactivating old leads. Our seamless integration means leads are engaged 24/7 without falling through the cracks.",
-    icon: Workflow,
-    delay: 200
-  },
-  {
-    id: 3,
-    title: "You Get Qualified Calls & Sales",
-    description: "You only talk to pre-qualified people ready to buy. Focus your energy on closing deals, not chasing leads or answering basic questions.",
-    icon: Calendar,
-    delay: 400
-  }
-];
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Mic, Workflow, Calendar } from 'lucide-react';
 
 const HowItWorksSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-in');
-            entry.target.classList.remove('opacity-0');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const section = sectionRef.current;
-    if (section) {
-      observer.observe(section);
-    }
-
-    stepRefs.current.forEach(step => {
-      if (step) observer.observe(step);
-    });
-
-    return () => {
-      if (section) {
-        observer.unobserve(section);
-      }
-      stepRefs.current.forEach(step => {
-        if (step) observer.unobserve(step);
-      });
-    };
-  }, []);
-
   return (
-    <section id="how-it-works" className="relative py-24 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0A1A30] to-[#091428] z-0"></div>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
-      
-      {/* Background glowing orbs */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#00E676]/5 rounded-full blur-3xl"></div>
-      
-      <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">How It Works</h2>
-          <p className="text-lg text-foreground/80 max-w-2xl mx-auto">
-            We transform your lead generation and sales process with AI automation,
-            saving you time and increasing your revenue.
-          </p>
-        </div>
-        
-        <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
-          {steps.map((step, index) => (
-            <div 
-              key={step.id}
-              ref={el => stepRefs.current[index] = el}
-              className={cn(
-                "glass-card p-8 rounded-xl opacity-0 transition-all duration-500",
-                "hover:translate-y-[-5px] hover:shadow-xl"
-              )}
-              style={{ transitionDelay: `${step.delay}ms` }}
-            >
-              <div className="feature-icon-wrapper mb-6">
-                <step.icon size={28} />
+    <section id="how-it-works" className="py-20 container mx-auto px-4 md:px-8 relative">
+      <div className="text-center max-w-3xl mx-auto mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+        <p className="text-muted-foreground text-lg">
+          Our AI automation process is designed for simplicity and effectiveness, handling every step from lead to close.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+        {/* Connecting lines between cards - visible on desktop */}
+        <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0 hidden md:block"></div>
+
+        {/* Step 1: We Build Your AI Agent */}
+        <Card className="glass-card hover-lift relative z-10 border-t-2 border-primary/30">
+          <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-20 h-20 rounded-full bg-background flex items-center justify-center border-2 border-primary/30">
+            <Mic className="h-8 w-8 text-primary" />
+          </div>
+          <CardContent className="pt-14 pb-8 text-center">
+            <h3 className="text-xl font-bold mb-4">We Build Your AI Agent</h3>
+            <p className="text-muted-foreground">
+              Voice, text & chat-based — fully customized to your offer, brand voice, and business needs.
+            </p>
+            <div className="mt-6 space-y-2">
+              <div className="flex items-center text-sm">
+                <span className="bg-primary/20 rounded-full w-6 h-6 inline-flex items-center justify-center text-primary mr-2">✓</span>
+                <span>Trained on your services</span>
               </div>
-              <h3 className="text-xl font-bold mb-4">{step.title}</h3>
-              <p className="text-foreground/80">{step.description}</p>
-              
-              <div className="mt-6 flex items-center">
-                <span className="text-3xl font-bold text-primary/30">{step.id}</span>
-                <div className="ml-4 h-1 flex-1 bg-gradient-to-r from-primary/50 to-transparent rounded-full"></div>
+              <div className="flex items-center text-sm">
+                <span className="bg-primary/20 rounded-full w-6 h-6 inline-flex items-center justify-center text-primary mr-2">✓</span>
+                <span>Matches your tone of voice</span>
+              </div>
+              <div className="flex items-center text-sm">
+                <span className="bg-primary/20 rounded-full w-6 h-6 inline-flex items-center justify-center text-primary mr-2">✓</span>
+                <span>Handles objections like a pro</span>
               </div>
             </div>
-          ))}
-        </div>
+          </CardContent>
+        </Card>
+
+        {/* Step 2: We Handle the Automation */}
+        <Card className="glass-card hover-lift relative z-10 border-t-2 border-primary/30 mt-16 md:mt-0">
+          <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-20 h-20 rounded-full bg-background flex items-center justify-center border-2 border-primary/30">
+            <Workflow className="h-8 w-8 text-primary" />
+          </div>
+          <CardContent className="pt-14 pb-8 text-center">
+            <h3 className="text-xl font-bold mb-4">We Handle the Automation</h3>
+            <p className="text-muted-foreground">
+              From DMs, emails, and website forms to reactivating old leads automatically.
+            </p>
+            <div className="mt-6 space-y-2">
+              <div className="flex items-center text-sm">
+                <span className="bg-primary/20 rounded-full w-6 h-6 inline-flex items-center justify-center text-primary mr-2">✓</span>
+                <span>Multi-channel integration</span>
+              </div>
+              <div className="flex items-center text-sm">
+                <span className="bg-primary/20 rounded-full w-6 h-6 inline-flex items-center justify-center text-primary mr-2">✓</span>
+                <span>24/7 lead engagement</span>
+              </div>
+              <div className="flex items-center text-sm">
+                <span className="bg-primary/20 rounded-full w-6 h-6 inline-flex items-center justify-center text-primary mr-2">✓</span>
+                <span>Smart follow-up sequences</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Step 3: You Get Qualified Calls & Sales */}
+        <Card className="glass-card hover-lift relative z-10 border-t-2 border-primary/30 mt-16 md:mt-0">
+          <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-20 h-20 rounded-full bg-background flex items-center justify-center border-2 border-primary/30">
+            <Calendar className="h-8 w-8 text-primary" />
+          </div>
+          <CardContent className="pt-14 pb-8 text-center">
+            <h3 className="text-xl font-bold mb-4">You Get Qualified Calls & Sales</h3>
+            <p className="text-muted-foreground">
+              You only talk to pre-qualified people ready to buy your products and services.
+            </p>
+            <div className="mt-6 space-y-2">
+              <div className="flex items-center text-sm">
+                <span className="bg-primary/20 rounded-full w-6 h-6 inline-flex items-center justify-center text-primary mr-2">✓</span>
+                <span>High-intent meetings only</span>
+              </div>
+              <div className="flex items-center text-sm">
+                <span className="bg-primary/20 rounded-full w-6 h-6 inline-flex items-center justify-center text-primary mr-2">✓</span>
+                <span>Calendar integration</span>
+              </div>
+              <div className="flex items-center text-sm">
+                <span className="bg-primary/20 rounded-full w-6 h-6 inline-flex items-center justify-center text-primary mr-2">✓</span>
+                <span>Higher conversion rates</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </section>
   );

@@ -1,85 +1,76 @@
 
 import React from 'react';
-import { Mail, Phone, Shield, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Heart, Instagram, Twitter, Linkedin, Github } from 'lucide-react';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  
   return (
-    <footer className="bg-[#050A14] text-foreground pt-16 pb-8 border-t border-foreground/10">
-      <div className="container-custom">
-        <div className="grid md:grid-cols-3 gap-12 mb-12">
-          {/* Company Info */}
-          <div>
-            <h3 className="text-xl font-bold mb-6">Go Focus AI</h3>
-            <p className="text-foreground/70 mb-6">
-              Performance-based AI automation agency building custom voice agents and lead-closing workflows for high-intent service businesses.
-            </p>
-            
+    <footer className="bg-background/80 border-t border-border/10 pt-16 pb-8">
+      <div className="container mx-auto px-4 md:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          <div className="col-span-1 md:col-span-1">
+            <div className="mb-6">
+              <h3 className="text-2xl font-bold">Go Focus AI</h3>
+              <p className="text-muted-foreground mt-2">
+                AI agents that convert leads into revenue while you sleep.
+              </p>
+            </div>
             <div className="flex space-x-4">
-              <a href="#" className="text-foreground/50 hover:text-primary transition-colors">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className="text-foreground/50 hover:text-primary transition-colors">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="text-foreground/50 hover:text-primary transition-colors">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className="text-foreground/50 hover:text-primary transition-colors">
-                <Linkedin size={20} />
-              </a>
+              <Button variant="ghost" size="icon" className="rounded-full">
+                <Instagram className="h-5 w-5" />
+              </Button>
+              <Button variant="ghost" size="icon" className="rounded-full">
+                <Twitter className="h-5 w-5" />
+              </Button>
+              <Button variant="ghost" size="icon" className="rounded-full">
+                <Linkedin className="h-5 w-5" />
+              </Button>
             </div>
           </div>
           
-          {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-6">Quick Links</h4>
-            <ul className="space-y-3">
-              <li>
-                <a href="#how-it-works" className="text-foreground/70 hover:text-primary transition-colors">How It Works</a>
-              </li>
-              <li>
-                <a href="#results" className="text-foreground/70 hover:text-primary transition-colors">Industry Results</a>
-              </li>
-              <li>
-                <a href="#testimonials" className="text-foreground/70 hover:text-primary transition-colors">Testimonials</a>
-              </li>
-              <li>
-                <a href="#" className="text-foreground/70 hover:text-primary transition-colors">Privacy Policy</a>
-              </li>
-              <li>
-                <a href="#" className="text-foreground/70 hover:text-primary transition-colors">Terms of Service</a>
-              </li>
+            <h4 className="font-bold text-lg mb-4">Solutions</h4>
+            <ul className="space-y-2">
+              <li><a href="#" className="text-muted-foreground hover:text-foreground transition">Trading Mentors</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground transition">Med Spas</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground transition">Vehicle Aesthetics</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground transition">Custom AI Agents</a></li>
             </ul>
           </div>
           
-          {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-semibold mb-6">Contact</h4>
-            <ul className="space-y-4">
-              <li className="flex items-center gap-3">
-                <Mail size={18} className="text-primary" />
-                <a href="mailto:contact@gofocusai.com" className="text-foreground/70 hover:text-primary transition-colors">
-                  contact@gofocusai.com
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone size={18} className="text-primary" />
-                <a href="tel:+1234567890" className="text-foreground/70 hover:text-primary transition-colors">
-                  (123) 456-7890
-                </a>
-              </li>
+            <h4 className="font-bold text-lg mb-4">Company</h4>
+            <ul className="space-y-2">
+              <li><a href="#" className="text-muted-foreground hover:text-foreground transition">About Us</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground transition">Careers</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground transition">Blog</a></li>
+              <li><Link to="/auth" className="text-muted-foreground hover:text-foreground transition">Login</Link></li>
             </ul>
-            
-            <div className="mt-8 flex items-center gap-2 text-sm text-foreground/70">
-              <Shield size={16} className="text-primary" />
-              <span>Your data is always protected</span>
-            </div>
+          </div>
+          
+          <div>
+            <h4 className="font-bold text-lg mb-4">Resources</h4>
+            <ul className="space-y-2">
+              <li><a href="#" className="text-muted-foreground hover:text-foreground transition">Documentation</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground transition">Case Studies</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground transition">Help Center</a></li>
+              <li><a href="#" className="text-muted-foreground hover:text-foreground transition">Contact Support</a></li>
+            </ul>
           </div>
         </div>
         
-        {/* Copyright */}
-        <div className="pt-8 border-t border-foreground/10 text-center text-foreground/50 text-sm">
-          <p>&copy; {new Date().getFullYear()} Go Focus AI. All rights reserved.</p>
+        <div className="border-t border-border/10 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-sm text-muted-foreground order-2 md:order-1">
+            &copy; {currentYear} Go Focus AI. All rights reserved.
+          </p>
+          <div className="flex space-x-4 mb-4 md:mb-0 order-1 md:order-2">
+            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition">Privacy Policy</a>
+            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition">Terms of Service</a>
+            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition">Cookies</a>
+          </div>
         </div>
       </div>
     </footer>
