@@ -50,15 +50,15 @@ const HeroSection = () => {
                 See How It Works
               </Button>
               {!user && (
-                <Button 
-                  size="lg" 
-                  variant="ghost" 
-                  className="border border-primary/30 hover:bg-primary/5" 
-                  as={Link}
-                  to="/auth"
-                >
-                  Log In / Sign Up
-                </Button>
+                <Link to="/auth">
+                  <Button 
+                    size="lg" 
+                    variant="ghost" 
+                    className="border border-primary/30 hover:bg-primary/5"
+                  >
+                    Log In / Sign Up
+                  </Button>
+                </Link>
               )}
             </div>
           </div>

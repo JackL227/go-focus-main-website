@@ -76,10 +76,12 @@ const Navigation = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button className="bg-primary hover:bg-primary/90 text-foreground group" as={Link} to="/auth">
-              Log In / Sign Up
-              <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Button>
+            <Link to="/auth">
+              <Button className="bg-primary hover:bg-primary/90 text-foreground group">
+                Log In / Sign Up
+                <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Button>
+            </Link>
           )}
         </nav>
 
@@ -141,15 +143,12 @@ const Navigation = () => {
                 </Button>
               </>
             ) : (
-              <Button 
-                className="w-full bg-primary hover:bg-primary/90 text-foreground"
-                onClick={() => setIsMenuOpen(false)}
-                as={Link}
-                to="/auth"
-              >
-                <LogIn className="mr-2 h-4 w-4" />
-                Log In / Sign Up
-              </Button>
+              <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                <Button className="w-full bg-primary hover:bg-primary/90 text-foreground">
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Log In / Sign Up
+                </Button>
+              </Link>
             )}
           </div>
         </div>
