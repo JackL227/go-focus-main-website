@@ -1,11 +1,24 @@
+
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronRight } from 'lucide-react';
+import { Menu, X, ChevronRight, LogIn, UserCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Link } from 'react-router-dom';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,10 +47,40 @@ const Navigation = () => {
           <a href="#how-it-works" className="text-foreground hover:text-primary transition-colors font-medium">How It Works</a>
           <a href="#results" className="text-foreground hover:text-primary transition-colors font-medium">Results</a>
           <a href="#testimonials" className="text-foreground hover:text-primary transition-colors font-medium">Testimonials</a>
-          <Button className="bg-primary hover:bg-primary/90 text-foreground group">
-            Book a Demo
-            <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </Button>
+          
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                  <UserCircle className="h-6 w-6" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    Settings
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => signOut()}>
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button className="bg-primary hover:bg-primary/90 text-foreground group" as={Link} to="/auth">
+              Log In / Sign Up
+              <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Button>
+          )}
         </nav>
 
         <button 
@@ -75,12 +118,39 @@ const Navigation = () => {
               Testimonials
               <ChevronRight className="h-4 w-4 text-foreground/50 transition-transform group-hover:translate-x-1" />
             </a>
-            <Button 
-              className="w-full bg-primary hover:bg-primary/90 text-foreground"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Book a Demo
-            </Button>
+            
+            {user ? (
+              <>
+                <Link
+                  to="/dashboard"
+                  className="text-foreground hover:text-primary transition-colors py-2 flex items-center justify-between group"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                  <ChevronRight className="h-4 w-4 text-foreground/50 transition-transform group-hover:translate-x-1" />
+                </Link>
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => {
+                    signOut();
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Log Out
+                </Button>
+              </>
+            ) : (
+              <Button 
+                className="w-full bg-primary hover:bg-primary/90 text-foreground"
+                onClick={() => setIsMenuOpen(false)}
+                as={Link}
+                to="/auth"
+              >
+                <LogIn className="mr-2 h-4 w-4" />
+                Log In / Sign Up
+              </Button>
+            )}
           </div>
         </div>
       )}

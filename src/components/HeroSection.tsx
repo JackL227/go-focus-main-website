@@ -3,8 +3,12 @@ import React from 'react';
 import { Button } from './ui/button';
 import { ArrowRight, Play } from 'lucide-react';
 import FluidAnimation from './FluidAnimation';
+import { Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const HeroSection = () => {
+  const { user } = useAuth();
+  
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-16">
       {/* Background animation */}
@@ -45,6 +49,17 @@ const HeroSection = () => {
                 <Play className="mr-2 h-4 w-4" />
                 See How It Works
               </Button>
+              {!user && (
+                <Button 
+                  size="lg" 
+                  variant="ghost" 
+                  className="border border-primary/30 hover:bg-primary/5" 
+                  as={Link}
+                  to="/auth"
+                >
+                  Log In / Sign Up
+                </Button>
+              )}
             </div>
           </div>
           
