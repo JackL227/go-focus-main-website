@@ -21,7 +21,7 @@ const Navigation = () => {
       "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
       isScrolled ? "bg-background/95 backdrop-blur-sm shadow-sm py-3" : "bg-transparent py-5"
     )}>
-      <div className="container-custom flex items-center justify-between">
+      <div className="container-custom max-w-5xl flex items-center justify-between">
         <a href="/" className="flex items-center gap-2">
           <img 
             src="/lovable-uploads/9dc911d9-ffea-4dc9-8c9f-53a8114665de.png" 
@@ -30,7 +30,6 @@ const Navigation = () => {
           />
         </a>
         
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <a href="#how-it-works" className="text-foreground hover:text-primary transition-colors font-medium">How It Works</a>
           <a href="#results" className="text-foreground hover:text-primary transition-colors font-medium">Results</a>
@@ -41,7 +40,6 @@ const Navigation = () => {
           </Button>
         </nav>
 
-        {/* Mobile Menu Button */}
         <button 
           className="md:hidden text-foreground hover:text-primary"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -50,7 +48,6 @@ const Navigation = () => {
         </button>
       </div>
 
-      {/* Mobile Navigation */}
       {isMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md shadow-lg animate-fade-in">
           <div className="container-custom py-6 flex flex-col space-y-6">
