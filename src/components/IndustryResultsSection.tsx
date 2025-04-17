@@ -1,215 +1,141 @@
 
-import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowUpRight, TrendingUp, Clock, MessageCircle } from 'lucide-react';
+import React, { useRef, useEffect } from 'react';
+import { Briefcase, Flower, Car, ArrowUpRight } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { cn } from '@/lib/utils';
+
+const industries = [
+  {
+    id: 1,
+    title: "Trading Mentors",
+    icon: Briefcase,
+    description: "Automate lead qualification and booking for trading courses and mentorship programs.",
+    results: [
+      "+30 booked consults per month",
+      "24/7 DM handling on all platforms",
+      "No more wasted time on unqualified leads"
+    ],
+    color: "from-primary/20 to-primary/5"
+  },
+  {
+    id: 2,
+    title: "Med Spas",
+    icon: Flower,
+    description: "Qualify and book appointments for Botox, fillers, and aesthetic treatments.",
+    results: [
+      "45% increase in lead-to-appointment rate",
+      "Automated follow-ups with personalization",
+      "No missed calls during busy hours"
+    ],
+    color: "from-[#00E676]/20 to-[#00E676]/5"
+  },
+  {
+    id: 3,
+    title: "Vehicle Aesthetics",
+    icon: Car,
+    description: "Handle quotes, bookings and follow-ups for wraps, detailing, PPF and tinting.",
+    results: [
+      "5x faster quote replies to inquiries",
+      "Visual AI estimates based on photos",
+      "Higher appointment conversion rate"
+    ],
+    color: "from-[#FFC107]/20 to-[#FFC107]/5"
+  }
+];
 
 const IndustryResultsSection = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in');
+            entry.target.classList.remove('opacity-0');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const section = sectionRef.current;
+    if (section) {
+      observer.observe(section);
+    }
+
+    cardRefs.current.forEach(card => {
+      if (card) observer.observe(card);
+    });
+
+    return () => {
+      if (section) {
+        observer.unobserve(section);
+      }
+      cardRefs.current.forEach(card => {
+        if (card) observer.unobserve(card);
+      });
+    };
+  }, []);
+
   return (
-    <section id="results" className="py-20 container mx-auto px-4 md:px-8 relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute top-1/4 right-0 w-96 h-96 bg-primary/10 rounded-full filter blur-3xl opacity-20"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full filter blur-3xl opacity-20"></div>
+    <section id="results" className="relative py-24 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#091428] to-[#071020] z-0"></div>
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
       
-      <div className="text-center max-w-3xl mx-auto mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">Industry-Specific Results</h2>
-        <p className="text-muted-foreground text-lg">
-          Our AI agents are tailored to your industry, delivering results that matter for your specific business.
-        </p>
-      </div>
+      {/* Background glowing orbs */}
+      <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-[#FFC107]/5 rounded-full blur-3xl"></div>
       
-      <Tabs defaultValue="trading" className="w-full max-w-4xl mx-auto">
-        <div className="flex justify-center mb-8">
-          <TabsList className="grid w-full max-w-md grid-cols-3">
-            <TabsTrigger value="trading">Trading Mentors</TabsTrigger>
-            <TabsTrigger value="medspa">Med Spas</TabsTrigger>
-            <TabsTrigger value="vehicle">Vehicle Aesthetics</TabsTrigger>
-          </TabsList>
+      <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
+        <div className="text-center mb-16">
+          <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+            Industry-Specific Results
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Tailored AI Solutions for Your Industry</h2>
+          <p className="text-lg text-foreground/80 max-w-2xl mx-auto">
+            Our AI agents are customized for your specific industry needs, delivering proven results for businesses like yours.
+          </p>
         </div>
         
-        {/* Trading Mentors Tab */}
-        <TabsContent value="trading" className="mt-0">
-          <Card className="glass-card border-primary/20">
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-2xl font-bold mb-4">For Trading Mentors</h3>
-                  <p className="text-muted-foreground mb-6">
-                    AI agents that qualify serious students and handle the repetitive questions that drain your time.
-                  </p>
-                  
-                  <div className="space-y-6">
-                    <div className="flex">
-                      <div className="mr-4 feature-icon-wrapper">
-                        <TrendingUp className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-lg">+30 Booked Consults/Month</h4>
-                        <p className="text-muted-foreground text-sm">More qualified calls with serious prospects</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex">
-                      <div className="mr-4 feature-icon-wrapper">
-                        <Clock className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-lg">24/7 DM Handling</h4>
-                        <p className="text-muted-foreground text-sm">Never miss an opportunity, even while you sleep</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex">
-                      <div className="mr-4 feature-icon-wrapper">
-                        <MessageCircle className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-lg">No More Wasted DMs</h4>
-                        <p className="text-muted-foreground text-sm">Filter out time-wasters and focus on serious students</p>
-                      </div>
-                    </div>
+        <div className="grid md:grid-cols-3 gap-8">
+          {industries.map((industry, index) => (
+            <div 
+              key={industry.id} 
+              ref={el => cardRefs.current[index] = el}
+              className="opacity-0 transition-all duration-500"
+              style={{ transitionDelay: `${index * 200}ms` }}
+            >
+              <Card className={cn(
+                "h-full border-0 bg-gradient-to-b", 
+                industry.color,
+                "hover-lift overflow-hidden"
+              )}>
+                <CardHeader className="pb-2">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <industry.icon className="text-primary" size={24} />
                   </div>
-                </div>
-                
-                <div className="bg-gradient-to-br from-blue-900/30 to-indigo-900/30 rounded-xl p-6 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-6xl font-bold mb-4 text-gradient-blue">150%</div>
-                    <p className="text-xl">Increase in Qualified Leads</p>
-                    <div className="mt-6 pt-6 border-t border-border/30">
-                      <p className="text-sm text-muted-foreground italic">
-                        "Go Focus AI has transformed my business. I'm now booking 3x more consults while spending less time on qualification calls."
-                      </p>
-                      <p className="text-sm mt-2">— Alex T., Forex Trading Coach</p>
-                    </div>
+                  <CardTitle className="text-xl">{industry.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-foreground/80 mb-6">{industry.description}</p>
+                  <div className="space-y-4">
+                    {industry.results.map((result, idx) => (
+                      <div key={idx} className="flex items-start">
+                        <div className="mr-3 mt-1 text-primary">
+                          <ArrowUpRight size={16} />
+                        </div>
+                        <p className="text-sm text-foreground/90">{result}</p>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        {/* Med Spa Tab */}
-        <TabsContent value="medspa" className="mt-0">
-          <Card className="glass-card border-primary/20">
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-2xl font-bold mb-4">For Med Spas</h3>
-                  <p className="text-muted-foreground mb-6">
-                    AI agents that answer common treatment questions and book consultations without interrupting your practice.
-                  </p>
-                  
-                  <div className="space-y-6">
-                    <div className="flex">
-                      <div className="mr-4 feature-icon-wrapper">
-                        <TrendingUp className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-lg">45% Increase in Lead-to-Appointment</h4>
-                        <p className="text-muted-foreground text-sm">More bookings from your existing lead flow</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex">
-                      <div className="mr-4 feature-icon-wrapper">
-                        <Clock className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-lg">Automated Follow-ups</h4>
-                        <p className="text-muted-foreground text-sm">Keep leads warm with perfectly timed messages</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex">
-                      <div className="mr-4 feature-icon-wrapper">
-                        <MessageCircle className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-lg">No Missed Calls</h4>
-                        <p className="text-muted-foreground text-sm">Capture every opportunity, even after hours</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl p-6 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-6xl font-bold mb-4 text-gradient-blue">3.2x</div>
-                    <p className="text-xl">Return on Investment</p>
-                    <div className="mt-6 pt-6 border-t border-border/30">
-                      <p className="text-sm text-muted-foreground italic">
-                        "Our AI assistant answers pricing questions instantly and has helped us increase our conversion rate dramatically."
-                      </p>
-                      <p className="text-sm mt-2">— Sarah L., Med Spa Owner</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        {/* Vehicle Aesthetics Tab */}
-        <TabsContent value="vehicle" className="mt-0">
-          <Card className="glass-card border-primary/20">
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-2xl font-bold mb-4">For Vehicle Aesthetics</h3>
-                  <p className="text-muted-foreground mb-6">
-                    AI agents that provide instant quotes and answer technical questions while you focus on craftsmanship.
-                  </p>
-                  
-                  <div className="space-y-6">
-                    <div className="flex">
-                      <div className="mr-4 feature-icon-wrapper">
-                        <TrendingUp className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-lg">5x Faster Quote Replies</h4>
-                        <p className="text-muted-foreground text-sm">Instant responses to customer inquiries</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex">
-                      <div className="mr-4 feature-icon-wrapper">
-                        <Clock className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-lg">Visual AI Estimates</h4>
-                        <p className="text-muted-foreground text-sm">Preliminary quotes based on customer photos</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex">
-                      <div className="mr-4 feature-icon-wrapper">
-                        <MessageCircle className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-lg">Higher Appointment Conversion</h4>
-                        <p className="text-muted-foreground text-sm">Convert more inquiries to in-shop visits</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 rounded-xl p-6 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-6xl font-bold mb-4 text-gradient-blue">67%</div>
-                    <p className="text-xl">More Scheduled Appointments</p>
-                    <div className="mt-6 pt-6 border-t border-border/30">
-                      <p className="text-sm text-muted-foreground italic">
-                        "We were losing business by not responding fast enough. Now our AI handles all inquiries instantly."
-                      </p>
-                      <p className="text-sm mt-2">— Mike R., Vehicle Wrap Shop Owner</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+                </CardContent>
+              </Card>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 };

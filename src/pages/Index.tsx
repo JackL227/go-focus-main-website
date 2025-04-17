@@ -1,6 +1,5 @@
 
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
 import AnimationSection from '@/components/AnimationSection';
@@ -10,13 +9,9 @@ import SocialProofSection from '@/components/SocialProofSection';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
-import { useAuth } from '@/App';
-import CallToAction from '@/components/CallToAction';
 
 const Index = () => {
   const [showScrollTop, setShowScrollTop] = React.useState(false);
-  const { user } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,13 +29,6 @@ const Index = () => {
     });
   };
 
-  // Redirect to dashboard if already logged in
-  useEffect(() => {
-    if (user) {
-      navigate('/dashboard');
-    }
-  }, [user, navigate]);
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#050A14] to-[#0A1428] text-foreground overflow-x-hidden">
       <Navigation />
@@ -49,7 +37,6 @@ const Index = () => {
       <HowItWorksSection />
       <IndustryResultsSection />
       <SocialProofSection />
-      <CallToAction />
       <Footer />
       
       {/* Scroll to top button */}

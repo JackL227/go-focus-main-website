@@ -9,82 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      agent_metrics: {
-        Row: {
-          agent_id: string
-          calls_booked: number | null
-          created_at: string
-          date: string
-          deals_closed: number | null
-          id: string
-          leads_handled: number | null
-          leads_qualified: number | null
-          updated_at: string
-        }
-        Insert: {
-          agent_id: string
-          calls_booked?: number | null
-          created_at?: string
-          date?: string
-          deals_closed?: number | null
-          id?: string
-          leads_handled?: number | null
-          leads_qualified?: number | null
-          updated_at?: string
-        }
-        Update: {
-          agent_id?: string
-          calls_booked?: number | null
-          created_at?: string
-          date?: string
-          deals_closed?: number | null
-          id?: string
-          leads_handled?: number | null
-          leads_qualified?: number | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "agent_metrics_agent_id_fkey"
-            columns: ["agent_id"]
-            isOneToOne: false
-            referencedRelation: "ai_agents"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      ai_agents: {
-        Row: {
-          created_at: string
-          id: string
-          name: string
-          type: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          name: string
-          type: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          name?: string
-          type?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "ai_agents_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       "Smile Launch": {
         Row: {
           created_at: string
@@ -97,33 +21,6 @@ export type Database = {
         Update: {
           created_at?: string
           id?: number
-        }
-        Relationships: []
-      }
-      user_profiles: {
-        Row: {
-          business_type: string | null
-          created_at: string
-          full_name: string | null
-          id: string
-          referral_code: string | null
-          updated_at: string
-        }
-        Insert: {
-          business_type?: string | null
-          created_at?: string
-          full_name?: string | null
-          id: string
-          referral_code?: string | null
-          updated_at?: string
-        }
-        Update: {
-          business_type?: string | null
-          created_at?: string
-          full_name?: string | null
-          id?: string
-          referral_code?: string | null
-          updated_at?: string
         }
         Relationships: []
       }

@@ -1,79 +1,58 @@
 
 import React from 'react';
-import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/App';
+import { Button } from './ui/button';
+import { ArrowRight, Play } from 'lucide-react';
+import FluidAnimation from './FluidAnimation';
 
 const HeroSection = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-
-  const handlePrimaryAction = () => {
-    if (user) {
-      navigate('/dashboard');
-    } else {
-      // Open modal or redirect to booking page
-      window.open('https://calendly.com', '_blank');
-    }
-  };
-
-  const handleSecondaryAction = () => {
-    // Scroll to how it works section
-    document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
-    <section className="relative pt-36 pb-16 md:pt-44 md:pb-24 container mx-auto px-4 md:px-8">
-      {/* Background gradient elements */}
-      <div className="absolute top-20 -left-64 w-96 h-96 bg-primary/30 rounded-full filter blur-3xl opacity-20 animate-pulse-soft"></div>
-      <div className="absolute bottom-10 -right-64 w-96 h-96 bg-accent/20 rounded-full filter blur-3xl opacity-20 animate-pulse-soft"></div>
+    <section className="relative min-h-screen flex items-center pt-24 pb-16">
+      {/* Background animation */}
+      <div className="absolute inset-0 overflow-hidden">
+        <FluidAnimation />
+      </div>
       
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
-        <h1 className="text-gradient-blue text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-          AI Agents That Convert Leads Into Revenue — While You Sleep.
-        </h1>
-        
-        <p className="text-xl md:text-2xl text-foreground/90 mb-8 max-w-3xl mx-auto">
-          Go Focus AI builds custom AI closers and voice assistants that respond, qualify, follow-up, and book appointments 24/7.
-        </p>
-        
-        <p className="text-lg text-foreground/70 mb-10">
-          Built for Trading Mentors, Med Spas & Vehicle Aesthetic Experts.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-          <Button 
-            size="lg" 
-            className="text-md px-8 py-6 bg-primary hover:bg-primary/90"
-            onClick={handlePrimaryAction}
-          >
-            {user ? 'Go to Dashboard' : 'Book a Demo'}
-          </Button>
+      {/* Gradient overlay for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/70 to-background/80 z-[1]"></div>
+      
+      <div className="container-custom relative z-10 py-16">
+        <div className="max-w-4xl mx-auto">
+          <div className="absolute -top-16 -left-16 w-64 h-64 bg-primary/20 rounded-full blur-3xl" />
+          <div className="absolute -bottom-32 -right-8 w-80 h-80 bg-[#00E676]/10 rounded-full blur-3xl" />
           
-          <Button 
-            size="lg" 
-            variant="outline"
-            className="text-md px-8 py-6"
-            onClick={handleSecondaryAction}
-          >
-            See How It Works
-            <ChevronRight className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-        
-        {/* Floating message bubbles */}
-        <div className="relative h-32 mt-12 hidden md:block">
-          <div className="absolute top-0 left-8 glass-card p-3 rounded-lg max-w-xs animate-float shadow-lg">
-            <p className="text-sm">How much is Botox?</p>
+          {/* Hero Content */}
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-2 rounded-full bg-background/40 backdrop-blur-sm shadow-sm border border-foreground/20 text-primary text-sm font-medium mb-6 opacity-0 animate-fade-in [animation-delay:100ms]">
+              Performance-Based AI Automation Agency
+            </span>
+            
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 opacity-0 animate-fade-in [animation-delay:300ms] leading-tight">
+              AI Agents That Convert Leads Into Revenue — 
+              <span className="text-primary"> While You Sleep.</span>
+            </h1>
+            
+            <p className="text-xl text-foreground/90 mb-8 opacity-0 animate-fade-in [animation-delay:500ms] max-w-3xl mx-auto">
+              Go Focus AI builds custom AI closers and voice assistants that respond, qualify, follow-up, and book appointments 24/7.
+              <span className="block mt-2 text-primary/90">Built for Trading Mentors, Med Spas & Vehicle Aesthetic Experts.</span>
+            </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-4 opacity-0 animate-fade-in [animation-delay:700ms]">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-background group">
+                Book a Demo
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+              <Button size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 flex items-center">
+                <Play className="mr-2 h-4 w-4" />
+                See How It Works
+              </Button>
+            </div>
           </div>
           
-          <div className="absolute top-10 right-16 glass-card p-3 rounded-lg max-w-xs animate-float shadow-lg" style={{ animationDelay: "1.5s" }}>
-            <p className="text-sm">What's the cost of this wrap?</p>
-          </div>
-          
-          <div className="absolute bottom-0 left-1/3 glass-card p-3 rounded-lg max-w-xs animate-float shadow-lg" style={{ animationDelay: "1s" }}>
-            <p className="text-sm">Is your course beginner-friendly?</p>
+          {/* Subtle downward indication */}
+          <div className="text-center mt-8 opacity-0 animate-fade-in [animation-delay:1200ms]">
+            <div className="inline-block animate-bounce">
+              <ArrowRight className="h-6 w-6 transform rotate-90 text-primary/70" />
+            </div>
           </div>
         </div>
       </div>
