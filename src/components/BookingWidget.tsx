@@ -33,19 +33,11 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
     })();
   }, []);
 
-  const handleDirectBooking = () => {
-    const cal = (window as any).Cal;
-    if (cal) {
-      cal.openModal({
-        calLink: "gofocus.ai/30min",
-        config: { layout: "month_view" }
-      });
-    }
-  };
-
   return (
     <Button 
-      onClick={handleDirectBooking}
+      data-cal-namespace="30min"
+      data-cal-link="gofocus.ai/30min"
+      data-cal-config='{"layout":"month_view"}'
       className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow ${className}`}
       variant={variant}
       {...props}
