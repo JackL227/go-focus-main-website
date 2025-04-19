@@ -16,24 +16,23 @@ class AINode {
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
-    this.size = 50; // Increased size for more prominence
+    this.size = 50;
     this.pulseRadius = this.size;
-    this.pulseOpacity = 0.3; // Increased opacity
-    this.pulseSpeed = 0.02; // Faster pulse
+    this.pulseOpacity = 0.3;
+    this.pulseSpeed = 0.02;
     this.rotation = 0;
-    this.rotationSpeed = 0.007; // Faster rotation
+    this.rotationSpeed = 0.007;
     this.processingEffect = 0;
     this.processingDirection = 1;
     this.logoImage = null;
     this.isLogoLoaded = false;
     
-    // Load the logo image
     this.loadLogoImage();
   }
   
   loadLogoImage() {
     const img = new Image();
-    img.src = '/lovable-uploads/202c46b9-6e56-4ace-b904-a5bb54639d74.png';
+    img.src = '/lovable-uploads/2169d2e1-980e-4b57-bd71-e3801dd099ec.png';
     img.onload = () => {
       this.logoImage = img;
       this.isLogoLoaded = true;
@@ -46,18 +45,12 @@ class AINode {
   update() {
     // Pulse effect
     this.pulseRadius += this.pulseSpeed;
-    if (this.pulseRadius > this.size * 1.8) { // Larger pulse
+    if (this.pulseRadius > this.size * 1.8) {
       this.pulseRadius = this.size;
     }
     
-    // Rotation effect for inner elements
-    this.rotation += this.rotationSpeed;
-    if (this.rotation > Math.PI * 2) {
-      this.rotation = 0;
-    }
-    
     // Processing effect
-    this.processingEffect += 0.03 * this.processingDirection; // Faster processing effect
+    this.processingEffect += 0.03 * this.processingDirection;
     if (this.processingEffect > 1 || this.processingEffect < 0) {
       this.processingDirection *= -1;
     }
@@ -74,7 +67,7 @@ class AINode {
     
     // Draw outer glow
     ctx.shadowColor = colors.primary;
-    ctx.shadowBlur = 20; // Enhanced glow
+    ctx.shadowBlur = 20;
     
     // Draw main node
     ctx.beginPath();
@@ -89,31 +82,20 @@ class AINode {
     ctx.fillStyle = gradient;
     ctx.fill();
     
-    // Draw logo in the center instead of the text
+    // Draw logo in the center
     if (this.isLogoLoaded && this.logoImage) {
-      const logoSize = this.size * 1.5;
+      const logoSize = this.size * 1.8;
       ctx.save();
-      ctx.globalAlpha = 0.9;
-      
-      // Add subtle rotating effect
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.rotation / 3); // Slower rotation than the particles
+      ctx.globalAlpha = 0.95;
       ctx.drawImage(
         this.logoImage, 
-        -logoSize/2, 
-        -logoSize/2, 
+        this.x - logoSize/2, 
+        this.y - logoSize/2, 
         logoSize, 
         logoSize
       );
       ctx.restore();
     }
-    
-    // Draw outer ring
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size * 1.1, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
     
     // Reset shadow
     ctx.shadowColor = 'transparent';
@@ -125,43 +107,12 @@ class AINode {
     ctx.strokeStyle = `rgba(255, 255, 255, ${0.8 - this.processingEffect * 0.6})`;
     ctx.lineWidth = 2;
     ctx.stroke();
-    
-    // Draw orbital particles - these will still rotate around the logo
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.rotation);
-    
-    // Inner circles (increased number)
-    for (let i = 0; i < 6; i++) {
-      const angle = (Math.PI * 2 / 6) * i;
-      const orbitRadius = this.size * 0.8;
-      const x = Math.cos(angle) * orbitRadius;
-      const y = Math.sin(angle) * orbitRadius;
-      const circleSize = this.size * (0.12 + this.processingEffect * 0.05);
-      
-      ctx.beginPath();
-      ctx.arc(x, y, circleSize, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(30, 174, 219, 0.8)'; // Neon teal
-      ctx.fill();
-      
-      // Connect to center with luminous lines
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(x, y);
-      ctx.strokeStyle = 'rgba(30, 174, 219, 0.4)'; // Semi-transparent neon teal
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-    }
-    
-    ctx.restore();
   }
   
   processParticle(particle: {x: number, y: number}): boolean {
-    // Check if particle is within processing range
     const dx = this.x - particle.x;
     const dy = this.y - particle.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    
     return distance < this.size * 1.2;
   }
 }
