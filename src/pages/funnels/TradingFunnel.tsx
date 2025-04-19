@@ -6,19 +6,20 @@ const TradingFunnel = () => {
   return (
     <FunnelLayout
       niche="trading"
-      headline="AI Closers That Book Your Trading Clients While You Sleep."
-      subheadline="Never miss another DM, comment, or inbound lead again — our AI agent qualifies, books, and closes them 24/7 so you can focus on coaching winners."
+      headline="Booked 87 Sales Calls for Trading Mentors in 30 Days — Without Chasing Leads."
+      subheadline="Our AI Sales Agent qualifies and books your ideal students — so you never waste time chasing cold leads again."
       benefits={[
-        "Instantly respond to every lead, even while you sleep or working with existing clients",
-        "AI filters the tire-kickers so you only speak with qualified buyers ready to invest",
-        "Plug into your existing calendar and booking system seamlessly with zero tech hassle"
+        "Fully installed AI system that handles DMs, inquiries, and lead follow-up",
+        "Filters prospects by income, intent, and fit for maximum ROI",
+        "Schedules only qualified calls with serious buyers",
+        "100% DFY — no tech headaches, no hiring, no burnout"
       ]}
       testimonials={[
         {
-          quote: "Closed $20k in 2 days with zero outreach. The AI handled all the initial conversations and only booked calls with people ready to commit.",
-          author: "Alex Morgan",
-          position: "Forex Trading Coach",
-          company: "Morgan Trading Academy"
+          quote: "We installed Go Focus AI and hit 46K in sales in 60 days — up from 6K. It works.",
+          author: "Ethan M.",
+          position: "Forex Trading Mentor",
+          company: "Elite Trading Academy"
         },
         {
           quote: "My AI agent handles over 300 inquiries per week and filters out time-wasters. I've doubled my high-ticket clients while working fewer hours.",
@@ -29,23 +30,26 @@ const TradingFunnel = () => {
       ]}
       metrics={[
         {
-          title: "Lead Response Time",
-          value: "Under 1 Second",
-          description: "No more lost opportunities due to delayed responses"
+          title: "Qualified Leads Generated",
+          value: "87+",
+          description: "New potential clients every month"
         },
         {
-          title: "Coaching Client Conversion",
-          value: "35% Increase",
-          description: "More qualified prospects turning into paying clients"
+          title: "Sales Conversion Rate",
+          value: "35% Higher",
+          description: "Than traditional lead qualification methods"
         },
         {
           title: "Weekly Hours Saved",
           value: "15+ Hours",
-          description: "Spend more time with premium clients and less on qualifying"
+          description: "Time back to focus on your existing clients"
         }
       ]}
-      guaranteeText="We're so confident in our AI agents that we guarantee results. If our AI doesn't book at least 15 qualified prospects in your first 60 days, we'll continue optimizing your agent for free until we hit that number."
-      urgencyText="We're only onboarding 5 trading mentors this month. Lock in your spot now."
+      guaranteeText="We guarantee 30 qualified mentorship leads in 90 days — or we work for free until you do."
+      urgencyText="⛔ Only 5 mentor programs onboarded/month to avoid offer saturation"
+      ctaText="Book My Strategy Call"
+      hasCountdown={true}
+      showSocialProof={true}
     />
   );
 };

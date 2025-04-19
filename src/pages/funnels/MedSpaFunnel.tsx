@@ -6,46 +6,51 @@ const MedSpaFunnel = () => {
   return (
     <FunnelLayout
       niche="medspa"
-      headline="Your 24/7 Virtual Concierge: Booking Med Spa Clients While You Transform Lives."
-      subheadline="Never miss another inquiry or consultation opportunity. Our AI assistant answers questions, educates clients on treatments, and books appointments around the clock."
+      headline="Book 30 New Patients in 90 Days — Without Chasing DMs or Answering FAQs."
+      subheadline="We install an AI assistant that replies, qualifies, and fills your appointment calendar on autopilot."
       benefits={[
-        "Provide instant responses to treatment questions, even after business hours",
-        "Pre-qualify clients and collect detailed information before their consultation",
-        "Seamlessly integrate with your existing booking and CRM systems"
+        "AI receptionist handles DMs, form replies, web chat",
+        "Answers pricing objections + package information automatically",
+        "Auto-booking into your existing calendar",
+        "Reactivation campaigns for cold leads",
+        "Retention/upsell follow-through"
       ]}
       testimonials={[
         {
-          quote: "We've secured 30 new consultations in just 10 days. The AI handles all the initial questions about procedures, pricing, and recovery time that used to eat up our staff's day.",
-          author: "Dr. Sarah Johnson",
-          position: "Medical Director",
-          company: "Radiance Med Spa"
+          quote: "From 4 to 25+ bookings per week. $20K/month increase. All automated.",
+          author: "Sarah Johnson",
+          position: "Owner",
+          company: "Luxe Skin Spa"
         },
         {
-          quote: "Our AI assistant has increased our booking rate by 40%. It follows up with leads who don't schedule immediately and recaptures clients we would have otherwise lost.",
+          quote: "Our AI assistant increased our booking rate by 40%. It follows up with leads who don't schedule immediately and recaptures clients we would have otherwise lost.",
           author: "Jessica Williams",
-          position: "Owner",
+          position: "Director",
           company: "Pure Aesthetics"
         }
       ]}
       metrics={[
         {
-          title: "After-Hours Bookings",
-          value: "35% of Total",
-          description: "Capture clients when they're thinking about treatments"
+          title: "Monthly Consultations",
+          value: "30+",
+          description: "New qualified patient appointments"
         },
         {
-          title: "Consultation Show-Up Rate",
-          value: "92%",
-          description: "Pre-qualified clients are more likely to attend"
+          title: "Revenue Increase",
+          value: "$20K+",
+          description: "Average monthly revenue growth"
         },
         {
-          title: "Staff Time Savings",
-          value: "28 Hours/Week",
-          description: "Let your team focus on in-person client care"
+          title: "Response Time",
+          value: "< 1 Second",
+          description: "Immediate answers to customer questions"
         }
       ]}
-      guaranteeText="We understand the unique needs of med spas. Our AI assistant is HIPAA-compliant and trained specifically for aesthetic medicine conversations. If you don't see at least 15 new consultation bookings in your first 30 days, we'll work with you until you do."
-      urgencyText="Limited time offer: Get 2 months of our premium AI service for the price of 1 when you sign up this week."
+      guaranteeText="If we don't deliver 30 booked consults in 90 days, you don't pay."
+      urgencyText="🚫 Only 1 Med Spa per city onboarded for exclusivity"
+      ctaText="See How It Works"
+      hasCountdown={true}
+      showSocialProof={true}
     />
   );
 };

@@ -1,7 +1,8 @@
 
-import React, { useEffect, useRef } from 'react';
-import { ArrowRight, Check } from "lucide-react";
+import React, { useEffect, useState } from 'react';
+import { ArrowRight, Check, Calendar, Clock, Users, Award, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 
 interface FunnelLayoutProps {
   niche: 'trading' | 'medspa' | 'fitness';
@@ -22,6 +23,9 @@ interface FunnelLayoutProps {
   }[];
   guaranteeText: string;
   urgencyText?: string;
+  ctaText: string;
+  hasCountdown?: boolean;
+  showSocialProof?: boolean;
 }
 
 const FunnelLayout: React.FC<FunnelLayoutProps> = ({
@@ -32,7 +36,10 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   testimonials,
   metrics,
   guaranteeText,
-  urgencyText
+  urgencyText,
+  ctaText,
+  hasCountdown = false,
+  showSocialProof = false
 }) => {
   const colorSchemes = {
     trading: {
@@ -59,6 +66,52 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   };
 
   const colorScheme = colorSchemes[niche];
+  
+  // Countdown Timer
+  const [timeRemaining, setTimeRemaining] = useState({
+    hours: 23,
+    minutes: 59,
+    seconds: 59
+  });
+
+  useEffect(() => {
+    if (hasCountdown) {
+      const interval = setInterval(() => {
+        setTimeRemaining(prev => {
+          if (prev.seconds > 0) {
+            return { ...prev, seconds: prev.seconds - 1 };
+          } else if (prev.minutes > 0) {
+            return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
+          } else if (prev.hours > 0) {
+            return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
+          }
+          return { hours: 23, minutes: 59, seconds: 59 }; // Reset to 24 hours
+        });
+      }, 1000);
+      
+      return () => clearInterval(interval);
+    }
+  }, [hasCountdown]);
+
+  // Social proof animation
+  const [currentProofIndex, setCurrentProofIndex] = useState(0);
+  const socialProofs = [
+    { name: "Alex M.", action: "Booked a call", time: "2 minutes ago" },
+    { name: "Sarah L.", action: "Signed up", time: "5 minutes ago" },
+    { name: "John D.", action: "Booked a call", time: "12 minutes ago" },
+    { name: "Emma W.", action: "Made a purchase", time: "18 minutes ago" },
+    { name: "Robert K.", action: "Booked a call", time: "24 minutes ago" }
+  ];
+
+  useEffect(() => {
+    if (showSocialProof) {
+      const interval = setInterval(() => {
+        setCurrentProofIndex(prev => (prev + 1) % socialProofs.length);
+      }, 4000);
+      
+      return () => clearInterval(interval);
+    }
+  }, [showSocialProof]);
   
   // Intersection Observer for animations
   useEffect(() => {
@@ -101,6 +154,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center">
         <div className="absolute inset-0 overflow-hidden">
           <div className={`w-full h-full bg-gradient-to-b ${colorScheme.gradient} opacity-10`}></div>
@@ -110,6 +164,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         
         <div className="container-custom relative z-10 py-24">
           <div className="max-w-4xl mx-auto text-center">
+            {/* Optional video placeholder */}
             <div className="mb-12 rounded-xl overflow-hidden shadow-2xl animate-entrance transition-all duration-700">
               <div className="aspect-video bg-black/5 flex items-center justify-center">
                 <p className="text-foreground/50">Video Coming Soon</p>
@@ -124,28 +179,59 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
               {subheadline}
             </p>
             
+            {showSocialProof && (
+              <div className="mb-6 animate-entrance bg-background/60 backdrop-blur-sm border border-foreground/10 rounded-lg p-3 max-w-xs mx-auto">
+                <p className="text-sm">
+                  <span className="font-semibold">{socialProofs[currentProofIndex].name}</span>
+                  <span className="mx-1">{socialProofs[currentProofIndex].action}</span>
+                  <span className="text-foreground/60 text-xs">{socialProofs[currentProofIndex].time}</span>
+                </p>
+              </div>
+            )}
+            
             <div className="flex flex-col sm:flex-row justify-center gap-4 animate-entrance">
               <BookingWidget 
-                className={`text-white group text-lg px-7 py-3 w-full sm:w-auto ${colorScheme.button} ${colorScheme.glow}`}
+                className={`text-white group text-lg px-7 py-3 w-full sm:w-auto ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
               >
-                <span className="whitespace-normal">Book My Strategy Call Now</span>
+                <span className="whitespace-normal">{ctaText}</span>
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
               </BookingWidget>
             </div>
+            
+            {hasCountdown && (
+              <div className="mt-8 animate-entrance">
+                <p className="text-sm text-foreground/70 mb-2">Limited Time Offer Ends In:</p>
+                <div className="flex justify-center gap-4">
+                  <div className="bg-background/80 backdrop-blur-sm border border-foreground/20 rounded px-3 py-2 w-16">
+                    <div className="text-xl font-bold">{String(timeRemaining.hours).padStart(2, '0')}</div>
+                    <div className="text-xs text-foreground/70">Hours</div>
+                  </div>
+                  <div className="bg-background/80 backdrop-blur-sm border border-foreground/20 rounded px-3 py-2 w-16">
+                    <div className="text-xl font-bold">{String(timeRemaining.minutes).padStart(2, '0')}</div>
+                    <div className="text-xs text-foreground/70">Minutes</div>
+                  </div>
+                  <div className="bg-background/80 backdrop-blur-sm border border-foreground/20 rounded px-3 py-2 w-16">
+                    <div className="text-xl font-bold">{String(timeRemaining.seconds).padStart(2, '0')}</div>
+                    <div className="text-xs text-foreground/70">Seconds</div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
+      {/* Benefits Section */}
       <section id="benefits" className="py-16 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 animate-entrance">Key Benefits</h2>
+            <h2 className="text-3xl font-bold text-center mb-12 animate-entrance">What You Get</h2>
             
-            <div className="grid md:grid-cols-3 gap-8 stagger-animation">
+            <div className="grid md:grid-cols-2 gap-8 stagger-animation">
               {benefits.map((benefit, index) => (
                 <div 
                   key={index}
-                  className="glass-card p-6 rounded-lg"
+                  className="glass-card p-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
                 >
                   <div className="flex items-start">
                     <div className={`p-2 rounded-full bg-gradient-to-r ${colorScheme.accent} text-white mr-3 animate-pulse-soft`}>
@@ -160,26 +246,80 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      <section id="testimonials" className="py-16 bg-background">
+      {/* How It Works Section */}
+      <section id="how-it-works" className="py-16 bg-background">
         <div className="container-custom">
-          <h2 className="text-3xl font-bold text-center mb-12 animate-entrance">What Our Clients Say</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 animate-entrance">How It Works</h2>
+          
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8 stagger-animation">
+              <div className="glass-card p-6 rounded-lg text-center transition-all duration-300 hover:scale-105">
+                <div className="h-16 w-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-gradient-to-r from-primary to-primary/70 text-white text-xl font-bold animate-pulse-soft">
+                  1
+                </div>
+                <h3 className="text-xl font-bold mb-3">We Build Your AI Agent</h3>
+                <p>Trained on your exact offer, pricing, and messaging to represent your business perfectly.</p>
+              </div>
+              
+              <div className="glass-card p-6 rounded-lg text-center transition-all duration-300 hover:scale-105">
+                <div className="h-16 w-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-gradient-to-r from-primary to-primary/70 text-white text-xl font-bold animate-pulse-soft">
+                  2
+                </div>
+                <h3 className="text-xl font-bold mb-3">We Connect To Your Lead Flow</h3>
+                <p>Seamlessly integrates with all channels - DMs, forms, emails, and website chat.</p>
+              </div>
+              
+              <div className="glass-card p-6 rounded-lg text-center transition-all duration-300 hover:scale-105">
+                <div className="h-16 w-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-gradient-to-r from-primary to-primary/70 text-white text-xl font-bold animate-pulse-soft">
+                  3
+                </div>
+                <h3 className="text-xl font-bold mb-3">You Get Pre-Qualified Meetings</h3>
+                <p>Only speak with vetted prospects who match your ideal client profile and are ready to buy.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials & Metrics Section */}
+      <section id="testimonials" className="py-16 bg-background/95">
+        <div className="container-custom">
+          <h2 className="text-3xl font-bold text-center mb-12 animate-entrance">Results & Feedback</h2>
           
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Testimonials */}
             <div className="space-y-8 stagger-animation">
-              {testimonials.map((testimonial, index) => (
-                <div key={index} className="glass-card p-6 rounded-lg">
-                  <p className="text-lg mb-4 italic">"{testimonial.quote}"</p>
-                  <div>
-                    <p className="font-semibold">{testimonial.author}</p>
-                    <p className="text-sm text-foreground/70">{testimonial.position}, {testimonial.company}</p>
-                  </div>
-                </div>
-              ))}
+              <h3 className="text-2xl font-bold mb-6 flex items-center">
+                <Users className="mr-2 h-6 w-6 text-primary" />
+                What Our Clients Say
+              </h3>
+              
+              <Carousel className="w-full">
+                <CarouselContent>
+                  {testimonials.map((testimonial, index) => (
+                    <CarouselItem key={index}>
+                      <div className="glass-card p-6 rounded-lg h-full">
+                        <p className="text-lg mb-4 italic">"{testimonial.quote}"</p>
+                        <div>
+                          <p className="font-semibold">{testimonial.author}</p>
+                          <p className="text-sm text-foreground/70">{testimonial.position}, {testimonial.company}</p>
+                        </div>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
             </div>
             
+            {/* Metrics */}
             <div className="space-y-6 stagger-animation">
+              <h3 className="text-2xl font-bold mb-6 flex items-center">
+                <Award className="mr-2 h-6 w-6 text-primary" />
+                Real Results
+              </h3>
+              
               {metrics.map((metric, index) => (
-                <div key={index} className="glass-card p-6 rounded-lg">
+                <div key={index} className="glass-card p-6 rounded-lg transition-all duration-300 hover:scale-105">
                   <h3 className="font-bold text-xl mb-2">{metric.title}</h3>
                   <p className={`text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${colorScheme.accent} animate-pulse-soft`}>
                     {metric.value}
@@ -192,80 +332,60 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      <section id="how-it-works" className="py-16 bg-background/95">
-        <div className="container-custom">
-          <h2 className="text-3xl font-bold text-center mb-12 animate-entrance">How It Works</h2>
-          
-          <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8 stagger-animation">
-              <div className="glass-card p-6 rounded-lg text-center">
-                <div className="h-16 w-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-gradient-to-r from-primary to-primary/70 text-white text-xl font-bold animate-pulse-soft">
-                  1
-                </div>
-                <h3 className="text-xl font-bold mb-3">We Build Your AI Agent</h3>
-                <p>Trained on your exact offer, pricing, and messaging to represent your business perfectly.</p>
-              </div>
-              
-              <div className="glass-card p-6 rounded-lg text-center">
-                <div className="h-16 w-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-gradient-to-r from-primary to-primary/70 text-white text-xl font-bold animate-pulse-soft">
-                  2
-                </div>
-                <h3 className="text-xl font-bold mb-3">We Plug It Into Your Lead Funnel</h3>
-                <p>Connect with DMs, forms, emails, and more - no lead falls through the cracks.</p>
-              </div>
-              
-              <div className="glass-card p-6 rounded-lg text-center">
-                <div className="h-16 w-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-gradient-to-r from-primary to-primary/70 text-white text-xl font-bold animate-pulse-soft">
-                  3
-                </div>
-                <h3 className="text-xl font-bold mb-3">You Get Booked Calls with Qualified Clients</h3>
-                <p>Only speak with pre-vetted prospects ready to buy your services.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      {/* Guarantee Section */}
       <section id="guarantee" className="py-16 bg-background">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto glass-card p-8 rounded-lg animate-entrance">
-            <h2 className="text-2xl font-bold mb-4 text-center">What If I Don't Get Results?</h2>
-            <p className="text-lg mb-6 text-center">{guaranteeText}</p>
+            <div className="flex flex-col sm:flex-row items-center mb-4">
+              <Shield className="h-12 w-12 text-primary mr-4 flex-shrink-0 animate-pulse-soft" />
+              <h2 className="text-2xl font-bold text-center sm:text-left">Our Risk-Free Guarantee</h2>
+            </div>
+            <p className="text-lg mb-6 text-center sm:text-left">{guaranteeText}</p>
             <div className="text-center py-4 border-t border-b border-foreground/10">
-              <p className="text-xl font-semibold">Our Promise: 15 qualified client conversations or your money back.</p>
+              <p className="text-xl font-semibold">No long-term contracts. Cancel anytime.</p>
             </div>
             {urgencyText && (
               <div className="mt-6 text-center">
-                <p className="text-lg font-semibold text-red-500 animate-pulse-soft">{urgencyText}</p>
+                <div className="inline-block bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-2">
+                  <p className="text-lg font-semibold text-red-400 animate-pulse-soft">{urgencyText}</p>
+                </div>
               </div>
             )}
           </div>
         </div>
       </section>
 
+      {/* Final CTA Section */}
       <section id="cta" className="py-16 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto text-center animate-entrance">
-            <h2 className="text-3xl font-bold mb-6">Let's Talk Strategy — Reserve Your Spot Below</h2>
-            <p className="text-lg mb-8">We'll analyze your current funnel and show you exactly how our AI can transform your lead conversion.</p>
+            <h2 className="text-3xl font-bold mb-6">Ready To Automate Your Lead Generation?</h2>
+            <p className="text-lg mb-8 max-w-2xl mx-auto">Book your strategy call today and we'll show you exactly how our AI system will transform your business within the next 90 days.</p>
             
-            <div className="max-w-lg mx-auto mb-8">
-              <BookingWidget 
-                className={`w-full text-white group text-lg px-7 py-4 ${colorScheme.button} ${colorScheme.glow}`}
-              >
-                <span className="whitespace-normal">Book My Strategy Call Now</span>
-                <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
-              </BookingWidget>
+            <div className="flex flex-col items-center mb-8">
+              <div className="max-w-lg w-full">
+                <BookingWidget 
+                  className={`w-full text-white group text-lg px-7 py-4 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
+                >
+                  <Calendar className="h-5 w-5 mr-2 animate-pulse-soft" />
+                  <span className="whitespace-normal">{ctaText}</span>
+                  <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
+                </BookingWidget>
+              </div>
+              
+              {hasCountdown && (
+                <div className="mt-6 flex items-center text-red-400">
+                  <Clock className="h-4 w-4 mr-2 animate-pulse-soft" />
+                  <span className="text-sm font-medium">Limited spots available - Don't miss out!</span>
+                </div>
+              )}
             </div>
-            
-            {urgencyText && (
-              <p className="text-red-500 font-semibold mt-6 animate-pulse-soft">{urgencyText}</p>
-            )}
           </div>
         </div>
       </section>
 
-      <footer className="py-8 bg-background border-t border-foreground/10">
+      {/* Minimal Footer */}
+      <footer className="py-6 bg-background border-t border-foreground/10">
         <div className="container-custom">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-center">
@@ -275,8 +395,12 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
               </div>
               
               <div className="text-sm text-foreground/70">
-                <p>© {new Date().getFullYear()} Go Focus AI. All rights reserved.</p>
-                <p>Privacy Policy | Terms of Service</p>
+                <p className="text-center md:text-right">
+                  <span className="border-r border-foreground/30 pr-2 mr-2">Privacy Policy</span>
+                  <span className="border-r border-foreground/30 pr-2 mr-2">Terms of Service</span>
+                  <span>Contact</span>
+                </p>
+                <p className="mt-1">© {new Date().getFullYear()} Go Focus AI. All rights reserved.</p>
               </div>
             </div>
           </div>
