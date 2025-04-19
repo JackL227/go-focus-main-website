@@ -1,19 +1,13 @@
 import React from 'react';
 import { Mail, Phone, Shield, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
-
 const Footer = () => {
-  return (
-    <footer className="bg-[#050A14] text-foreground pt-16 pb-8 border-t border-foreground/10">
+  return <footer className="bg-[#050A14] text-foreground pt-16 pb-8 border-t border-foreground/10">
       <div className="container-custom">
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Company Info */}
           <div>
             <div className="mb-6">
-              <img 
-                src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
-                alt="GoFocus Logo" 
-                className="h-24 w-auto" 
-              />
+              <img src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" alt="GoFocus Logo" className="h-30 w-auto" />
             </div>
             
             <p className="text-foreground/70 mb-6">
@@ -88,8 +82,6 @@ const Footer = () => {
           <p>&copy; {new Date().getFullYear()} Go Focus AI. All rights reserved.</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
