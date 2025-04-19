@@ -9,6 +9,9 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import AuthCallback from "./pages/AuthCallback";
 import NotFound from "./pages/NotFound";
+import TradingFunnel from "./pages/funnels/TradingFunnel";
+import MedSpaFunnel from "./pages/funnels/MedSpaFunnel";
+import FitnessFunnel from "./pages/funnels/FitnessFunnel";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +26,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/trading" element={<TradingFunnel />} />
+            <Route path="/medspa" element={<MedSpaFunnel />} />
+            <Route path="/fitness" element={<FitnessFunnel />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
