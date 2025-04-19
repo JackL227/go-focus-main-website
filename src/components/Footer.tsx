@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Mail, Phone, Shield, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 
@@ -9,7 +8,15 @@ const Footer = () => {
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold mb-6">Go Focus AI</h3>
+            <div className="flex items-center mb-6">
+              <img 
+                src="/lovable-uploads/gofocus-logo.png" 
+                alt="Go Focus AI Logo" 
+                className="h-10 w-auto mr-3" 
+              />
+              <h3 className="text-xl font-bold">Go Focus AI</h3>
+            </div>
+            
             <p className="text-foreground/70 mb-6">
               Performance-based AI automation agency building custom voice agents and lead-closing workflows for high-intent service businesses.
             </p>
