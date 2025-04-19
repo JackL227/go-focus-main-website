@@ -6,10 +6,7 @@ class AINode {
   pulseRadius: number;
   pulseOpacity: number;
   pulseSpeed: number;
-  rotation: number;
-  rotationSpeed: number;
   processingEffect: number;
-  processingDirection: number;
   logoImage: HTMLImageElement | null;
   isLogoLoaded: boolean;
   
@@ -19,11 +16,8 @@ class AINode {
     this.size = 50;
     this.pulseRadius = this.size;
     this.pulseOpacity = 0.3;
-    this.pulseSpeed = 0.02;
-    this.rotation = 0;
-    this.rotationSpeed = 0.007;
+    this.pulseSpeed = 0.01; // Slower pulse speed for smoother animation
     this.processingEffect = 0;
-    this.processingDirection = 1;
     this.logoImage = null;
     this.isLogoLoaded = false;
     
@@ -32,8 +26,8 @@ class AINode {
   
   loadLogoImage() {
     this.logoImage = new Image();
-    // Use the user-uploaded image path
-    this.logoImage.src = '/lovable-uploads/9dc911d9-ffea-4dc9-8c9f-53a8114665de.png';
+    // Use the new logo image
+    this.logoImage.src = '/lovable-uploads/9586f2a1-3b2d-447e-9de4-2add6bd5fc4d.png';
     this.logoImage.onload = () => {
       this.isLogoLoaded = true;
     };
@@ -49,49 +43,44 @@ class AINode {
   }
   
   update() {
-    // Pulse effect
+    // Smoother pulse effect
     this.pulseRadius += this.pulseSpeed;
-    if (this.pulseRadius > this.size * 1.8) {
+    if (this.pulseRadius > this.size * 1.5) { // Reduced maximum pulse size
       this.pulseRadius = this.size;
     }
     
-    // Processing effect
-    this.processingEffect += 0.03 * this.processingDirection;
-    if (this.processingEffect > 1 || this.processingEffect < 0) {
-      this.processingDirection *= -1;
-    }
+    // Smooth processing effect animation
+    this.processingEffect = (Math.sin(Date.now() * 0.001) + 1) / 2; // Smoother circular animation
   }
   
   draw(ctx: CanvasRenderingContext2D, colors: Record<string, string>) {
-    // Draw multiple outer pulses for enhanced glow effect
-    for (let i = 0; i < 3; i++) {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.pulseRadius - i * 10, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0, 110, 218, ${this.pulseOpacity - i * 0.05})`;
-      ctx.fill();
-    }
+    // Draw subtle outer pulse
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.pulseRadius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0, 110, 218, ${this.pulseOpacity * 0.3})`; // More subtle pulse
+    ctx.fill();
     
     // Draw outer glow
     ctx.shadowColor = colors.primary;
-    ctx.shadowBlur = 20;
+    ctx.shadowBlur = 15;
     
-    // Draw main node circle with very transparent background to showcase logo better
+    // Draw main node circle with very transparent background
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     const gradient = ctx.createRadialGradient(
       this.x, this.y, 0,
       this.x, this.y, this.size
     );
-    gradient.addColorStop(0, 'rgba(0, 110, 218, 0.2)');
-    gradient.addColorStop(1, 'rgba(0, 56, 112, 0.1)');
+    gradient.addColorStop(0, 'rgba(0, 110, 218, 0.1)');
+    gradient.addColorStop(1, 'rgba(0, 56, 112, 0.05)');
     ctx.fillStyle = gradient;
     ctx.fill();
     
-    // Draw logo in the center - making it larger and fully opaque
+    // Draw logo in the center
     if (this.isLogoLoaded && this.logoImage) {
-      const logoSize = this.size * 2.5; // Make logo bigger to be more visible
+      const logoSize = this.size * 2.8; // Slightly larger logo
       ctx.save();
-      ctx.globalAlpha = 1; // Full opacity
+      ctx.globalAlpha = 1;
       ctx.drawImage(
         this.logoImage, 
         this.x - logoSize/2, 
@@ -106,11 +95,11 @@ class AINode {
     ctx.shadowColor = 'transparent';
     ctx.shadowBlur = 0;
     
-    // Draw processing indicator (ripple effect)
+    // Draw smooth processing indicator
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size * (0.6 + this.processingEffect * 0.3), 0, Math.PI * 2);
-    ctx.strokeStyle = `rgba(255, 255, 255, ${0.8 - this.processingEffect * 0.6})`;
-    ctx.lineWidth = 2;
+    ctx.arc(this.x, this.y, this.size * (0.8 + this.processingEffect * 0.2), 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(255, 255, 255, ${0.3 - this.processingEffect * 0.2})`; // More subtle processing circle
+    ctx.lineWidth = 1.5;
     ctx.stroke();
   }
   
@@ -123,3 +112,4 @@ class AINode {
 }
 
 export default AINode;
+
