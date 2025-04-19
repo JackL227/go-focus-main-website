@@ -46,14 +46,14 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
   return (
     <Button 
       onClick={handleDirectBooking}
-      className={className}
+      className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow ${className}`}
       variant={variant}
       {...props}
     >
       {children || (
         <>
-          <Calendar className="mr-2 h-5 w-5" />
-          Book a Demo
+          <Calendar className="mr-2 h-5 w-5 animate-pulse-soft" />
+          <span className="whitespace-normal text-center">Book a Demo</span>
         </>
       )}
     </Button>
