@@ -376,7 +376,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="mb-4 md:mb-0">
                 <img 
-                  src="/lovable-uploads/d410a2a7-6cd4-4de0-82f0-761a7a3f26c9.png" 
+                  src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
                   alt="GoFocus Logo" 
                   className="h-12 w-auto" 
                 />
