@@ -26,20 +26,34 @@ class AINode {
   
   loadLogoImage() {
     this.logoImage = new Image();
-    // Use the new logo image
-    this.logoImage.src = '/lovable-uploads/9586f2a1-3b2d-447e-9de4-2add6bd5fc4d.png';
+    
+    // Immediately set a fallback in case the image fails to load
+    const fallbackImage = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iIzAwNmVkYSIvPjwvc3ZnPg==';
+    
+    // Set up event handlers before setting src to avoid race conditions
     this.logoImage.onload = () => {
+      console.log("Logo image loaded successfully");
       this.isLogoLoaded = true;
     };
+    
     this.logoImage.onerror = (err) => {
       console.error("Failed to load logo image:", err);
-      // Set a fallback image if loading fails
-      this.logoImage = new Image();
-      this.logoImage.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iIzAwNmVkYSIvPjwvc3ZnPg==';
-      this.logoImage.onload = () => {
-        this.isLogoLoaded = true;
-      };
+      // If loading fails, use the fallback
+      if (this.logoImage) {
+        this.logoImage.src = fallbackImage;
+      }
     };
+    
+    // Try to load the requested image
+    this.logoImage.src = '/lovable-uploads/9586f2a1-3b2d-447e-9de4-2add6bd5fc4d.png';
+    
+    // Set a timeout as a safety measure - if image hasn't loaded in 2 seconds, use fallback
+    setTimeout(() => {
+      if (!this.isLogoLoaded && this.logoImage) {
+        console.log("Logo loading timed out, using fallback");
+        this.logoImage.src = fallbackImage;
+      }
+    }, 2000);
   }
   
   update() {
@@ -76,8 +90,8 @@ class AINode {
     ctx.fillStyle = gradient;
     ctx.fill();
     
-    // Draw logo in the center
-    if (this.isLogoLoaded && this.logoImage) {
+    // Draw logo in the center - ensure it's visible
+    if (this.logoImage) {  // Always try to draw the logo even if isLogoLoaded is false
       const logoSize = this.size * 2.8; // Slightly larger logo
       ctx.save();
       ctx.globalAlpha = 1;
@@ -112,4 +126,3 @@ class AINode {
 }
 
 export default AINode;
-
