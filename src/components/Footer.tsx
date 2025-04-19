@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Mail, Phone, Shield, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 
@@ -11,8 +10,8 @@ const Footer = () => {
           <div>
             <div className="mb-6">
               <img 
-                src="/lovable-uploads/gofocus-logo.png" 
-                alt="Go Focus AI Logo" 
+                src="/lovable-uploads/d410a2a7-6cd4-4de0-82f0-761a7a3f26c9.png" 
+                alt="GoFocus Logo" 
                 className="h-12 w-auto" 
               />
             </div>
