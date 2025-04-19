@@ -12,7 +12,7 @@ const Footer = () => {
               <img 
                 src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
                 alt="GoFocus Logo" 
-                className="h-12 w-auto" 
+                className="h-24 w-auto" 
               />
             </div>
             

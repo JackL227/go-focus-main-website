@@ -378,7 +378,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
                 <img 
                   src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
                   alt="GoFocus Logo" 
-                  className="h-12 w-auto" 
+                  className="h-24 w-auto" 
                 />
                 <p className="text-sm text-foreground/70 mt-2">AI Agents for Lead Qualification & Booking</p>
               </div>
