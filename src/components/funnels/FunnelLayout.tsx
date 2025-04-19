@@ -1,7 +1,4 @@
-
-import React from 'react';
-import { useEffect } from 'react';
-import { Button } from "@/components/ui/button";
+import React, { useEffect } from 'react';
 import { ArrowRight, Check } from "lucide-react";
 import BookingWidget from "../BookingWidget";
 
@@ -36,7 +33,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   guaranteeText,
   urgencyText
 }) => {
-  // Color schemes for different niches
   const colorSchemes = {
     trading: {
       accent: 'from-blue-500 to-blue-700',
@@ -60,7 +56,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
 
   const colorScheme = colorSchemes[niche];
 
-  // Smooth scroll to sections
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -68,15 +63,12 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
     }
   };
 
-  // For tracking (would normally be set up with actual tracking IDs)
   useEffect(() => {
-    // This would contain the actual tracking code setup
     console.log(`Funnel page loaded: ${niche}`);
   }, [niche]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center">
         <div className="absolute inset-0 overflow-hidden">
           <div className={`w-full h-full bg-gradient-to-b ${colorScheme.gradient} opacity-10`}></div>
@@ -86,6 +78,12 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         
         <div className="container-custom relative z-10 py-24">
           <div className="max-w-4xl mx-auto text-center">
+            <div className="mb-12 rounded-xl overflow-hidden shadow-2xl">
+              <div className="aspect-video bg-black/5 flex items-center justify-center">
+                <p className="text-foreground/50">Video Coming Soon</p>
+              </div>
+            </div>
+
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight opacity-0 animate-fade-in [animation-delay:300ms]">
               {headline}
             </h1>
@@ -98,17 +96,13 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
               <BookingWidget 
                 className={`text-white group text-lg px-7 py-3 ${colorScheme.button}`}
               >
-                <span className="flex items-center">
-                  Book My Strategy Call
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </span>
+                Book My Strategy Call Now
               </BookingWidget>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Benefits Stack */}
       <section id="benefits" className="py-16 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
@@ -133,13 +127,11 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Social Proof & Case Studies */}
       <section id="testimonials" className="py-16 bg-background">
         <div className="container-custom">
           <h2 className="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
           
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Testimonials */}
             <div className="space-y-8">
               {testimonials.map((testimonial, index) => (
                 <div key={index} className="glass-card p-6 rounded-lg">
@@ -152,7 +144,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
               ))}
             </div>
             
-            {/* Metrics */}
             <div className="space-y-6">
               {metrics.map((metric, index) => (
                 <div key={index} className="glass-card p-6 rounded-lg">
@@ -168,7 +159,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* How It Works */}
       <section id="how-it-works" className="py-16 bg-background/95">
         <div className="container-custom">
           <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
@@ -203,7 +193,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Objection Handling / Guarantee */}
       <section id="guarantee" className="py-16 bg-background">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto glass-card p-8 rounded-lg">
@@ -221,7 +210,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Final CTA */}
       <section id="cta" className="py-16 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto text-center">
@@ -243,7 +231,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Brand Footer */}
       <footer className="py-8 bg-background border-t border-foreground/10">
         <div className="container-custom">
           <div className="max-w-6xl mx-auto">
