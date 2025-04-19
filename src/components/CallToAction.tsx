@@ -1,7 +1,7 @@
-
 import React from 'react';
-import { CheckCircle, ArrowRight, Calendar, Mail, User, MessageSquare, Shield } from 'lucide-react';
+import { CheckCircle, ArrowRight, Mail, User, MessageSquare, Shield } from 'lucide-react';
 import { Button } from './ui/button';
+import BookingWidget from './BookingWidget';
 
 const CallToAction = () => {
   return (
@@ -45,17 +45,9 @@ const CallToAction = () => {
                 </li>
               </ul>
               
-              <Button 
+              <BookingWidget 
                 className="w-full bg-primary hover:bg-primary/90 text-background group text-base py-6"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert('This would open your calendar booking system in a real implementation.');
-                }}
-              >
-                <Calendar className="mr-2 h-5 w-5" />
-                Book Your Free Strategy Call
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Button>
+              />
             </div>
             
             {/* Right Column - Form */}
