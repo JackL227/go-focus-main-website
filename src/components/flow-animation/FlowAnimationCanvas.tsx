@@ -31,7 +31,7 @@ const FlowAnimationCanvas = () => {
     // Create outcome panels with clearer naming
     const qualifiedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.3, "Qualified", "checkmark");
     const bookedPanel = new OutcomePanel(canvas.width * 0.85, canvas.height * 0.5, "Booked Call", "calendar");
-    const closedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.7, "Closed Deal", "smile"); // Renamed to "Closed Deal"
+    const closedPanel = new OutcomePanel(canvas.width * 0.75, canvas.height * 0.7, "Closed Deal", "smile");
     
     // Create array of all panels for hover detection
     const allPanels = [qualifiedPanel, bookedPanel, closedPanel];

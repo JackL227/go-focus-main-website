@@ -3,20 +3,28 @@ export default class OutcomePanel {
   x: number;
   y: number;
   type: string;
+  iconType: string;
   pulseEffect: number;
   isPulsing: boolean;
+  isHovered: boolean;
   
-  constructor(x: number, y: number, type: string) {
+  constructor(x: number, y: number, type: string, iconType: string = "") {
     this.x = x;
     this.y = y;
     this.type = type;
+    this.iconType = iconType || "";
     this.pulseEffect = 0;
     this.isPulsing = false;
+    this.isHovered = false;
   }
   
   pulse() {
     this.isPulsing = true;
     this.pulseEffect = 1;
+  }
+  
+  hover(isHovered: boolean) {
+    this.isHovered = isHovered;
   }
   
   update() {
