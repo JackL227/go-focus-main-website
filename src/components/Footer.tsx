@@ -58,14 +58,14 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-primary" />
-                <a href="mailto:contact@gofocusai.com" className="text-foreground/70 hover:text-primary transition-colors">
-                  contact@gofocusai.com
+                <a href="mailto:support@gofocus.ai" className="text-foreground/70 hover:text-primary transition-colors">
+                  support@gofocus.ai
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-primary" />
-                <a href="tel:+1234567890" className="text-foreground/70 hover:text-primary transition-colors">
-                  (123) 456-7890
+                <a href="tel:+15145667802" className="text-foreground/70 hover:text-primary transition-colors">
+                  (514) 566-7802
                 </a>
               </li>
             </ul>

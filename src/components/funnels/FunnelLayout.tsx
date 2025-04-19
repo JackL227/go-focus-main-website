@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Check, Calendar, Clock, Users, Award, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
@@ -398,7 +397,12 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
                 <p className="text-center md:text-right">
                   <span className="border-r border-foreground/30 pr-2 mr-2">Privacy Policy</span>
                   <span className="border-r border-foreground/30 pr-2 mr-2">Terms of Service</span>
-                  <span>Contact</span>
+                  <span>
+                    <a href="mailto:support@gofocus.ai">Contact</a>
+                  </span>
+                </p>
+                <p className="mt-1 text-center md:text-right">
+                  <a href="tel:+15145667802">(514) 566-7802</a>
                 </p>
                 <p className="mt-1">© {new Date().getFullYear()} Go Focus AI. All rights reserved.</p>
               </div>
