@@ -6,9 +6,8 @@ import { useAnimationLoop } from './hooks/useAnimationLoop';
 const FlowAnimationCanvas = () => {
   const { canvasRef, ctx, aiNode, panels } = useCanvasSetup();
   
-  if (aiNode) {
-    useAnimationLoop(canvasRef.current, ctx, aiNode, panels);
-  }
+  // Always call the hook, but handle null values inside
+  useAnimationLoop(canvasRef.current, ctx, aiNode, panels);
   
   return (
     <canvas 
@@ -19,4 +18,3 @@ const FlowAnimationCanvas = () => {
 };
 
 export default FlowAnimationCanvas;
-

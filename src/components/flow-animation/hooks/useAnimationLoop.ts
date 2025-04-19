@@ -21,7 +21,7 @@ interface AnimationState {
 export const useAnimationLoop = (
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null,
-  aiNode: AINode,
+  aiNode: AINode | null,
   panels: OutcomePanel[]
 ) => {
   const animationState = useRef<AnimationState>({
@@ -31,7 +31,8 @@ export const useAnimationLoop = (
   });
 
   useEffect(() => {
-    if (!canvas || !ctx) return;
+    // Early return if any required dependencies are missing
+    if (!canvas || !ctx || !aiNode) return;
 
     // Initialize background particles
     animationState.current.bgParticles = Array.from({ length: 60 }, () => ({
@@ -52,7 +53,7 @@ export const useAnimationLoop = (
     let animationId: number;
 
     const animate = () => {
-      if (!ctx || !canvas) return;
+      if (!ctx || !canvas || !aiNode) return;
 
       // Draw background
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
@@ -113,7 +114,7 @@ export const useAnimationLoop = (
       });
 
       // Update particles
-      updateParticles(canvas, aiNode, panels);
+      updateParticles(canvas, aiNode, panels, ctx, animationState.current);
 
       animationId = requestAnimationFrame(animate);
     };
@@ -164,10 +165,10 @@ const drawConnectingLine = (
 const updateParticles = (
   canvas: HTMLCanvasElement,
   aiNode: AINode,
-  panels: OutcomePanel[]
+  panels: OutcomePanel[],
+  ctx: CanvasRenderingContext2D,
+  state: AnimationState
 ) => {
-  const state = animationState.current;
-
   // Update message particles
   for (let i = state.messageParticles.length - 1; i >= 0; i--) {
     const particle = state.messageParticles[i];
@@ -211,4 +212,3 @@ const updateParticles = (
     state.messageParticles.push(newParticle);
   }
 };
-
