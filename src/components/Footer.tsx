@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Mail, Phone, Shield, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 
@@ -8,13 +9,12 @@ const Footer = () => {
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Company Info */}
           <div>
-            <div className="flex items-center mb-6">
+            <div className="mb-6">
               <img 
                 src="/lovable-uploads/gofocus-logo.png" 
                 alt="Go Focus AI Logo" 
-                className="h-10 w-auto mr-3" 
+                className="h-12 w-auto" 
               />
-              <h3 className="text-xl font-bold">Go Focus AI</h3>
             </div>
             
             <p className="text-foreground/70 mb-6">

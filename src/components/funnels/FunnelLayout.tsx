@@ -66,7 +66,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
 
   const colorScheme = colorSchemes[niche];
   
-  // Countdown Timer
   const [timeRemaining, setTimeRemaining] = useState({
     hours: 23,
     minutes: 59,
@@ -92,7 +91,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
     }
   }, [hasCountdown]);
 
-  // Social proof animation
   const [currentProofIndex, setCurrentProofIndex] = useState(0);
   const socialProofs = [
     { name: "Alex M.", action: "Booked a call", time: "2 minutes ago" },
@@ -112,7 +110,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
     }
   }, [showSocialProof]);
   
-  // Intersection Observer for animations
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -130,7 +127,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     
-    // Observe all elements with animation classes
     document.querySelectorAll('.animate-entrance, .stagger-animation').forEach(el => {
       observer.observe(el);
     });
@@ -153,7 +149,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center">
         <div className="absolute inset-0 overflow-hidden">
           <div className={`w-full h-full bg-gradient-to-b ${colorScheme.gradient} opacity-10`}></div>
@@ -163,7 +158,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         
         <div className="container-custom relative z-10 py-24">
           <div className="max-w-4xl mx-auto text-center">
-            {/* Optional video placeholder */}
             <div className="mb-12 rounded-xl overflow-hidden shadow-2xl animate-entrance transition-all duration-700">
               <div className="aspect-video bg-black/5 flex items-center justify-center">
                 <p className="text-foreground/50">Video Coming Soon</p>
@@ -220,7 +214,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Benefits Section */}
       <section id="benefits" className="py-16 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
@@ -245,7 +238,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* How It Works Section */}
       <section id="how-it-works" className="py-16 bg-background">
         <div className="container-custom">
           <h2 className="text-3xl font-bold text-center mb-12 animate-entrance">How It Works</h2>
@@ -280,13 +272,11 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Testimonials & Metrics Section */}
       <section id="testimonials" className="py-16 bg-background/95">
         <div className="container-custom">
           <h2 className="text-3xl font-bold text-center mb-12 animate-entrance">Results & Feedback</h2>
           
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Testimonials */}
             <div className="space-y-8 stagger-animation">
               <h3 className="text-2xl font-bold mb-6 flex items-center">
                 <Users className="mr-2 h-6 w-6 text-primary" />
@@ -310,7 +300,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
               </Carousel>
             </div>
             
-            {/* Metrics */}
             <div className="space-y-6 stagger-animation">
               <h3 className="text-2xl font-bold mb-6 flex items-center">
                 <Award className="mr-2 h-6 w-6 text-primary" />
@@ -331,7 +320,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Guarantee Section */}
       <section id="guarantee" className="py-16 bg-background">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto glass-card p-8 rounded-lg animate-entrance">
@@ -354,7 +342,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Final CTA Section */}
       <section id="cta" className="py-16 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto text-center animate-entrance">
@@ -383,21 +370,17 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Minimal Footer */}
       <footer className="py-6 bg-background border-t border-foreground/10">
         <div className="container-custom">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="mb-4 md:mb-0 flex items-center">
+              <div className="mb-4 md:mb-0">
                 <img 
                   src="/lovable-uploads/gofocus-logo.png" 
                   alt="Go Focus AI Logo" 
-                  className="h-10 w-auto mr-3" 
+                  className="h-12 w-auto" 
                 />
-                <div>
-                  <h2 className="text-xl font-bold">Go Focus AI</h2>
-                  <p className="text-sm text-foreground/70">AI Agents for Lead Qualification & Booking</p>
-                </div>
+                <p className="text-sm text-foreground/70 mt-2">AI Agents for Lead Qualification & Booking</p>
               </div>
               
               <div className="text-sm text-foreground/70">
