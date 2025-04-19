@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from './ui/button';
 import { ArrowRight, Play } from 'lucide-react';
@@ -11,13 +10,13 @@ const HeroSection = () => {
   
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-16">
-      {/* Background animation */}
+      {/* Background animation with adjusted opacity and transition */}
       <div className="absolute inset-0 overflow-hidden">
         <FluidAnimation />
       </div>
       
-      {/* Gradient overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/70 to-background/80 z-[1]"></div>
+      {/* Updated gradient overlay with smoother transition */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/70 to-background z-[1]"></div>
       
       <div className="container-custom relative z-10 py-16">
         <div className="max-w-4xl mx-auto">

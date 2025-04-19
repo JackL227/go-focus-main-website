@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from 'react';
 import { Bot, Workflow, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -65,12 +64,11 @@ const HowItWorksSection = () => {
 
   return (
     <section id="how-it-works" className="relative py-24 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0A1A30] to-[#091428] z-0"></div>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background z-0"></div>
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-50"></div>
       
-      {/* Background glowing orbs */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#00E676]/5 rounded-full blur-3xl"></div>
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#00E676]/3 rounded-full blur-3xl"></div>
       
       <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
         <div className="text-center mb-16">
