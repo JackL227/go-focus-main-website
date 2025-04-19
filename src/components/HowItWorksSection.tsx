@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Bot, Workflow, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import BookingWidget from './BookingWidget';
 
 const steps = [
   {
