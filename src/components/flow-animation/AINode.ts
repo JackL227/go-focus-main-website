@@ -32,8 +32,8 @@ class AINode {
   
   loadLogoImage() {
     this.logoImage = new Image();
-    // Use a data URL for the logo (a blue circle as fallback)
-    this.logoImage.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iIzAwNmVkYSIvPjwvc3ZnPg==';
+    // Use the user-uploaded image path
+    this.logoImage.src = '/lovable-uploads/9dc911d9-ffea-4dc9-8c9f-53a8114665de.png';
     this.logoImage.onload = () => {
       this.isLogoLoaded = true;
     };
@@ -75,23 +75,23 @@ class AINode {
     ctx.shadowColor = colors.primary;
     ctx.shadowBlur = 20;
     
-    // Draw main node circle (transparent background)
+    // Draw main node circle with very transparent background to showcase logo better
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     const gradient = ctx.createRadialGradient(
       this.x, this.y, 0,
       this.x, this.y, this.size
     );
-    gradient.addColorStop(0, 'rgba(0, 110, 218, 0.4)');
-    gradient.addColorStop(1, 'rgba(0, 56, 112, 0.2)');
+    gradient.addColorStop(0, 'rgba(0, 110, 218, 0.2)');
+    gradient.addColorStop(1, 'rgba(0, 56, 112, 0.1)');
     ctx.fillStyle = gradient;
     ctx.fill();
     
-    // Draw logo in the center
+    // Draw logo in the center - making it larger and fully opaque
     if (this.isLogoLoaded && this.logoImage) {
-      const logoSize = this.size * 2.2;
+      const logoSize = this.size * 2.5; // Make logo bigger to be more visible
       ctx.save();
-      ctx.globalAlpha = 1;
+      ctx.globalAlpha = 1; // Full opacity
       ctx.drawImage(
         this.logoImage, 
         this.x - logoSize/2, 
