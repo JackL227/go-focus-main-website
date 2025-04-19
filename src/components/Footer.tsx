@@ -7,7 +7,7 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <div className="mb-6">
-              <img src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" alt="GoFocus Logo" className="h-30 w-auto" />
+              <img src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" alt="GoFocus Logo" className="h-28 w-auto" />
             </div>
             
             <p className="text-foreground/70 mb-6">
