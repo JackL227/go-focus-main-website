@@ -1,3 +1,4 @@
+
 class AINode {
   x: number;
   y: number;
@@ -30,14 +31,20 @@ class AINode {
   }
   
   loadLogoImage() {
-    const img = new Image();
-    img.src = '/lovable-uploads/a7947ef8-a621-45f4-8d16-2880d330bee3.png';
-    img.onload = () => {
-      this.logoImage = img;
+    this.logoImage = new Image();
+    // Use a data URL for the logo (a blue circle as fallback)
+    this.logoImage.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iIzAwNmVkYSIvPjwvc3ZnPg==';
+    this.logoImage.onload = () => {
       this.isLogoLoaded = true;
     };
-    img.onerror = (err) => {
+    this.logoImage.onerror = (err) => {
       console.error("Failed to load logo image:", err);
+      // Set a fallback image if loading fails
+      this.logoImage = new Image();
+      this.logoImage.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iIzAwNmVkYSIvPjwvc3ZnPg==';
+      this.logoImage.onload = () => {
+        this.isLogoLoaded = true;
+      };
     };
   }
   
@@ -68,16 +75,15 @@ class AINode {
     ctx.shadowColor = colors.primary;
     ctx.shadowBlur = 20;
     
-    // Draw main node
+    // Draw main node circle (transparent background)
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     const gradient = ctx.createRadialGradient(
       this.x, this.y, 0,
       this.x, this.y, this.size
     );
-    gradient.addColorStop(0, colors.primary);
-    gradient.addColorStop(0.7, '#0052a3');
-    gradient.addColorStop(1, '#003870');
+    gradient.addColorStop(0, 'rgba(0, 110, 218, 0.4)');
+    gradient.addColorStop(1, 'rgba(0, 56, 112, 0.2)');
     ctx.fillStyle = gradient;
     ctx.fill();
     
@@ -85,7 +91,7 @@ class AINode {
     if (this.isLogoLoaded && this.logoImage) {
       const logoSize = this.size * 2.2;
       ctx.save();
-      ctx.globalAlpha = 0.95;
+      ctx.globalAlpha = 1;
       ctx.drawImage(
         this.logoImage, 
         this.x - logoSize/2, 
