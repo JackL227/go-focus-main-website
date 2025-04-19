@@ -1,4 +1,3 @@
-
 class AINode {
   x: number;
   y: number;
@@ -32,7 +31,7 @@ class AINode {
   
   loadLogoImage() {
     const img = new Image();
-    img.src = '/lovable-uploads/2169d2e1-980e-4b57-bd71-e3801dd099ec.png';
+    img.src = '/lovable-uploads/a7947ef8-a621-45f4-8d16-2880d330bee3.png';
     img.onload = () => {
       this.logoImage = img;
       this.isLogoLoaded = true;
@@ -84,7 +83,7 @@ class AINode {
     
     // Draw logo in the center
     if (this.isLogoLoaded && this.logoImage) {
-      const logoSize = this.size * 1.8;
+      const logoSize = this.size * 2.2;
       ctx.save();
       ctx.globalAlpha = 0.95;
       ctx.drawImage(
