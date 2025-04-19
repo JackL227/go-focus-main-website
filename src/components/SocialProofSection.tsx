@@ -1,8 +1,8 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { Star, ArrowRight, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
+import BookingWidget from './BookingWidget';
 
 const clientLogos = [
   { name: "Client 1", initial: "A" },
@@ -184,14 +184,19 @@ const SocialProofSection = () => {
             Schedule a strategy call to learn how our AI agents can help your business grow.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-background group">
+          <BookingWidget 
+            className="bg-primary hover:bg-primary/90 text-background group"
+          >
+            <span className="flex items-center">
               Book Strategy Call
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10">
-              See AI Agent in Action
-            </Button>
-          </div>
+            </span>
+          </BookingWidget>
+          
+          <Button size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10">
+            See AI Agent in Action
+          </Button>
+        </div>
         </div>
       </div>
     </section>
