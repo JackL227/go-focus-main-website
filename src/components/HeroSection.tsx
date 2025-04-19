@@ -38,7 +38,7 @@ const HeroSection = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4 opacity-0 animate-fade-in [animation-delay:700ms]">
-              <BookingWidget size="lg" className="bg-primary hover:bg-primary/90 text-background group">
+              <BookingWidget className="bg-primary hover:bg-primary/90 text-background group">
                 Book a Demo
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </BookingWidget>

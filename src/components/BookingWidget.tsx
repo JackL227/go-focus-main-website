@@ -3,19 +3,23 @@ import React, { useEffect } from 'react';
 import { getCalApi } from "@calcom/embed-react";
 import { Button } from '@/components/ui/button';
 import { Calendar } from 'lucide-react';
+import { type ButtonProps } from '@/components/ui/button';
 
-interface BookingWidgetProps {
+interface BookingWidgetProps extends Omit<ButtonProps, 'onClick'> {
   className?: string;
-  variant?: "default" | "outline" | "destructive" | "secondary" | "ghost" | "link";
-  children?: React.ReactNode;
 }
 
-const BookingWidget = ({ className, variant = "default", children }: BookingWidgetProps) => {
+const BookingWidget = ({ className, variant = "default", children, ...props }: BookingWidgetProps) => {
   useEffect(() => {
     (async function () {
       const cal = await getCalApi({ namespace: "30min" });
       cal("ui", {
         cssVarsPerTheme: {
+          light: {
+            "cal-brand": "#006EDA",
+            "cal-bg": "#ffffff",
+            "cal-text": "#111111"
+          },
           dark: {
             "cal-brand": "#006EDA",
             "cal-bg": "#050A14",
@@ -35,6 +39,7 @@ const BookingWidget = ({ className, variant = "default", children }: BookingWidg
       data-cal-config='{"layout":"month_view"}'
       className={className}
       variant={variant}
+      {...props}
     >
       {children || (
         <>
@@ -47,3 +52,4 @@ const BookingWidget = ({ className, variant = "default", children }: BookingWidg
 };
 
 export default BookingWidget;
+

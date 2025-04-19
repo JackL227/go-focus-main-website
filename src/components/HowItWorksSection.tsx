@@ -103,6 +103,21 @@ const HowItWorksSection = () => {
             </div>
           ))}
         </div>
+
+        <div className="mt-20 text-center">
+          <h3 className="text-2xl font-bold mb-6">Ready to Transform Your Lead Generation?</h3>
+          <p className="text-foreground/80 mb-8 max-w-2xl mx-auto">
+            Book your free discovery call today and see how our AI agents can automate your sales process.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <BookingWidget 
+              variant="default"
+              className="bg-primary hover:bg-primary/90 text-background group"
+            >
+              Schedule Your Demo
+            </BookingWidget>
+          </div>
+        </div>
       </div>
     </section>
   );
