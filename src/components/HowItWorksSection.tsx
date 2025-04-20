@@ -65,11 +65,43 @@ const HowItWorksSection = () => {
 
   return (
     <section id="how-it-works" className="relative py-24 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background z-0"></div>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-50"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/70 to-background z-0"></div>
       
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#00E676]/3 rounded-full blur-3xl"></div>
+      <div className="absolute inset-0 opacity-5 z-0">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#006eda" stopOpacity="0.6" />
+              <stop offset="50%" stopColor="#00E676" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#004ea0" stopOpacity="0.6" />
+            </linearGradient>
+          </defs>
+          <path d="M0,50 Q250,0 500,50 T1000,50" stroke="url(#flowGradient)" strokeWidth="8" fill="none">
+            <animate attributeName="d" 
+                    dur="20s" 
+                    repeatCount="indefinite" 
+                    values="M0,50 Q250,0 500,50 T1000,50;
+                            M0,50 Q250,100 500,50 T1000,50;
+                            M0,50 Q250,0 500,50 T1000,50" />
+          </path>
+          <path d="M0,150 Q250,100 500,150 T1000,150" stroke="url(#flowGradient)" strokeWidth="6" fill="none" opacity="0.7">
+            <animate attributeName="d" 
+                    dur="25s" 
+                    repeatCount="indefinite" 
+                    values="M0,150 Q250,100 500,150 T1000,150;
+                            M0,150 Q250,200 500,150 T1000,150;
+                            M0,150 Q250,100 500,150 T1000,150" />
+          </path>
+          <path d="M0,250 Q250,200 500,250 T1000,250" stroke="url(#flowGradient)" strokeWidth="4" fill="none" opacity="0.5">
+            <animate attributeName="d" 
+                    dur="30s" 
+                    repeatCount="indefinite" 
+                    values="M0,250 Q250,200 500,250 T1000,250;
+                            M0,250 Q250,300 500,250 T1000,250;
+                            M0,250 Q250,200 500,250 T1000,250" />
+          </path>
+        </svg>
+      </div>
       
       <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
         <div className="text-center mb-16">
