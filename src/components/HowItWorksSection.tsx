@@ -1,7 +1,9 @@
+
 import React, { useRef, useEffect } from 'react';
 import { Bot, Workflow, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import BookingWidget from './BookingWidget';
+import FluidAnimation from './FluidAnimation';
 
 const steps = [
   {
@@ -65,11 +67,36 @@ const HowItWorksSection = () => {
 
   return (
     <section id="how-it-works" className="relative py-24 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background z-0"></div>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-50"></div>
+      {/* Background animation continues from Hero section */}
+      <div className="absolute inset-0 z-0 opacity-50">
+        <FluidAnimation />
+      </div>
       
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#00E676]/3 rounded-full blur-3xl"></div>
+      {/* Gradient overlay for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/90 to-background z-[1]"></div>
+      
+      {/* Curved separator between sections */}
+      <div className="absolute top-0 left-0 right-0 h-24 z-[2]">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" className="absolute bottom-0 w-full h-full">
+          <path 
+            fill="url(#section-gradient)" 
+            fillOpacity="1" 
+            d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
+          ></path>
+          <defs>
+            <linearGradient id="section-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#050A14" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#050A14" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      
+      {/* Animated light particles */}
+      <div className="absolute inset-0 z-[2] pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse-soft"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#00E676]/3 rounded-full blur-3xl animate-glow"></div>
+      </div>
       
       <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
         <div className="text-center mb-16">
@@ -86,8 +113,8 @@ const HowItWorksSection = () => {
               key={step.id}
               ref={el => stepRefs.current[index] = el}
               className={cn(
-                "glass-card p-8 rounded-xl opacity-0 transition-all duration-500",
-                "hover:translate-y-[-5px] hover:shadow-xl"
+                "glass-card p-8 rounded-xl opacity-0 transition-all duration-500 backdrop-blur-sm",
+                "hover:translate-y-[-5px] hover:shadow-xl border border-foreground/10"
               )}
               style={{ transitionDelay: `${step.delay}ms` }}
             >

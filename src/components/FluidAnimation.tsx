@@ -29,8 +29,17 @@ const FluidAnimation = () => {
     canvas.width = width;
     canvas.height = height;
     
+    // Brand colors - navy, deep teal, neon green
+    const brandColors = [
+      '#050A14', // Dark navy
+      '#0A1428', // Navy
+      '#006eda', // Blue
+      '#00E676', // Neon green
+      '#1EAEDB'  // Teal
+    ];
+    
     // Animation settings
-    const particleCount = 30;
+    const particleCount = 40; // Increased for more fluid motion
     let particles: Particle[] = [];
     
     class Particle {
@@ -46,16 +55,19 @@ const FluidAnimation = () => {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = Math.random() * 0.4 - 0.2;
-        this.vy = Math.random() * 0.4 - 0.2;
-        this.radius = Math.random() * 70 + 30;
         
-        // Different colors for particles
-        const colors = ['#006eda', '#00E676', '#006eda'];
-        this.color = colors[Math.floor(Math.random() * colors.length)];
+        // Slower velocities for more gentle movement
+        this.vx = Math.random() * 0.3 - 0.15;
+        this.vy = Math.random() * 0.3 - 0.15;
+        
+        // Varying sizes for depth perception
+        this.radius = Math.random() * 100 + 50;
+        
+        // Select brand colors
+        this.color = brandColors[Math.floor(Math.random() * brandColors.length)];
         
         this.life = 0;
-        this.maxLife = 100 + Math.random() * 100;
+        this.maxLife = 150 + Math.random() * 150; // Longer life for smoother transitions
       }
       
       update() {
@@ -63,22 +75,22 @@ const FluidAnimation = () => {
         this.y += this.vy;
         
         // Bounce off edges with some randomness
-        if (this.x < 0 || this.x > width) {
+        if (this.x < -this.radius || this.x > width + this.radius) {
           this.vx *= -1;
-          this.vx += (Math.random() * 0.2 - 0.1);
+          this.vx += (Math.random() * 0.1 - 0.05);
         }
         
-        if (this.y < 0 || this.y > height) {
+        if (this.y < -this.radius || this.y > height + this.radius) {
           this.vy *= -1;
-          this.vy += (Math.random() * 0.2 - 0.1);
+          this.vy += (Math.random() * 0.1 - 0.05);
         }
         
         // Slowly adjust velocity for fluid-like motion
-        this.vx += (Math.random() * 0.04 - 0.02);
-        this.vy += (Math.random() * 0.04 - 0.02);
+        this.vx += (Math.random() * 0.02 - 0.01);
+        this.vy += (Math.random() * 0.02 - 0.01);
         
         // Limit velocity
-        const maxVel = 0.7;
+        const maxVel = 0.5;
         const vel = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         if (vel > maxVel) {
           this.vx = (this.vx / vel) * maxVel;
@@ -94,15 +106,39 @@ const FluidAnimation = () => {
       
       resetLife() {
         this.life = 0;
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.radius = Math.random() * 70 + 30;
+        
+        // Reposition randomly
+        const side = Math.floor(Math.random() * 4);
+        if (side === 0) { // Top
+          this.x = Math.random() * width;
+          this.y = -this.radius;
+          this.vy = Math.abs(this.vy);
+        } else if (side === 1) { // Right
+          this.x = width + this.radius;
+          this.y = Math.random() * height;
+          this.vx = -Math.abs(this.vx);
+        } else if (side === 2) { // Bottom
+          this.x = Math.random() * width;
+          this.y = height + this.radius;
+          this.vy = -Math.abs(this.vy);
+        } else { // Left
+          this.x = -this.radius;
+          this.y = Math.random() * height;
+          this.vx = Math.abs(this.vx);
+        }
+        
+        this.radius = Math.random() * 100 + 50;
+        this.color = brandColors[Math.floor(Math.random() * brandColors.length)];
       }
       
       draw() {
         if (!ctx) return;
         
-        const opacity = Math.min(1, this.life / 20) * (1 - Math.max(0, (this.life - (this.maxLife - 20)) / 20)) * 0.3;
+        // Create a smooth fade in/out effect
+        const opacityFadeIn = Math.min(1, this.life / 30);
+        const opacityFadeOut = Math.min(1, (this.maxLife - this.life) / 30);
+        const opacity = Math.min(opacityFadeIn, opacityFadeOut) * 0.25;
+        
         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
         
         gradient.addColorStop(0, `${this.color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`);
@@ -124,10 +160,10 @@ const FluidAnimation = () => {
     
     initParticles();
     
-    // Animation loop
+    // Animation loop with layered blur for more depth
     const animate = () => {
-      // Clear with semi-transparent black for trail effect
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      // Clear canvas with very slight opacity for subtle trails
+      ctx.fillStyle = 'rgba(5, 10, 20, 0.05)';
       ctx.fillRect(0, 0, width, height);
       
       // Update and draw particles
@@ -136,10 +172,15 @@ const FluidAnimation = () => {
         p.draw();
       });
       
-      // Apply blur effect
-      ctx.filter = 'blur(30px)';
+      // Apply multi-pass blur for depth
+      ctx.filter = 'blur(40px)';
+      ctx.globalAlpha = 0.8;
+      ctx.drawImage(canvas, 0, 0);
+      ctx.filter = 'blur(15px)';
+      ctx.globalAlpha = 0.6;
       ctx.drawImage(canvas, 0, 0);
       ctx.filter = 'none';
+      ctx.globalAlpha = 1;
       
       requestAnimationFrame(animate);
     };
@@ -155,7 +196,7 @@ const FluidAnimation = () => {
     <canvas
       ref={canvasRef}
       className="absolute inset-0 w-full h-full z-0"
-      style={{ backgroundColor: '#050A14' }}
+      style={{ backgroundColor: 'transparent' }}
     />
   );
 };

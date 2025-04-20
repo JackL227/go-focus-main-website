@@ -31,7 +31,7 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#050A14] to-[#0A1428] text-foreground overflow-x-hidden">
+    <main className="min-h-screen bg-[#050A14] text-foreground overflow-x-hidden">
       <Navigation />
       <HeroSection />
       <AnimationSection />
