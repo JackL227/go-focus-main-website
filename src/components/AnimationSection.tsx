@@ -31,7 +31,7 @@ const AnimationSection = () => {
   }, []);
 
   return (
-    <div id="animation-section" className="relative min-h-[80vh] py-24 flex items-center">
+    <div id="animation-section" className="relative min-h-[500px] py-8 flex items-center -mt-24">  {/* Reduced min-h and added -mt-24 to close the gap */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#081020] to-[#0A1A30] z-0"></div>
       
       <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
@@ -44,3 +44,4 @@ const AnimationSection = () => {
 };
 
 export default AnimationSection;
+

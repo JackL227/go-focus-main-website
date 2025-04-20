@@ -23,7 +23,7 @@ const HeroSection = () => {
       });
     }
   };
-  return <section className="relative min-h-screen flex items-center pt-24 pb-16">
+  return <section className="relative min-h-screen flex items-center pt-24 pb-0">
       <div className="absolute inset-0 overflow-hidden">
         <FluidAnimation />
       </div>
