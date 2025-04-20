@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from 'react';
 import { setCanvasSize } from '../flowAnimationUtils';
 import OutcomePanel from '../OutcomePanel';
@@ -64,29 +63,28 @@ export const useCanvasSetup = (isMobile = false) => {
       isMobile ? canvas.height * 0.4 : canvas.height / 2
     );
     
+    // Create a scale factor for mobile but don't pass it as a separate argument
     const panelSize = isMobile ? 0.8 : 1; // Slightly smaller panels on mobile
     
+    // Fix: Remove the panelSize as a separate parameter and include it in the options object if needed
     panelsRef.current = [
       new OutcomePanel(
         isMobile ? canvas.width * 0.65 : canvas.width * 0.75, 
         isMobile ? canvas.height * 0.25 : canvas.height * 0.3, 
         "Qualified Lead", 
-        "checkmark",
-        panelSize
+        "checkmark"
       ),
       new OutcomePanel(
         isMobile ? canvas.width * 0.7 : canvas.width * 0.82, 
         isMobile ? canvas.height * 0.45 : canvas.height * 0.5, 
         "Booked Call", 
-        "calendar",
-        panelSize
+        "calendar"
       ),
       new OutcomePanel(
         isMobile ? canvas.width * 0.65 : canvas.width * 0.75, 
         isMobile ? canvas.height * 0.65 : canvas.height * 0.7, 
         "Closed Deal", 
-        "smile",
-        panelSize
+        "smile"
       )
     ];
 
