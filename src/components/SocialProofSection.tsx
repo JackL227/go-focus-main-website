@@ -3,6 +3,7 @@ import { Star, ArrowRight, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import BookingWidget from './BookingWidget';
+import AIAgentDemo from './AIAgentDemo';
 
 const clientLogos = [
   { name: "Client 1", initial: "A" },
@@ -50,6 +51,7 @@ const testimonials = [
 const SocialProofSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [showAgentDemo, setShowAgentDemo] = useState(false);
   const maxSlides = Math.ceil(testimonials.length / 2);
 
   const nextSlide = () => {
@@ -58,6 +60,10 @@ const SocialProofSection = () => {
 
   const prevSlide = () => {
     setActiveSlide((prev) => (prev - 1 + maxSlides) % maxSlides);
+  };
+
+  const handleDemoClick = () => {
+    setShowAgentDemo(true);
   };
 
   useEffect(() => {
@@ -91,7 +97,6 @@ const SocialProofSection = () => {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
       
       <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
-        {/* Logos Section */}
         <div className="mb-16">
           <h3 className="text-center text-lg text-foreground/60 mb-8">Trusted by Leading Businesses</h3>
           <div className="flex flex-wrap justify-center gap-8 md:gap-16">
@@ -107,7 +112,6 @@ const SocialProofSection = () => {
           </div>
         </div>
         
-        {/* Testimonials Section */}
         <div className="mb-16">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">What Our Clients Say</h2>
@@ -174,7 +178,6 @@ const SocialProofSection = () => {
           </div>
         </div>
         
-        {/* Final CTA Section */}
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Let's Launch Your <span className="text-primary">AI Agent</span>
@@ -184,21 +187,28 @@ const SocialProofSection = () => {
             Schedule a strategy call to learn how our AI agents can help your business grow.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <BookingWidget 
-            className="bg-primary hover:bg-primary/90 text-background group"
-          >
-            <span className="flex items-center">
-              Book Strategy Call
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </span>
-          </BookingWidget>
-          
-          <Button size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10">
-            See AI Agent in Action
-          </Button>
-        </div>
+            <BookingWidget 
+              className="bg-primary hover:bg-primary/90 text-background group"
+            >
+              <span className="flex items-center">
+                Book Strategy Call
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </span>
+            </BookingWidget>
+            
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-primary/60 text-primary hover:bg-primary/10"
+              onClick={handleDemoClick}
+            >
+              See AI Agent in Action
+            </Button>
+          </div>
         </div>
       </div>
+
+      {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
     </section>
   );
 };
