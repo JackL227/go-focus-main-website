@@ -1,9 +1,7 @@
-
 import React, { useRef, useEffect } from 'react';
 import { Bot, Workflow, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import BookingWidget from './BookingWidget';
-import FluidAnimation from './FluidAnimation';
 
 const steps = [
   {
@@ -67,21 +65,11 @@ const HowItWorksSection = () => {
 
   return (
     <section id="how-it-works" className="relative py-24 overflow-hidden">
-      {/* Background animation continues from Hero section using the same FluidAnimation component */}
-      <div className="absolute inset-0 z-0">
-        <FluidAnimation />
-      </div>
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background z-0"></div>
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-50"></div>
       
-      {/* More subtle gradient overlay for better text readability without harsh cutoffs */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-background/60 to-background/90 z-[1]"></div>
-      
-      {/* Removed the curved separator that was creating the visual cutoff */}
-      
-      {/* Animated light particles - kept for consistent visual effect */}
-      <div className="absolute inset-0 z-[2] pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse-soft"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#00E676]/3 rounded-full blur-3xl animate-glow"></div>
-      </div>
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#00E676]/3 rounded-full blur-3xl"></div>
       
       <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
         <div className="text-center mb-16">
@@ -98,8 +86,8 @@ const HowItWorksSection = () => {
               key={step.id}
               ref={el => stepRefs.current[index] = el}
               className={cn(
-                "glass-card p-8 rounded-xl opacity-0 transition-all duration-500 backdrop-blur-sm",
-                "hover:translate-y-[-5px] hover:shadow-xl border border-foreground/10"
+                "glass-card p-8 rounded-xl opacity-0 transition-all duration-500",
+                "hover:translate-y-[-5px] hover:shadow-xl"
               )}
               style={{ transitionDelay: `${step.delay}ms` }}
             >

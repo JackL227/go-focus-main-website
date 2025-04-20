@@ -23,17 +23,17 @@ const HeroSection = () => {
       });
     }
   };
-  return <section className="relative min-h-screen flex items-center pt-24 pb-0 overflow-hidden">
+  return <section className="relative min-h-screen flex items-center pt-24 pb-0">
       <div className="absolute inset-0 overflow-hidden">
         <FluidAnimation />
       </div>
       
-      {/* Removed the gradient overlay from here to create seamless transition */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/70 to-background z-[1]"></div>
       
       <div className="container-custom relative z-10 py-16">
         <div className="max-w-4xl mx-auto">
-          <div className="absolute -top-16 -left-16 w-64 h-64 bg-primary/20 rounded-full blur-3xl animate-pulse-soft" />
-          <div className="absolute -bottom-32 -right-8 w-80 h-80 bg-[#00E676]/10 rounded-full blur-3xl animate-glow" />
+          <div className="absolute -top-16 -left-16 w-64 h-64 bg-primary/20 rounded-full blur-3xl" />
+          <div className="absolute -bottom-32 -right-8 w-80 h-80 bg-[#00E676]/10 rounded-full blur-3xl" />
           
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-2 rounded-full bg-background/40 backdrop-blur-sm shadow-sm border border-foreground/20 text-primary text-sm font-medium mb-6 opacity-0 animate-fade-in [animation-delay:100ms]">
