@@ -1,6 +1,6 @@
 
 import React, { useRef, useEffect } from 'react';
-import { Briefcase, Flower, Car, ArrowUpRight } from 'lucide-react';
+import { Briefcase, Flower, Dumbbell, ArrowUpRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { cn } from '@/lib/utils';
 
@@ -31,13 +31,13 @@ const industries = [
   },
   {
     id: 3,
-    title: "Vehicle Aesthetics",
-    icon: Car,
-    description: "Handle quotes, bookings and follow-ups for wraps, detailing, PPF and tinting.",
+    title: "Fitness Influencers",
+    icon: Dumbbell,
+    description: "Automate client acquisition, program enrollment, and coaching lead generation.",
     results: [
-      "5x faster quote replies to inquiries",
-      "Visual AI estimates based on photos",
-      "Higher appointment conversion rate"
+      "5x faster client onboarding",
+      "Automated intake and goal tracking",
+      "Higher conversion from followers to paid clients"
     ],
     color: "from-[#FFC107]/20 to-[#FFC107]/5"
   }
