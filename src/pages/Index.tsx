@@ -6,6 +6,7 @@ import AnimationSection from '@/components/AnimationSection';
 import HowItWorksSection from '@/components/HowItWorksSection';
 import IndustryResultsSection from '@/components/IndustryResultsSection';
 import SocialProofSection from '@/components/SocialProofSection';
+import CallToAction from '@/components/CallToAction';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
@@ -37,6 +38,7 @@ const Index = () => {
       <HowItWorksSection />
       <IndustryResultsSection />
       <SocialProofSection />
+      <CallToAction />
       <Footer />
       
       {/* Scroll to top button */}

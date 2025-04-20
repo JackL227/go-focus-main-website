@@ -1,13 +1,27 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight, Play } from 'lucide-react';
 import FluidAnimation from './FluidAnimation';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
+import AIAgentDemo from './AIAgentDemo';
 
 const HeroSection = () => {
   const { user } = useAuth();
+  const [showAgentDemo, setShowAgentDemo] = useState(false);
+  
+  const handleDemoClick = () => {
+    setShowAgentDemo(true);
+  };
+  
+  const scrollToHowItWorks = () => {
+    const section = document.getElementById('how-it-works');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-16">
@@ -33,19 +47,28 @@ const HeroSection = () => {
             </h1>
             
             <p className="text-xl text-foreground/90 mb-8 opacity-0 animate-fade-in [animation-delay:500ms] max-w-3xl mx-auto">
-              Go Focus AI builds custom AI closers and voice assistants that respond, qualify, follow-up, and book appointments 24/7.
-              <span className="block mt-2 text-primary/90">Built for Trading Mentors, Med Spas & Vehicle Aesthetic Experts.</span>
+              We help Trading Mentors, Med Spas, and Fitness Coaches convert more leads into revenue using custom-trained AI agents that respond, qualify, and book clients 24/7.
+              <span className="block mt-2 text-primary/90">Built for Trading Mentors, Med Spas and Fitness Influencers — our AI responds to DMs, books qualified calls and revives cold leads without you lifting a finger.</span>
             </p>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4 opacity-0 animate-fade-in [animation-delay:700ms]">
-              <BookingWidget className="bg-primary hover:bg-primary/90 text-background group">
-                Book a Demo
+              <Button 
+                size="lg" 
+                className="bg-primary hover:bg-primary/90 text-background group flex items-center"
+                onClick={handleDemoClick}
+              >
+                🎯 See AI Agent in Action
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </BookingWidget>
+              </Button>
               
-              <Button size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 flex items-center">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-primary/60 text-primary hover:bg-primary/10 flex items-center"
+                onClick={scrollToHowItWorks}
+              >
                 <Play className="mr-2 h-4 w-4" />
-                See How It Works
+                🔍 See How It Works
               </Button>
               
               {!user && (
@@ -61,6 +84,9 @@ const HeroSection = () => {
               )}
             </div>
           </div>
+          
+          {/* AI Agent Demo */}
+          {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
           
           <div className="text-center mt-8 opacity-0 animate-fade-in [animation-delay:1200ms]">
             <div className="inline-block animate-bounce">
