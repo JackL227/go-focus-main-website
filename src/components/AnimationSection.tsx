@@ -31,11 +31,17 @@ const AnimationSection = () => {
   }, []);
 
   return (
-    <div id="animation-section" className="relative min-h-[500px] py-8 flex items-center -mt-24">  {/* Reduced min-h and added -mt-24 to close the gap */}
+    <div id="animation-section" className="relative min-h-[500px] py-8 flex items-center -mt-24">
       <div className="absolute inset-0 bg-gradient-to-b from-[#081020] to-[#0A1A30] z-0"></div>
       
       <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
-        <div className="relative h-[550px] md:h-[600px] mt-8">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
+          <span className="text-primary">24/7 Lead Conversion</span> in Action
+        </h2>
+        <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto mb-8">
+          Watch how our AI automatically processes inbound leads, qualifies prospects, and books appointments - all while you focus on growing your business.
+        </p>
+        <div className="relative h-[550px] md:h-[600px]">
           <FlowAnimation />
         </div>
       </div>
@@ -44,4 +50,3 @@ const AnimationSection = () => {
 };
 
 export default AnimationSection;
-

@@ -98,9 +98,10 @@ export const useAnimationLoop = (
       ctx.drawImage(canvas, 0, 0);
       ctx.filter = 'none';
 
-      // Update and draw AI node
-      aiNode.update();
-      aiNode.draw(ctx, animationColors);
+      // Draw connecting flow paths between AI node and panels
+      panels.forEach(panel => {
+        drawFlowPath(ctx, aiNode, panel);
+      });
 
       // Update and draw panels
       panels.forEach(panel => {
@@ -108,10 +109,9 @@ export const useAnimationLoop = (
         panel.draw(ctx, animationColors);
       });
 
-      // Draw connecting lines
-      panels.forEach(panel => {
-        drawConnectingLine(ctx, aiNode, panel);
-      });
+      // Update and draw AI node
+      aiNode.update();
+      aiNode.draw(ctx, animationColors);
 
       // Update particles
       updateParticles(canvas, aiNode, panels, ctx, animationState.current);
@@ -131,7 +131,7 @@ export const useAnimationLoop = (
   return animationState.current;
 };
 
-const drawConnectingLine = (
+const drawFlowPath = (
   ctx: CanvasRenderingContext2D,
   aiNode: AINode,
   panel: OutcomePanel
@@ -142,24 +142,74 @@ const drawConnectingLine = (
   const endX = panel.x;
   const endY = panel.y;
 
-  const cpX = (startX + endX) / 2 + Math.random() * 20 - 10;
-  const cpY = (startY + endY) / 2 + Math.random() * 20 - 10;
-
+  // Create a curvy path with multiple control points
+  const midX = (startX + endX) / 2;
+  const midY = (startY + endY) / 2;
+  
+  // Add some randomization to control points for organic feel
+  const cpX1 = midX + Math.sin(Date.now() * 0.001) * 10;
+  const cpY1 = midY + Math.cos(Date.now() * 0.0008) * 10;
+  
   ctx.moveTo(startX, startY);
-  ctx.quadraticCurveTo(cpX, cpY, endX, endY);
+  ctx.quadraticCurveTo(cpX1, cpY1, endX, endY);
 
+  // Create gradient based on panel type
+  let baseColor = panel.type === 'checkmark' ? animationColors.qualified :
+                 panel.type === 'calendar' ? animationColors.booked :
+                 animationColors.closed;
+  
   const lineGradient = ctx.createLinearGradient(startX, startY, endX, endY);
-  let baseColor = panel.type === 'checkmark' ? 'rgba(0, 230, 118, ' :
-                 panel.type === 'calendar' ? 'rgba(0, 110, 218, ' :
-                 'rgba(255, 193, 7, ';
-
-  lineGradient.addColorStop(0, `${baseColor}0.1)`);
-  lineGradient.addColorStop(0.5, `${baseColor}0.3)`);
-  lineGradient.addColorStop(1, `${baseColor}0.1)`);
+  lineGradient.addColorStop(0, `${baseColor}33`); // 20% opacity
+  lineGradient.addColorStop(0.5, `${baseColor}66`); // 40% opacity
+  lineGradient.addColorStop(1, `${baseColor}33`); // 20% opacity
 
   ctx.strokeStyle = lineGradient;
   ctx.lineWidth = panel.isHovered ? 2 : 1;
   ctx.stroke();
+  
+  // Add animated flow particles along the path
+  animateFlowParticles(ctx, startX, startY, endX, endY, cpX1, cpY1, baseColor);
+};
+
+// Draw animated particles moving along flow paths
+const animateFlowParticles = (
+  ctx: CanvasRenderingContext2D,
+  startX: number, 
+  startY: number, 
+  endX: number, 
+  endY: number,
+  cpX: number,
+  cpY: number,
+  color: string
+) => {
+  // Generate 3 positions along the curve based on time
+  const time = Date.now() * 0.001;
+  
+  for (let i = 0; i < 3; i++) {
+    // Calculate position along curve (0 to 1)
+    let t = ((time + i * 0.33) % 1);
+    
+    // Quadratic bezier formula
+    const x = (1-t)*(1-t)*startX + 2*(1-t)*t*cpX + t*t*endX;
+    const y = (1-t)*(1-t)*startY + 2*(1-t)*t*cpY + t*t*endY;
+    
+    // Draw flow particle
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+    
+    // Add glow
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 5;
+    ctx.beginPath();
+    ctx.arc(x, y, 2, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Reset shadow
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = 'transparent';
+  }
 };
 
 const updateParticles = (
@@ -175,12 +225,20 @@ const updateParticles = (
     const x = particle.update();
     particle.draw(ctx, animationColors);
 
+    // Check if particle has reached the AI node center
     if (aiNode.processParticle(particle)) {
       state.messageParticles.splice(i, 1);
-      const rand = Math.random();
-      let targetPanel = panels[Math.floor(rand * panels.length)];
+      
+      // Determine which outcome panel to target based on particle properties
+      // Use isQualified to determine if it goes to a positive outcome
+      const targetPanelIndex = particle.isQualified ? 
+        (Math.random() < 0.7 ? 1 : 0) : // 70% chance for booking if qualified
+        2; // Closed deal for qualified leads
+        
+      const targetPanel = panels[targetPanelIndex];
       targetPanel.pulse();
 
+      // Create the appropriate type of lead particle based on the target panel
       const leadType = targetPanel.type;
       const newLead = new LeadParticle(aiNode.x, aiNode.y, leadType);
       newLead.setTarget(targetPanel.x, targetPanel.y);
@@ -188,6 +246,16 @@ const updateParticles = (
       continue;
     }
 
+    // If particle is within 150 pixels of AI node, redirect it
+    const dx = aiNode.x - particle.x;
+    const dy = aiNode.y - particle.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    
+    if (distance < 150 && !particle.targetX && Math.random() < 0.05) {
+      particle.redirectToNode(aiNode.x, aiNode.y);
+    }
+
+    // Remove particles that have gone off screen
     if (x > canvas.width + 50) {
       state.messageParticles.splice(i, 1);
     }

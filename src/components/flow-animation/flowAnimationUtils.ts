@@ -5,6 +5,9 @@ export const animationColors = {
   secondary: '#1EAEDB', // neon teal
   accent: '#00E676', // neon green
   highlight: '#FFC107', // amber/gold
+  qualified: '#00E676', // green for qualified leads
+  booked: '#006eda', // blue for booked
+  closed: '#FFC107', // gold for closed deals
   faded: 'rgba(120, 130, 150, 0.5)', // grey with opacity
   analytics: '#006eda', // blue
   darkNavy: '#081020', // deep navy background

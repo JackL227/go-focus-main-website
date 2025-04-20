@@ -20,15 +20,37 @@ export const useCanvasSetup = () => {
     setCtx(context);
 
     // Set canvas size
-    const handleResize = () => setCanvasSize(canvas);
+    const handleResize = () => {
+      setCanvasSize(canvas);
+      
+      // Recalculate positions for AI node and panels based on new canvas size
+      if (aiNodeRef.current) {
+        aiNodeRef.current.x = canvas.width / 2;
+        aiNodeRef.current.y = canvas.height / 2;
+      }
+      
+      if (panelsRef.current.length === 3) {
+        // Position panels based on canvas size
+        panelsRef.current[0].x = canvas.width * 0.75;
+        panelsRef.current[0].y = canvas.height * 0.3;
+        
+        panelsRef.current[1].x = canvas.width * 0.82;
+        panelsRef.current[1].y = canvas.height * 0.5;
+        
+        panelsRef.current[2].x = canvas.width * 0.75;
+        panelsRef.current[2].y = canvas.height * 0.7;
+      }
+    };
+    
     handleResize();
     window.addEventListener('resize', handleResize);
 
     // Initialize AI node and panels
     aiNodeRef.current = new AINode(canvas.width / 2, canvas.height / 2);
+    
     panelsRef.current = [
-      new OutcomePanel(canvas.width * 0.75, canvas.height * 0.3, "Qualified", "checkmark"),
-      new OutcomePanel(canvas.width * 0.85, canvas.height * 0.5, "Booked Call", "calendar"),
+      new OutcomePanel(canvas.width * 0.75, canvas.height * 0.3, "Qualified Lead", "checkmark"),
+      new OutcomePanel(canvas.width * 0.82, canvas.height * 0.5, "Booked Call", "calendar"),
       new OutcomePanel(canvas.width * 0.75, canvas.height * 0.7, "Closed Deal", "smile")
     ];
 
@@ -68,4 +90,3 @@ export const useCanvasSetup = () => {
     panels: panelsRef.current
   };
 };
-

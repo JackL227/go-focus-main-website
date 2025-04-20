@@ -196,7 +196,7 @@ class LeadParticle {
     ctx.shadowColor = 'transparent';
     ctx.shadowBlur = 0;
     
-    // Draw label with icon based on type
+    // Draw label based on type
     ctx.font = `bold ${this.size * 1.2}px 'Poppins', Arial`; // Larger, bolder font
     ctx.fillStyle = '#FFFFFF';
     ctx.textAlign = 'center';

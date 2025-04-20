@@ -1,6 +1,6 @@
 
 import React from 'react';
-import FlowAnimationCanvas from './flow-animation/FlowAnimationCanvas';
+import FlowAnimationCanvas from './flow-animation';
 
 const FlowAnimation = () => {
   return (

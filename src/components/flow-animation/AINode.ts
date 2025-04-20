@@ -27,10 +27,10 @@ class AINode {
   loadLogoImage() {
     this.logoImage = new Image();
     
-    // Immediately set a fallback in case the image fails to load
-    const fallbackImage = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iIzAwNmVkYSIvPjwvc3ZnPg==';
+    // Load the GoFocus logo
+    this.logoImage.src = '/lovable-uploads/gofocus-logo.png';
     
-    // Set up event handlers before setting src to avoid race conditions
+    // Set up event handlers
     this.logoImage.onload = () => {
       console.log("Logo image loaded successfully");
       this.isLogoLoaded = true;
@@ -38,19 +38,16 @@ class AINode {
     
     this.logoImage.onerror = (err) => {
       console.error("Failed to load logo image:", err);
-      // If loading fails, use the fallback
-      if (this.logoImage) {
-        this.logoImage.src = fallbackImage;
-      }
+      // Fallback to a colored circle if image fails to load
+      const fallbackImage = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iIzAwNmVkYSIvPjwvc3ZnPg==';
+      this.logoImage.src = fallbackImage;
     };
-    
-    // Try to load the requested image
-    this.logoImage.src = '/lovable-uploads/9586f2a1-3b2d-447e-9de4-2add6bd5fc4d.png';
     
     // Set a timeout as a safety measure - if image hasn't loaded in 2 seconds, use fallback
     setTimeout(() => {
       if (!this.isLogoLoaded && this.logoImage) {
         console.log("Logo loading timed out, using fallback");
+        const fallbackImage = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iIzAwNmVkYSIvPjwvc3ZnPg==';
         this.logoImage.src = fallbackImage;
       }
     }, 2000);
@@ -68,15 +65,30 @@ class AINode {
   }
   
   draw(ctx: CanvasRenderingContext2D, colors: Record<string, string>) {
-    // Draw subtle outer pulse
+    // Draw outer glow
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.pulseRadius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(0, 110, 218, ${this.pulseOpacity * 0.3})`; // More subtle pulse
+    ctx.arc(this.x, this.y, this.pulseRadius * 1.2, 0, Math.PI * 2);
+    const glowGradient = ctx.createRadialGradient(
+      this.x, this.y, this.size * 0.8,
+      this.x, this.y, this.pulseRadius * 1.2
+    );
+    glowGradient.addColorStop(0, 'rgba(0, 230, 118, 0.2)');
+    glowGradient.addColorStop(1, 'rgba(0, 110, 218, 0.0)');
+    ctx.fillStyle = glowGradient;
     ctx.fill();
     
-    // Draw outer glow
-    ctx.shadowColor = colors.primary;
-    ctx.shadowBlur = 15;
+    // Draw subtle outer pulse with more energy
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.pulseRadius, 0, Math.PI * 2);
+    const pulseGradient = ctx.createRadialGradient(
+      this.x, this.y, this.size * 0.5,
+      this.x, this.y, this.pulseRadius
+    );
+    pulseGradient.addColorStop(0, 'rgba(0, 230, 118, 0.15)');
+    pulseGradient.addColorStop(0.7, 'rgba(0, 110, 218, 0.1)');
+    pulseGradient.addColorStop(1, 'rgba(0, 110, 218, 0)');
+    ctx.fillStyle = pulseGradient;
+    ctx.fill();
     
     // Draw main node circle with very transparent background
     ctx.beginPath();
@@ -85,14 +97,19 @@ class AINode {
       this.x, this.y, 0,
       this.x, this.y, this.size
     );
-    gradient.addColorStop(0, 'rgba(0, 110, 218, 0.1)');
+    gradient.addColorStop(0, 'rgba(0, 230, 118, 0.1)');
+    gradient.addColorStop(0.6, 'rgba(0, 110, 218, 0.1)');
     gradient.addColorStop(1, 'rgba(0, 56, 112, 0.05)');
     ctx.fillStyle = gradient;
     ctx.fill();
     
+    // Add shadow effect for the logo
+    ctx.shadowColor = colors.accent;
+    ctx.shadowBlur = 15;
+    
     // Draw logo in the center - ensure it's visible
-    if (this.logoImage) {  // Always try to draw the logo even if isLogoLoaded is false
-      const logoSize = this.size * 2.8; // Slightly larger logo
+    if (this.logoImage) {
+      const logoSize = this.size * 2.5; // Slightly larger logo
       ctx.save();
       ctx.globalAlpha = 1;
       ctx.drawImage(
@@ -109,19 +126,29 @@ class AINode {
     ctx.shadowColor = 'transparent';
     ctx.shadowBlur = 0;
     
-    // Draw smooth processing indicator
+    // Draw smooth processing indicator - animated circle around the logo
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size * (0.8 + this.processingEffect * 0.2), 0, Math.PI * 2);
-    ctx.strokeStyle = `rgba(255, 255, 255, ${0.3 - this.processingEffect * 0.2})`; // More subtle processing circle
+    ctx.arc(this.x, this.y, this.size * (1.1 + this.processingEffect * 0.2), 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(0, 230, 118, ${0.3 - this.processingEffect * 0.15})`; 
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    
+    // Secondary processing circle - opposite animation phase
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size * (1.2 + (1-this.processingEffect) * 0.25), 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(0, 110, 218, ${0.25 - (1-this.processingEffect) * 0.15})`;
     ctx.lineWidth = 1.5;
     ctx.stroke();
   }
   
-  processParticle(particle: {x: number, y: number}): boolean {
+  processParticle(particle: {x: number, y: number, isQualified?: boolean}): boolean {
     const dx = this.x - particle.x;
     const dy = this.y - particle.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    return distance < this.size * 1.2;
+    
+    // Create a slightly larger processing zone for qualified leads
+    const qualifiedBonus = particle.isQualified ? 0.3 : 0;
+    return distance < this.size * (1.2 + qualifiedBonus);
   }
 }
 
