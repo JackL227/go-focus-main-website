@@ -1,8 +1,10 @@
 
 import React, { useRef, useEffect } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const FluidAnimation = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -29,8 +31,8 @@ const FluidAnimation = () => {
     canvas.width = width;
     canvas.height = height;
     
-    // Animation settings
-    const particleCount = 30;
+    // Animation settings - reduce particle count on mobile
+    const particleCount = isMobile ? 15 : 30;
     let particles: Particle[] = [];
     
     class Particle {
@@ -46,9 +48,14 @@ const FluidAnimation = () => {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = Math.random() * 0.4 - 0.2;
-        this.vy = Math.random() * 0.4 - 0.2;
-        this.radius = Math.random() * 70 + 30;
+        
+        // Reduce velocity on mobile for better performance
+        const velocityFactor = isMobile ? 0.3 : 0.4;
+        this.vx = Math.random() * velocityFactor - (velocityFactor / 2);
+        this.vy = Math.random() * velocityFactor - (velocityFactor / 2);
+        
+        // Smaller particles on mobile
+        this.radius = Math.random() * (isMobile ? 50 : 70) + (isMobile ? 20 : 30);
         
         // Different colors for particles
         const colors = ['#006eda', '#00E676', '#006eda'];
@@ -73,12 +80,13 @@ const FluidAnimation = () => {
           this.vy += (Math.random() * 0.2 - 0.1);
         }
         
-        // Slowly adjust velocity for fluid-like motion
-        this.vx += (Math.random() * 0.04 - 0.02);
-        this.vy += (Math.random() * 0.04 - 0.02);
+        // Slower velocity adjustments on mobile
+        const adjustFactor = isMobile ? 0.02 : 0.04;
+        this.vx += (Math.random() * adjustFactor - (adjustFactor / 2));
+        this.vy += (Math.random() * adjustFactor - (adjustFactor / 2));
         
-        // Limit velocity
-        const maxVel = 0.7;
+        // Limit velocity - slower on mobile
+        const maxVel = isMobile ? 0.5 : 0.7;
         const vel = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         if (vel > maxVel) {
           this.vx = (this.vx / vel) * maxVel;
@@ -96,13 +104,15 @@ const FluidAnimation = () => {
         this.life = 0;
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.radius = Math.random() * 70 + 30;
+        this.radius = Math.random() * (isMobile ? 50 : 70) + (isMobile ? 20 : 30);
       }
       
       draw() {
         if (!ctx) return;
         
-        const opacity = Math.min(1, this.life / 20) * (1 - Math.max(0, (this.life - (this.maxLife - 20)) / 20)) * 0.3;
+        // Lower opacity on mobile for less visual intensity
+        const opacityFactor = isMobile ? 0.25 : 0.3;
+        const opacity = Math.min(1, this.life / 20) * (1 - Math.max(0, (this.life - (this.maxLife - 20)) / 20)) * opacityFactor;
         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
         
         gradient.addColorStop(0, `${this.color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`);
@@ -127,7 +137,8 @@ const FluidAnimation = () => {
     // Animation loop
     const animate = () => {
       // Clear with semi-transparent black for trail effect
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      // Use more transparency for mobile (faster clearing)
+      ctx.fillStyle = `rgba(0, 0, 0, ${isMobile ? 0.1 : 0.05})`;
       ctx.fillRect(0, 0, width, height);
       
       // Update and draw particles
@@ -136,8 +147,8 @@ const FluidAnimation = () => {
         p.draw();
       });
       
-      // Apply blur effect
-      ctx.filter = 'blur(30px)';
+      // Apply less blur on mobile for better performance
+      ctx.filter = `blur(${isMobile ? 20 : 30}px)`;
       ctx.drawImage(canvas, 0, 0);
       ctx.filter = 'none';
       
@@ -149,7 +160,7 @@ const FluidAnimation = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [isMobile]);
   
   return (
     <canvas

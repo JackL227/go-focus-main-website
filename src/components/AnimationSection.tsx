@@ -1,9 +1,11 @@
 
 import React, { useRef, useEffect } from 'react';
 import FlowAnimation from './FlowAnimation';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const AnimationSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -39,9 +41,12 @@ const AnimationSection = () => {
           <span className="text-primary">24/7 Lead Conversion</span> in Action
         </h2>
         <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto mb-8">
-          Watch how our AI automatically processes inbound leads, qualifies prospects, and books appointments - all while you focus on growing your business.
+          {isMobile 
+            ? "See how our AI processes leads and books calls automatically."
+            : "Watch how our AI automatically processes inbound leads, qualifies prospects, and books appointments - all while you focus on growing your business."
+          }
         </p>
-        <div className="relative h-[550px] md:h-[600px]">
+        <div className="relative h-[450px] md:h-[600px]">
           <FlowAnimation />
         </div>
       </div>

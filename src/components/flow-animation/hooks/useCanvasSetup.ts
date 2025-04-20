@@ -4,7 +4,7 @@ import { setCanvasSize } from '../flowAnimationUtils';
 import OutcomePanel from '../OutcomePanel';
 import AINode from '../AINode';
 
-export const useCanvasSetup = () => {
+export const useCanvasSetup = (isMobile = false) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
   const [hoveredPanel, setHoveredPanel] = useState<OutcomePanel | null>(null);
@@ -25,20 +25,33 @@ export const useCanvasSetup = () => {
       
       // Recalculate positions for AI node and panels based on new canvas size
       if (aiNodeRef.current) {
-        aiNodeRef.current.x = canvas.width / 2;
-        aiNodeRef.current.y = canvas.height / 2;
+        // Place AI node more centrally on mobile
+        aiNodeRef.current.x = isMobile ? canvas.width / 2 : canvas.width / 2;
+        aiNodeRef.current.y = isMobile ? canvas.height * 0.4 : canvas.height / 2;
       }
       
       if (panelsRef.current.length === 3) {
-        // Position panels based on canvas size
-        panelsRef.current[0].x = canvas.width * 0.75;
-        panelsRef.current[0].y = canvas.height * 0.3;
-        
-        panelsRef.current[1].x = canvas.width * 0.82;
-        panelsRef.current[1].y = canvas.height * 0.5;
-        
-        panelsRef.current[2].x = canvas.width * 0.75;
-        panelsRef.current[2].y = canvas.height * 0.7;
+        if (isMobile) {
+          // Stack panels more vertically on mobile
+          panelsRef.current[0].x = canvas.width * 0.65;
+          panelsRef.current[0].y = canvas.height * 0.25;
+          
+          panelsRef.current[1].x = canvas.width * 0.7;
+          panelsRef.current[1].y = canvas.height * 0.45;
+          
+          panelsRef.current[2].x = canvas.width * 0.65;
+          panelsRef.current[2].y = canvas.height * 0.65;
+        } else {
+          // Desktop layout
+          panelsRef.current[0].x = canvas.width * 0.75;
+          panelsRef.current[0].y = canvas.height * 0.3;
+          
+          panelsRef.current[1].x = canvas.width * 0.82;
+          panelsRef.current[1].y = canvas.height * 0.5;
+          
+          panelsRef.current[2].x = canvas.width * 0.75;
+          panelsRef.current[2].y = canvas.height * 0.7;
+        }
       }
     };
     
@@ -46,12 +59,35 @@ export const useCanvasSetup = () => {
     window.addEventListener('resize', handleResize);
 
     // Initialize AI node and panels
-    aiNodeRef.current = new AINode(canvas.width / 2, canvas.height / 2);
+    aiNodeRef.current = new AINode(
+      isMobile ? canvas.width / 2 : canvas.width / 2, 
+      isMobile ? canvas.height * 0.4 : canvas.height / 2
+    );
+    
+    const panelSize = isMobile ? 0.8 : 1; // Slightly smaller panels on mobile
     
     panelsRef.current = [
-      new OutcomePanel(canvas.width * 0.75, canvas.height * 0.3, "Qualified Lead", "checkmark"),
-      new OutcomePanel(canvas.width * 0.82, canvas.height * 0.5, "Booked Call", "calendar"),
-      new OutcomePanel(canvas.width * 0.75, canvas.height * 0.7, "Closed Deal", "smile")
+      new OutcomePanel(
+        isMobile ? canvas.width * 0.65 : canvas.width * 0.75, 
+        isMobile ? canvas.height * 0.25 : canvas.height * 0.3, 
+        "Qualified Lead", 
+        "checkmark",
+        panelSize
+      ),
+      new OutcomePanel(
+        isMobile ? canvas.width * 0.7 : canvas.width * 0.82, 
+        isMobile ? canvas.height * 0.45 : canvas.height * 0.5, 
+        "Booked Call", 
+        "calendar",
+        panelSize
+      ),
+      new OutcomePanel(
+        isMobile ? canvas.width * 0.65 : canvas.width * 0.75, 
+        isMobile ? canvas.height * 0.65 : canvas.height * 0.7, 
+        "Closed Deal", 
+        "smile",
+        panelSize
+      )
     ];
 
     // Mouse interaction handler
@@ -74,13 +110,37 @@ export const useCanvasSetup = () => {
       canvas.style.cursor = foundHoveredPanel ? 'pointer' : 'default';
     };
 
+    // Touch interaction handler for mobile
+    const handleTouchMove = (event: TouchEvent) => {
+      if (event.touches.length === 0) return;
+      
+      const touch = event.touches[0];
+      const rect = canvas.getBoundingClientRect();
+      const touchX = touch.clientX - rect.left;
+      const touchY = touch.clientY - rect.top;
+
+      let foundHoveredPanel = null;
+      for (const panel of panelsRef.current) {
+        if (panel.isPointInside(touchX, touchY)) {
+          foundHoveredPanel = panel;
+          panel.hover(true);
+        } else {
+          panel.hover(false);
+        }
+      }
+
+      setHoveredPanel(foundHoveredPanel);
+    };
+
     canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('touchmove', handleTouchMove);
 
     return () => {
       window.removeEventListener('resize', handleResize);
       canvas.removeEventListener('mousemove', handleMouseMove);
+      canvas.removeEventListener('touchmove', handleTouchMove);
     };
-  }, []);
+  }, [isMobile]);
 
   return {
     canvasRef,

@@ -3,11 +3,15 @@ import React from 'react';
 import { useCanvasSetup } from './hooks/useCanvasSetup';
 import { useAnimationLoop } from './hooks/useAnimationLoop';
 
-const FlowAnimationCanvas = () => {
-  const { canvasRef, ctx, aiNode, panels } = useCanvasSetup();
+interface FlowAnimationCanvasProps {
+  isMobile?: boolean;
+}
+
+const FlowAnimationCanvas = ({ isMobile = false }: FlowAnimationCanvasProps) => {
+  const { canvasRef, ctx, aiNode, panels } = useCanvasSetup(isMobile);
   
   // Always call the hook, but handle null values inside
-  useAnimationLoop(canvasRef.current, ctx, aiNode, panels);
+  useAnimationLoop(canvasRef.current, ctx, aiNode, panels, isMobile);
   
   return (
     <canvas 

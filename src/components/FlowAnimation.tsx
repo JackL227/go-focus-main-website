@@ -1,11 +1,14 @@
 
 import React from 'react';
 import FlowAnimationCanvas from './flow-animation';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const FlowAnimation = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <div className="w-full h-full">
-      <FlowAnimationCanvas />
+      <FlowAnimationCanvas isMobile={isMobile} />
     </div>
   );
 };
