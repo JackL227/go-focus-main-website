@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight, Play } from 'lucide-react';
@@ -29,7 +28,7 @@ const HeroSection = () => {
         <FluidAnimation />
       </div>
       
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-transparent z-[1]"></div>
+      {/* Removed the gradient overlay from here to create seamless transition */}
       
       <div className="container-custom relative z-10 py-16">
         <div className="max-w-4xl mx-auto">

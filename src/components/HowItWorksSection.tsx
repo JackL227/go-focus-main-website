@@ -67,32 +67,17 @@ const HowItWorksSection = () => {
 
   return (
     <section id="how-it-works" className="relative py-24 overflow-hidden">
-      {/* Background animation continues from Hero section */}
-      <div className="absolute inset-0 z-0 opacity-50">
+      {/* Background animation continues from Hero section using the same FluidAnimation component */}
+      <div className="absolute inset-0 z-0">
         <FluidAnimation />
       </div>
       
-      {/* Gradient overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/90 to-background z-[1]"></div>
+      {/* More subtle gradient overlay for better text readability without harsh cutoffs */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-background/60 to-background/90 z-[1]"></div>
       
-      {/* Curved separator between sections */}
-      <div className="absolute top-0 left-0 right-0 h-24 z-[2]">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" className="absolute bottom-0 w-full h-full">
-          <path 
-            fill="url(#section-gradient)" 
-            fillOpacity="1" 
-            d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
-          ></path>
-          <defs>
-            <linearGradient id="section-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#050A14" stopOpacity="0.2" />
-              <stop offset="100%" stopColor="#050A14" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
+      {/* Removed the curved separator that was creating the visual cutoff */}
       
-      {/* Animated light particles */}
+      {/* Animated light particles - kept for consistent visual effect */}
       <div className="absolute inset-0 z-[2] pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse-soft"></div>
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#00E676]/3 rounded-full blur-3xl animate-glow"></div>

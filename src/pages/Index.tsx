@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
@@ -32,16 +31,21 @@ const Index = () => {
 
   return (
     <main className="min-h-screen bg-[#050A14] text-foreground overflow-x-hidden">
-      <Navigation />
-      <HeroSection />
-      <AnimationSection />
-      <HowItWorksSection />
-      <IndustryResultsSection />
-      <SocialProofSection />
-      <CallToAction />
-      <Footer />
+      <div className="relative">
+        <Navigation />
+        
+        <div className="relative">
+          <HeroSection />
+          <HowItWorksSection />
+        </div>
+        
+        <AnimationSection />
+        <IndustryResultsSection />
+        <SocialProofSection />
+        <CallToAction />
+        <Footer />
+      </div>
       
-      {/* Scroll to top button */}
       {showScrollTop && (
         <Button 
           onClick={scrollToTop}
