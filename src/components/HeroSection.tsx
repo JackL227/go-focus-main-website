@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight, Play } from 'lucide-react';
@@ -7,24 +6,23 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
-
 const HeroSection = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [showAgentDemo, setShowAgentDemo] = useState(false);
-  
   const handleDemoClick = () => {
     setShowAgentDemo(true);
   };
-  
   const scrollToHowItWorks = () => {
     const section = document.getElementById('how-it-works');
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      section.scrollIntoView({
+        behavior: 'smooth'
+      });
     }
   };
-  
-  return (
-    <section className="relative min-h-screen flex items-center pt-24 pb-16">
+  return <section className="relative min-h-screen flex items-center pt-24 pb-16">
       <div className="absolute inset-0 overflow-hidden">
         <FluidAnimation />
       </div>
@@ -52,36 +50,19 @@ const HeroSection = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4 opacity-0 animate-fade-in [animation-delay:700ms]">
-              <Button 
-                size="lg" 
-                className="bg-primary hover:bg-primary/90 text-background group flex items-center"
-                onClick={handleDemoClick}
-              >
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-background group flex items-center" onClick={handleDemoClick}>
                 🎯 See AI Agent in Action
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
               
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="border-primary/60 text-primary hover:bg-primary/10 flex items-center"
-                onClick={scrollToHowItWorks}
-              >
+              <Button size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 flex items-center" onClick={scrollToHowItWorks}>
                 <Play className="mr-2 h-4 w-4" />
                 🔍 See How It Works
               </Button>
               
-              {!user && (
-                <Link to="/auth">
-                  <Button 
-                    size="lg" 
-                    variant="ghost" 
-                    className="border border-primary/30 hover:bg-primary/5"
-                  >
-                    Log In / Sign Up
-                  </Button>
-                </Link>
-              )}
+              {!user && <Link to="/auth">
+                  
+                </Link>}
             </div>
           </div>
           
@@ -95,8 +76,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
