@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
+
 const HeroSection = () => {
   const {
     user
@@ -55,18 +56,20 @@ const HeroSection = () => {
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
               
-              <Button size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 flex items-center" onClick={scrollToHowItWorks}>
-                <Play className="mr-2 h-4 w-4" />
-                🔍 See How It Works
-              </Button>
+              <BookingWidget
+                size="lg"
+                variant="outline"
+                className="border-primary/60 text-primary hover:bg-primary/10"
+              >
+                📅 Book a Demo Call
+              </BookingWidget>
               
               {!user && <Link to="/auth">
                   
-                </Link>}
+              </Link>}
             </div>
           </div>
           
-          {/* AI Agent Demo */}
           {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
           
           <div className="text-center mt-8 opacity-0 animate-fade-in [animation-delay:1200ms]">
@@ -78,4 +81,5 @@ const HeroSection = () => {
       </div>
     </section>;
 };
+
 export default HeroSection;
