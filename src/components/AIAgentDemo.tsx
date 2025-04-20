@@ -149,7 +149,10 @@ const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose }) => {
     const userMessage = input || userInput;
     if (!userMessage) return;
     
-    const newUserMessage = { sender: 'user', text: userMessage };
+    const newUserMessage: Message = { 
+      sender: 'user', 
+      text: userMessage 
+    };
     setMessages(prevMessages => [...prevMessages, newUserMessage]);
     setUserInput('');
     setIsTyping(true);
@@ -161,7 +164,7 @@ const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose }) => {
     if (nextMessage) {
       setTimeout(() => {
         setMessages(prevMessages => [...prevMessages, {
-          sender: 'agent',
+          sender: 'agent' as const,
           text: nextMessage.text
         }]);
         setIsTyping(false);
@@ -172,7 +175,7 @@ const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose }) => {
       setTimeout(() => {
         setIsTyping(false);
         setMessages(prevMessages => [...prevMessages, {
-          sender: 'agent',
+          sender: 'agent' as const,
           text: "Great! Let me check our calendar. You can book a time that works for you using the button below."
         }]);
       }, 1500);
