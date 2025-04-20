@@ -31,23 +31,15 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#050A14] to-[#0A1428] text-foreground overflow-x-hidden relative">
-      {/* Added relative to ensure proper z-index stacking */}
-      
-      {/* Mobile fallback for gradient animation - this will only show on low-performance devices */}
-      <div className="fixed inset-0 bg-gradient-to-br from-[#071026] via-[#0A1428] to-[#061832] z-[-2] hidden sm:hidden"></div>
-      
+    <main className="min-h-screen bg-gradient-to-b from-[#050A14] to-[#0A1428] text-foreground overflow-x-hidden">
       <Navigation />
-      
-      <div className="relative z-0"> {/* Wrapper to control section layering */}
-        <HeroSection />
-        <AnimationSection />
-        <HowItWorksSection />
-        <IndustryResultsSection />
-        <SocialProofSection />
-        <CallToAction />
-        <Footer />
-      </div>
+      <HeroSection />
+      <AnimationSection />
+      <HowItWorksSection />
+      <IndustryResultsSection />
+      <SocialProofSection />
+      <CallToAction />
+      <Footer />
       
       {/* Scroll to top button */}
       {showScrollTop && (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from './ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 import FluidAnimation from './FluidAnimation';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -23,14 +23,12 @@ const HeroSection = () => {
       });
     }
   };
-  
-  return (
-    <section className="relative min-h-screen flex items-center pt-24 pb-0 overflow-hidden">
+  return <section className="relative min-h-screen flex items-center pt-24 pb-0">
       <div className="absolute inset-0 overflow-hidden">
-        <FluidAnimation extendToSection={true} />
+        <FluidAnimation />
       </div>
       
-      <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/60 to-transparent z-[1]"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/70 to-background z-[1]"></div>
       
       <div className="container-custom relative z-10 py-16">
         <div className="max-w-4xl mx-auto">
@@ -81,8 +79,7 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
 
 export default HeroSection;
