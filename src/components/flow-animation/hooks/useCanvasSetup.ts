@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from 'react';
 import { setCanvasSize } from '../flowAnimationUtils';
 import OutcomePanel from '../OutcomePanel';
@@ -14,7 +15,7 @@ export const useCanvasSetup = (isMobile = false) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext('2d', { alpha: false });
     if (!context) return;
     setCtx(context);
 
@@ -31,7 +32,7 @@ export const useCanvasSetup = (isMobile = false) => {
       
       if (panelsRef.current.length === 3) {
         if (isMobile) {
-          // Stack panels more vertically on mobile
+          // Improved layout for panels on mobile - stacked for better visibility
           panelsRef.current[0].x = canvas.width * 0.65;
           panelsRef.current[0].y = canvas.height * 0.25;
           
@@ -41,7 +42,7 @@ export const useCanvasSetup = (isMobile = false) => {
           panelsRef.current[2].x = canvas.width * 0.65;
           panelsRef.current[2].y = canvas.height * 0.65;
         } else {
-          // Desktop layout
+          // Enhanced desktop layout for better distribution
           panelsRef.current[0].x = canvas.width * 0.75;
           panelsRef.current[0].y = canvas.height * 0.3;
           
@@ -57,16 +58,13 @@ export const useCanvasSetup = (isMobile = false) => {
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    // Initialize AI node and panels
+    // Initialize AI node and panels with improved positioning
     aiNodeRef.current = new AINode(
       isMobile ? canvas.width / 2 : canvas.width / 2, 
       isMobile ? canvas.height * 0.4 : canvas.height / 2
     );
     
-    // Create a scale factor for mobile but don't pass it as a separate argument
-    const panelSize = isMobile ? 0.8 : 1; // Slightly smaller panels on mobile
-    
-    // Fix: Remove the panelSize as a separate parameter and include it in the options object if needed
+    // Create panels with improved icons and layout
     panelsRef.current = [
       new OutcomePanel(
         isMobile ? canvas.width * 0.65 : canvas.width * 0.75, 
@@ -88,7 +86,7 @@ export const useCanvasSetup = (isMobile = false) => {
       )
     ];
 
-    // Mouse interaction handler
+    // Enhanced interaction handlers
     const handleMouseMove = (event: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       const mouseX = event.clientX - rect.left;
@@ -108,7 +106,7 @@ export const useCanvasSetup = (isMobile = false) => {
       canvas.style.cursor = foundHoveredPanel ? 'pointer' : 'default';
     };
 
-    // Touch interaction handler for mobile
+    // Enhanced touch interaction handler for mobile
     const handleTouchMove = (event: TouchEvent) => {
       if (event.touches.length === 0) return;
       
@@ -130,13 +128,47 @@ export const useCanvasSetup = (isMobile = false) => {
       setHoveredPanel(foundHoveredPanel);
     };
 
+    // Add basic click/tap functionality
+    const handleClick = (event: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const clickY = event.clientY - rect.top;
+      
+      for (const panel of panelsRef.current) {
+        if (panel.isPointInside(clickX, clickY)) {
+          panel.pulse();
+          break;
+        }
+      }
+    };
+    
+    const handleTouchEnd = (event: TouchEvent) => {
+      if (event.changedTouches.length === 0) return;
+      
+      const touch = event.changedTouches[0];
+      const rect = canvas.getBoundingClientRect();
+      const touchX = touch.clientX - rect.left;
+      const touchY = touch.clientY - rect.top;
+      
+      for (const panel of panelsRef.current) {
+        if (panel.isPointInside(touchX, touchY)) {
+          panel.pulse();
+          break;
+        }
+      }
+    };
+
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('touchmove', handleTouchMove);
+    canvas.addEventListener('click', handleClick);
+    canvas.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       window.removeEventListener('resize', handleResize);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('touchmove', handleTouchMove);
+      canvas.removeEventListener('click', handleClick);
+      canvas.removeEventListener('touchend', handleTouchEnd);
     };
   }, [isMobile]);
 

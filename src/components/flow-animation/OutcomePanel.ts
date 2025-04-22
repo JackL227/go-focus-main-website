@@ -14,8 +14,8 @@ export default class OutcomePanel {
   constructor(x: number, y: number, label: string, iconType: string = "") {
     this.x = x;
     this.y = y;
-    this.width = 120;
-    this.height = 80;
+    this.width = 140; // Slightly larger panels
+    this.height = 90; // Slightly taller panels
     this.label = label;
     this.type = label.toLowerCase().includes('qualified') ? 'checkmark' :
                 label.toLowerCase().includes('booked') ? 'calendar' : 
@@ -51,7 +51,7 @@ export default class OutcomePanel {
                this.type === 'calendar' ? colors.booked :
                colors.closed;
     
-    // Draw pulse effect
+    // Draw pulse effect with more subtle glow
     if (this.isPulsing) {
       ctx.beginPath();
       ctx.roundRect(
@@ -59,81 +59,100 @@ export default class OutcomePanel {
         this.y - this.height/2 - 20 * this.pulseEffect,
         this.width + 40 * this.pulseEffect,
         this.height + 40 * this.pulseEffect,
-        8
+        12 // More rounded corners
       );
-      ctx.fillStyle = `${color}${Math.floor(this.pulseEffect * 25).toString(16)}`;
+      ctx.fillStyle = `${color}${Math.floor(this.pulseEffect * 15).toString(16)}`; // More subtle
       ctx.fill();
     }
     
-    // Draw panel background with glassmorphism effect
+    // Draw panel background with improved glassmorphism effect
     ctx.save();
     
-    // Add glow on hover or pulse
+    // Add glow on hover or pulse - enhanced for more premium look
     if (this.isHovered || this.isPulsing) {
       ctx.shadowColor = color;
-      ctx.shadowBlur = 15;
+      ctx.shadowBlur = 20; // Increased glow effect
+      ctx.shadowOffsetY = 2; // Slight shadow offset for depth
+    } else {
+      // Subtle shadow even when not hovered for 3D effect
+      ctx.shadowColor = 'rgba(0,0,0,0.4)';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetY = 3;
     }
     
-    // Create gradient for panel
+    // Enhanced gradient for panel - more depth and glass feeling
     const panelGradient = ctx.createLinearGradient(
       this.x - this.width/2,
       this.y - this.height/2,
       this.x + this.width/2,
       this.y + this.height/2
     );
-    panelGradient.addColorStop(0, 'rgba(30, 40, 60, 0.85)');
-    panelGradient.addColorStop(1, 'rgba(20, 30, 50, 0.9)');
+    // More translucent gradient for glassmorphism
+    panelGradient.addColorStop(0, 'rgba(25, 35, 60, 0.75)');
+    panelGradient.addColorStop(1, 'rgba(15, 25, 45, 0.85)');
     
-    // Draw main panel rectangle
+    // Draw main panel rectangle with more rounded corners
     ctx.beginPath();
     ctx.roundRect(
       this.x - this.width/2,
       this.y - this.height/2,
       this.width,
       this.height,
-      8
+      12 // More rounded corners
     );
     ctx.fillStyle = panelGradient;
     ctx.fill();
     
-    // Draw border
-    ctx.strokeStyle = color + (this.isHovered ? 'FF' : '99'); // Full or 60% opacity
-    ctx.lineWidth = this.isHovered ? 2 : 1;
+    // Draw a more subtle border
+    ctx.strokeStyle = color + (this.isHovered ? 'CC' : '66'); // Full or 40% opacity
+    ctx.lineWidth = this.isHovered ? 1.5 : 0.8;
     ctx.stroke();
     
-    // Draw highlight reflection (top edge)
+    // Draw top highlight reflection - enhanced for glass effect
     ctx.beginPath();
     ctx.roundRect(
       this.x - this.width/2 + 3,
       this.y - this.height/2 + 3,
       this.width - 6,
-      this.height/6,
-      [4, 4, 0, 0]
+      this.height/7,
+      [10, 10, 0, 0] // Rounded only on top corners
     );
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.12)'; // Slightly more visible highlight
     ctx.fill();
     
-    // Draw icon
+    // Draw icon with more refined style
     const iconSize = 24;
     const iconY = this.y - 10;
     
-    ctx.font = `${iconSize}px 'Arial'`;
+    // Set up for icon drawing - cleaner look
+    ctx.font = `${iconSize}px 'Poppins', Arial`;
     ctx.fillStyle = color;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
+    // Draw the icon with glow effect
+    ctx.save();
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 8; // Subtle glow on icon
+    
     if (this.type === 'checkmark') {
+      // Clean checkmark symbol
       ctx.fillText('✓', this.x, iconY);
     } else if (this.type === 'calendar') {
+      // Clean calendar icon
       ctx.fillText('📅', this.x, iconY);
     } else {
+      // Money/deal icon
       ctx.fillText('💰', this.x, iconY);
     }
+    ctx.restore();
     
-    // Draw label
-    ctx.font = `bold 12px 'Poppins', Arial`;
+    // Draw label with improved typography
+    ctx.font = `600 13px 'Poppins', Arial`; // Bolder, slightly larger font
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillText(this.label, this.x, this.y + iconSize/2 + 10);
+    ctx.shadowColor = 'rgba(0,0,0,0.5)'; // Text shadow for legibility
+    ctx.shadowBlur = 3;
+    ctx.fillText(this.label, this.x, this.y + iconSize/2 + 12);
     
     // Reset shadow
     ctx.shadowColor = 'transparent';
