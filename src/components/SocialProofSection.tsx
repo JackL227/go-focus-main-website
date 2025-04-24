@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
+import ChannelsSection from './ChannelsSection';
 
 const clientLogos = [
   { name: "Client 1", initial: "A" },
@@ -97,6 +98,8 @@ const SocialProofSection = () => {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
       
       <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
+        <ChannelsSection />
+        
         <div className="mb-16">
           <h3 className="text-center text-lg text-foreground/60 mb-8">Trusted by Leading Businesses</h3>
           <div className="flex flex-wrap justify-center gap-8 md:gap-16">
