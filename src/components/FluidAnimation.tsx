@@ -57,8 +57,8 @@ const FluidAnimation = () => {
         // Smaller particles on mobile
         this.radius = Math.random() * (isMobile ? 50 : 70) + (isMobile ? 20 : 30);
         
-        // Different colors for particles
-        const colors = ['#006eda', '#00E676', '#006eda'];
+        // Updated colors to match website theme
+        const colors = ['#006eda33', '#00E67633', '#081020'];
         this.color = colors[Math.floor(Math.random() * colors.length)];
         
         this.life = 0;
@@ -136,12 +136,16 @@ const FluidAnimation = () => {
     
     // Animation loop
     const animate = () => {
-      // Clear with semi-transparent black for trail effect
-      // Use more transparency for mobile (faster clearing)
-      ctx.fillStyle = `rgba(0, 0, 0, ${isMobile ? 0.1 : 0.05})`;
+      if (!ctx || !canvas) return;
+      
+      // Clear with website's background color for seamless blend
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, '#050A14');
+      gradient.addColorStop(1, '#0A1428');
+      ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
       
-      // Update and draw particles
+      // Update and draw particles with more transparency
       particles.forEach(p => {
         p.update();
         p.draw();
