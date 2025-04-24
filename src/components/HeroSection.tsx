@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
 import FlowAnimationCanvas from './flow-animation';
+
 const HeroSection = () => {
   const {
     user
@@ -36,7 +37,7 @@ const HeroSection = () => {
               
               <p className="text-xl text-foreground/90 opacity-0 animate-fade-in [animation-delay:500ms]" aria-label="Subheadline">
                 <span className="block mt-2 text-primary/90">
-                  Built for Trading Mentors, Med Spas and Fitness Influencers — our AI responds to DMs, books qualified calls and revives cold leads without you lifting a finger.
+                  Our AI automates lead conversion for Trading Mentors, Med Spas, and Fitness Influencers by responding to DMs, booking qualified calls, and reviving cold leads without manual intervention.
                 </span>
               </p>
             </div>
@@ -68,4 +69,5 @@ const HeroSection = () => {
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
     </section>;
 };
+
 export default HeroSection;
