@@ -5,42 +5,27 @@ import { cn } from '@/lib/utils';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
 import ChannelsSection from './ChannelsSection';
-const clientLogos = [{
-  name: "Client 1",
-  initial: "A"
-}, {
-  name: "Client 2",
-  initial: "B"
-}, {
-  name: "Client 3",
-  initial: "C"
-}, {
-  name: "Client 4",
-  initial: "D"
-}, {
-  name: "Client 5",
-  initial: "E"
-}];
+
 const testimonials = [{
   id: 1,
-  name: "Alex Smith",
-  position: "Trading Mentor",
-  company: "Forex Masters",
-  content: "Go Focus AI completely transformed how I handle leads. My AI agent qualifies prospects 24/7, and I'm now booking 30+ high-quality calls monthly without lifting a finger.",
+  name: "Daniel",
+  position: "Vehicle Aesthetic Consultant",
+  company: "Auto Styling Pros",
+  content: "The AI agent has transformed my lead management. I'm now booking more consultations without spending hours chasing leads, giving me more time to focus on delivering exceptional vehicle aesthetic services.",
   rating: 5
 }, {
   id: 2,
-  name: "Sarah Johnson",
-  position: "Owner",
-  company: "Radiance Med Spa",
-  content: "Since implementing our AI agent, we've seen a 45% increase in booking rate. No more missed calls or delayed responses—every lead gets instant attention even after hours.",
+  name: "Ethan",
+  position: "Trading Mentor",
+  company: "Boogienomics",
+  content: "Go Focus AI is a game-changer for my trading education business. The AI handles inquiries, filters potential students, and books high-quality calls, allowing me to concentrate on delivering top-tier trading insights.",
   rating: 5
 }, {
   id: 3,
-  name: "Michael Chen",
+  name: "Arik Bouganim",
   position: "Founder",
-  company: "Prestige Auto Wraps",
-  content: "My customers get instant quotes and scheduling even when we're closed. The AI handles basic questions and collects information so when I talk to them, they're ready to book.",
+  company: "Innoveum",
+  content: "As an engineering and energy auditing firm, our time is critical. The AI agent streamlines our lead qualification process, ensuring we only engage with serious clients who are genuinely interested in our services.",
   rating: 5
 }, {
   id: 4,
@@ -50,20 +35,25 @@ const testimonials = [{
   content: "The ROI has been incredible. Our AI agent has quadrupled our consultation bookings while reducing the time my team spends on unqualified leads.",
   rating: 5
 }];
+
 const SocialProofSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [showAgentDemo, setShowAgentDemo] = useState(false);
   const maxSlides = Math.ceil(testimonials.length / 2);
+
   const nextSlide = () => {
     setActiveSlide(prev => (prev + 1) % maxSlides);
   };
+
   const prevSlide = () => {
     setActiveSlide(prev => (prev - 1 + maxSlides) % maxSlides);
   };
+
   const handleDemoClick = () => {
     setShowAgentDemo(true);
   };
+
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -75,23 +65,25 @@ const SocialProofSection = () => {
     }, {
       threshold: 0.1
     });
+
     const section = sectionRef.current;
     if (section) {
       observer.observe(section);
     }
+
     return () => {
       if (section) {
         observer.unobserve(section);
       }
     };
   }, []);
+
   return <section id="testimonials" className="relative py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#071020] to-[#050A14] z-0"></div>
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
       
       <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
         <ChannelsSection />
-        
         
         
         <div className="mb-16">
@@ -160,4 +152,5 @@ const SocialProofSection = () => {
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
     </section>;
 };
+
 export default SocialProofSection;
