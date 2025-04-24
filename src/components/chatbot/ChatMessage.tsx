@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { Calendar } from 'lucide-react';
-import { Button } from '../ui/button';
 import { motion } from 'framer-motion';
+import BookingWidget from '../BookingWidget';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -16,7 +16,7 @@ interface ChatMessageProps {
 const ChatMessage = ({ message }: ChatMessageProps) => {
   const isUser = message.role === 'user';
   
-  // Check if message contains "book a call" to show the booking CTA
+  // Check if message contains booking-related keywords
   const showBookingCTA = !isUser && message.content.toLowerCase().includes("book a call") || 
                          !isUser && message.content.toLowerCase().includes("booking") ||
                          isUser && message.content.toLowerCase().includes("book a call") || 
@@ -54,14 +54,13 @@ const ChatMessage = ({ message }: ChatMessageProps) => {
           transition={{ delay: 0.2 }}
         >
           <p className="text-sm font-medium mb-2">Ready to see Go Focus AI in action?</p>
-          <Button 
+          <BookingWidget 
             size="sm" 
             className="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center gap-2"
-            onClick={() => window.open('/book-demo', '_blank')}
           >
             <Calendar className="h-4 w-4" />
             Book a Free Demo
-          </Button>
+          </BookingWidget>
         </motion.div>
       )}
 
@@ -73,15 +72,14 @@ const ChatMessage = ({ message }: ChatMessageProps) => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
         >
-          <p className="text-sm font-medium mb-2">While you wait, see how our AI turns leads into customers 24/7</p>
-          <Button 
-            size="sm" 
-            variant="outline" 
+          <p className="text-sm font-medium mb-2">While you wait, want to see how our AI turns leads into customers 24/7?</p>
+          <BookingWidget
+            variant="outline"
+            size="sm"
             className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary"
-            onClick={() => window.open('/demo-video', '_blank')}
           >
             Watch Demo
-          </Button>
+          </BookingWidget>
         </motion.div>
       )}
     </motion.div>
@@ -89,3 +87,4 @@ const ChatMessage = ({ message }: ChatMessageProps) => {
 };
 
 export default ChatMessage;
+
