@@ -1,4 +1,6 @@
 
+import React from 'react';
+
 class AINode {
   x: number;
   y: number;
@@ -20,7 +22,7 @@ class AINode {
     
     // Load the new logo image
     this.image = new Image();
-    this.image.src = '/lovable-uploads/873abdac-ee0c-4921-aef0-aaf1ca6223f8.png';
+    this.image.src = '/lovable-uploads/6f1e15b5-a595-47e5-bc3c-a9b31bbf2f4d.png';
     this.image.onload = () => {
       this.isImageLoaded = true;
     };
@@ -35,8 +37,8 @@ class AINode {
 
   update() {
     // Subtle pulse effect only for the glow
-    this.pulseSize += 0.01 * this.pulseDir;
-    if (this.pulseSize > 0.3 || this.pulseSize < 0) {
+    this.pulseSize += 0.005 * this.pulseDir;
+    if (this.pulseSize > 0.1 || this.pulseSize < 0) {
       this.pulseDir *= -1;
     }
   }
@@ -57,7 +59,7 @@ class AINode {
 
     // Draw logo image if loaded - make sure this is the main focus
     if (this.isImageLoaded) {
-      const imgSize = this.size * 1.8;
+      const imgSize = this.size * 2.5; // Increased size to make logo more prominent
       ctx.drawImage(
         this.image,
         this.x - imgSize / 2,
@@ -76,3 +78,4 @@ class AINode {
 }
 
 export default AINode;
+
