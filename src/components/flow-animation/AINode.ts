@@ -1,6 +1,4 @@
 
-import React from 'react';
-
 class AINode {
   x: number;
   y: number;
@@ -22,9 +20,13 @@ class AINode {
     
     // Load the new logo image
     this.image = new Image();
-    this.image.src = '/lovable-uploads/6f1e15b5-a595-47e5-bc3c-a9b31bbf2f4d.png';
+    this.image.src = '/lovable-uploads/1f5c8895-5e56-4fd1-8478-e056bea50c33.png';
     this.image.onload = () => {
       this.isImageLoaded = true;
+      console.log('Logo image loaded successfully');
+    };
+    this.image.onerror = () => {
+      console.error('Failed to load logo image');
     };
   }
 
@@ -60,6 +62,7 @@ class AINode {
     // Draw logo image if loaded - make sure this is the main focus
     if (this.isImageLoaded) {
       const imgSize = this.size * 2.5; // Increased size to make logo more prominent
+      ctx.save();
       ctx.drawImage(
         this.image,
         this.x - imgSize / 2,
@@ -67,6 +70,7 @@ class AINode {
         imgSize,
         imgSize
       );
+      ctx.restore();
     } else {
       // Fallback if image isn't loaded
       ctx.beginPath();
@@ -78,4 +82,3 @@ class AINode {
 }
 
 export default AINode;
-
