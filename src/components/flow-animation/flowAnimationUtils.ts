@@ -1,3 +1,4 @@
+
 // Define the colors for the animation
 export const animationColors = {
   primary: '#006eda', // blue

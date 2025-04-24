@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
+import FlowAnimationCanvas from './flow-animation';
 
 const HeroSection = () => {
   const { user } = useAuth();
@@ -89,7 +90,9 @@ const HeroSection = () => {
           
           {/* Right Column: Animation Container */}
           <div className="relative h-[500px] lg:h-[600px] opacity-0 animate-fade-in [animation-delay:900ms]">
-            <div className="absolute inset-0 bg-gradient-to-r from-background/0 via-primary/5 to-background/0 animate-pulse-soft" />
+            <div className="absolute inset-0">
+              <FlowAnimationCanvas />
+            </div>
           </div>
         </div>
       </div>
