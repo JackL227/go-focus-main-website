@@ -47,7 +47,7 @@ export const ServiceSlideshow = () => {
   }, [api]);
 
   return (
-    <div className="w-full">
+    <div className="w-full p-4">
       <Carousel
         setApi={setApi}
         opts={{
@@ -74,16 +74,17 @@ export const ServiceSlideshow = () => {
         </CarouselContent>
         
         {/* Dots indicator */}
-        <div className="flex justify-center gap-2 mt-4">
+        <div className="flex justify-center gap-2 mt-6">
           {slides.map((_, index) => (
             <button
               key={index}
               className={`w-2 h-2 rounded-full transition-all ${
                 index === current 
-                  ? "bg-primary w-4" 
+                  ? "bg-primary w-6" 
                   : "bg-foreground/20"
               }`}
               onClick={() => api?.scrollTo(index)}
+              aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>

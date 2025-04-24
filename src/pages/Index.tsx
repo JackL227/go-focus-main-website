@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
-// Removed AnimationSection import
 import HowItWorksSection from '@/components/HowItWorksSection';
 import IndustryResultsSection from '@/components/IndustryResultsSection';
 import SocialProofSection from '@/components/SocialProofSection';
@@ -31,10 +30,10 @@ const Index = () => {
     });
   };
   
-  return <main className="min-h-screen bg-gradient-to-b from-[#050A14] to-[#0A1428] text-foreground overflow-x-hidden">
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-[#050A14] to-[#0A1428] text-foreground overflow-x-hidden">
       <Navigation />
       <HeroSection />
-      {/* Removed AnimationSection */}
       <HowItWorksSection />
       <IndustryResultsSection />
       <SocialProofSection />
@@ -54,7 +53,8 @@ const Index = () => {
       
       {/* Chatbot Widget */}
       <ChatbotWidget />
-    </main>;
+    </main>
+  );
 };
 
 export default Index;
