@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from 'react';
 import MessageParticle from '../MessageParticle';
 import LeadParticle from '../LeadParticle';
@@ -33,117 +34,146 @@ export const useAnimationLoop = (
   useEffect(() => {
     // Early return if any required dependencies are missing
     if (!canvas || !ctx || !aiNode) return;
-
-    // Initialize background particles - fewer on mobile
-    const bgParticleCount = isMobile ? 30 : 60;
-    animationState.current.bgParticles = Array.from({ length: bgParticleCount }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      size: Math.random() * (isMobile ? 3 : 4) + 1,
-      speed: Math.random() * (isMobile ? 0.2 : 0.3) + 0.1,
-      opacity: Math.random() * 0.5 + 0.2
-    }));
-
-    // Initialize message particles - fewer on mobile
-    const messageParticleCount = isMobile ? 10 : 20;
-    animationState.current.messageParticles = Array.from({ length: messageParticleCount }, () => {
-      const x = -20;
-      const y = canvas.height * (0.3 + Math.random() * 0.4);
-      return new MessageParticle(x, y, canvas.height);
-    });
-
-    let animationId: number;
-    let lastFrameTime = 0;
-    const targetFPS = isMobile ? 30 : 60; // Lower FPS target for mobile
-    const frameInterval = 1000 / targetFPS;
-
-    const animate = (timestamp: number) => {
-      if (!ctx || !canvas || !aiNode) return;
-      
-      // Throttle animation on mobile for better performance
-      const elapsed = timestamp - lastFrameTime;
-      if (elapsed < frameInterval && isMobile) {
-        animationId = requestAnimationFrame(animate);
-        return;
-      }
-      lastFrameTime = timestamp;
-
-      // Draw background
-      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, '#081020');
-      gradient.addColorStop(1, '#0A1A30');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Update and draw background particles
-      const { bgParticles } = animationState.current;
-      bgParticles.forEach((particle, i) => {
-        // Skip some particles on mobile for performance
-        if (isMobile && i % 2 === 0) return;
-        
-        ctx.shadowColor = 'rgba(30, 174, 219, 0.5)';
-        ctx.shadowBlur = isMobile ? 2 : 4;
-
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-
-        const particleGradient = ctx.createRadialGradient(
-          particle.x, particle.y, 0,
-          particle.x, particle.y, particle.size
-        );
-
-        const isBlue = i % 3 === 0;
-        particleGradient.addColorStop(0, isBlue ? 'rgba(30, 174, 219, 0.8)' : 'rgba(0, 110, 218, 0.8)');
-        particleGradient.addColorStop(1, 'rgba(0, 20, 50, 0.1)');
-
-        ctx.fillStyle = particleGradient;
-        ctx.fill();
-
-        ctx.shadowBlur = 0;
-        ctx.shadowColor = 'transparent';
-
-        particle.x += particle.speed;
-        if (particle.x > canvas.width) {
-          particle.x = 0;
-          particle.y = Math.random() * canvas.height;
+    
+    // Wait until canvas has valid dimensions before starting animation
+    if (canvas.width === 0 || canvas.height === 0) {
+      console.log('Canvas dimensions not ready yet, waiting...');
+      const checkDimensions = setInterval(() => {
+        if (canvas.width > 0 && canvas.height > 0) {
+          clearInterval(checkDimensions);
+          startAnimation();
         }
+      }, 100);
+      return () => clearInterval(checkDimensions);
+    } else {
+      startAnimation();
+    }
+    
+    function startAnimation() {
+      console.log('Starting animation with canvas dimensions:', canvas.width, 'x', canvas.height);
+      
+      // Initialize background particles - fewer on mobile
+      const bgParticleCount = isMobile ? 30 : 60;
+      animationState.current.bgParticles = Array.from({ length: bgParticleCount }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * (isMobile ? 3 : 4) + 1,
+        speed: Math.random() * (isMobile ? 0.2 : 0.3) + 0.1,
+        opacity: Math.random() * 0.5 + 0.2
+      }));
+
+      // Initialize message particles - fewer on mobile
+      const messageParticleCount = isMobile ? 10 : 20;
+      animationState.current.messageParticles = Array.from({ length: messageParticleCount }, () => {
+        const x = -20;
+        const y = canvas.height * (0.3 + Math.random() * 0.4);
+        return new MessageParticle(x, y, canvas.height);
       });
 
-      // Apply less blur on mobile for better performance
-      if (!isMobile) {
-        ctx.filter = 'blur(1px)';
-        ctx.drawImage(canvas, 0, 0);
-        ctx.filter = 'none';
-      }
+      let animationId: number;
+      let lastFrameTime = 0;
+      const targetFPS = isMobile ? 30 : 60; // Lower FPS target for mobile
+      const frameInterval = 1000 / targetFPS;
 
-      // Draw connecting flow paths between AI node and panels
-      panels.forEach(panel => {
-        drawFlowPath(ctx, aiNode, panel, isMobile);
-      });
+      const animate = (timestamp: number) => {
+        if (!ctx || !canvas || !aiNode) return;
+        
+        // Safety check to prevent drawing on a canvas with zero dimensions
+        if (canvas.width === 0 || canvas.height === 0) {
+          console.log('Skipping frame, canvas has zero dimension');
+          animationId = requestAnimationFrame(animate);
+          return;
+        }
+        
+        // Throttle animation on mobile for better performance
+        const elapsed = timestamp - lastFrameTime;
+        if (elapsed < frameInterval && isMobile) {
+          animationId = requestAnimationFrame(animate);
+          return;
+        }
+        lastFrameTime = timestamp;
 
-      // Update and draw panels
-      panels.forEach(panel => {
-        panel.update();
-        panel.draw(ctx, animationColors);
-      });
+        // Draw background
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, '#081020');
+        gradient.addColorStop(1, '#0A1A30');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Update and draw AI node
-      aiNode.update();
-      aiNode.draw(ctx, animationColors);
+        // Update and draw background particles
+        const { bgParticles } = animationState.current;
+        bgParticles.forEach((particle, i) => {
+          // Skip some particles on mobile for performance
+          if (isMobile && i % 2 === 0) return;
+          
+          ctx.shadowColor = 'rgba(30, 174, 219, 0.5)';
+          ctx.shadowBlur = isMobile ? 2 : 4;
 
-      // Update particles - with mobile optimizations
-      updateParticles(canvas, aiNode, panels, ctx, animationState.current, isMobile);
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
 
-      animationId = requestAnimationFrame(animate);
-    };
+          const particleGradient = ctx.createRadialGradient(
+            particle.x, particle.y, 0,
+            particle.x, particle.y, particle.size
+          );
 
-    animate(0);
+          const isBlue = i % 3 === 0;
+          particleGradient.addColorStop(0, isBlue ? 'rgba(30, 174, 219, 0.8)' : 'rgba(0, 110, 218, 0.8)');
+          particleGradient.addColorStop(1, 'rgba(0, 20, 50, 0.1)');
 
-    return () => {
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-      }
-    };
+          ctx.fillStyle = particleGradient;
+          ctx.fill();
+
+          ctx.shadowBlur = 0;
+          ctx.shadowColor = 'transparent';
+
+          particle.x += particle.speed;
+          if (particle.x > canvas.width) {
+            particle.x = 0;
+            particle.y = Math.random() * canvas.height;
+          }
+        });
+
+        // Apply less blur on mobile for better performance
+        if (!isMobile && canvas.width > 0 && canvas.height > 0) {
+          try {
+            ctx.filter = 'blur(1px)';
+            ctx.drawImage(canvas, 0, 0);
+            ctx.filter = 'none';
+          } catch (error) {
+            console.error('Error applying blur effect:', error);
+          }
+        }
+
+        // Draw connecting flow paths between AI node and panels
+        panels.forEach(panel => {
+          drawFlowPath(ctx, aiNode, panel, isMobile);
+        });
+
+        // Update and draw panels
+        panels.forEach(panel => {
+          panel.update();
+          panel.draw(ctx, animationColors);
+        });
+
+        // Update and draw AI node
+        aiNode.update();
+        aiNode.draw(ctx, animationColors);
+
+        // Update particles - with mobile optimizations
+        updateParticles(canvas, aiNode, panels, ctx, animationState.current, isMobile);
+
+        animationId = requestAnimationFrame(animate);
+      };
+
+      animate(0);
+
+      return () => {
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+        }
+      };
+    }
   }, [canvas, ctx, aiNode, panels, isMobile]);
 
   return animationState.current;

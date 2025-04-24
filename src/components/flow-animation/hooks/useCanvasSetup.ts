@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
+
+import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { setCanvasSize } from '../flowAnimationUtils';
 import OutcomePanel from '../OutcomePanel';
 import AINode from '../AINode';
@@ -9,6 +10,32 @@ export const useCanvasSetup = (isMobile = false) => {
   const [hoveredPanel, setHoveredPanel] = useState<OutcomePanel | null>(null);
   const aiNodeRef = useRef<AINode | null>(null);
   const panelsRef = useRef<OutcomePanel[]>([]);
+  const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
+
+  // Use layout effect for immediate DOM measurements before painting
+  useLayoutEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    // Immediately set initial size
+    const updateCanvasSize = () => {
+      const parent = canvas.parentElement;
+      if (parent) {
+        const width = parent.offsetWidth || 300;
+        const height = parent.offsetHeight || 300;
+        
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        
+        setCanvasDimensions({ width, height });
+        console.log('Canvas size set to:', width, 'x', height);
+      }
+    };
+
+    updateCanvasSize();
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -21,6 +48,12 @@ export const useCanvasSetup = (isMobile = false) => {
     // Set canvas size
     const handleResize = () => {
       setCanvasSize(canvas);
+      const parent = canvas.parentElement;
+      if (parent) {
+        const width = parent.offsetWidth;
+        const height = parent.offsetHeight;
+        setCanvasDimensions({ width, height });
+      }
       
       // Recalculate positions for AI node and panels based on new canvas size
       if (aiNodeRef.current) {
@@ -133,10 +166,23 @@ export const useCanvasSetup = (isMobile = false) => {
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('touchmove', handleTouchMove);
 
+    // Monitor changes after initial render
+    const resizeObserver = new ResizeObserver(() => {
+      handleResize();
+    });
+    
+    if (canvas.parentElement) {
+      resizeObserver.observe(canvas.parentElement);
+    }
+
     return () => {
       window.removeEventListener('resize', handleResize);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('touchmove', handleTouchMove);
+      if (canvas.parentElement) {
+        resizeObserver.unobserve(canvas.parentElement);
+      }
+      resizeObserver.disconnect();
     };
   }, [isMobile]);
 

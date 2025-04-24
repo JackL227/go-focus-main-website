@@ -37,8 +37,8 @@ const AnimationSection = () => {
       className="w-full py-16 opacity-0" 
       aria-label="AI animation section"
     >
-      <div className="container mx-auto px-4">
-        <FlowAnimation isMobile={isMobile} />
+      <div className="container mx-auto px-4" style={{ height: '400px' }}>
+        <FlowAnimation />
       </div>
     </section>
   );
