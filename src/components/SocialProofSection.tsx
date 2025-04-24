@@ -27,13 +27,6 @@ const testimonials = [{
   company: "Innoveum",
   content: "As an engineering and energy auditing firm, our time is critical. The AI agent streamlines our lead qualification process, ensuring we only engage with serious clients who are genuinely interested in our services.",
   rating: 5
-}, {
-  id: 4,
-  name: "Jessica Williams",
-  position: "CEO",
-  company: "Investment Academy",
-  content: "The ROI has been incredible. Our AI agent has quadrupled our consultation bookings while reducing the time my team spends on unqualified leads.",
-  rating: 5
 }];
 
 const SocialProofSection = () => {
