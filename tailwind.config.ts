@@ -16,7 +16,7 @@ export default {
         input: '#cecece',
         ring: '#cecece',
         background: {
-          DEFAULT: '#010101', // Updated background color
+          DEFAULT: '#071020', // Dark navy
           foreground: '#cecece'
         },
         foreground: {
