@@ -12,15 +12,15 @@ class AINode {
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
-    this.size = 50; // Slightly smaller for better proportion
+    this.size = 50;
     this.pulseSize = 0;
     this.pulseDir = 1;
     this.isImageLoaded = false;
     this.rotation = 0;
     
-    // Load the logo image
+    // Load the new logo image
     this.image = new Image();
-    this.image.src = '/lovable-uploads/5aa60a2a-0096-4874-a3c7-f4c34cc374be.png';
+    this.image.src = '/lovable-uploads/873abdac-ee0c-4921-aef0-aaf1ca6223f8.png';
     this.image.onload = () => {
       this.isImageLoaded = true;
     };
@@ -34,50 +34,43 @@ class AINode {
   }
 
   update() {
-    // Update pulse effect
-    this.pulseSize += 0.02 * this.pulseDir;
-    if (this.pulseSize > 1 || this.pulseSize < 0) {
+    // Subtle pulse effect only for the glow
+    this.pulseSize += 0.01 * this.pulseDir;
+    if (this.pulseSize > 0.3 || this.pulseSize < 0) {
       this.pulseDir *= -1;
     }
-    
-    // Add slight rotation for dynamic effect
-    this.rotation += 0.002;
   }
 
   draw(ctx: CanvasRenderingContext2D, colors: Record<string, string>) {
-    // Draw outer glow
+    // Draw outer glow with subtle pulse
     const gradient = ctx.createRadialGradient(
       this.x, this.y, this.size * 0.5,
-      this.x, this.y, this.size * (1.5 + this.pulseSize * 0.5)
+      this.x, this.y, this.size * (1.2 + this.pulseSize)
     );
     gradient.addColorStop(0, `${colors.primary}33`);
     gradient.addColorStop(1, `${colors.primary}00`);
     
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size * (1.5 + this.pulseSize * 0.5), 0, Math.PI * 2);
+    ctx.arc(this.x, this.y, this.size * (1.2 + this.pulseSize), 0, Math.PI * 2);
     ctx.fillStyle = gradient;
     ctx.fill();
 
     // Draw logo image if loaded
     if (this.isImageLoaded) {
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.rotation);
       const imgSize = this.size * 1.8;
       ctx.drawImage(
         this.image,
-        -imgSize / 2,
-        -imgSize / 2,
+        this.x - imgSize / 2,
+        this.y - imgSize / 2,
         imgSize,
         imgSize
       );
-      ctx.restore();
     }
 
-    // Draw inner glow
+    // Draw subtle inner glow
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size * (1 + this.pulseSize * 0.2), 0, Math.PI * 2);
-    ctx.fillStyle = `${colors.primary}22`;
+    ctx.arc(this.x, this.y, this.size * 1.1, 0, Math.PI * 2);
+    ctx.fillStyle = `${colors.primary}11`;
     ctx.fill();
   }
 }
