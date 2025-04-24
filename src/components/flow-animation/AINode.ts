@@ -55,7 +55,7 @@ class AINode {
     ctx.fillStyle = gradient;
     ctx.fill();
 
-    // Draw logo image if loaded
+    // Draw logo image if loaded - make sure this is the main focus
     if (this.isImageLoaded) {
       const imgSize = this.size * 1.8;
       ctx.drawImage(
@@ -65,13 +65,13 @@ class AINode {
         imgSize,
         imgSize
       );
+    } else {
+      // Fallback if image isn't loaded
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size * 0.8, 0, Math.PI * 2);
+      ctx.fillStyle = colors.primary;
+      ctx.fill();
     }
-
-    // Draw subtle inner glow
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size * 1.1, 0, Math.PI * 2);
-    ctx.fillStyle = `${colors.primary}11`;
-    ctx.fill();
   }
 }
 
