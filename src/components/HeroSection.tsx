@@ -7,7 +7,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
 import FlowAnimationCanvas from './flow-animation';
-
 const HeroSection = () => {
   const {
     user
@@ -36,9 +35,7 @@ const HeroSection = () => {
               </h1>
               
               <p className="text-xl text-foreground/90 opacity-0 animate-fade-in [animation-delay:500ms]" aria-label="Subheadline">
-                <span className="block mt-2 text-primary/90">
-                  AI-powered lead conversion for Trading Mentors, Med Spas, and Fitness Influencers — automatically responding to DMs, booking calls, and reviving leads.
-                </span>
+                <span className="block mt-2 text-primary/90">AI-powered lead conversion for Trading Mentors, Med Spas and Fitness Influencers — automatically booking calls and reviving leads.</span>
               </p>
             </div>
             
@@ -69,5 +66,4 @@ const HeroSection = () => {
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
     </section>;
 };
-
 export default HeroSection;
