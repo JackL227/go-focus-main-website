@@ -57,8 +57,12 @@ const FluidAnimation = () => {
         // Smaller particles on mobile
         this.radius = Math.random() * (isMobile ? 50 : 70) + (isMobile ? 20 : 30);
         
-        // Updated colors to match website theme
-        const colors = ['#006eda33', '#00E67633', '#081020'];
+        // Updated colors to match website theme - using rgba format for consistent transparency
+        const colors = [
+          'rgba(0, 110, 218, 0.2)', // blue
+          'rgba(0, 230, 118, 0.2)', // green
+          'rgba(8, 16, 32, 0.2)'    // dark
+        ];
         this.color = colors[Math.floor(Math.random() * colors.length)];
         
         this.life = 0;
@@ -113,10 +117,24 @@ const FluidAnimation = () => {
         // Lower opacity on mobile for less visual intensity
         const opacityFactor = isMobile ? 0.25 : 0.3;
         const opacity = Math.min(1, this.life / 20) * (1 - Math.max(0, (this.life - (this.maxLife - 20)) / 20)) * opacityFactor;
+        
+        // Create proper gradient with consistent RGBA format
         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
         
-        gradient.addColorStop(0, `${this.color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`);
-        gradient.addColorStop(1, `${this.color}00`);
+        // Extract RGB from the color string and use calculated opacity
+        const rgbMatch = this.color.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*[\d.]+\)/);
+        if (rgbMatch) {
+          const r = rgbMatch[1];
+          const g = rgbMatch[2];
+          const b = rgbMatch[3];
+          
+          gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${opacity})`);
+          gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+        } else {
+          // Fallback if parsing fails
+          gradient.addColorStop(0, `rgba(0, 110, 218, ${opacity})`);
+          gradient.addColorStop(1, 'rgba(0, 110, 218, 0)');
+        }
         
         ctx.fillStyle = gradient;
         ctx.beginPath();

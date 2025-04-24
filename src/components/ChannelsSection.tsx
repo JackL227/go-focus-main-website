@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { WhatsappIcon, MessengerIcon, MessageIcon, EmailIcon, LiveChatIcon, VoiceIcon } from './icons/CommunicationIcons';
 import { cn } from '@/lib/utils';
@@ -43,9 +44,6 @@ const ChannelsSection = () => {
               </div>
               <span className="text-sm md:text-base font-medium text-center">
                 {channel.label}
-                {channel.comingSoon && (
-                  <span className="block text-xs text-foreground/60">coming soon</span>
-                )}
               </span>
             </div>
           ))}
