@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -7,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 220 30% 10%; /* Dark navy #101A29 */
+    --background: 0 0% 0.4%; /* Corresponds to #010101 */
     --foreground: 0 0% 80.8%; /* Light grey #cecece */
     
     --card: 220 30% 10%; /* Dark navy #101A29 */
@@ -49,7 +48,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#010101] text-foreground;
     font-family: 'Inter', sans-serif;
   }
 
