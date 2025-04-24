@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -41,7 +40,7 @@ export default {
           foreground: '#cecece'
         },
         accent: {
-          DEFAULT: '#00E676', // Neon green
+          DEFAULT: '#00FFD1', // Neon Mint as requested
           foreground: '#071020'
         },
         popover: {
@@ -61,18 +60,22 @@ export default {
       keyframes: {
         'accordion-down': {
           from: {
-            height: '0'
+            height: '0',
+            opacity: '0'
           },
           to: {
-            height: 'var(--radix-accordion-content-height)'
+            height: 'var(--radix-accordion-content-height)',
+            opacity: '1'
           }
         },
         'accordion-up': {
           from: {
-            height: 'var(--radix-accordion-content-height)'
+            height: 'var(--radix-accordion-content-height)',
+            opacity: '1'
           },
           to: {
-            height: '0'
+            height: '0',
+            opacity: '0'
           }
         },
         'fade-in': {
@@ -129,6 +132,10 @@ export default {
         'shadow-pulse': {
           '0%, 100%': { boxShadow: '0 0 10px rgba(0,110,218,0.5)' },
           '50%': { boxShadow: '0 0 20px rgba(0,110,218,0.8)' }
+        },
+        'typing-dot': {
+          '0%, 100%': { opacity: '0.4', transform: 'translateY(0)' },
+          '50%': { opacity: '1', transform: 'translateY(-2px)' }
         }
       },
       animation: {
@@ -144,7 +151,8 @@ export default {
         'glow': 'glow 4s ease-in-out infinite',
         'ripple': 'ripple 2s ease-out infinite',
         'button-pop': 'button-pop 2s ease-in-out infinite',
-        'shadow-pulse': 'shadow-pulse 2s ease-in-out infinite'
+        'shadow-pulse': 'shadow-pulse 2s ease-in-out infinite',
+        'typing-dot': 'typing-dot 1s ease-in-out infinite'
       }
     }
   },
