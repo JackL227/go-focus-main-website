@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { Star, ArrowRight, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Button } from './ui/button';
@@ -11,7 +10,7 @@ const testimonials = [{
   id: 1,
   name: "Daniel",
   position: "Vehicle Aesthetic Consultant",
-  content: "The AI agent has transformed my lead management. I'm now booking more consultations without spending hours chasing leads, giving me more time to focus on delivering exceptional vehicle aesthetic services.",
+  content: "The AI agent has transformed my lead management. I'm now booking more consultations without spending hours chasing leads giving me more time to focus on delivering exceptional vehicle aesthetic services.",
   rating: 5
 }, {
   id: 2,
@@ -25,7 +24,7 @@ const testimonials = [{
   name: "Arik Bouganim",
   position: "Founder",
   company: "Innoveum",
-  content: "As an engineering and energy auditing firm, our time is critical. The AI agent streamlines our lead qualification process, ensuring we only engage with serious clients who are genuinely interested in our services.",
+  content: "As an engineering and energy auditing firm our time is critical. The AI agent streamlines our lead qualification process ensuring we only engage with serious clients who are genuinely interested in our services.",
   rating: 5
 }];
 
