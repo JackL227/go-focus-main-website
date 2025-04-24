@@ -11,6 +11,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
 import ChatbotWidget from '@/components/chatbot/ChatbotWidget';
+import { Toaster } from '@/components/ui/toaster';
 
 const Index = () => {
   const [showScrollTop, setShowScrollTop] = React.useState(false);
@@ -39,6 +40,7 @@ const Index = () => {
       <SocialProofSection />
       <CallToAction />
       <Footer />
+      <Toaster />
       
       {/* Scroll to top button */}
       {showScrollTop && (
