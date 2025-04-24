@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from 'react';
 import MessageParticle from '../MessageParticle';
 import LeadParticle from '../LeadParticle';
@@ -69,45 +68,33 @@ export const useAnimationLoop = (
       }
       lastFrameTime = timestamp;
 
-      // Draw enhanced background with deeper gradient
+      // Draw background
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, '#050F20'); // Darker top
-      gradient.addColorStop(1, '#0A1A30'); // Still dark but slightly different tone for depth
+      gradient.addColorStop(0, '#081020');
+      gradient.addColorStop(1, '#0A1A30');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Update and draw background particles with improved aesthetics
+      // Update and draw background particles
       const { bgParticles } = animationState.current;
       bgParticles.forEach((particle, i) => {
         // Skip some particles on mobile for performance
         if (isMobile && i % 2 === 0) return;
         
-        // Enhanced glow effect
-        ctx.shadowColor = 'rgba(30, 174, 219, 0.4)';
-        ctx.shadowBlur = isMobile ? 2 : 5;
+        ctx.shadowColor = 'rgba(30, 174, 219, 0.5)';
+        ctx.shadowBlur = isMobile ? 2 : 4;
 
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
 
-        // Enhanced particle gradient for more depth
         const particleGradient = ctx.createRadialGradient(
           particle.x, particle.y, 0,
           particle.x, particle.y, particle.size
         );
 
-        // More variety in particle colors for visual richness
         const isBlue = i % 3 === 0;
-        const isTeal = i % 5 === 0;
-        if (isBlue) {
-          particleGradient.addColorStop(0, 'rgba(30, 174, 219, 0.8)');
-          particleGradient.addColorStop(1, 'rgba(0, 20, 50, 0.1)');
-        } else if (isTeal) {
-          particleGradient.addColorStop(0, 'rgba(0, 230, 118, 0.6)');
-          particleGradient.addColorStop(1, 'rgba(0, 40, 50, 0.1)');
-        } else {
-          particleGradient.addColorStop(0, 'rgba(0, 110, 218, 0.7)');
-          particleGradient.addColorStop(1, 'rgba(10, 30, 60, 0.1)');
-        }
+        particleGradient.addColorStop(0, isBlue ? 'rgba(30, 174, 219, 0.8)' : 'rgba(0, 110, 218, 0.8)');
+        particleGradient.addColorStop(1, 'rgba(0, 20, 50, 0.1)');
 
         ctx.fillStyle = particleGradient;
         ctx.fill();
@@ -115,26 +102,23 @@ export const useAnimationLoop = (
         ctx.shadowBlur = 0;
         ctx.shadowColor = 'transparent';
 
-        // Move particles with slight variance in speed
-        particle.x += particle.speed * (0.9 + Math.sin(timestamp * 0.001 + i) * 0.2);
+        particle.x += particle.speed;
         if (particle.x > canvas.width) {
-          particle.x = -5;
+          particle.x = 0;
           particle.y = Math.random() * canvas.height;
         }
       });
 
-      // Apply subtle blur for glow effect - skip on mobile
+      // Apply less blur on mobile for better performance
       if (!isMobile) {
         ctx.filter = 'blur(1px)';
-        ctx.globalAlpha = 0.3;
         ctx.drawImage(canvas, 0, 0);
         ctx.filter = 'none';
-        ctx.globalAlpha = 1;
       }
 
-      // Draw enhanced connecting flow paths between AI node and panels
+      // Draw connecting flow paths between AI node and panels
       panels.forEach(panel => {
-        drawFlowPath(ctx, aiNode, panel, timestamp, isMobile);
+        drawFlowPath(ctx, aiNode, panel, isMobile);
       });
 
       // Update and draw panels
@@ -147,8 +131,8 @@ export const useAnimationLoop = (
       aiNode.update();
       aiNode.draw(ctx, animationColors);
 
-      // Update particles with mobile optimizations
-      updateParticles(canvas, aiNode, panels, ctx, animationState.current, timestamp, isMobile);
+      // Update particles - with mobile optimizations
+      updateParticles(canvas, aiNode, panels, ctx, animationState.current, isMobile);
 
       animationId = requestAnimationFrame(animate);
     };
@@ -169,49 +153,43 @@ const drawFlowPath = (
   ctx: CanvasRenderingContext2D,
   aiNode: AINode,
   panel: OutcomePanel,
-  timestamp: number,
   isMobile: boolean = false
 ) => {
+  ctx.beginPath();
   const startX = aiNode.x;
   const startY = aiNode.y;
   const endX = panel.x;
   const endY = panel.y;
 
-  // Create enhanced curvy path with multiple control points
+  // Create a curvy path with multiple control points
   const midX = (startX + endX) / 2;
   const midY = (startY + endY) / 2;
   
-  // Add subtle animated control points for organic flow
-  const time = timestamp * 0.001;
+  // Add some randomization to control points for organic feel - less on mobile
   const randFactor = isMobile ? 5 : 10;
-  const cpX1 = midX + Math.sin(time * 0.8) * randFactor;
-  const cpY1 = midY + Math.cos(time * 0.7) * randFactor;
+  const cpX1 = midX + Math.sin(Date.now() * 0.001) * randFactor;
+  const cpY1 = midY + Math.cos(Date.now() * 0.0008) * randFactor;
   
-  // Draw path with enhanced styling for glass effect
-  ctx.beginPath();
   ctx.moveTo(startX, startY);
   ctx.quadraticCurveTo(cpX1, cpY1, endX, endY);
 
-  // Create enhanced gradient based on panel type
+  // Create gradient based on panel type
   let baseColor = panel.type === 'checkmark' ? animationColors.qualified :
                  panel.type === 'calendar' ? animationColors.booked :
                  animationColors.closed;
   
-  // More sophisticated gradient with better opacity
   const lineGradient = ctx.createLinearGradient(startX, startY, endX, endY);
-  lineGradient.addColorStop(0, `${baseColor}22`); // 13% opacity
-  lineGradient.addColorStop(0.5, `${baseColor}55`); // 33% opacity  
-  lineGradient.addColorStop(1, `${baseColor}22`); // 13% opacity
-  
-  // Adjust line width and style for cleaner look
+  lineGradient.addColorStop(0, `${baseColor}33`); // 20% opacity
+  lineGradient.addColorStop(0.5, `${baseColor}66`); // 40% opacity
+  lineGradient.addColorStop(1, `${baseColor}33`); // 20% opacity
+
   ctx.strokeStyle = lineGradient;
-  ctx.lineWidth = panel.isHovered ? 2 : 1.2;
-  ctx.lineCap = 'round';
+  ctx.lineWidth = panel.isHovered ? 2 : 1;
   ctx.stroke();
   
-  // Add enhanced, smoother flow particles along the path
+  // Add animated flow particles along the path - fewer on mobile
   if (!isMobile || Math.random() < 0.7) { // 70% chance to draw particles on mobile
-    animateFlowParticles(ctx, startX, startY, endX, endY, cpX1, cpY1, baseColor, timestamp, isMobile);
+    animateFlowParticles(ctx, startX, startY, endX, endY, cpX1, cpY1, baseColor, isMobile);
   }
 };
 
@@ -224,40 +202,39 @@ const animateFlowParticles = (
   cpX: number,
   cpY: number,
   color: string,
-  timestamp: number,
   isMobile: boolean = false
 ) => {
   // Generate fewer positions on mobile
-  const particleCount = isMobile ? 2 : 4;
-  const time = timestamp * 0.001;
+  const particleCount = isMobile ? 2 : 3;
+  const time = Date.now() * 0.001;
   
   for (let i = 0; i < particleCount; i++) {
-    // Calculate position along curve with improved timing
-    let t = ((time * 0.7 + i * 0.33) % 1.5) / 1.5; // Smoother timing
-    if (t > 1) continue; // Skip if beyond the path
+    // Calculate position along curve (0 to 1)
+    let t = ((time + i * 0.33) % 1);
     
-    // Enhanced quadratic bezier formula for smoother motion
-    const x = Math.pow(1-t, 2) * startX + 2 * (1-t) * t * cpX + t * t * endX;
-    const y = Math.pow(1-t, 2) * startY + 2 * (1-t) * t * cpY + t * t * endY;
+    // Quadratic bezier formula
+    const x = (1-t)*(1-t)*startX + 2*(1-t)*t*cpX + t*t*endX;
+    const y = (1-t)*(1-t)*startY + 2*(1-t)*t*cpY + t*t*endY;
     
-    // Draw flow particle with enhanced styling
+    // Draw flow particle - smaller on mobile
     const particleSize = isMobile ? 2 : 3;
-    
-    // Add glow for particles
-    ctx.shadowColor = color;
-    ctx.shadowBlur = isMobile ? 4 : 8;
-    
-    // Create particle with fade in/out based on position
-    const fadeOpacity = Math.sin(t * Math.PI); // Fade in and out
-    
     ctx.beginPath();
     ctx.arc(x, y, particleSize, 0, Math.PI * 2);
-    ctx.fillStyle = color + Math.floor(fadeOpacity * 255).toString(16).padStart(2, '0');
+    ctx.fillStyle = color;
     ctx.fill();
     
-    // Reset shadow
-    ctx.shadowBlur = 0;
-    ctx.shadowColor = 'transparent';
+    // Add glow - less intense on mobile
+    if (!isMobile) {
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 5;
+      ctx.beginPath();
+      ctx.arc(x, y, 2, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Reset shadow
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = 'transparent';
+    }
   }
 };
 
@@ -267,20 +244,20 @@ const updateParticles = (
   panels: OutcomePanel[],
   ctx: CanvasRenderingContext2D,
   state: AnimationState,
-  timestamp: number,
   isMobile: boolean = false
 ) => {
-  // Update message particles with improved interaction
+  // Update message particles
   for (let i = state.messageParticles.length - 1; i >= 0; i--) {
     const particle = state.messageParticles[i];
     const x = particle.update();
     particle.draw(ctx, animationColors);
 
-    // Enhanced AI node interaction
+    // Check if particle has reached the AI node center
     if (aiNode.processParticle(particle)) {
       state.messageParticles.splice(i, 1);
       
-      // More sophisticated panel targeting based on particle properties
+      // Determine which outcome panel to target based on particle properties
+      // Use isQualified to determine if it goes to a positive outcome
       const targetPanelIndex = particle.isQualified ? 
         (Math.random() < 0.7 ? 1 : 0) : // 70% chance for booking if qualified
         2; // Closed deal for qualified leads
@@ -288,8 +265,9 @@ const updateParticles = (
       const targetPanel = panels[targetPanelIndex];
       targetPanel.pulse();
 
-      // Create the appropriate lead particle with optimized animation
-      if (!isMobile || Math.random() < 0.8) {
+      // Create the appropriate type of lead particle based on the target panel
+      // On mobile, reduce the chance of creating new particles
+      if (!isMobile || Math.random() < 0.7) {
         const leadType = targetPanel.type;
         const newLead = new LeadParticle(aiNode.x, aiNode.y, leadType);
         newLead.setTarget(targetPanel.x, targetPanel.y);
@@ -298,17 +276,14 @@ const updateParticles = (
       continue;
     }
 
-    // Enhanced interaction radius with smooth attraction to AI node
+    // If particle is within 150 pixels of AI node, redirect it
+    // Reduce interaction radius on mobile
     const interactionRadius = isMobile ? 100 : 150;
     const dx = aiNode.x - particle.x;
     const dy = aiNode.y - particle.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
     
-    // Improved attraction logic with time-based randomization
-    const attractionChance = isMobile ? 0.03 : 0.05;
-    if (distance < interactionRadius && !particle.targetX && 
-        Math.sin(timestamp * 0.001 + particle.y * 0.1) > 0.7 && // Time-based randomization
-        Math.random() < attractionChance) {
+    if (distance < interactionRadius && !particle.targetX && Math.random() < (isMobile ? 0.03 : 0.05)) {
       particle.redirectToNode(aiNode.x, aiNode.y);
     }
 
@@ -318,7 +293,7 @@ const updateParticles = (
     }
   }
 
-  // Update lead particles with improved visuals
+  // Update lead particles
   for (let i = state.leadParticles.length - 1; i >= 0; i--) {
     const particle = state.leadParticles[i];
     particle.update();
@@ -329,13 +304,11 @@ const updateParticles = (
     }
   }
 
-  // Create new message particles with improved timing
+  // Create new message particles - less frequently on mobile
   const particleCreationChance = isMobile ? 0.04 : 0.08;
   const maxParticles = isMobile ? 15 : 30;
   
-  if (Math.sin(timestamp * 0.001) > 0.7 && // Time-based variation
-      Math.random() < particleCreationChance && 
-      state.messageParticles.length < maxParticles) {
+  if (Math.random() < particleCreationChance && state.messageParticles.length < maxParticles) {
     const x = -20;
     const y = canvas.height * (0.3 + Math.random() * 0.4);
     const newParticle = new MessageParticle(x, y, canvas.height);
