@@ -55,7 +55,6 @@ const HeroSection = () => {
                 className="text-xl text-foreground/90 opacity-0 animate-fade-in [animation-delay:500ms]"
                 aria-label="Subheadline"
               >
-                We help Trading Mentors, Med Spas, and Fitness Coaches convert more leads into revenue using custom-trained AI agents that respond, qualify, and book clients 24/7.
                 <span className="block mt-2 text-primary/90">
                   Built for Trading Mentors, Med Spas and Fitness Influencers — our AI responds to DMs, books qualified calls and revives cold leads without you lifting a finger.
                 </span>
