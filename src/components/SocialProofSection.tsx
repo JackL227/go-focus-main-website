@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from 'react';
 import { Star, ArrowRight, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Button } from './ui/button';
@@ -10,7 +11,6 @@ const testimonials = [{
   id: 1,
   name: "Daniel",
   position: "Vehicle Aesthetic Consultant",
-  company: "Auto Styling Pros",
   content: "The AI agent has transformed my lead management. I'm now booking more consultations without spending hours chasing leads, giving me more time to focus on delivering exceptional vehicle aesthetic services.",
   rating: 5
 }, {
