@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -8,17 +7,15 @@ import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
 import FlowAnimationCanvas from './flow-animation';
-
 const HeroSection = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [showAgentDemo, setShowAgentDemo] = useState(false);
-
   const handleDemoClick = () => {
     setShowAgentDemo(true);
   };
-
-  return (
-    <section className="relative min-h-screen flex items-center pt-24 pb-0 overflow-hidden" aria-label="Hero section">
+  return <section className="relative min-h-screen flex items-center pt-24 pb-0 overflow-hidden" aria-label="Hero section">
       <div className="absolute inset-0">
         <FluidAnimation />
       </div>
@@ -30,7 +27,7 @@ const HeroSection = () => {
           {/* Left Column: Content */}
           <div className="space-y-8">
             <div className="space-y-6">
-              <span className="inline-block px-4 py-2 rounded-full bg-background/40 backdrop-blur-sm shadow-sm border border-foreground/20 text-primary text-sm font-medium opacity-0 animate-fade-in [animation-delay:100ms]" aria-label="Company type">Performance-Based AI Agentic Systems</span>
+              
               
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold opacity-0 animate-fade-in [animation-delay:300ms] leading-tight" aria-label="Main headline">
                 AI Agents That Convert Leads Into Revenue — 
@@ -53,11 +50,7 @@ const HeroSection = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               
-              <BookingWidget 
-                size="lg"
-                variant="outline"
-                className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300"
-              >
+              <BookingWidget size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300">
                 💡 Book a Demo
               </BookingWidget>
             </div>
@@ -73,8 +66,6 @@ const HeroSection = () => {
       </div>
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
