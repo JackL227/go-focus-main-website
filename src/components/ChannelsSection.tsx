@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { WhatsappIcon, MessengerIcon, MessageIcon, EmailIcon, LiveChatIcon, VoiceIcon } from './icons/CommunicationIcons';
 import { cn } from '@/lib/utils';
@@ -9,7 +8,7 @@ const channels = [
   { icon: MessageIcon, label: 'SMS', available: true },
   { icon: EmailIcon, label: 'Email', available: true },
   { icon: LiveChatIcon, label: 'Live Chat', available: true },
-  { icon: VoiceIcon, label: 'Voice', available: false, comingSoon: true }
+  { icon: VoiceIcon, label: 'Voice', available: true } // Updated voice channel
 ];
 
 const ChannelsSection = () => {
