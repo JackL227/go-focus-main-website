@@ -1,3 +1,4 @@
+
 // Define the colors for the animation
 export const animationColors = {
   primary: '#006eda', // blue
@@ -16,68 +17,47 @@ export const animationColors = {
 export const setCanvasSize = (canvas: HTMLCanvasElement) => {
   const parent = canvas.parentElement;
   if (parent) {
-    const scale = window.devicePixelRatio || 1;
-    const width = parent.offsetWidth * scale;
-    const height = parent.offsetHeight * scale;
-    
-    canvas.width = width;
-    canvas.height = height;
-    canvas.style.width = `${parent.offsetWidth}px`;
-    canvas.style.height = `${parent.offsetHeight}px`;
-    
-    // Scale the context to ensure correct rendering
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      ctx.scale(scale, scale);
-    }
+    canvas.width = parent.offsetWidth;
+    canvas.height = parent.offsetHeight;
+  } else {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
   }
 };
 
 // Create initial particles with improved distribution
-export const createInitialMessageParticles = (count: number, MessageParticle: any, canvasHeight: number, isMobile: boolean) => {
+export const createInitialMessageParticles = (count: number, MessageParticle: any, canvasHeight: number) => {
   const particles = [];
-  const particleCount = isMobile ? Math.floor(count * 0.6) : count; // Fewer particles on mobile
   
-  for (let i = 0; i < particleCount; i++) {
-    const horizontalOffset = Math.random() * (isMobile ? 200 : 400) + (i * (isMobile ? 10 : 20));
+  // Distribute particles more naturally across channels
+  for (let i = 0; i < count; i++) {
+    // Enhanced horizontal position distribution
+    const horizontalOffset = Math.random() * 400 + (i * 20);
     const x = -horizontalOffset;
     
+    // Create more precise channels for visual flow
     let y;
-    const channel = i % (isMobile ? 3 : 4); // Three channels on mobile, four on desktop
+    const channel = i % 4; // Four channels instead of three
     
-    if (isMobile) {
-      if (channel === 0) {
-        y = canvasHeight * (0.2 + Math.random() * 0.15);
-      } else if (channel === 1) {
-        y = canvasHeight * (0.45 + Math.random() * 0.15);
-      } else {
-        y = canvasHeight * (0.7 + Math.random() * 0.15);
-      }
+    if (channel === 0) {
+      // Top channel
+      y = canvasHeight * (0.15 + Math.random() * 0.15);
+    } else if (channel === 1) {
+      // Upper middle channel
+      y = canvasHeight * (0.35 + Math.random() * 0.15);
+    } else if (channel === 2) {
+      // Lower middle channel
+      y = canvasHeight * (0.55 + Math.random() * 0.15);
     } else {
-      // Create more precise channels for visual flow
-      let y;
-      const channel = i % 4; // Four channels instead of three
-      
-      if (channel === 0) {
-        // Top channel
-        y = canvasHeight * (0.15 + Math.random() * 0.15);
-      } else if (channel === 1) {
-        // Upper middle channel
-        y = canvasHeight * (0.35 + Math.random() * 0.15);
-      } else if (channel === 2) {
-        // Lower middle channel
-        y = canvasHeight * (0.55 + Math.random() * 0.15);
-      } else {
-        // Bottom channel
-        y = canvasHeight * (0.75 + Math.random() * 0.15);
-      }
+      // Bottom channel
+      y = canvasHeight * (0.75 + Math.random() * 0.15);
     }
     
     // Create particle with enhanced speed variation
     const particle = new MessageParticle(x, y, canvasHeight);
     
     // Add more speed variation for natural flow
-    particle.speed = isMobile ? (0.6 + Math.random() * 1.2) : (0.8 + Math.random() * 1.5);
+    particle.speed = 0.8 + Math.random() * 1.5;
     
     particles.push(particle);
   }
