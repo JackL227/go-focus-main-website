@@ -7,7 +7,7 @@ const FlowAnimation = () => {
   const isMobile = useIsMobile();
   
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full min-h-[300px] md:min-h-[500px]">
       <FlowAnimationCanvas isMobile={isMobile} />
     </div>
   );
