@@ -158,12 +158,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         
         <div className="container-custom relative z-10 py-24">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="mb-12 rounded-xl overflow-hidden shadow-2xl animate-entrance transition-all duration-700">
-              <div className="aspect-video bg-black/5 flex items-center justify-center">
-                <p className="text-foreground/50">Video Coming Soon</p>
-              </div>
-            </div>
-
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-entrance">
               {headline}
             </h1>
