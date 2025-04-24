@@ -32,7 +32,7 @@ const FluidAnimation = () => {
     canvas.height = height;
     
     // Animation settings - reduce particle count on mobile
-    const particleCount = isMobile ? 15 : 30;
+    const particleCount = isMobile ? 12 : 25;
     let particles: Particle[] = [];
     
     class Particle {
@@ -50,15 +50,15 @@ const FluidAnimation = () => {
         this.y = Math.random() * height;
         
         // Reduce velocity on mobile for better performance
-        const velocityFactor = isMobile ? 0.3 : 0.4;
+        const velocityFactor = isMobile ? 0.25 : 0.35;
         this.vx = Math.random() * velocityFactor - (velocityFactor / 2);
         this.vy = Math.random() * velocityFactor - (velocityFactor / 2);
         
         // Smaller particles on mobile
-        this.radius = Math.random() * (isMobile ? 50 : 70) + (isMobile ? 20 : 30);
+        this.radius = Math.random() * (isMobile ? 45 : 70) + (isMobile ? 20 : 30);
         
-        // Different colors for particles
-        const colors = ['#006eda', '#00E676', '#006eda'];
+        // Different colors for particles with better glow effect
+        const colors = ['#006eda', '#00E676', '#1EAEDB', '#FFC107'];
         this.color = colors[Math.floor(Math.random() * colors.length)];
         
         this.life = 0;
@@ -81,12 +81,12 @@ const FluidAnimation = () => {
         }
         
         // Slower velocity adjustments on mobile
-        const adjustFactor = isMobile ? 0.02 : 0.04;
+        const adjustFactor = isMobile ? 0.015 : 0.03;
         this.vx += (Math.random() * adjustFactor - (adjustFactor / 2));
         this.vy += (Math.random() * adjustFactor - (adjustFactor / 2));
         
         // Limit velocity - slower on mobile
-        const maxVel = isMobile ? 0.5 : 0.7;
+        const maxVel = isMobile ? 0.4 : 0.6;
         const vel = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         if (vel > maxVel) {
           this.vx = (this.vx / vel) * maxVel;
@@ -104,18 +104,22 @@ const FluidAnimation = () => {
         this.life = 0;
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.radius = Math.random() * (isMobile ? 50 : 70) + (isMobile ? 20 : 30);
+        this.radius = Math.random() * (isMobile ? 45 : 70) + (isMobile ? 20 : 30);
       }
       
       draw() {
         if (!ctx) return;
         
         // Lower opacity on mobile for less visual intensity
-        const opacityFactor = isMobile ? 0.25 : 0.3;
+        const opacityFactor = isMobile ? 0.2 : 0.25;
         const opacity = Math.min(1, this.life / 20) * (1 - Math.max(0, (this.life - (this.maxLife - 20)) / 20)) * opacityFactor;
+        
+        // Create a more sophisticated glow effect
         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
         
+        // Enhanced gradient with better color transitions
         gradient.addColorStop(0, `${this.color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`);
+        gradient.addColorStop(0.6, `${this.color}${Math.floor(opacity * 0.5 * 255).toString(16).padStart(2, '0')}`);
         gradient.addColorStop(1, `${this.color}00`);
         
         ctx.fillStyle = gradient;
@@ -137,8 +141,7 @@ const FluidAnimation = () => {
     // Animation loop
     const animate = () => {
       // Clear with semi-transparent black for trail effect
-      // Use more transparency for mobile (faster clearing)
-      ctx.fillStyle = `rgba(0, 0, 0, ${isMobile ? 0.1 : 0.05})`;
+      ctx.fillStyle = `rgba(0, 0, 0, ${isMobile ? 0.12 : 0.06})`;
       ctx.fillRect(0, 0, width, height);
       
       // Update and draw particles
@@ -148,7 +151,7 @@ const FluidAnimation = () => {
       });
       
       // Apply less blur on mobile for better performance
-      ctx.filter = `blur(${isMobile ? 20 : 30}px)`;
+      ctx.filter = `blur(${isMobile ? 18 : 25}px)`;
       ctx.drawImage(canvas, 0, 0);
       ctx.filter = 'none';
       
