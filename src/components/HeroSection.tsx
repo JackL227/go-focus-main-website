@@ -37,7 +37,7 @@ const HeroSection = () => {
               
               <p className="text-xl text-foreground/90 opacity-0 animate-fade-in [animation-delay:500ms]" aria-label="Subheadline">
                 <span className="block mt-2 text-primary/90">
-                  Our AI automates lead conversion for Trading Mentors, Med Spas, and Fitness Influencers by responding to DMs, booking qualified calls, and reviving cold leads without manual intervention.
+                  AI-powered lead conversion for Trading Mentors, Med Spas, and Fitness Influencers — automatically responding to DMs, booking calls, and reviving leads.
                 </span>
               </p>
             </div>
