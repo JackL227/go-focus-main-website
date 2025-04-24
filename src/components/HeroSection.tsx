@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -7,23 +8,17 @@ import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
 import FlowAnimationCanvas from './flow-animation';
+
 const HeroSection = () => {
-  const {
-    user
-  } = useAuth();
+  const { user } = useAuth();
   const [showAgentDemo, setShowAgentDemo] = useState(false);
+
   const handleDemoClick = () => {
     setShowAgentDemo(true);
   };
-  const scrollToHowItWorks = () => {
-    const section = document.getElementById('how-it-works');
-    if (section) {
-      section.scrollIntoView({
-        behavior: 'smooth'
-      });
-    }
-  };
-  return <section className="relative min-h-screen flex items-center pt-24 pb-0 overflow-hidden" aria-label="Hero section">
+
+  return (
+    <section className="relative min-h-screen flex items-center pt-24 pb-0 overflow-hidden" aria-label="Hero section">
       <div className="absolute inset-0">
         <FluidAnimation />
       </div>
@@ -58,9 +53,13 @@ const HeroSection = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               
-              <Button size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300" onClick={scrollToHowItWorks} aria-label="Learn how it works">
-                💡 See How It Works
-              </Button>
+              <BookingWidget 
+                size="lg"
+                variant="outline"
+                className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300"
+              >
+                💡 Book a Demo
+              </BookingWidget>
             </div>
           </div>
           
@@ -74,6 +73,8 @@ const HeroSection = () => {
       </div>
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
-    </section>;
+    </section>
+  );
 };
+
 export default HeroSection;
