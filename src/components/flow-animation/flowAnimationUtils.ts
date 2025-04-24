@@ -1,4 +1,3 @@
-
 // Define the colors for the animation
 export const animationColors = {
   primary: '#006eda', // blue
@@ -25,37 +24,39 @@ export const setCanvasSize = (canvas: HTMLCanvasElement) => {
   }
 };
 
-// Create initial particles
+// Create initial particles with improved distribution
 export const createInitialMessageParticles = (count: number, MessageParticle: any, canvasHeight: number) => {
   const particles = [];
   
-  // Calculate a more natural distribution for particles
+  // Distribute particles more naturally across channels
   for (let i = 0; i < count; i++) {
-    // Horizontal position: staggered from left edge with increasing distance
-    const horizontalOffset = Math.random() * 300 + (i * 15);
+    // Enhanced horizontal position distribution
+    const horizontalOffset = Math.random() * 400 + (i * 20);
     const x = -horizontalOffset;
     
-    // Create clusters of particles at different heights
+    // Create more precise channels for visual flow
     let y;
+    const channel = i % 4; // Four channels instead of three
     
-    // Distribute particles in three main channels
-    const channel = i % 3;
     if (channel === 0) {
       // Top channel
-      y = canvasHeight * (0.2 + Math.random() * 0.15);
+      y = canvasHeight * (0.15 + Math.random() * 0.15);
     } else if (channel === 1) {
-      // Middle channel
-      y = canvasHeight * (0.4 + Math.random() * 0.2);
+      // Upper middle channel
+      y = canvasHeight * (0.35 + Math.random() * 0.15);
+    } else if (channel === 2) {
+      // Lower middle channel
+      y = canvasHeight * (0.55 + Math.random() * 0.15);
     } else {
       // Bottom channel
-      y = canvasHeight * (0.65 + Math.random() * 0.15);
+      y = canvasHeight * (0.75 + Math.random() * 0.15);
     }
     
-    // Create particle with varying speeds
+    // Create particle with enhanced speed variation
     const particle = new MessageParticle(x, y, canvasHeight);
     
-    // Add randomization to speeds for natural flow
-    particle.speed = 0.5 + Math.random() * 1.8;
+    // Add more speed variation for natural flow
+    particle.speed = 0.8 + Math.random() * 1.5;
     
     particles.push(particle);
   }
