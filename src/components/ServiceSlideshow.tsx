@@ -4,8 +4,8 @@ import FlowAnimation from './FlowAnimation';
 
 const ServiceSlideshow = () => {
   return (
-    <div className="w-full p-4">
-      <div className="relative max-w-xl mx-auto h-[400px]">
+    <div className="w-full h-full">
+      <div className="relative w-full h-full">
         <FlowAnimation />
       </div>
     </div>

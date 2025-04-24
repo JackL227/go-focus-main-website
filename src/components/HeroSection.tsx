@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -66,9 +65,7 @@ const HeroSection = () => {
           
           {/* Service Slideshow */}
           <div className="relative h-auto lg:h-auto opacity-0 animate-fade-in [animation-delay:900ms]">
-            <div className="glassmorphic-card bg-background/30 backdrop-blur-md border border-foreground/10 rounded-xl overflow-hidden shadow-xl">
-              <ServiceSlideshow />
-            </div>
+            <ServiceSlideshow />
           </div>
         </div>
       </div>
