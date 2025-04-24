@@ -25,20 +25,6 @@ const AnimationSection = () => {
       }
     };
   }, []);
-  return <div id="animation-section" className="relative min-h-[500px] py-8 flex items-center -mt-24">
-      
-      
-      <div ref={sectionRef} className="container-custom relative z-10 opacity-0 transition-opacity duration-700">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
-          <span className="text-primary">24/7 Lead Conversion</span> in Action
-        </h2>
-        <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto mb-8">
-          {isMobile ? "See how our AI processes leads and books calls automatically." : "Watch how our AI automatically processes inbound leads, qualifies prospects, and books appointments - all while you focus on growing your business."}
-        </p>
-        <div className="relative h-[450px] md:h-[600px]">
-          <FlowAnimation />
-        </div>
-      </div>
-    </div>;
+  return;
 };
 export default AnimationSection;
