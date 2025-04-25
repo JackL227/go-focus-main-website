@@ -7,16 +7,30 @@ export const ANIMATION_SETTINGS = {
   STAGGER_DELAY: 0.8,
   MOBILE_LEAD_COUNT: 3,
   NAME_CARD_START_X: 100,  // Starting position for name cards
-  NAME_CARD_END_X: 350    // Ending position for name cards
+  NAME_CARD_END_X: 350,    // Ending position for name cards
+  CARD_HEIGHT: 50,         // Height of each card for spacing
+  VERTICAL_SPACING: 70,    // Minimum vertical space between cards
+  START_X: -350           // Starting X position for lead cards
 } as const;
 
 export const generateLeadPositions = (count: number) => {
   const positions = [];
+  const { CARD_HEIGHT, VERTICAL_SPACING, START_X } = ANIMATION_SETTINGS;
+  
+  // Calculate total height needed
+  const totalHeight = count * VERTICAL_SPACING;
+  // Start from the top of the space
+  const startY = -totalHeight / 2;
+  
   for (let i = 0; i < count; i++) {
-    const xPos = -350;
-    const yOffset = Math.sin((i / count) * Math.PI) * 120 - 60;
-    positions.push({ x: xPos, y: yOffset });
+    // Evenly space cards vertically
+    const yPos = startY + (i * VERTICAL_SPACING);
+    positions.push({ 
+      x: START_X,
+      y: yPos
+    });
   }
+  
   return positions;
 };
 
