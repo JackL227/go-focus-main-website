@@ -1,4 +1,3 @@
-
 class LeadParticle {
   x: number;
   y: number;
@@ -85,89 +84,56 @@ class LeadParticle {
   }
   
   draw(ctx: CanvasRenderingContext2D, colors: Record<string, string>) {
-    // Determine color based on type
-    let color: string;
-    if (this.type === 'checkmark') {
-      color = '#00E676'; // Green
-    } else if (this.type === 'calendar') {
-      color = colors.primary; // Blue
-    } else {
-      color = '#FFC107'; // Gold/amber
-    }
-    
     // Draw fancy trail with increased intensity
-    ctx.globalAlpha = 0.5; // Increased opacity
+    ctx.globalAlpha = 0.5;
     
     // Draw glowing trail
-    ctx.lineWidth = 3; // Thicker trail
-    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = colors.primary;
     
     // Create gradient for trail
     const trailGradient = ctx.createLinearGradient(
       this.trail[0].x, this.trail[0].y,
       this.trail[this.trail.length - 1].x, this.trail[this.trail.length - 1].y
     );
-    trailGradient.addColorStop(0, `${color}33`); // 20% opacity
-    trailGradient.addColorStop(0.5, `${color}66`); // 40% opacity
-    trailGradient.addColorStop(1, color); // Full opacity
+    trailGradient.addColorStop(0, `${colors.primary}33`);
+    trailGradient.addColorStop(1, colors.primary);
     
     // Draw curved trail
     ctx.beginPath();
     ctx.moveTo(this.trail[0].x, this.trail[0].y);
     
-    // Enhanced curved trail for smoother animation
     for (let i = 1; i < this.trail.length - 2; i++) {
       const xc = (this.trail[i].x + this.trail[i + 1].x) / 2;
       const yc = (this.trail[i].y + this.trail[i + 1].y) / 2;
       ctx.quadraticCurveTo(this.trail[i].x, this.trail[i].y, xc, yc);
     }
     
-    // Handle the last two points separately to close the curve
-    if (this.trail.length > 2) {
-      const lastPoint = this.trail[this.trail.length - 1];
-      const secondLastPoint = this.trail[this.trail.length - 2];
-      ctx.quadraticCurveTo(
-        secondLastPoint.x, 
-        secondLastPoint.y, 
-        lastPoint.x, 
-        lastPoint.y
-      );
-    }
-    
     ctx.strokeStyle = trailGradient;
     ctx.stroke();
     ctx.globalAlpha = 1;
     
-    // Add glow effect for trails
-    ctx.shadowColor = color;
-    ctx.shadowBlur = 8;
-    ctx.globalAlpha = 0.3;
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-    ctx.shadowColor = 'transparent';
-    ctx.globalAlpha = 1;
-    
-    // Draw lead card with increased size
-    const cardWidth = this.size * 4;  // Bigger cards
-    const cardHeight = this.size * 2.5; // Bigger cards
+    // Draw lead card with dark glassmorphic effect matching Figma
+    const cardWidth = this.size * 3;
+    const cardHeight = this.size * 2;
     
     // Add glow effect
-    ctx.shadowColor = color;
-    ctx.shadowBlur = 15; // Enhanced glow
+    ctx.shadowColor = colors.primary;
+    ctx.shadowBlur = 10;
     
-    // Draw card with rounded corners and glassmorphism effect
+    // Draw card with rounded corners and glassmorphic effect
     const cardGradient = ctx.createLinearGradient(
       this.x - cardWidth/2, 
       this.y - cardHeight/2, 
       this.x + cardWidth/2, 
       this.y + cardHeight/2
     );
-    cardGradient.addColorStop(0, 'rgba(20, 30, 50, 0.85)');
-    cardGradient.addColorStop(1, 'rgba(10, 20, 40, 0.9)');
+    cardGradient.addColorStop(0, 'rgba(20, 25, 35, 0.9)');
+    cardGradient.addColorStop(1, 'rgba(15, 20, 30, 0.95)');
     
     ctx.fillStyle = cardGradient;
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = `${colors.primary}44`;
+    ctx.lineWidth = 1;
     
     ctx.beginPath();
     ctx.roundRect(
@@ -175,59 +141,84 @@ class LeadParticle {
       this.y - cardHeight/2, 
       cardWidth, 
       cardHeight, 
-      5
+      8
     );
     ctx.fill();
     ctx.stroke();
     
-    // Add highlight to give 3D effect
+    // Add highlight for 3D effect
     ctx.beginPath();
     ctx.roundRect(
       this.x - cardWidth/2 + 2, 
       this.y - cardHeight/2 + 2, 
       cardWidth - 4, 
       cardHeight/5, 
-      [4, 4, 0, 0]
+      [6, 6, 0, 0]
     );
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
     ctx.fill();
+    
+    // Draw "LEAD" text
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = `${this.size * 0.8}px 'Inter', sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Lead', this.x, this.y);
     
     // Reset shadow
     ctx.shadowColor = 'transparent';
     ctx.shadowBlur = 0;
+  }
+  
+  setTarget(x: number, y: number) {
+    this.targetX = x;
+    this.targetY = y;
+  }
+  
+  hasReachedTarget(): boolean {
+    if (this.targetX === null || this.targetY === null) return false;
     
-    // Draw label based on type
-    ctx.font = `bold ${this.size * 1.2}px 'Poppins', Arial`; // Larger, bolder font
-    ctx.fillStyle = '#FFFFFF';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    const dx = this.x - this.targetX;
+    const dy = this.y - this.targetY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
     
-    // Draw different icon based on type
-    const iconY = this.y - this.size * 0.2;
-    if (this.type === 'checkmark') {
-      // Checkmark icon
-      this.drawIcon(ctx, '✓', color, this.x, iconY);
-    } else if (this.type === 'calendar') {
-      // Calendar icon
-      this.drawIcon(ctx, '📅', color, this.x, iconY);
+    return distance < 10;
+  }
+  
+  update() {
+    if (this.targetX !== null && this.targetY !== null) {
+      // Calculate direction to target
+      const dx = this.targetX - this.x;
+      const dy = this.targetY - this.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      if (distance > 5) {
+        // Move towards target with dynamic speed (slower at start, faster at end)
+        const progress = Math.max(0, 1 - distance / 100);
+        const speedMultiplier = 0.8 + progress * 0.7;
+        
+        this.x += (dx / distance) * this.speed * speedMultiplier;
+        this.y += (dy / distance) * this.speed * speedMultiplier;
+      } else {
+        // Very close to target, snap to it
+        this.x = this.targetX;
+        this.y = this.targetY;
+      }
     } else {
-      // Dollar sign icon
-      this.drawIcon(ctx, '$', color, this.x, iconY);
+      // Default movement if no target
+      this.x += this.speed;
     }
     
-    // Draw "LEAD" text
-    ctx.fillStyle = '#FFFFFF';
-    ctx.font = `bold ${this.size}px 'Poppins', Arial`;
-    ctx.fillText('LEAD', this.x, this.y + this.size * 0.9);
+    // Update trail with smoothing
+    this.trail.push({x: this.x, y: this.y});
+    if (this.trail.length > 15) { // Keep longer trail
+      this.trail.shift();
+    }
     
-    if (this.hasReachedTarget() && this.targetX !== null) {
-      // Draw success animation
-      ctx.globalAlpha = this.pulseSize;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size * 3 * (1 + this.pulseSize), 0, Math.PI * 2);
-      ctx.fillStyle = `${color}33`; // Semi-transparent
-      ctx.fill();
-      ctx.globalAlpha = 1;
+    // Pulse effect animation
+    this.pulseSize += 0.05 * this.pulseDir;
+    if (this.pulseSize > 1 || this.pulseSize < 0) {
+      this.pulseDir *= -1;
     }
   }
   
