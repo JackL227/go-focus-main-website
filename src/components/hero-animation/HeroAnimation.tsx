@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './LeadCard';
 import CenterLogo from './CenterLogo';
-import ProcessingLogo from './ProcessingLogo';
 
 // Constants for the animation
 const LEAD_COUNT = 15;
@@ -178,7 +177,7 @@ const HeroAnimation = () => {
   return (
     <div className="relative w-full h-[600px] overflow-hidden flex items-center justify-center">
       <CenterLogo 
-        processingLead={processingLead} 
+        isProcessing={processingLead} 
         onLeadProcess={() => {}}
       />
       
