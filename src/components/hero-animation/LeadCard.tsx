@@ -35,29 +35,41 @@ const LeadCard = ({
   };
   
   const cardSize = sizeClasses[size];
+  
+  // Define custom easing for smoother animation
+  const customEasing = [0.4, 0, 0.2, 1];
+  
+  // Calculate destination X based on viewport width for responsive flow
+  const destinationX = typeof window !== 'undefined' ? 
+    Math.min(1000, window.innerWidth * 0.9) : 900; 
 
   return (
     <motion.div
-      className={`absolute ${isConverted ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50' : `${cardSize} rounded-pill bg-[#1F1F22]`} shadow-lg flex items-center justify-center`}
+      className={`absolute ${isConverted ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50 shadow-lg' : `${cardSize} rounded-pill bg-[#1F1F22]`} flex items-center justify-center ${isConverted ? 'shadow-[0_4px_20px_rgba(255,255,255,0.15)]' : ''}`}
       initial={{ 
         x: position?.x ?? (isConverted ? 0 : -350), 
         y: position?.y ?? 0,
         scale: isConverted ? 0.1 : 1, 
-        opacity: isConverted ? 0 : 1,
+        opacity: isConverted ? 0 : 0.3, // Start with lower opacity for smoother entry
         rotate: rotate ?? (Math.random() * 16 - 8)
       }}
       animate={
         isConverted 
           ? {
-              x: position?.x ?? 350,
-              y: position?.y ?? 0,
-              scale: 1,
-              opacity: 1,
+              x: destinationX,
+              y: [0, -10, 0, 10, 0], // Add floating vertical motion
+              scale: [1, 0.95, 0.9], // Gradually scale down
+              opacity: [1, 0.8, 0], // Fade out as it moves
               rotate: 0,
               transition: {
-                duration: 2.5,
+                duration: 4.5, // Longer, more elegant duration
                 delay: staggerDelay,
-                ease: "easeOut"
+                ease: customEasing,
+                y: { // Custom y-axis floating animation
+                  repeat: 2,
+                  duration: 4.5,
+                  ease: "easeInOut"
+                }
               }
             }
           : isAbsorbed 
@@ -69,7 +81,7 @@ const LeadCard = ({
                 rotate: 0,
                 transition: { 
                   duration: 0.5, 
-                  ease: "easeInOut" 
+                  ease: customEasing
                 }
               } 
             : { 
@@ -80,7 +92,7 @@ const LeadCard = ({
                 transition: { 
                   duration: 2.5,
                   delay: index * staggerDelay,
-                  ease: "easeOut" 
+                  ease: customEasing 
                 }
               }
       }

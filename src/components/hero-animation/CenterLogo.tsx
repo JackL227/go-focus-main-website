@@ -96,6 +96,43 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
           }}
           style={{ filter: 'drop-shadow(0 0 10px rgba(0, 245, 160, 0.6))' }}
         />
+
+        {/* Particle effects during processing */}
+        {processingLead && (
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {[...Array(6)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 rounded-full bg-[#00F5A0]/80"
+                initial={{
+                  x: 0,
+                  y: 0,
+                  scale: 0,
+                  opacity: 1
+                }}
+                animate={{
+                  x: [0, (Math.random() - 0.5) * 100],
+                  y: [0, (Math.random() - 0.5) * 100],
+                  scale: [0, Math.random() * 0.8],
+                  opacity: [1, 0]
+                }}
+                transition={{
+                  duration: 0.8,
+                  ease: "easeOut"
+                }}
+                style={{
+                  top: `${50 + (Math.random() - 0.5) * 20}%`,
+                  left: `${50 + (Math.random() - 0.5) * 20}%`
+                }}
+              />
+            ))}
+          </motion.div>
+        )}
       </motion.div>
     </div>
   );

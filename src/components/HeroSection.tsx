@@ -17,7 +17,7 @@ const HeroSection = () => {
   
   return (
     <section 
-      className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden bg-[#010101]" 
+      className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden bg-background" 
       aria-label="Hero section"
     >
       <div className="container-custom relative z-10 pt-8 pb-0">
@@ -63,8 +63,8 @@ const HeroSection = () => {
         <HeroAnimation />
       </div>
       
-      {/* Glass divider */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#010101] to-transparent z-[2]" />
+      {/* Seamless gradient transition to next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent z-[2]" />
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
     </section>
