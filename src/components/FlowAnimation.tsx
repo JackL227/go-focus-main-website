@@ -1,27 +1,25 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './hero-animation/LeadCard';
 import ProcessingLogo from './hero-animation/ProcessingLogo';
 
-const LEAD_POSITIONS = [
-  { x: -350, y: -200 },
-  { x: -330, y: -160 },
-  { x: -310, y: -120 },
-  { x: -290, y: -80 },
-  { x: -270, y: -40 },
-  { x: -250, y: 0 },
-  { x: -230, y: 40 },
-  { x: -210, y: 80 },
-  { x: -190, y: 120 },
-  { x: -170, y: 160 },
-  { x: -150, y: 200 },
-  { x: -130, y: -180 },
-  { x: -110, y: -140 },
-  { x: -90, y: -100 },
-  { x: -70, y: -60 }
-];
+const LEAD_COUNT = 15;
+
+// Create a more natural curved path with various Y positions
+const generateLeadPositions = () => {
+  const positions = [];
+  for (let i = 0; i < LEAD_COUNT; i++) {
+    // Create a curved path effect by varying Y coordinates more at the edges
+    const xPos = -350 - Math.random() * 100;
+    const yOffset = Math.random() * 300 - 150; // More vertical spread
+    positions.push({ x: xPos, y: yOffset });
+  }
+  return positions;
+};
+
+const LEAD_POSITIONS = generateLeadPositions();
 
 const NAMES = [
   'Beyoncé', 'Samantha K', 'Michael J', 'Taylor S', 
@@ -31,25 +29,26 @@ const NAMES = [
 ];
 
 const ACTIONS = [
-  'converted lead',
-  'booked call',
-  'joined waitlist',
-  'scheduled demo',
-  'requested info'
+  'booked a mentorship session',
+  'scheduled a strategy call',
+  'joined the client roster',
+  'requested a consultation',
+  'enrolled in premium plan'
 ];
 
 const FlowAnimation = () => {
+  const isMobile = useIsMobile();
   const [processingLead, setProcessingLead] = useState(false);
   const [leads, setLeads] = useState<Array<{
     id: number;
     removed: boolean;
-    absorbedByLogo: boolean;
+    absorbed: boolean;
     convertedLead?: { name: string; action: string };
     size: 'sm' | 'md' | 'lg';
     rotate: number;
     position?: {x: number, y: number};
   }>>([]);
-
+  
   const getRandomName = useCallback(() => 
     NAMES[Math.floor(Math.random() * NAMES.length)], []);
     
@@ -64,7 +63,7 @@ const FlowAnimation = () => {
         lead.id === leadId 
           ? { 
               ...lead, 
-              absorbedByLogo: true,
+              absorbed: true,
               convertedLead: {
                 name: getRandomName(),
                 action: getRandomAction()
@@ -89,10 +88,11 @@ const FlowAnimation = () => {
   useEffect(() => {
     const sizeOptions: Array<'sm' | 'md' | 'lg'> = ['sm', 'md', 'lg'];
     
+    // Initialize leads with their positions
     const initialLeads = LEAD_POSITIONS.map((position, i) => ({
       id: i,
       removed: false,
-      absorbedByLogo: false,
+      absorbed: false,
       size: sizeOptions[Math.floor(Math.random() * sizeOptions.length)],
       rotate: Math.random() * 16 - 8,
       position
@@ -100,36 +100,40 @@ const FlowAnimation = () => {
     
     setLeads(initialLeads);
     
+    // Continuously generate new leads
     const leadInterval = setInterval(() => {
-      const randomPosition = LEAD_POSITIONS[Math.floor(Math.random() * LEAD_POSITIONS.length)];
+      // Create a new random position with more variety
+      const randomPosition = {
+        x: -350 - Math.random() * 150,
+        y: Math.random() * 300 - 150
+      };
+      
       const randomSize = sizeOptions[Math.floor(Math.random() * sizeOptions.length)];
       
       const newLead = {
         id: Date.now(),
         removed: false,
-        absorbedByLogo: false,
+        absorbed: false,
         size: randomSize,
         rotate: Math.random() * 16 - 8,
-        position: {
-          x: randomPosition.x - Math.random() * 50,
-          y: randomPosition.y + (Math.random() * 40 - 20)
-        }
+        position: randomPosition
       };
       
       setLeads(prev => {
         const filteredLeads = prev.filter(lead => !lead.removed);
         return [...filteredLeads, newLead].slice(-20);
       });
-    }, 2000);
+    }, 800); // Appear every ~0.8 seconds as requested
     
     return () => clearInterval(leadInterval);
   }, []);
 
+  // Process leads one by one
   useEffect(() => {
     if (!processingLead && leads.length > 0) {
-      const leadToProcess = leads.find(lead => !lead.absorbedByLogo && !lead.removed);
+      const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed);
       if (leadToProcess) {
-        const processingDelay = 2000 + (leads.indexOf(leadToProcess) * 800);
+        const processingDelay = 1500 + (leads.indexOf(leadToProcess) * 500);
         setTimeout(() => {
           processLead(leadToProcess.id);
         }, processingDelay);
@@ -148,7 +152,7 @@ const FlowAnimation = () => {
               {!lead.convertedLead ? (
                 <LeadCard 
                   index={leads.indexOf(lead)}
-                  isAbsorbed={lead.absorbedByLogo}
+                  isAbsorbed={lead.absorbed}
                   size={lead.size}
                   rotate={lead.rotate}
                   staggerDelay={0.2}
@@ -158,9 +162,9 @@ const FlowAnimation = () => {
               ) : (
                 <LeadCard 
                   index={leads.indexOf(lead)}
-                  size={lead.size}
+                  size="md"
                   position={{ x: 350, y: lead.position?.y || 0 }}
-                  staggerDelay={0.2}
+                  staggerDelay={0.1}
                   isConverted={true}
                   name={lead.convertedLead.name}
                   action={lead.convertedLead.action}

@@ -4,185 +4,177 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './LeadCard';
 import ProcessingLogo from './ProcessingLogo';
-import OutputCard from './OutputCard';
+
+// Constants for the animation
+const LEAD_COUNT = 15;
+
+// Create a more natural curved path with various Y positions
+const generateLeadPositions = () => {
+  const positions = [];
+  for (let i = 0; i < LEAD_COUNT; i++) {
+    // Create a curved path effect by varying Y coordinates more at the edges
+    const xPos = -350 - Math.random() * 100;
+    const yOffset = Math.random() * 300 - 150; // More vertical spread
+    positions.push({ x: xPos, y: yOffset });
+  }
+  return positions;
+};
+
+const LEAD_POSITIONS = generateLeadPositions();
 
 const NAMES = [
-  'Jayden P', 'Marie L', 'Alex F', 'Tiffany R', 'James B', 
-  'Sarah M', 'Michael T', 'Emma R', 'Daniel P', 'Lisa W',
+  'Beyoncé', 'Samantha K', 'Michael J', 'Taylor S', 
+  'Drake', 'Emma W', 'Justin B', 'Rihanna',
+  'Leonardo D', 'Ariana G', 'John D', 'Sarah M',
+  'Robert P', 'Emily B', 'Chris H'
 ];
 
 const ACTIONS = [
-  'booked a strategy call',
-  'enrolled into mentorship',
-  'joined the waitlist',
-  'purchased premium plan',
-  'scheduled a demo',
-  'requested consultation',
+  'booked a mentorship session',
+  'scheduled a strategy call',
+  'joined the client roster',
+  'requested a consultation',
+  'enrolled in premium plan'
 ];
 
 const HeroAnimation = () => {
   const isMobile = useIsMobile();
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [processingLead, setProcessingLead] = useState(false);
   const [leads, setLeads] = useState<Array<{
     id: number;
     removed: boolean;
     absorbed: boolean;
+    convertedLead?: { name: string; action: string };
     size: 'sm' | 'md' | 'lg';
+    rotate: number;
     position?: {x: number, y: number};
   }>>([]);
-  const [outputCards, setOutputCards] = useState<Array<{
-    id: number;
-    name: string;
-    action: string;
-  }>>([]);
   
-  const getRandomName = useCallback(() => {
-    return NAMES[Math.floor(Math.random() * NAMES.length)];
-  }, []);
-  
-  const getRandomAction = useCallback(() => {
-    return ACTIONS[Math.floor(Math.random() * ACTIONS.length)];
-  }, []);
-  
-  const processLead = useCallback((leadId: number) => {
-    setIsProcessing(true);
+  const getRandomName = useCallback(() => 
+    NAMES[Math.floor(Math.random() * NAMES.length)], []);
     
-    setLeads(prev => prev.map(lead => 
-      lead.id === leadId ? { ...lead, absorbed: true } : lead
-    ));
+  const getRandomAction = useCallback(() => 
+    ACTIONS[Math.floor(Math.random() * ACTIONS.length)], []);
+
+  const processLead = useCallback((leadId: number) => {
+    setProcessingLead(true);
+    
+    setLeads(prev => 
+      prev.map(lead => 
+        lead.id === leadId 
+          ? { 
+              ...lead, 
+              absorbed: true,
+              convertedLead: {
+                name: getRandomName(),
+                action: getRandomAction()
+              }
+            }
+          : lead
+      )
+    );
     
     setTimeout(() => {
-      const newOutputCard = {
-        id: Date.now(),
-        name: getRandomName(),
-        action: getRandomAction()
-      };
-      
-      setOutputCards(prev => {
-        const updatedCards = [...prev, newOutputCard];
-        return updatedCards.slice(Math.max(0, updatedCards.length - 3));
-      });
-      
-      setLeads(prev => prev.map(lead => 
-        lead.id === leadId ? { ...lead, removed: true } : lead
-      ));
-      
-      setIsProcessing(false);
+      setLeads(prev => 
+        prev.map(lead => 
+          lead.id === leadId 
+            ? { ...lead, removed: true }
+            : lead
+        )
+      );
+      setProcessingLead(false);
     }, 800);
   }, [getRandomName, getRandomAction]);
-  
+
   useEffect(() => {
     const sizeOptions: Array<'sm' | 'md' | 'lg'> = ['sm', 'md', 'lg'];
     
-    const initialLeads = Array(8).fill(0).map((_, i) => {
-      const randomSize = sizeOptions[Math.floor(Math.random() * sizeOptions.length)];
-      
-      return {
-        id: i,
-        removed: false,
-        absorbed: false,
-        size: randomSize,
-        position: { 
-          x: -350 - (Math.random() * 100), 
-          y: (Math.random() * 200 - 100)
-        }
-      };
-    });
+    // Initialize leads with their positions
+    const initialLeads = LEAD_POSITIONS.map((position, i) => ({
+      id: i,
+      removed: false,
+      absorbed: false,
+      size: sizeOptions[Math.floor(Math.random() * sizeOptions.length)],
+      rotate: Math.random() * 16 - 8,
+      position
+    }));
     
     setLeads(initialLeads);
     
-    setOutputCards([
-      { id: 1, name: "Jayden P", action: "booked a strategy call" },
-      { id: 2, name: "Marie L", action: "enrolled into mentorship" }
-    ]);
-    
+    // Continuously generate new leads
     const leadInterval = setInterval(() => {
+      // Create a new random position with more variety
+      const randomPosition = {
+        x: -350 - Math.random() * 150,
+        y: Math.random() * 300 - 150
+      };
+      
       const randomSize = sizeOptions[Math.floor(Math.random() * sizeOptions.length)];
       
-      const newLead = { 
-        id: Date.now(), 
+      const newLead = {
+        id: Date.now(),
         removed: false,
         absorbed: false,
         size: randomSize,
-        position: { 
-          x: -350 - (Math.random() * 100), 
-          y: (Math.random() * 200 - 100)
-        }
+        rotate: Math.random() * 16 - 8,
+        position: randomPosition
       };
       
       setLeads(prev => {
         const filteredLeads = prev.filter(lead => !lead.removed);
-        return [...filteredLeads, newLead].slice(-10);
+        return [...filteredLeads, newLead].slice(-20);
       });
-    }, 2000);
+    }, 800); // Appear every ~0.8 seconds as requested
     
     return () => clearInterval(leadInterval);
   }, []);
 
+  // Process leads one by one
   useEffect(() => {
-    if (!isProcessing && leads.length > 0) {
+    if (!processingLead && leads.length > 0) {
       const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed);
       if (leadToProcess) {
-        const processingDelay = 2000 + (leads.indexOf(leadToProcess) * 1000);
+        const processingDelay = 1500 + (leads.indexOf(leadToProcess) * 500);
         setTimeout(() => {
           processLead(leadToProcess.id);
         }, processingDelay);
       }
     }
-  }, [leads, isProcessing, processLead]);
-  
+  }, [leads, processingLead, processLead]);
+
   return (
     <div className="relative w-full h-[600px] bg-[#010101] overflow-hidden flex items-center justify-center">
-      <div className="absolute inset-0 flex items-center justify-center">
-        <AnimatePresence>
-          {leads.map((lead, index) => (
-            !lead.removed && (
-              <LeadCard 
-                key={lead.id}
-                index={index}
-                isAbsorbed={lead.absorbed}
-                size={lead.size}
-                position={lead.position}
-                onComplete={() => processLead(lead.id)}
-              />
-            )
-          ))}
-        </AnimatePresence>
-      </div>
+      <ProcessingLogo isProcessing={processingLead} />
       
-      <ProcessingLogo isProcessing={isProcessing} />
-      
-      <div className={`
-        absolute ${isMobile ? 'bottom-10 left-0 right-0 px-4' : 'right-10 top-1/2 transform -translate-y-1/2'} 
-        z-20
-      `}>
-        <div className={`
-          ${isMobile ? 'w-full bg-[#1A1F2C]/60 backdrop-blur-sm p-4 rounded-xl' : ''}
-        `}>
-          <h2 className={`
-            text-white text-lg md:text-xl font-semibold mb-4 
-            ${isMobile ? 'text-center' : ''}
-          `}>
-            Automated <span className="text-muted">Sales Process</span>
-          </h2>
-          
-          <div className={`
-            ${isMobile ? 'flex flex-row space-x-3 overflow-x-auto py-2 scrollbar-hide' : 'space-y-3'}
-          `}>
-            <AnimatePresence>
-              {outputCards.map((card, index) => (
-                <OutputCard 
-                  key={card.id}
-                  name={card.name}
-                  action={card.action}
-                  index={index}
-                  isMobile={isMobile}
+      <AnimatePresence>
+        {leads.map((lead) => (
+          !lead.removed && (
+            <React.Fragment key={lead.id}>
+              {!lead.convertedLead ? (
+                <LeadCard 
+                  index={leads.indexOf(lead)}
+                  isAbsorbed={lead.absorbed}
+                  size={lead.size}
+                  rotate={lead.rotate}
+                  staggerDelay={0.2}
+                  position={lead.position}
+                  onComplete={() => processLead(lead.id)}
                 />
-              ))}
-            </AnimatePresence>
-          </div>
-        </div>
-      </div>
+              ) : (
+                <LeadCard 
+                  index={leads.indexOf(lead)}
+                  size="md"
+                  position={{ x: 350, y: lead.position?.y || 0 }}
+                  staggerDelay={0.1}
+                  isConverted={true}
+                  name={lead.convertedLead.name}
+                  action={lead.convertedLead.action}
+                />
+              )}
+            </React.Fragment>
+          )
+        ))}
+      </AnimatePresence>
     </div>
   );
 };

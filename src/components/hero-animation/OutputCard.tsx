@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { CircleCheck } from 'lucide-react';
 
 interface OutputCardProps {
   name: string;
@@ -32,25 +33,16 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
         duration: 0.5, 
         delay: index * 0.1,
       }}
-      whileHover={{ 
-        scale: 1.03,
-        boxShadow: "0 10px 25px -5px rgba(0,0,0,0.3)",
-        transition: { duration: 0.2 } 
-      }}
       className={`
-        bg-[#1c1c1e] rounded-lg p-4 border border-[#2d2d2d]/50 shadow-lg
+        bg-[#1F1F22] rounded-lg p-4 border border-[#2d2d2d]/50 shadow-lg
         ${isMobile ? 'min-w-[200px] flex-shrink-0' : 'w-full mb-3'}
       `}
     >
       <div className="flex items-center space-x-2">
-        <motion.div 
-          className="w-2 h-2 rounded-full bg-green-400" 
-          animate={{ opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        />
+        <CircleCheck className="w-4 h-4 text-green-400 shrink-0" />
         <div className="text-sm font-medium">
           <span className="text-white">{name} </span>
-          <span className="text-gray-400">{action}</span>
+          <span className="text-gray-300 text-xs">{action}</span>
         </div>
       </div>
     </motion.div>
