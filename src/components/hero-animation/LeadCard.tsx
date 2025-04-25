@@ -20,7 +20,7 @@ const LeadCard = ({
   isAbsorbed = false,
   onComplete,
   position,
-  staggerDelay = 1.2,
+  staggerDelay = 0.8,
   isConverted = false,
   name,
   action,
@@ -40,8 +40,8 @@ const LeadCard = ({
         y: position?.y ?? 0,
         scale: isConverted ? 0.1 : 1, 
         opacity: 0.5,
-        rotate: Math.random() * 4 - 2, // Reduced rotation
-        zIndex: isConverted ? 25 : 20 // Adjusted z-index
+        rotate: Math.random() * 4 - 2,
+        zIndex: isConverted ? 25 : 20
       }}
       animate={
         exitRight
@@ -53,20 +53,19 @@ const LeadCard = ({
               rotate: 0,
               zIndex: 15,
               transition: {
-                duration: 8,
-                delay: 0.2,
+                duration: 6,
                 ease: customEasing,
                 opacity: {
                   times: [0, 0.7, 1],
-                  duration: 8
+                  duration: 6
                 }
               }
             }
           : isConverted 
             ? {
                 x: 100,
-                y: position?.y ?? 0, 
-                scale: [0.1, 1.1, 1], // Pop effect
+                y: position?.y ?? 0,
+                scale: [0.1, 1.1, 1],
                 opacity: 1,
                 rotate: 0,
                 zIndex: 25,
@@ -89,7 +88,7 @@ const LeadCard = ({
                   rotate: 0,
                   zIndex: 15,
                   transition: {
-                    duration: 2, // Increased from 1.3
+                    duration: 2,
                     ease: customEasing
                   }
                 }

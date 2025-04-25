@@ -4,17 +4,17 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './LeadCard';
 import CenterLogo from './CenterLogo';
 
-const LEAD_COUNT = 2;
-const LEAD_GENERATION_INTERVAL = 5000;
-const PROCESSING_DELAY_BASE = 2500;
-const STAGGER_DELAY = 1.2;
-const CONVERSION_DISPLAY_DURATION = 10000;
+const LEAD_COUNT = 3;
+const LEAD_GENERATION_INTERVAL = 3500;
+const PROCESSING_DELAY_BASE = 2000;
+const STAGGER_DELAY = 0.8;
+const CONVERSION_DISPLAY_DURATION = 6000;
 
 const generateLeadPositions = () => {
   const positions = [];
   for (let i = 0; i < LEAD_COUNT; i++) {
     const xPos = -350;
-    const yOffset = Math.random() * 140 - 70;
+    const yOffset = Math.sin((i / LEAD_COUNT) * Math.PI) * 100 - 50;
     positions.push({ x: xPos, y: yOffset });
   }
   return positions;
@@ -89,7 +89,7 @@ const HeroAnimation = () => {
         if (animationActive.current) {
           addNewLead();
         }
-      }, 1200);
+      }, 800);
       
     }, 2000);
   }, [getRandomName, getRandomAction]);
@@ -106,7 +106,7 @@ const HeroAnimation = () => {
       
       setTimeout(() => {
         setLeads(prev => prev.filter(lead => lead.id !== leadId));
-      }, 8000);
+      }, 6000);
     }, CONVERSION_DISPLAY_DURATION);
   }, []);
 
@@ -114,11 +114,11 @@ const HeroAnimation = () => {
     if (!animationActive.current) return;
     
     const randomIndex = Math.floor(Math.random() * LEAD_POSITIONS.length);
-    const randomPosition = LEAD_POSITIONS[randomIndex];
+    const basePosition = LEAD_POSITIONS[randomIndex];
     
     const adjustedPosition = {
-      x: randomPosition.x,
-      y: randomPosition.y + (Math.random() * 20 - 10)
+      x: basePosition.x,
+      y: basePosition.y + (Math.random() * 30 - 15)
     };
     
     const newLead = {
@@ -131,7 +131,7 @@ const HeroAnimation = () => {
     
     setLeads(prev => {
       const activeLeads = prev.filter(lead => !lead.removed && !lead.exitRight);
-      const maxVisibleLeads = isMobile ? 1 : 2;
+      const maxVisibleLeads = isMobile ? 2 : 3;
       
       if (activeLeads.length >= maxVisibleLeads) {
         return prev;
