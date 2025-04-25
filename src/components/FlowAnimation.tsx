@@ -9,7 +9,7 @@ import AutomatedSalesCard from './hero-animation/AutomatedSalesCard';
 // Messages for the animation
 const MESSAGES = [
   "📈 Lead Captured",
-  "✨ New Opportunity Created", 
+  "✨ New Opportunity Created",
   "🎯 Lead Qualified",
   "📅 Demo Scheduled",
   "🤝 Deal Closed"
@@ -321,11 +321,6 @@ const FlowAnimation = () => {
                 rotate={lead.rotate} 
                 rotateY={lead.rotateY} 
                 index={index}
-                isAbsorbed={lead.absorbedByLogo}
-                onComplete={() => {
-                  // Process this lead (trigger conversion animation)
-                  processLead();
-                }}
               />
             </motion.div>
           );
