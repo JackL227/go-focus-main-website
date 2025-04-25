@@ -21,7 +21,7 @@ const HeroSection = () => {
       aria-label="Hero section"
     >
       <div className="container-custom relative z-10 pt-8 pb-0">
-        <div className="flex flex-col items-center max-w-4xl mx-auto text-center">
+        <div className="flex flex-col items-center max-w-4xl mx-auto text-center mb-12">
           <div className="space-y-6 mb-8">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold opacity-0 animate-fade-in [animation-delay:300ms] leading-tight" aria-label="Main headline">
               AI Agents That Convert Leads Into Revenue — 
@@ -59,7 +59,7 @@ const HeroSection = () => {
       </div>
       
       {/* Hero Animation with the lead flow */}
-      <div className="w-full relative z-10 mt-8">
+      <div className="w-full relative z-10">
         <HeroAnimation />
       </div>
       
