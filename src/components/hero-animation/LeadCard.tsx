@@ -38,26 +38,29 @@ const LeadCard = ({
 
   return (
     <motion.div
-      className={`absolute ${isConverted ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50' : `${cardSize} rounded-pill bg-[#1F1F22]`} shadow-lg flex items-center justify-center`}
+      className={`absolute ${isConverted 
+        ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50 shadow-[0_4px_20px_rgba(255,255,255,0.15)]' 
+        : `${cardSize} rounded-pill bg-[#1F1F22]`} shadow-lg flex items-center justify-center`}
       initial={{ 
         x: position?.x ?? (isConverted ? 0 : -350), 
         y: position?.y ?? 0,
         scale: isConverted ? 0.1 : 1, 
         opacity: isConverted ? 0 : 1,
-        rotate: rotate ?? (Math.random() * 16 - 8)
+        rotate: rotate ?? (Math.random() * 12 - 6)
       }}
       animate={
         isConverted 
           ? {
-              x: position?.x ?? 350,
-              y: position?.y ?? 0,
-              scale: 1,
-              opacity: 1,
+              x: [null, 1000],
+              y: [null, position?.y ?? 0, (position?.y ?? 0) - 20, (position?.y ?? 0) + 20, position?.y ?? 0],
+              scale: [null, 1, 0.95, 0.9],
+              opacity: [null, 1, 0.8, 0],
               rotate: 0,
               transition: {
-                duration: 2.5,
+                duration: 4.5,
                 delay: staggerDelay,
-                ease: "easeOut"
+                ease: [0.4, 0, 0.2, 1],
+                times: [0, 0.4, 0.7, 1]
               }
             }
           : isAbsorbed 
@@ -68,7 +71,7 @@ const LeadCard = ({
                 opacity: 0,
                 rotate: 0,
                 transition: { 
-                  duration: 0.5, 
+                  duration: 0.4, 
                   ease: "easeInOut" 
                 }
               } 
@@ -78,9 +81,9 @@ const LeadCard = ({
                 scale: 0.8,
                 opacity: 1,
                 transition: { 
-                  duration: 2.5,
+                  duration: 2,
                   delay: index * staggerDelay,
-                  ease: "easeOut" 
+                  ease: [0.4, 0, 0.2, 1]
                 }
               }
       }
