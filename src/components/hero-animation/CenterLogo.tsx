@@ -21,35 +21,60 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
           times: processingLead ? [0, 0.5, 1] : [0, 0.5, 1]
         }}
       >
-        {/* Primary gradient glow - background radial gradient */}
+        {/* Outer glow layer - larger blur radius */}
+        <motion.div 
+          className="absolute inset-0 rounded-full"
+          animate={{
+            opacity: processingLead ? [0.4, 0.6, 0.4] : [0.3, 0.5, 0.3]
+          }}
+          transition={{
+            duration: processingLead ? 1.5 : 3,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-[#2563eb] to-[#60A5FA] rounded-full opacity-40 blur-[120px]"></div>
+        </motion.div>
+        
+        {/* Primary gradient glow - inner layer with stronger pulse */}
         <div className={`absolute inset-0 rounded-full transition-all duration-300 ${
           processingLead ? 'animate-pulse-soft' : ''
         }`}>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#00F5A0] to-[#00D9F5] rounded-full opacity-40 blur-[80px]"></div>
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-r from-[#2563eb] to-[#60A5FA] rounded-full opacity-50 blur-[60px]"
+            animate={{
+              opacity: processingLead ? [0.5, 0.85, 0.5] : [0.5, 0.7, 0.5]
+            }}
+            transition={{
+              duration: processingLead ? 1.5 : 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
         </div>
         
         {/* Secondary glow - more intense when processing */}
         <motion.div 
           className="absolute inset-0 rounded-full opacity-60 blur-[50px]"
           style={{
-            background: 'linear-gradient(to right, #00F5A0, #00D9F5)'
+            background: 'linear-gradient(to right, #2563eb, #60A5FA)'
           }}
           animate={{
-            opacity: processingLead ? [0.6, 0.8, 0.6] : [0.5, 0.6, 0.5]
+            opacity: processingLead ? [0.6, 0.9, 0.6] : [0.5, 0.7, 0.5]
           }}
           transition={{
-            duration: processingLead ? 0.8 : 3,
+            duration: processingLead ? 0.8 : 2,
             repeat: Infinity,
             ease: "easeInOut"
           }}
         />
         
         {/* Inner glow - focused on center */}
-        <div className="absolute inset-[30%] rounded-full opacity-70 blur-[30px] bg-gradient-to-r from-[#00F5A0] to-[#00D9F5]" />
+        <div className="absolute inset-[30%] rounded-full opacity-70 blur-[40px] bg-gradient-to-r from-[#2563eb] to-[#60A5FA]" />
         
         {/* Animated ripple effect - faster when processing */}
         <motion.div 
-          className="absolute inset-0 border-4 border-[#00F5A0]/30 rounded-full"
+          className="absolute inset-0 border-4 border-[#2563eb]/30 rounded-full"
           animate={{
             scale: [1, 1.4, 1],
             opacity: [0.4, 0, 0.4],
@@ -64,7 +89,7 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
         {/* Processing ripple - only visible when processing */}
         {processingLead && (
           <motion.div 
-            className="absolute inset-0 border-2 border-[#00F5A0]/70 rounded-full"
+            className="absolute inset-0 border-2 border-[#2563eb]/70 rounded-full"
             initial={{ scale: 1, opacity: 0.7 }}
             animate={{
               scale: [1, 1.6, 1],
@@ -86,15 +111,15 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
           animate={{
             scale: processingLead ? [1, 1.05, 1] : [1, 1.02, 1],
             filter: processingLead
-              ? ['drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))', 'drop-shadow(0 0 20px rgba(0, 245, 160, 0.9))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))']
-              : ['drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))', 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))']
+              ? ['drop-shadow(0 0 15px rgba(37, 99, 235, 0.7))', 'drop-shadow(0 0 25px rgba(37, 99, 235, 0.9))', 'drop-shadow(0 0 15px rgba(37, 99, 235, 0.7))']
+              : ['drop-shadow(0 0 12px rgba(37, 99, 235, 0.6))', 'drop-shadow(0 0 20px rgba(37, 99, 235, 0.8))', 'drop-shadow(0 0 12px rgba(37, 99, 235, 0.6))']
           }}
           transition={{
-            duration: processingLead ? 1 : 3,
+            duration: processingLead ? 1 : 2,
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          style={{ filter: 'drop-shadow(0 0 10px rgba(0, 245, 160, 0.6))' }}
+          style={{ filter: 'drop-shadow(0 0 15px rgba(37, 99, 235, 0.7))' }}
         />
       </motion.div>
     </div>
