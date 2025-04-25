@@ -1,9 +1,6 @@
 
 import React, { useRef, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import AINode from './flow-animation/AINode';
-import OutcomePanel from './flow-animation/OutcomePanel';
-import MessageParticle from './flow-animation/MessageParticle';
 
 const FlowAnimation = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -27,52 +24,63 @@ const FlowAnimation = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Initialize elements
-    const aiNode = new AINode(canvas.width * 0.5, canvas.height * 0.5);
-    
-    const panels = [
-      new OutcomePanel(canvas.width * 0.8, canvas.height * 0.3, "Booked Calls", "calendar"),
-      new OutcomePanel(canvas.width * 0.8, canvas.height * 0.5, "Qualified Leads", "checkmark"),
-      new OutcomePanel(canvas.width * 0.8, canvas.height * 0.7, "Closed Deals", "smile")
-    ];
+    // Simple animation to replace the complex flow animation
+    let particles: Array<{
+      x: number;
+      y: number;
+      radius: number;
+      color: string;
+      vx: number;
+      vy: number;
+      alpha: number;
+    }> = [];
 
-    let particles: MessageParticle[] = [];
-    
-    // Animation loop
+    const createParticle = () => {
+      const radius = Math.random() * 4 + 2;
+      return {
+        x: -radius,
+        y: canvas.height * (Math.random() * 0.6 + 0.2),
+        radius,
+        color: Math.random() > 0.5 ? '#006eda' : '#00E676',
+        vx: Math.random() * 2 + 1,
+        vy: (Math.random() - 0.5) * 0.5,
+        alpha: Math.random() * 0.5 + 0.5
+      };
+    };
+
+    // Create initial particles
+    for (let i = 0; i < (isMobile ? 15 : 30); i++) {
+      const p = createParticle();
+      // Distribute particles across canvas initially
+      p.x = Math.random() * canvas.width;
+      particles.push(p);
+    }
+
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Clear canvas with slight fadeout effect for trails
+      ctx.fillStyle = 'rgba(1, 1, 1, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Create new particles
-      if (Math.random() < 0.05 && particles.length < (isMobile ? 10 : 20)) {
-        particles.push(new MessageParticle(-20, canvas.height * 0.5, canvas.height));
+      // Add new particles occasionally
+      if (Math.random() < 0.05 && particles.length < (isMobile ? 20 : 40)) {
+        particles.push(createParticle());
       }
 
       // Update and draw particles
-      particles = particles.filter(particle => {
-        particle.update();
-        particle.draw(ctx, { primary: '#006eda', qualified: '#00E676', closed: '#FFC107' });
-        
-        // Remove particles that go off screen
-        if (particle.x > canvas.width + 50) return false;
-        
-        // Check if particle reaches AI node
-        if (aiNode.processParticle(particle)) {
-          const targetPanel = panels[Math.floor(Math.random() * panels.length)];
-          targetPanel.pulse();
-          return false;
+      particles.forEach((p, i) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha = p.x > canvas.width * 0.7 ? Math.max(0, p.alpha - 0.02) : p.alpha;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color + Math.floor(p.alpha * 255).toString(16).padStart(2, '0');
+        ctx.fill();
+
+        // Remove particles that go off-screen or fade out
+        if (p.x > canvas.width + p.radius || p.alpha <= 0) {
+          particles.splice(i, 1);
         }
-        
-        return true;
-      });
-
-      // Update and draw AI node
-      aiNode.update();
-      aiNode.draw(ctx, { primary: '#006eda' });
-
-      // Update and draw panels
-      panels.forEach(panel => {
-        panel.update();
-        panel.draw(ctx, { primary: '#006eda', qualified: '#00E676', closed: '#FFC107' });
       });
 
       requestAnimationFrame(animate);
