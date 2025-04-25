@@ -8,7 +8,7 @@ interface CenterLogoProps {
 
 const CenterLogo = ({ onLeadProcess }: CenterLogoProps) => {
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+    <div className="absolute left-1/2 -translate-x-1/2">
       <motion.div
         className="relative w-[323px] h-[323px]"
         animate={{
@@ -21,11 +21,11 @@ const CenterLogo = ({ onLeadProcess }: CenterLogoProps) => {
           ease: "easeInOut"
         }}
       >
-        {/* Radial glow background */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#00E676]/30 to-[#006eda]/30 rounded-full blur-3xl animate-pulse-soft" />
+        {/* Enhanced glow background */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-[#006eda]/40 to-[#006eda]/40 rounded-full blur-[100px] animate-pulse-soft" />
         
         {/* Main circle with gradient */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#00E676] to-[#006eda] rounded-full opacity-20" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-[#006eda] to-[#006eda] rounded-full opacity-20" />
         
         {/* Logo image */}
         <img 
@@ -34,9 +34,14 @@ const CenterLogo = ({ onLeadProcess }: CenterLogoProps) => {
           className="w-full h-full object-contain relative z-10"
         />
         
-        {/* Additional glow layer */}
+        {/* Inner glow */}
         <div 
-          className="absolute inset-0 bg-gradient-to-tr from-[#00E676]/20 to-[#006eda]/20 rounded-full blur-3xl animate-glow"
+          className="absolute inset-0 bg-gradient-to-tr from-[#006eda]/30 to-[#006eda]/30 rounded-full blur-2xl animate-glow"
+        />
+        
+        {/* Outer glow */}
+        <div 
+          className="absolute -inset-4 bg-gradient-to-tr from-[#006eda]/10 to-[#006eda]/10 rounded-full blur-3xl animate-pulse-soft"
         />
       </motion.div>
     </div>
