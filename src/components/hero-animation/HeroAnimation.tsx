@@ -3,10 +3,10 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './LeadCard';
-import CenterLogo from './CenterLogo';
+import ProcessingLogo from './ProcessingLogo';
 
-// Increased from 15 to 25 as requested
-const LEAD_COUNT = 25;
+// Constants for the animation
+const LEAD_COUNT = 15;
 
 // Create a more natural curved path with various Y positions
 const generateLeadPositions = () => {
@@ -23,11 +23,10 @@ const generateLeadPositions = () => {
 const LEAD_POSITIONS = generateLeadPositions();
 
 const NAMES = [
-  'Beyoncé', 'Samantha K', 'Leo D', 'Ava R', 'Tyler G', 
-  'Emily B', 'Jason L', 'Sophia M', 'Michael Z', 'Priya N', 
-  'Nina W', 'Omar K', 'Ethan F', 'Taylor S', 'Drake',
-  'Emma W', 'Justin B', 'Rihanna', 'Leonardo D', 'Ariana G',
-  'John D', 'Sarah M', 'Robert P', 'Chris H'
+  'Beyoncé', 'Samantha K', 'Michael J', 'Taylor S', 
+  'Drake', 'Emma W', 'Justin B', 'Rihanna',
+  'Leonardo D', 'Ariana G', 'John D', 'Sarah M',
+  'Robert P', 'Emily B', 'Chris H'
 ];
 
 const ACTIONS = [
@@ -35,12 +34,7 @@ const ACTIONS = [
   'scheduled a strategy call',
   'joined the client roster',
   'requested a consultation',
-  'enrolled in premium plan',
-  'has booked a sales call',
-  'enrolled in mentorship',
-  'joined the funnel',
-  'converted into a paying customer',
-  'booked a 1:1 demo'
+  'enrolled in premium plan'
 ];
 
 const HeroAnimation = () => {
@@ -89,7 +83,7 @@ const HeroAnimation = () => {
         )
       );
       setProcessingLead(false);
-    }, 500); // Reduced from 800ms to 500ms for faster processing
+    }, 800);
   }, [getRandomName, getRandomAction]);
 
   useEffect(() => {
@@ -128,21 +122,19 @@ const HeroAnimation = () => {
       
       setLeads(prev => {
         const filteredLeads = prev.filter(lead => !lead.removed);
-        // Limit visible leads on mobile
-        const maxVisibleLeads = isMobile ? 10 : 25;
-        return [...filteredLeads, newLead].slice(-maxVisibleLeads);
+        return [...filteredLeads, newLead].slice(-20);
       });
-    }, 600); // Changed from 800ms to 600ms as requested
+    }, 800); // Appear every ~0.8 seconds as requested
     
     return () => clearInterval(leadInterval);
-  }, [isMobile]);
+  }, []);
 
   // Process leads one by one
   useEffect(() => {
     if (!processingLead && leads.length > 0) {
       const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed);
       if (leadToProcess) {
-        const processingDelay = 1500 + (leads.indexOf(leadToProcess) * 200); // Adjusted timing
+        const processingDelay = 1500 + (leads.indexOf(leadToProcess) * 500);
         setTimeout(() => {
           processLead(leadToProcess.id);
         }, processingDelay);
@@ -152,10 +144,7 @@ const HeroAnimation = () => {
 
   return (
     <div className="relative w-full h-[600px] bg-[#010101] overflow-hidden flex items-center justify-center">
-      <CenterLogo 
-        processingLead={processingLead} 
-        onLeadProcess={() => {}} 
-      />
+      <ProcessingLogo isProcessing={processingLead} />
       
       <AnimatePresence>
         {leads.map((lead) => (
@@ -167,7 +156,7 @@ const HeroAnimation = () => {
                   isAbsorbed={lead.absorbed}
                   size={lead.size}
                   rotate={lead.rotate}
-                  staggerDelay={0.1} // Reduced from 0.2 to 0.1
+                  staggerDelay={0.2}
                   position={lead.position}
                   onComplete={() => processLead(lead.id)}
                 />
@@ -176,7 +165,7 @@ const HeroAnimation = () => {
                   index={leads.indexOf(lead)}
                   size="md"
                   position={{ x: 350, y: lead.position?.y || 0 }}
-                  staggerDelay={0.2} // Added staggerDelay for output cards
+                  staggerDelay={0.1}
                   isConverted={true}
                   name={lead.convertedLead.name}
                   action={lead.convertedLead.action}
