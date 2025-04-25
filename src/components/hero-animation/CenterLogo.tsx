@@ -21,13 +21,23 @@ const CenterLogo = ({ onLeadProcess }: CenterLogoProps) => {
           ease: "easeInOut"
         }}
       >
+        {/* Radial glow background */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-[#00E676]/30 to-[#006eda]/30 rounded-full blur-3xl animate-pulse-soft" />
+        
+        {/* Main circle with gradient */}
         <div className="absolute inset-0 bg-gradient-to-tr from-[#00E676] to-[#006eda] rounded-full opacity-20" />
+        
+        {/* Logo image */}
         <img 
           src="/lovable-uploads/gofocus-logo.png" 
           alt="Go Focus AI Logo" 
           className="w-full h-full object-contain relative z-10"
         />
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#00E676]/20 to-[#006eda]/20 rounded-full blur-3xl" />
+        
+        {/* Additional glow layer */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-tr from-[#00E676]/20 to-[#006eda]/20 rounded-full blur-3xl animate-glow"
+        />
       </motion.div>
     </div>
   );

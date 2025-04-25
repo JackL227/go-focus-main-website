@@ -11,7 +11,9 @@ const MESSAGES = [
   "✅ Sarah enrolled in Mentorship Program",
   "🤖 AI Agent Initiated Follow-up",
   "📅 Demo Call Scheduled",
-  "💫 Lead Automatically Nurtured"
+  "💫 Lead Automatically Nurtured",
+  "🎯 Book Confirmed",
+  "🚀 Automated Sales Flow Launched"
 ];
 
 const FlowAnimation = () => {
@@ -45,24 +47,38 @@ const FlowAnimation = () => {
   }, [isMobile]);
 
   return (
-    <div className="relative w-full h-full bg-transparent overflow-hidden">
+    <div className="relative w-full h-[600px] bg-transparent overflow-hidden">
       <CenterLogo onLeadProcess={() => {}} />
       <ProcessMessage message={currentMessage} isVisible={showMessage} />
       
       {leads.map((lead) => (
         <motion.div
           key={lead.id}
-          initial={{ x: lead.x, y: lead.y, scale: 1, opacity: 1 }}
+          initial={{ 
+            x: lead.x, 
+            y: lead.y, 
+            scale: 1, 
+            opacity: 1,
+            rotateX: 0,
+            rotateY: 0,
+            z: 0
+          }}
           animate={{
             x: 500,
             y: 0,
             scale: 0.3,
-            opacity: 0,
-            rotateZ: Math.random() * 180 - 90
+            opacity: 0.2,
+            rotateX: Math.random() * 45,
+            rotateY: Math.random() * 45,
+            z: -100
           }}
           transition={{
             duration: 4,
-            ease: "easeInOut"
+            ease: [0.43, 0.13, 0.23, 0.96]
+          }}
+          style={{
+            perspective: 1000,
+            transformStyle: 'preserve-3d'
           }}
           onAnimationComplete={() => {
             setLeads(prev => prev.filter(l => l.id !== lead.id));

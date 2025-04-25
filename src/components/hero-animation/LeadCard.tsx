@@ -20,18 +20,19 @@ const LeadCard = ({ scale = 1, opacity = 1, x = 0, y = 0, rotate = 0, size = 'md
 
   return (
     <motion.div
-      className={`${sizeClasses[size]} rounded-lg bg-background/20 backdrop-blur-sm border border-primary/20 absolute`}
+      className={`${sizeClasses[size]} rounded-lg bg-background/20 backdrop-blur-sm border border-primary/20 shadow-lg`}
       style={{
         x,
         y,
         scale,
         opacity,
         rotate,
-        transformOrigin: 'center'
+        transformStyle: 'preserve-3d',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
       }}
     >
-      <div className="w-full h-full flex items-center justify-center text-sm text-foreground/80">
-        Lead
+      <div className="w-full h-full flex items-center justify-center text-sm text-foreground/80 font-medium p-2">
+        <span className="whitespace-nowrap overflow-hidden text-ellipsis">Lead Card</span>
       </div>
     </motion.div>
   );

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -65,7 +64,7 @@ const HeroSection = () => {
       </div>
       
       {/* Flow Animation Component */}
-      <div className="w-full h-[500px] relative z-10 mt-8">
+      <div className="w-full h-[600px] relative z-10 mt-8">
         <FlowAnimation />
       </div>
       
