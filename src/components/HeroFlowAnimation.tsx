@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import FlowAnimation from './flow-animation';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Lead conversion messages that will be displayed
 const leadMessages = [
@@ -24,7 +24,7 @@ const conversionMessages = [
 ];
 
 const HeroFlowAnimation: React.FC = () => {
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const [activeMessage, setActiveMessage] = useState("");
   const [activeConversion, setActiveConversion] = useState("");
   const [showMessage, setShowMessage] = useState(false);
