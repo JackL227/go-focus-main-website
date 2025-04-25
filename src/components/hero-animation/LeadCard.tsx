@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CircleCheck } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface LeadCardProps {
   index: number;
@@ -28,6 +29,7 @@ const LeadCard = ({
   name,
   action
 }: LeadCardProps) => {
+  const isMobile = useIsMobile();
   const sizeClasses = {
     sm: 'w-16 h-8',
     md: 'w-20 h-10',
@@ -35,7 +37,8 @@ const LeadCard = ({
   };
   
   const cardSize = sizeClasses[size];
-
+  const finalXPosition = isMobile ? window.innerWidth - 50 : 800;
+  
   return (
     <motion.div
       className={`absolute ${isConverted ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50' : `${cardSize} rounded-full bg-[#1F1F22]`} shadow-lg flex items-center justify-center`}
@@ -49,15 +52,21 @@ const LeadCard = ({
       animate={
         isConverted 
           ? {
-              x: position?.x ?? 350,
-              y: position?.y ?? 0,
+              x: finalXPosition,
+              y: [position?.y ?? 0, (position?.y ?? 0) + 30, (position?.y ?? 0) - 20, position?.y ?? 0],
               scale: 1,
-              opacity: 1,
+              opacity: [1, 1, 0.8, 0],
               rotate: 0,
               transition: {
-                duration: 2.5,
-                delay: staggerDelay,
-                ease: "easeOut"
+                duration: 4,
+                delay: index * 0.05,
+                ease: [0.43, 0.13, 0.23, 0.96],
+                opacity: {
+                  times: [0, 0.7, 0.85, 1]
+                },
+                y: {
+                  times: [0, 0.3, 0.7, 1]
+                }
               }
             }
           : isAbsorbed 

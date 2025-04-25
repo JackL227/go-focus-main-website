@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -13,7 +14,7 @@ const generateLeadPositions = () => {
   for (let i = 0; i < LEAD_COUNT; i++) {
     // Create a curved path effect by varying Y coordinates more at the edges
     const xPos = -350 - Math.random() * 100;
-    const yOffset = Math.random() * 300 - 150; // More vertical spread
+    const yOffset = Math.random() * 400 - 200; // More vertical spread
     positions.push({ x: xPos, y: yOffset });
   }
   return positions;
@@ -82,10 +83,11 @@ const HeroAnimation = () => {
         )
       );
       setProcessingLead(false);
-    }, 300); // Reduced to 300ms for quicker disappearance
+    }, 300);
   }, [getRandomName, getRandomAction]);
 
   useEffect(() => {
+    const LEAD_POSITIONS = generateLeadPositions();
     const sizeOptions: Array<'sm' | 'md' | 'lg'> = ['sm', 'md', 'lg'];
     
     // Initialize leads with their positions
@@ -100,12 +102,11 @@ const HeroAnimation = () => {
     
     setLeads(initialLeads);
     
-    // Continuously generate new leads
+    // Continuously generate new leads with varied positions
     const leadInterval = setInterval(() => {
-      // Create a new random position with more variety
       const randomPosition = {
         x: -350 - Math.random() * 150,
-        y: Math.random() * 300 - 150
+        y: Math.random() * 400 - 200
       };
       
       const randomSize = sizeOptions[Math.floor(Math.random() * sizeOptions.length)];
@@ -123,17 +124,17 @@ const HeroAnimation = () => {
         const filteredLeads = prev.filter(lead => !lead.removed);
         return [...filteredLeads, newLead].slice(-20);
       });
-    }, 800); // Appear every ~0.8 seconds as requested
+    }, 800);
     
     return () => clearInterval(leadInterval);
   }, []);
 
-  // Process leads one by one
+  // Process leads one by one with reduced delay
   useEffect(() => {
     if (!processingLead && leads.length > 0) {
       const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed);
       if (leadToProcess) {
-        const processingDelay = 1500 + (leads.indexOf(leadToProcess) * 500);
+        const processingDelay = 1000 + (leads.indexOf(leadToProcess) * 300);
         setTimeout(() => {
           processLead(leadToProcess.id);
         }, processingDelay);
@@ -164,7 +165,7 @@ const HeroAnimation = () => {
                   index={leads.indexOf(lead)}
                   size="md"
                   position={{ x: 350, y: lead.position?.y || 0 }}
-                  staggerDelay={0.1}
+                  staggerDelay={0.05}
                   isConverted={true}
                   name={lead.convertedLead.name}
                   action={lead.convertedLead.action}
