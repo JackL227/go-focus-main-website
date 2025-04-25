@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Briefcase, Flower, Dumbbell, Building2, Car, Tooth, ArrowUpRight } from 'lucide-react';
+import { Briefcase, Flower, Dumbbell, Building2, Car, Stethoscope, ArrowUpRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { cn } from '@/lib/utils';
 
@@ -67,7 +67,7 @@ const industries = [
   {
     id: 6,
     title: "Dental Clinics",
-    icon: Tooth,
+    icon: Stethoscope,
     description: "Streamline patient scheduling, treatment inquiries, and follow-up communications.",
     results: [
       "40% faster patient intake process",
