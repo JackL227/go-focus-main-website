@@ -13,7 +13,7 @@ const CenterLogo = ({ onLeadProcess }: CenterLogoProps) => {
         className="relative w-[323px] h-[323px]"
         animate={{
           scale: [1, 1.05, 1],
-          filter: ['blur(8px)', 'blur(12px)', 'blur(8px)']
+          filter: ['brightness(1) blur(8px)', 'brightness(1.2) blur(12px)', 'brightness(1) blur(8px)']
         }}
         transition={{
           duration: 2,
@@ -21,28 +21,21 @@ const CenterLogo = ({ onLeadProcess }: CenterLogoProps) => {
           ease: "easeInOut"
         }}
       >
-        {/* Enhanced glow background */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#006eda]/40 to-[#006eda]/40 rounded-full blur-[100px] animate-pulse-soft" />
-        
-        {/* Main circle with gradient */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#006eda] to-[#006eda] rounded-full opacity-20" />
+        {/* Main glow */}
+        <div className="absolute inset-0 bg-[#006eda] rounded-full opacity-20 blur-[100px]" />
         
         {/* Logo image */}
         <img 
-          src="/lovable-uploads/gofocus-logo.png" 
-          alt="Go Focus AI Logo" 
+          src={`/lovable-uploads/048fd594-f60b-4025-8710-01893d9256ae.png`}
+          alt="Glowing Logo"
           className="w-full h-full object-contain relative z-10"
         />
         
-        {/* Inner glow */}
-        <div 
-          className="absolute inset-0 bg-gradient-to-tr from-[#006eda]/30 to-[#006eda]/30 rounded-full blur-2xl animate-glow"
-        />
-        
         {/* Outer glow */}
-        <div 
-          className="absolute -inset-4 bg-gradient-to-tr from-[#006eda]/10 to-[#006eda]/10 rounded-full blur-3xl animate-pulse-soft"
-        />
+        <div className="absolute -inset-8 bg-[#006eda]/20 rounded-full blur-3xl animate-pulse-soft" />
+        
+        {/* Inner glow */}
+        <div className="absolute inset-0 bg-[#006eda]/30 rounded-full blur-xl animate-glow" />
       </motion.div>
     </div>
   );

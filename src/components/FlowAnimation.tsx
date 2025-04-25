@@ -5,15 +5,21 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './hero-animation/LeadCard';
 import CenterLogo from './hero-animation/CenterLogo';
 import ProcessMessage from './hero-animation/ProcessMessage';
+import AutomatedSalesCard from './hero-animation/AutomatedSalesCard';
 
 const MESSAGES = [
-  "📈 Qualified Lead Captured",
-  "✅ Sarah enrolled in Mentorship Program",
-  "🤖 AI Agent Initiated Follow-up",
-  "📅 Demo Call Scheduled",
-  "💫 Lead Automatically Nurtured",
-  "🎯 Book Confirmed",
-  "🚀 Automated Sales Flow Launched"
+  "📈 Lead Captured",
+  "✨ New Opportunity Created",
+  "🎯 Lead Qualified",
+  "📅 Demo Scheduled",
+  "🤝 Deal Closed"
+];
+
+const SALES_UPDATES = [
+  { name: "Beyoncé", action: "has enrolled into the mentorship" },
+  { name: "Samantha K", action: "has enrolled into the mentorship" },
+  { name: "John D", action: "scheduled a demo call" },
+  { name: "Sarah M", action: "confirmed booking" }
 ];
 
 const FlowAnimation = () => {
@@ -21,17 +27,25 @@ const FlowAnimation = () => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const [leads, setLeads] = useState<Array<{ id: number; x: number; y: number }>>([]);
+  const [salesUpdates, setSalesUpdates] = useState<Array<{ id: number; update: { name: string; action: string } }>>([]);
   
   useEffect(() => {
     const interval = setInterval(() => {
       // Create new lead
       const newLead = {
         id: Date.now(),
-        x: isMobile ? -150 : -200,
-        y: isMobile ? Math.random() * 200 - 100 : Math.random() * 400 - 200
+        x: -300,
+        y: Math.random() * 300 - 150
       };
       
-      setLeads(prev => [...prev.slice(-11), newLead]);
+      setLeads(prev => [...prev.slice(-8), newLead]);
+      
+      // Add sales update
+      const newUpdate = {
+        id: Date.now(),
+        update: SALES_UPDATES[Math.floor(Math.random() * SALES_UPDATES.length)]
+      };
+      setSalesUpdates(prev => [...prev.slice(-2), newUpdate]);
       
       // Trigger message
       const randomMessage = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
@@ -39,18 +53,23 @@ const FlowAnimation = () => {
       setShowMessage(true);
       setTimeout(() => setShowMessage(false), 2000);
       
-      // Clean up old leads
+      // Clean up old leads and updates
       setLeads(prev => prev.filter(lead => Date.now() - lead.id < 5000));
+      setSalesUpdates(prev => prev.filter(update => Date.now() - update.id < 5000));
     }, 3000);
 
     return () => clearInterval(interval);
   }, [isMobile]);
 
   return (
-    <div className="relative w-full h-[600px] bg-[#010101] overflow-hidden flex items-center justify-center">
+    <div className="relative w-full h-[600px] bg-black overflow-hidden flex items-center justify-center">
+      {/* Center Logo */}
       <CenterLogo onLeadProcess={() => {}} />
+      
+      {/* Process Message */}
       <ProcessMessage message={currentMessage} isVisible={showMessage} />
       
+      {/* Floating Leads */}
       {leads.map((lead) => (
         <motion.div
           key={lead.id}
@@ -64,7 +83,7 @@ const FlowAnimation = () => {
             z: 0
           }}
           animate={{
-            x: 600,
+            x: 300,
             y: 0,
             scale: 0.3,
             opacity: 0.2,
@@ -81,13 +100,22 @@ const FlowAnimation = () => {
             perspective: 1000,
             transformStyle: 'preserve-3d'
           }}
-          onAnimationComplete={() => {
-            setLeads(prev => prev.filter(l => l.id !== lead.id));
-          }}
         >
           <LeadCard size={lead.id % 2 === 0 ? 'lg' : 'md'} />
         </motion.div>
       ))}
+
+      {/* Sales Updates */}
+      <div className="absolute right-10 top-1/2 -translate-y-1/2 space-y-4 z-20">
+        {salesUpdates.map((update, index) => (
+          <AutomatedSalesCard
+            key={update.id}
+            name={update.update.name}
+            action={update.update.action}
+            delay={index * 0.2}
+          />
+        ))}
+      </div>
     </div>
   );
 };

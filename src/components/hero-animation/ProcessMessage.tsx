@@ -15,9 +15,9 @@ const ProcessMessage = ({ message, isVisible }: ProcessMessageProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className="absolute top-1/3 left-1/2 -translate-x-1/2 bg-[#1A1F2C]/80 backdrop-blur-sm border border-[#006eda]/20 px-6 py-3 rounded-lg shadow-lg z-20"
+          className="absolute top-1/3 left-1/2 -translate-x-1/2 bg-[#1A1F2C] backdrop-blur-sm border border-[#2A2F3C] px-6 py-3 rounded-lg shadow-lg z-20"
         >
-          <span className="text-[#006eda] font-medium">{message}</span>
+          <span className="text-white font-medium">{message}</span>
         </motion.div>
       )}
     </AnimatePresence>
