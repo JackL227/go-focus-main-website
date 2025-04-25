@@ -18,7 +18,7 @@ const HeroSection = () => {
   
   return (
     <section 
-      className="relative min-h-screen flex items-center pt-24 pb-0 overflow-hidden bg-gradient-to-b from-[#050A14] to-[#0A1428]" 
+      className="relative min-h-screen flex items-center pt-24 pb-0 overflow-hidden bg-[#010101]" 
       aria-label="Hero section"
     >
       {/* Glassmorphic background animation */}
@@ -62,15 +62,15 @@ const HeroSection = () => {
             </BookingWidget>
           </div>
           
-          {/* Service Slideshow - now below the CTAs */}
-          <div className="w-full max-w-3xl mx-auto h-[300px] opacity-0 animate-fade-in [animation-delay:900ms]">
+          {/* Service Slideshow with Flow Animation */}
+          <div className="w-full max-w-3xl mx-auto h-[300px] md:h-[400px] opacity-0 animate-fade-in [animation-delay:900ms]">
             <ServiceSlideshow />
           </div>
         </div>
       </div>
       
       {/* Glass divider */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent z-[2]" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#010101] to-transparent z-[2]" />
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
     </section>

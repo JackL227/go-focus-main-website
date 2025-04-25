@@ -1,11 +1,11 @@
 
 import React from 'react';
-import FlowAnimation from './FlowAnimation';
+import HeroFlowAnimation from './HeroFlowAnimation';
 
 const ServiceSlideshow = () => {
   return (
     <div className="w-full h-full overflow-hidden">
-      <FlowAnimation />
+      <HeroFlowAnimation />
     </div>
   );
 };

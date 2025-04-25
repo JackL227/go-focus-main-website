@@ -11,7 +11,7 @@ const FlowAnimationCanvas = ({ isMobile = false }: FlowAnimationCanvasProps) => 
   const { canvasRef, ctx, aiNode, panels } = useCanvasSetup(isMobile);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Always call the hook, but handle null values inside
+  // Animation loop hook
   useAnimationLoop(canvasRef.current, ctx, aiNode, panels, isMobile);
   
   // Ensure the canvas container has height
