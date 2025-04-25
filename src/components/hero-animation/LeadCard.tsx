@@ -20,13 +20,12 @@ const LeadCard = ({
   isAbsorbed = false,
   onComplete,
   position,
-  staggerDelay = 0.5,
+  staggerDelay = 1.2,
   isConverted = false,
   name,
   action,
   exitRight = false
 }: LeadCardProps) => {
-  // Custom easing for smoother animation
   const customEasing = [0.4, 0, 0.2, 1];
   
   return (
@@ -41,40 +40,44 @@ const LeadCard = ({
         y: position?.y ?? 0,
         scale: isConverted ? 0.1 : 1, 
         opacity: 0.5,
-        rotate: Math.random() * 6 - 3, // Reduced rotation for more subtle effect
-        zIndex: isConverted ? 15 : 20
+        rotate: Math.random() * 4 - 2, // Reduced rotation
+        zIndex: isConverted ? 25 : 20 // Adjusted z-index
       }}
       animate={
         exitRight
           ? {
-              x: 350, // Move all the way to the right edge
+              x: 350,
               y: position?.y ?? 0,
               scale: 0.9,
-              opacity: [0.9, 0.2, 0], // Fade out as it moves right
+              opacity: [0.9, 0.6, 0],
               rotate: 0,
               zIndex: 15,
               transition: {
-                duration: 6, // Slower exit animation
+                duration: 8,
                 delay: 0.2,
                 ease: customEasing,
                 opacity: {
-                  times: [0, 0.8, 1],
-                  duration: 6
+                  times: [0, 0.7, 1],
+                  duration: 8
                 }
               }
             }
           : isConverted 
             ? {
-                x: 100, // Position just to the right of logo
+                x: 100,
                 y: position?.y ?? 0, 
-                scale: 0.9,
+                scale: [0.1, 1.1, 1], // Pop effect
                 opacity: 1,
                 rotate: 0,
-                zIndex: 15,
+                zIndex: 25,
                 transition: {
-                  duration: 4.5, // Slower animation for more elegant movement
-                  delay: 0.3,
-                  ease: customEasing
+                  duration: 0.8,
+                  delay: 0.2,
+                  ease: customEasing,
+                  scale: {
+                    times: [0, 0.6, 1],
+                    duration: 0.8
+                  }
                 }
               }
             : isAbsorbed 
@@ -84,20 +87,20 @@ const LeadCard = ({
                   scale: 0.1,
                   opacity: 0,
                   rotate: 0,
-                  zIndex: 5, // Behind the logo
+                  zIndex: 15,
                   transition: {
-                    duration: 1.3, // Slower absorption
+                    duration: 2, // Increased from 1.3
                     ease: customEasing
                   }
                 }
               : {
                   x: 0,
                   y: 0,
-                  scale: [1, 0.9, 0.8], // Gradually scale down as it approaches the center
-                  opacity: [0.9, 0.7, 0.5], // Gradually fade as it approaches the center
+                  scale: [1, 0.95, 0.9],
+                  opacity: [0.9, 0.8, 0.7],
                   zIndex: 20,
                   transition: {
-                    duration: 4.5, // Slower initial movement
+                    duration: 4.5,
                     delay: index * staggerDelay,
                     ease: customEasing,
                     scale: {
@@ -118,7 +121,7 @@ const LeadCard = ({
       }}
       style={{
         boxShadow: isConverted ? '0 4px 12px rgba(0, 0, 0, 0.25)' : '0 2px 8px rgba(0, 0, 0, 0.2)',
-        transform: isConverted ? 'translateZ(5px)' : 'translateZ(0)'
+        transform: isConverted ? 'translateZ(0)' : 'translateZ(0)'
       }}
     >
       {isConverted ? (

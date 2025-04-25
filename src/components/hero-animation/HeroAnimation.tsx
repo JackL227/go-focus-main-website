@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './LeadCard';
 import CenterLogo from './CenterLogo';
 
-const LEAD_COUNT = 3;
-const LEAD_GENERATION_INTERVAL = 3200;
+const LEAD_COUNT = 2;
+const LEAD_GENERATION_INTERVAL = 5000;
 const PROCESSING_DELAY_BASE = 2500;
-const STAGGER_DELAY = 0.8;
-const CONVERSION_DISPLAY_DURATION = 8000;
+const STAGGER_DELAY = 1.2;
+const CONVERSION_DISPLAY_DURATION = 10000;
 
 const generateLeadPositions = () => {
   const positions = [];
@@ -89,9 +89,9 @@ const HeroAnimation = () => {
         if (animationActive.current) {
           addNewLead();
         }
-      }, 800);
+      }, 1200);
       
-    }, 1500);
+    }, 2000);
   }, [getRandomName, getRandomAction]);
 
   const exitNameCardRight = useCallback((leadId: number) => {
@@ -106,7 +106,7 @@ const HeroAnimation = () => {
       
       setTimeout(() => {
         setLeads(prev => prev.filter(lead => lead.id !== leadId));
-      }, 6000);
+      }, 8000);
     }, CONVERSION_DISPLAY_DURATION);
   }, []);
 
@@ -131,8 +131,7 @@ const HeroAnimation = () => {
     
     setLeads(prev => {
       const activeLeads = prev.filter(lead => !lead.removed && !lead.exitRight);
-      
-      const maxVisibleLeads = isMobile ? 2 : 3;
+      const maxVisibleLeads = isMobile ? 1 : 2;
       
       if (activeLeads.length >= maxVisibleLeads) {
         return prev;

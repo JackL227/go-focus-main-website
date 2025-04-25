@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -13,88 +12,57 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
       <motion.div
         className="relative w-[230px] h-[230px] sm:w-[280px] sm:h-[280px]"
         animate={{
-          scale: processingLead ? [1, 1.05, 1] : [1, 1.02, 1],
+          scale: processingLead ? [1, 1.03, 1] : [1, 1.01, 1],
         }}
         transition={{
-          duration: processingLead ? 1.8 : 3.8,
+          duration: processingLead ? 1.5 : 3,
           ease: "easeInOut",
           times: processingLead ? [0, 0.5, 1] : [0, 0.5, 1]
         }}
       >
-        {/* Primary gradient glow - background radial gradient - Reduced blur for sharper appearance */}
+        {/* Primary gradient glow - Reduced blur */}
         <div className={`absolute inset-0 rounded-full transition-all duration-300 ${
           processingLead ? 'animate-pulse-soft' : ''
         }`}>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#00F5A0] to-[#00D9F5] rounded-full opacity-40 blur-[60px]"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#00F5A0] to-[#00D9F5] rounded-full opacity-30 blur-[40px]"></div>
         </div>
         
-        {/* Secondary glow - more intense when processing - Reduced blur */}
+        {/* Secondary glow - Reduced intensity */}
         <motion.div 
-          className="absolute inset-0 rounded-full opacity-60 blur-[40px]"
+          className="absolute inset-0 rounded-full opacity-50 blur-[30px]"
           style={{
             background: 'linear-gradient(to right, #00F5A0, #00D9F5)'
           }}
           animate={{
-            opacity: processingLead ? [0.6, 0.8, 0.6] : [0.5, 0.6, 0.5]
+            opacity: processingLead ? [0.5, 0.7, 0.5] : [0.4, 0.5, 0.4]
           }}
           transition={{
-            duration: processingLead ? 1.2 : 3.5,
+            duration: processingLead ? 1.2 : 3,
             repeat: Infinity,
             ease: "easeInOut"
           }}
         />
         
-        {/* Inner glow - focused on center */}
-        <div className="absolute inset-[30%] rounded-full opacity-70 blur-[20px] bg-gradient-to-r from-[#00F5A0] to-[#00D9F5]" />
-        
-        {/* Animated ripple effect - slower when processing */}
-        <motion.div 
-          className="absolute inset-0 border-4 border-[#00F5A0]/30 rounded-full"
-          animate={{
-            scale: [1, 1.4, 1],
-            opacity: [0.4, 0, 0.4],
-          }}
-          transition={{
-            duration: processingLead ? 1.8 : 3.8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        
-        {/* Processing ripple - only visible when processing */}
-        {processingLead && (
-          <motion.div 
-            className="absolute inset-0 border-2 border-[#00F5A0]/70 rounded-full"
-            initial={{ scale: 1, opacity: 0.7 }}
-            animate={{
-              scale: [1, 1.6, 1],
-              opacity: [0.8, 0, 0.8],
-            }}
-            transition={{
-              duration: 1.2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        )}
+        {/* Inner glow - Reduced size */}
+        <div className="absolute inset-[35%] rounded-full opacity-60 blur-[15px] bg-gradient-to-r from-[#00F5A0] to-[#00D9F5]" />
         
         {/* Logo image with increased z-index */}
         <motion.img
           src="/lovable-uploads/b9eb9c06-5b4f-416d-af44-06190fbec508.png"
           alt="Go Focus AI Logo"
-          className="w-full h-full object-contain relative z-40 p-16"
+          className="w-full h-full object-contain relative z-50 p-16"
           animate={{
-            scale: processingLead ? [1, 1.03, 1] : [1, 1.01, 1],
+            scale: processingLead ? [1, 1.02, 1] : [1, 1.01, 1],
             filter: processingLead
-              ? ['drop-shadow(0 0 10px rgba(0, 245, 160, 0.6))', 'drop-shadow(0 0 15px rgba(0, 245, 160, 0.8))', 'drop-shadow(0 0 10px rgba(0, 245, 160, 0.6))']
-              : ['drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))', 'drop-shadow(0 0 10px rgba(0, 245, 160, 0.6))', 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))']
+              ? ['drop-shadow(0 0 8px rgba(0, 245, 160, 0.5))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.7))', 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.5))']
+              : ['drop-shadow(0 0 6px rgba(0, 245, 160, 0.3))', 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.5))', 'drop-shadow(0 0 6px rgba(0, 245, 160, 0.3))']
           }}
           transition={{
-            duration: processingLead ? 1.8 : 3.8,
+            duration: processingLead ? 1.5 : 3,
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          style={{ filter: 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.5))' }}
+          style={{ filter: 'drop-shadow(0 0 6px rgba(0, 245, 160, 0.4))' }}
         />
 
         {/* Particle effects during processing */}
