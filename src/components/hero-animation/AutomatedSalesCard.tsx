@@ -8,23 +8,15 @@ interface AutomatedSalesCardProps {
   delay?: number;
   index?: number;
   isRight?: boolean;
-  emoji?: string;
 }
-
-const EMOJIS = ["🎯", "🚀", "💼", "✨", "📅", "🤝"];
 
 const AutomatedSalesCard = ({ 
   name, 
   action, 
   delay = 0, 
   index = 0,
-  isRight = true,
-  emoji
+  isRight = true
 }: AutomatedSalesCardProps) => {
-  // Random emoji or use provided one
-  const cardEmoji = emoji || EMOJIS[index % EMOJIS.length];
-  
-  // Movement for right side cards vs center cards (for mobile)
   const animationProps = isRight ? {
     initial: { opacity: 0, x: 40, scale: 0.95 },
     animate: { opacity: 1, x: 0, scale: 1 },
@@ -37,9 +29,7 @@ const AutomatedSalesCard = ({
 
   return (
     <motion.div
-      initial={animationProps.initial}
-      animate={animationProps.animate}
-      exit={animationProps.exit}
+      {...animationProps}
       transition={{ 
         type: "spring", 
         stiffness: 120, 
@@ -47,19 +37,13 @@ const AutomatedSalesCard = ({
         duration: 0.5, 
         delay,
       }}
-      whileHover={{ 
-        scale: 1.02,
-        transition: { duration: 0.2 } 
-      }}
-      className="bg-[#1A1F2C]/90 rounded-lg p-4 border border-[#2A2F3C]/50 shadow-lg w-full sm:w-[280px] mb-3"
-      style={{ zIndex: 30 - index % 10 }}
+      className="w-full bg-[#1A1F2C]/90 backdrop-blur-sm rounded-lg p-3 border border-[#2A2F3C]/50"
     >
       <div className="flex items-center space-x-2">
-        <div className="w-2 h-2 rounded-full bg-[#00F5A0] animate-pulse-soft shrink-0" />
+        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
         <div className="text-sm">
-          <span className="text-white font-semibold">{name} </span>
+          <span className="text-white font-medium">{name} </span>
           <span className="text-gray-400">{action}</span>
-          <span className="ml-1">{cardEmoji}</span>
         </div>
       </div>
     </motion.div>

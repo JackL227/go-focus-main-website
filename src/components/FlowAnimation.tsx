@@ -3,157 +3,88 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './hero-animation/LeadCard';
-import CenterLogo from './hero-animation/CenterLogo';
+import ProcessingLogo from './hero-animation/ProcessingLogo';
 import ProcessMessage from './hero-animation/ProcessMessage';
 import AutomatedSalesCard from './hero-animation/AutomatedSalesCard';
 
-// Messages for the animation
-const MESSAGES = [
-  "📈 Lead Captured",
-  "✨ New Opportunity Created",
-  "🎯 Lead Qualified",
-  "📅 Demo Scheduled",
-  "🤝 Deal Closed"
-];
-
-// Names for sales updates - more diverse and realistic list
 const NAMES = [
-  "John D", "Sarah M", "Michael T", "Emma R", "Daniel P", 
-  "Lisa W", "Thomas B", "Ashley K", "Robert J", "Jennifer L",
-  "Alex H", "Sophia G", "William F", "Olivia N", "James C"
+  'Sarah M', 'Michael T', 'Emma R', 'Daniel P', 
+  'Lisa W', 'Thomas B', 'Ashley K', 'Robert J'
 ];
 
-// Actions for sales updates
 const ACTIONS = [
-  "booked a call",
-  "joined your mentorship",
-  "became a client",
-  "scheduled a demo",
-  "confirmed booking",
-  "purchased premium plan",
-  "requested a strategy session",
-  "converted from cold lead"
+  'has enrolled into the mentorship',
+  'scheduled a demo call',
+  'joined the program',
+  'confirmed booking'
 ];
-
-// Emojis for output cards
-const EMOJIS = ["🎯", "🚀", "💼", "✨", "📅", "🤝"];
 
 const FlowAnimation = () => {
   const isMobile = useIsMobile();
   const [currentMessage, setCurrentMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const [processingLead, setProcessingLead] = useState(false);
-  const [leads, setLeads] = useState<Array<{ 
-    id: number; 
-    removed: boolean;
-    absorbedByLogo: boolean;
-    size: 'sm' | 'md' | 'lg';
-    rotate: number;
-    rotateY: number;
-    index: number;
-  }>>([]);
-  const [salesUpdates, setSalesUpdates] = useState<Array<{
-    id: number;
-    name: string;
-    action: string;
-    initialDelay: number;
-    emoji: string;
-  }>>([]);
+  const [leads, setLeads] = useState<Array<{id: number; removed: boolean; absorbedByLogo: boolean;}>>([]);
+  const [salesUpdates, setSalesUpdates] = useState<Array<{id: number; name: string; action: string;}>>([]);
 
-  // Generate random values
-  const getRandomName = useCallback(() => {
-    return NAMES[Math.floor(Math.random() * NAMES.length)];
-  }, []);
+  const getRandomName = useCallback(() => NAMES[Math.floor(Math.random() * NAMES.length)], []);
+  const getRandomAction = useCallback(() => ACTIONS[Math.floor(Math.random() * ACTIONS.length)], []);
   
-  const getRandomAction = useCallback(() => {
-    return ACTIONS[Math.floor(Math.random() * ACTIONS.length)];
-  }, []);
-  
-  const getRandomMessage = useCallback(() => {
-    return MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
-  }, []);
-  
-  const getRandomEmoji = useCallback(() => {
-    return EMOJIS[Math.floor(Math.random() * EMOJIS.length)]; 
-  }, []);
-  
-  const getRandomSize = useCallback((): 'sm' | 'md' | 'lg' => {
-    const sizes: ('sm' | 'md' | 'lg')[] = ['sm', 'md', 'lg'];
-    return sizes[Math.floor(Math.random() * sizes.length)];
-  }, []);
-
   // Process a lead when it reaches the logo
   const processLead = useCallback(() => {
     setProcessingLead(true);
-    
-    // Show processing message
-    const message = getRandomMessage();
-    setCurrentMessage(message);
     setShowMessage(true);
+    setCurrentMessage("📈 Lead Captured");
     
-    // Create new sales update
     const newSalesUpdate = {
       id: Date.now(),
       name: getRandomName(),
       action: getRandomAction(),
-      initialDelay: 0.2,
-      emoji: getRandomEmoji()
     };
     
     setTimeout(() => {
       setSalesUpdates(prev => {
         const updatedList = [...prev, newSalesUpdate];
-        return updatedList.slice(Math.max(0, updatedList.length - 8));
+        return updatedList.slice(Math.max(0, updatedList.length - 4));
       });
       
       setShowMessage(false);
       setProcessingLead(false);
     }, 800);
-  }, [getRandomMessage, getRandomName, getRandomAction, getRandomEmoji]);
+  }, [getRandomName, getRandomAction]);
 
-  // Initialize and manage lead generation
+  // Initialize and manage leads
   useEffect(() => {
-    // Generate initial leads with more variety
-    const initialLeadCount = isMobile ? 8 : 12;
+    const initialLeadCount = 12;
     const initialLeads = Array(initialLeadCount).fill(0).map((_, i) => ({
       id: i,
       removed: false,
-      absorbedByLogo: false,
-      size: getRandomSize(),
-      rotate: (i % 3 - 1) * 5,
-      rotateY: i % 2 * 5,
-      index: i
+      absorbedByLogo: false
     }));
     setLeads(initialLeads);
     
-    // Initial sales updates
     setSalesUpdates([
-      { id: 1, name: getRandomName(), action: getRandomAction(), initialDelay: 0, emoji: getRandomEmoji() },
-      { id: 2, name: getRandomName(), action: getRandomAction(), initialDelay: 0.3, emoji: getRandomEmoji() }
+      { id: 1, name: getRandomName(), action: getRandomAction() },
+      { id: 2, name: getRandomName(), action: getRandomAction() }
     ]);
     
-    // Generate new leads periodically
     const leadInterval = setInterval(() => {
       const newLead = { 
         id: Date.now(), 
         removed: false,
-        absorbedByLogo: false,
-        size: getRandomSize(),
-        rotate: (Math.random() * 10 - 5),
-        rotateY: Math.random() * 10,
-        index: Date.now() % 10
+        absorbedByLogo: false
       };
       
       setLeads(prev => {
         const filteredLeads = prev.filter(lead => !lead.removed);
-        return [...filteredLeads, newLead].slice(-15); // Keep up to 15 leads
+        return [...filteredLeads, newLead].slice(-15);
       });
-    }, 2000); // Generate new lead every 2 seconds
+    }, 2000);
     
     return () => clearInterval(leadInterval);
-  }, [isMobile, getRandomName, getRandomAction, getRandomEmoji, getRandomSize]);
+  }, [getRandomName, getRandomAction]);
 
-  // Process leads that reach the logo
+  // Process leads
   useEffect(() => {
     if (!processingLead && leads.length > 0) {
       const leadToProcess = leads.find(lead => !lead.absorbedByLogo && !lead.removed);
@@ -168,7 +99,6 @@ const FlowAnimation = () => {
           );
           processLead();
           
-          // Remove the lead after absorption animation
           setTimeout(() => {
             setLeads(prev => 
               prev.map(lead => 
@@ -185,26 +115,18 @@ const FlowAnimation = () => {
 
   return (
     <div className="relative w-full h-[600px] bg-[#010101] overflow-hidden flex flex-col md:flex-row items-center justify-center">
-      <CenterLogo 
-        onLeadProcess={processLead} 
-        processingLead={processingLead} 
-      />
-      
-      <ProcessMessage 
-        message={currentMessage} 
-        isVisible={showMessage} 
-      />
+      <ProcessingLogo isProcessing={processingLead} />
+      <ProcessMessage message={currentMessage} isVisible={showMessage} />
       
       <AnimatePresence>
-        {leads.map((lead) => (
+        {leads.map((lead, index) => (
           !lead.removed && (
             <LeadCard 
               key={lead.id}
-              index={lead.index}
+              index={index}
               isAbsorbed={lead.absorbedByLogo}
-              size={lead.size}
-              rotate={lead.rotate}
-              rotateY={lead.rotateY}
+              size={index % 2 === 0 ? 'md' : 'sm'}
+              rotate={(index % 3 - 1) * 5}
               onComplete={() => {
                 setLeads(prev => 
                   prev.map(l => 
@@ -222,32 +144,23 @@ const FlowAnimation = () => {
       
       <div className={`
         ${isMobile ? 'absolute bottom-10 left-0 right-0 px-4' : 'absolute right-10 top-1/2 -translate-y-1/2'} 
-        z-20 transition-all duration-300
+        z-20
       `}>
-        <div className={`
-          bg-[#1A1F2C]/60 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-[#2A2F3C]/30
-          ${isMobile ? 'w-full overflow-x-auto flex flex-row space-x-3 scrollbar-hide' : 'w-[300px]'}
-        `}>
-          <h3 className={`
-            text-white text-lg md:text-xl font-medium 
-            ${isMobile ? 'hidden' : 'mb-2'} 
-          `}>
+        <div className="bg-[#1A1F2C]/90 backdrop-blur-sm p-4 rounded-xl border border-[#2A2F3C]/30">
+          <h3 className="text-white text-lg font-medium mb-2">
             Automated <span className="text-gray-400">Sales Process</span>
           </h3>
           
-          <div className={`
-            ${isMobile ? 'flex flex-row space-x-3 py-2 px-1' : 'space-y-3 mt-4'}
-          `}>
+          <div className="space-y-3">
             <AnimatePresence>
               {salesUpdates.map((update, index) => (
                 <AutomatedSalesCard
                   key={update.id}
                   name={update.name}
                   action={update.action}
-                  delay={update.initialDelay + (index * 0.15)}
+                  delay={0.2 + (index * 0.15)}
                   index={index}
                   isRight={!isMobile}
-                  emoji={update.emoji}
                 />
               ))}
             </AnimatePresence>
