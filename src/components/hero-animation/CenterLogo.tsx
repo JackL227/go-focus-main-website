@@ -3,61 +3,72 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 interface CenterLogoProps {
-  isProcessing?: boolean;
+  onLeadProcess: () => void;
+  processingLead: boolean;
 }
 
-const CenterLogo = ({ isProcessing }: CenterLogoProps) => {
+const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
   return (
     <div className="absolute left-1/2 -translate-x-1/2">
-      <motion.div className="relative w-[230px] h-[230px] sm:w-[280px] sm:h-[280px]">
-        {/* Enhanced primary gradient glow */}
+      <motion.div
+        className="relative w-[230px] h-[230px] sm:w-[280px] sm:h-[280px]"
+        animate={{
+          scale: processingLead ? [1, 1.08, 1] : [1, 1.05, 1],
+        }}
+        transition={{
+          duration: processingLead ? 1.2 : 3,
+          ease: "easeInOut",
+          times: processingLead ? [0, 0.5, 1] : [0, 0.5, 1]
+        }}
+      >
+        {/* Primary gradient glow - background radial gradient */}
         <div className={`absolute inset-0 rounded-full transition-all duration-300 ${
-          isProcessing ? 'animate-pulse-soft' : ''
+          processingLead ? 'animate-pulse-soft' : ''
         }`}>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#00F5A0] to-[#00D9F5] rounded-full opacity-50 blur-[100px]"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#00F5A0] to-[#00D9F5] rounded-full opacity-40 blur-[80px]"></div>
         </div>
         
-        {/* Enhanced secondary glow - more intense when processing */}
+        {/* Secondary glow - more intense when processing */}
         <motion.div 
-          className="absolute inset-0 rounded-full opacity-70 blur-[60px]"
+          className="absolute inset-0 rounded-full opacity-60 blur-[50px]"
           style={{
             background: 'linear-gradient(to right, #00F5A0, #00D9F5)'
           }}
           animate={{
-            opacity: isProcessing ? [0.7, 0.9, 0.7] : [0.6, 0.7, 0.6]
+            opacity: processingLead ? [0.6, 0.8, 0.6] : [0.5, 0.6, 0.5]
           }}
           transition={{
-            duration: isProcessing ? 0.8 : 3,
+            duration: processingLead ? 0.8 : 3,
             repeat: Infinity,
             ease: "easeInOut"
           }}
         />
         
-        {/* Enhanced inner glow - focused on center */}
-        <div className="absolute inset-[30%] rounded-full opacity-80 blur-[40px] bg-gradient-to-r from-[#00F5A0] to-[#00D9F5]" />
+        {/* Inner glow - focused on center */}
+        <div className="absolute inset-[30%] rounded-full opacity-70 blur-[30px] bg-gradient-to-r from-[#00F5A0] to-[#00D9F5]" />
         
-        {/* Enhanced animated ripple effect */}
+        {/* Animated ripple effect - faster when processing */}
         <motion.div 
-          className="absolute inset-0 border-4 border-[#00F5A0]/40 rounded-full"
+          className="absolute inset-0 border-4 border-[#00F5A0]/30 rounded-full"
           animate={{
             scale: [1, 1.4, 1],
-            opacity: [0.5, 0, 0.5],
+            opacity: [0.4, 0, 0.4],
           }}
           transition={{
-            duration: isProcessing ? 1.5 : 3,
+            duration: processingLead ? 1.5 : 3,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
         
-        {/* Enhanced processing ripple */}
-        {isProcessing && (
+        {/* Processing ripple - only visible when processing */}
+        {processingLead && (
           <motion.div 
-            className="absolute inset-0 border-2 border-[#00F5A0]/80 rounded-full"
-            initial={{ scale: 1, opacity: 0.8 }}
+            className="absolute inset-0 border-2 border-[#00F5A0]/70 rounded-full"
+            initial={{ scale: 1, opacity: 0.7 }}
             animate={{
               scale: [1, 1.6, 1],
-              opacity: [0.9, 0, 0.9],
+              opacity: [0.8, 0, 0.8],
             }}
             transition={{
               duration: 0.8,
@@ -67,22 +78,23 @@ const CenterLogo = ({ isProcessing }: CenterLogoProps) => {
           />
         )}
         
-        {/* Logo image with enhanced glow */}
+        {/* Logo image */}
         <motion.img
           src="/lovable-uploads/b9eb9c06-5b4f-416d-af44-06190fbec508.png"
           alt="Go Focus AI Logo"
           className="w-full h-full object-contain relative z-10 p-16"
           animate={{
-            scale: isProcessing ? [1, 1.05, 1] : [1, 1.02, 1],
-            filter: isProcessing
-              ? ['drop-shadow(0 0 15px rgba(0, 245, 160, 0.7))', 'drop-shadow(0 0 25px rgba(0, 245, 160, 1))', 'drop-shadow(0 0 15px rgba(0, 245, 160, 0.7))']
-              : ['drop-shadow(0 0 10px rgba(0, 245, 160, 0.5))', 'drop-shadow(0 0 15px rgba(0, 245, 160, 0.7))', 'drop-shadow(0 0 10px rgba(0, 245, 160, 0.5))']
+            scale: processingLead ? [1, 1.05, 1] : [1, 1.02, 1],
+            filter: processingLead
+              ? ['drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))', 'drop-shadow(0 0 20px rgba(0, 245, 160, 0.9))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))']
+              : ['drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))', 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))']
           }}
           transition={{
-            duration: isProcessing ? 1 : 3,
+            duration: processingLead ? 1 : 3,
             repeat: Infinity,
             ease: "easeInOut"
           }}
+          style={{ filter: 'drop-shadow(0 0 10px rgba(0, 245, 160, 0.6))' }}
         />
       </motion.div>
     </div>
