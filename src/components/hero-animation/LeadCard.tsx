@@ -38,7 +38,7 @@ const LeadCard = ({
 
   return (
     <motion.div
-      className={`absolute ${isConverted ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50' : `${cardSize} rounded-pill bg-[#1F1F22]`} shadow-lg flex items-center justify-center`}
+      className={`absolute ${isConverted ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50' : `${cardSize} rounded-full bg-[#1F1F22]`} shadow-lg flex items-center justify-center`}
       initial={{ 
         x: position?.x ?? (isConverted ? 0 : -350), 
         y: position?.y ?? 0,
@@ -64,11 +64,11 @@ const LeadCard = ({
             ? { 
                 x: 0, 
                 y: 0, 
-                scale: 0.1, 
+                scale: 0,
                 opacity: 0,
                 rotate: 0,
                 transition: { 
-                  duration: 0.5, 
+                  duration: 0.3, 
                   ease: "easeInOut" 
                 }
               } 

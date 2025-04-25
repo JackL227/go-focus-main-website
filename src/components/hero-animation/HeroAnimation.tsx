@@ -1,9 +1,8 @@
-
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './LeadCard';
-import ProcessingLogo from './ProcessingLogo';
+import CenterLogo from './CenterLogo';
 
 // Constants for the animation
 const LEAD_COUNT = 15;
@@ -83,7 +82,7 @@ const HeroAnimation = () => {
         )
       );
       setProcessingLead(false);
-    }, 800);
+    }, 300); // Reduced to 300ms for quicker disappearance
   }, [getRandomName, getRandomAction]);
 
   useEffect(() => {
@@ -144,7 +143,7 @@ const HeroAnimation = () => {
 
   return (
     <div className="relative w-full h-[600px] bg-[#010101] overflow-hidden flex items-center justify-center">
-      <ProcessingLogo isProcessing={processingLead} />
+      <CenterLogo processingLead={processingLead} onLeadProcess={() => {}} />
       
       <AnimatePresence>
         {leads.map((lead) => (
