@@ -58,7 +58,7 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Hero Animation with the improved lead flow */}
+      {/* Hero Animation with the lead flow */}
       <div className="w-full relative z-10 mt-8">
         <HeroAnimation />
       </div>
