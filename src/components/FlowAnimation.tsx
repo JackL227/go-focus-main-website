@@ -23,10 +23,10 @@ const FlowAnimation = () => {
   return (
     <div className="relative w-full h-[600px] bg-[#010101] overflow-hidden">
       {/* Lead cards flowing from left */}
-      <LeadFlow onLeadProcessed={handleLeadProcessed} maxVisibleLeads={isMobile ? 5 : 7} />
-      
-      {/* Center logo with glow effect */}
-      <CenterLogo isProcessing={processingLead} />
+      <LeadFlow 
+        onLeadProcessed={handleLeadProcessed} 
+        maxVisibleLeads={isMobile ? 5 : 7} 
+      />
       
       {/* Name cards flowing to the right */}
       <NameCardsFlow 
@@ -34,6 +34,9 @@ const FlowAnimation = () => {
         maxVisible={isMobile ? 3 : 5} 
         isProcessing={processingLead} 
       />
+      
+      {/* Center logo with glow effect - render last for proper z-index */}
+      <CenterLogo isProcessing={processingLead} />
     </div>
   );
 };

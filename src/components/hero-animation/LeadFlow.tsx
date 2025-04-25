@@ -1,7 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
+import LeadCard from './LeadCard';
 
 interface LeadFlowProps {
   onLeadProcessed: () => void;
@@ -18,11 +19,14 @@ const LeadFlow = ({ onLeadProcessed, maxVisibleLeads }: LeadFlowProps) => {
     opacity: number;
     rotateY: number;
   }>>([]);
+  
+  // Using ref to track if component is mounted to prevent state updates on unmounted component
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
     const createNewLead = () => ({
       id: Date.now(),
-      x: isMobile ? -150 : -500,
+      x: isMobile ? -150 : -300,
       y: isMobile ? Math.random() * 100 - 50 : Math.random() * 200 - 100,
       scale: 1,
       opacity: 1,
@@ -30,46 +34,68 @@ const LeadFlow = ({ onLeadProcessed, maxVisibleLeads }: LeadFlowProps) => {
     });
 
     // Initialize with staggered leads
-    setLeads(Array.from({ length: maxVisibleLeads }, (_, i) => ({
+    const initialLeads = Array.from({ length: maxVisibleLeads }, (_, i) => ({
       ...createNewLead(),
       id: i,
-      x: (isMobile ? -150 : -500) + (i * 60)
-    })));
+      x: (isMobile ? -150 : -300) + (i * 60)
+    }));
+    
+    setLeads(initialLeads);
 
-    const interval = setInterval(() => {
-      setLeads(prev => {
-        const newLeads = prev.map(lead => {
-          const newX = lead.x + 2; // Smoother movement
-          
-          // When lead reaches logo, trigger processing
-          if (newX >= -20 && newX <= 0) {
-            onLeadProcessed();
-            return { ...lead, opacity: 0, scale: 0.2 };
+    // Animation frame based movement for smoother animation
+    let animationFrameId: number;
+    let lastTimestamp = 0;
+    const moveSpeed = 1.5; // Speed adjustment for smoother movement
+    
+    const animateLeads = (timestamp: number) => {
+      if (!isMountedRef.current) return;
+      
+      // Throttle updates for better performance
+      if (timestamp - lastTimestamp > 16) { // ~60fps
+        lastTimestamp = timestamp;
+        
+        setLeads(prev => {
+          const newLeads = prev.map(lead => {
+            const newX = lead.x + moveSpeed;
+            
+            // When lead reaches logo, trigger processing
+            if (newX >= -20 && newX <= 0 && lead.opacity > 0.5) {
+              onLeadProcessed();
+              return { ...lead, opacity: 0, scale: 0.2 };
+            }
+            
+            // Update position and scale based on distance to center
+            const progress = Math.min(1, Math.max(0, (lead.x + 300) / 300));
+            const newScale = 1 - (progress * 0.75);
+            
+            return {
+              ...lead,
+              x: newX,
+              scale: newScale,
+              opacity: Math.max(0.2, 1 - progress * 0.8)
+            };
+          });
+
+          // Remove processed leads and add new ones
+          const filteredLeads = newLeads.filter(lead => lead.x < 100);
+          while (filteredLeads.length < maxVisibleLeads) {
+            filteredLeads.unshift(createNewLead());
           }
-          
-          // Update position and scale based on distance to center
-          const progress = Math.min(1, Math.max(0, (lead.x + 500) / 500));
-          const newScale = 1 - (progress * 0.75);
-          
-          return {
-            ...lead,
-            x: newX,
-            scale: newScale,
-            opacity: Math.max(0.2, 1 - progress * 0.8)
-          };
+
+          return filteredLeads;
         });
+      }
+      
+      animationFrameId = requestAnimationFrame(animateLeads);
+    };
 
-        // Remove processed leads and add new ones
-        const filteredLeads = newLeads.filter(lead => lead.x < 100);
-        while (filteredLeads.length < maxVisibleLeads) {
-          filteredLeads.unshift(createNewLead());
-        }
-
-        return filteredLeads;
-      });
-    }, 16); // ~60fps for smooth animation
-
-    return () => clearInterval(interval);
+    animationFrameId = requestAnimationFrame(animateLeads);
+    
+    // Cleanup
+    return () => {
+      isMountedRef.current = false;
+      cancelAnimationFrame(animationFrameId);
+    };
   }, [isMobile, maxVisibleLeads, onLeadProcessed]);
 
   return (

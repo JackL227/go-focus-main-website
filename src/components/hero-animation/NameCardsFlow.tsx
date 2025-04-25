@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -17,9 +16,11 @@ const NameCardsFlow = ({ names, maxVisible, isProcessing }: NameCardsFlowProps) 
     x: number;
     y: number;
   }>>([]);
+  
+  const lastProcessingRef = useRef(false);
 
   useEffect(() => {
-    if (isProcessing) {
+    if (isProcessing && !lastProcessingRef.current) {
       const newCard = {
         id: Date.now(),
         name: names[Math.floor(Math.random() * names.length)],
@@ -32,11 +33,22 @@ const NameCardsFlow = ({ names, maxVisible, isProcessing }: NameCardsFlowProps) 
         return updated;
       });
     }
+    lastProcessingRef.current = isProcessing;
   }, [isProcessing, names, maxVisible, isMobile]);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (cards.length > 0) {
+        setCards(prev => prev.slice(1));
+      }
+    }, 10000);
+    
+    return () => clearTimeout(timeout);
+  }, [cards]);
+
   const containerClass = isMobile
-    ? "absolute left-1/2 -translate-x-1/2 bottom-20 space-y-2"
-    : "absolute right-10 top-1/2 -translate-y-1/2 space-y-3";
+    ? "absolute left-1/2 -translate-x-1/2 bottom-20 space-y-2 w-full px-4 max-w-xs"
+    : "absolute right-10 top-1/2 -translate-y-1/2 space-y-3 max-w-xs";
 
   return (
     <div className={containerClass}>
