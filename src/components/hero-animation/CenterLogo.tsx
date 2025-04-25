@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -9,14 +8,14 @@ interface CenterLogoProps {
 
 const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
   return (
-    <div className="absolute left-1/2 -translate-x-1/2 z-10">
+    <div className="absolute left-1/2 -translate-x-1/2 z-20">
       <motion.div
         className="relative w-[230px] h-[230px] sm:w-[280px] sm:h-[280px]"
         animate={{
-          scale: processingLead ? [1, 1.08, 1] : [1, 1.05, 1],
+          scale: processingLead ? [1, 1.05, 1] : [1, 1.02, 1],
         }}
         transition={{
-          duration: processingLead ? 1.5 : 3.5, // Slower animations overall
+          duration: processingLead ? 2 : 4,
           ease: "easeInOut",
           times: processingLead ? [0, 0.5, 1] : [0, 0.5, 1]
         }}
@@ -38,7 +37,7 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
             opacity: processingLead ? [0.6, 0.8, 0.6] : [0.5, 0.6, 0.5]
           }}
           transition={{
-            duration: processingLead ? 1.2 : 3.5, // Slower animations
+            duration: processingLead ? 1.2 : 3.5,
             repeat: Infinity,
             ease: "easeInOut"
           }}
@@ -55,7 +54,7 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
             opacity: [0.4, 0, 0.4],
           }}
           transition={{
-            duration: processingLead ? 2 : 4, // Much slower ripple
+            duration: processingLead ? 2 : 4,
             repeat: Infinity,
             ease: "easeInOut",
           }}
@@ -71,30 +70,30 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
               opacity: [0.8, 0, 0.8],
             }}
             transition={{
-              duration: 1.2, // Slower absorption effect
+              duration: 1.2,
               repeat: Infinity,
               ease: "easeInOut",
             }}
           />
         )}
         
-        {/* Logo image */}
+        {/* Logo image with increased z-index */}
         <motion.img
           src="/lovable-uploads/b9eb9c06-5b4f-416d-af44-06190fbec508.png"
           alt="Go Focus AI Logo"
-          className="w-full h-full object-contain relative z-10 p-16"
+          className="w-full h-full object-contain relative z-30 p-16"
           animate={{
-            scale: processingLead ? [1, 1.05, 1] : [1, 1.02, 1],
+            scale: processingLead ? [1, 1.03, 1] : [1, 1.01, 1],
             filter: processingLead
-              ? ['drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))', 'drop-shadow(0 0 20px rgba(0, 245, 160, 0.9))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))']
-              : ['drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))', 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))']
+              ? ['drop-shadow(0 0 15px rgba(0, 245, 160, 0.7))', 'drop-shadow(0 0 25px rgba(0, 245, 160, 0.9))', 'drop-shadow(0 0 15px rgba(0, 245, 160, 0.7))']
+              : ['drop-shadow(0 0 10px rgba(0, 245, 160, 0.5))', 'drop-shadow(0 0 15px rgba(0, 245, 160, 0.7))', 'drop-shadow(0 0 10px rgba(0, 245, 160, 0.5))']
           }}
           transition={{
-            duration: processingLead ? 1.5 : 4, // Slower animations
+            duration: processingLead ? 2 : 4,
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          style={{ filter: 'drop-shadow(0 0 10px rgba(0, 245, 160, 0.6))' }}
+          style={{ filter: 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))' }}
         />
 
         {/* Particle effects during processing */}
@@ -122,7 +121,7 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
                   opacity: [1, 0]
                 }}
                 transition={{
-                  duration: 1.2, // Slower particle effects
+                  duration: 1.2,
                   ease: "easeOut"
                 }}
                 style={{
