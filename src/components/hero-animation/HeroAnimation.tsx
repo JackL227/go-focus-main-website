@@ -4,7 +4,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './LeadCard';
 import CenterLogo from './CenterLogo';
 import { ANIMATION_SETTINGS, generateLeadPositions } from './constants';
-
 const {
   LEAD_COUNT,
   LEAD_GENERATION_INTERVAL,
@@ -13,10 +12,8 @@ const {
   STAGGER_DELAY,
   MOBILE_LEAD_COUNT
 } = ANIMATION_SETTINGS;
-
 const NAMES = ['Sarah M.', 'Michael R.', 'Emma W.', 'James L.', 'Lisa K.', 'David P.', 'Anna S.', 'John T.'];
 const ACTIONS = ['scheduled a call', 'booked a session', 'joined program', 'started trial'];
-
 const HeroAnimation = () => {
   const isMobile = useIsMobile();
   const [processingLead, setProcessingLead] = useState(false);
@@ -38,10 +35,8 @@ const HeroAnimation = () => {
   const leadInterval = useRef<NodeJS.Timeout | null>(null);
   const getRandomName = useCallback(() => NAMES[Math.floor(Math.random() * NAMES.length)], []);
   const getRandomAction = useCallback(() => ACTIONS[Math.floor(Math.random() * ACTIONS.length)], []);
-
   const processLead = useCallback((leadId: number) => {
     if (!animationActive.current) return;
-    
     setProcessingLead(true);
     setLeads(prev => prev.map(lead => lead.id === leadId ? {
       ...lead,
@@ -51,14 +46,12 @@ const HeroAnimation = () => {
         action: getRandomAction()
       }
     } : lead));
-    
     setTimeout(() => {
       setLeads(prev => prev.map(lead => lead.id === leadId ? {
         ...lead,
         removed: true
       } : lead));
       setProcessingLead(false);
-      
       setTimeout(() => {
         if (animationActive.current) {
           addNewLead();
@@ -66,23 +59,19 @@ const HeroAnimation = () => {
       }, 800);
     }, PROCESSING_DELAY_BASE);
   }, [getRandomName, getRandomAction]);
-
   const exitNameCardRight = useCallback((leadId: number) => {
     setTimeout(() => {
       setLeads(prev => prev.map(lead => lead.id === leadId ? {
         ...lead,
         exitRight: true
       } : lead));
-      
       setTimeout(() => {
         setLeads(prev => prev.filter(lead => lead.id !== leadId));
       }, 6000);
     }, CONVERSION_DISPLAY_DURATION);
   }, []);
-
   const addNewLead = useCallback(() => {
     if (!animationActive.current) return;
-    
     const positions = generateLeadPositions(isMobile ? MOBILE_LEAD_COUNT : LEAD_COUNT);
     const randomIndex = Math.floor(Math.random() * positions.length);
     const basePosition = positions[randomIndex];
@@ -90,7 +79,6 @@ const HeroAnimation = () => {
       x: basePosition.x,
       y: basePosition.y + (Math.random() * 30 - 15)
     };
-    
     const newLead = {
       id: Date.now(),
       removed: false,
@@ -98,22 +86,17 @@ const HeroAnimation = () => {
       position: adjustedPosition,
       exitRight: false
     };
-    
     setLeads(prev => {
       const activeLeads = prev.filter(lead => !lead.removed && !lead.exitRight);
       const maxVisibleLeads = isMobile ? MOBILE_LEAD_COUNT : LEAD_COUNT;
-      
       if (activeLeads.length >= maxVisibleLeads) {
         return prev;
       }
-      
       return [...prev, newLead];
     });
   }, [isMobile]);
-
   useEffect(() => {
     animationActive.current = true;
-    
     const initialPosition = generateLeadPositions(1)[0];
     setLeads([{
       id: Date.now(),
@@ -122,13 +105,11 @@ const HeroAnimation = () => {
       position: initialPosition,
       exitRight: false
     }]);
-    
     leadInterval.current = setInterval(() => {
       if (animationActive.current) {
         addNewLead();
       }
     }, LEAD_GENERATION_INTERVAL);
-    
     return () => {
       animationActive.current = false;
       if (leadInterval.current) {
@@ -136,11 +117,9 @@ const HeroAnimation = () => {
       }
     };
   }, [addNewLead]);
-
   useEffect(() => {
     if (!processingLead && leads.length > 0 && animationActive.current) {
       const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed && !lead.exitRight && !lead.convertedLead);
-      
       if (leadToProcess) {
         const processingDelay = PROCESSING_DELAY_BASE + leads.indexOf(leadToProcess) * 600;
         setTimeout(() => {
@@ -149,7 +128,6 @@ const HeroAnimation = () => {
       }
     }
   }, [leads, processingLead, processLead]);
-
   useEffect(() => {
     leads.forEach(lead => {
       if (lead.convertedLead && !lead.exitRight && !lead.removed) {
@@ -157,28 +135,6 @@ const HeroAnimation = () => {
       }
     });
   }, [leads, exitNameCardRight]);
-
-  return (
-    <div className="relative w-full h-[400px] md:h-[600px]">
-      <CenterLogo onLeadProcess={() => {}} processingLead={processingLead} />
-      
-      <AnimatePresence>
-        {leads.map((lead, index) => (
-          <LeadCard
-            key={lead.id}
-            index={index}
-            isAbsorbed={lead.absorbed}
-            position={lead.position}
-            isConverted={Boolean(lead.convertedLead)}
-            name={lead.convertedLead?.name}
-            action={lead.convertedLead?.action}
-            exitRight={lead.exitRight}
-            onComplete={() => processLead(lead.id)}
-          />
-        ))}
-      </AnimatePresence>
-    </div>
-  );
+  return;
 };
-
 export default HeroAnimation;
