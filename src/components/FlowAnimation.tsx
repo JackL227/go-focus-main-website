@@ -28,15 +28,15 @@ const FlowAnimation = () => {
         maxVisibleLeads={isMobile ? 5 : 7} 
       />
       
+      {/* Center logo with glow effect */}
+      <CenterLogo isProcessing={processingLead} />
+      
       {/* Name cards flowing to the right */}
       <NameCardsFlow 
         names={NAMES} 
         maxVisible={isMobile ? 3 : 5} 
         isProcessing={processingLead} 
       />
-      
-      {/* Center logo with glow effect - render last for proper z-index */}
-      <CenterLogo isProcessing={processingLead} />
     </div>
   );
 };

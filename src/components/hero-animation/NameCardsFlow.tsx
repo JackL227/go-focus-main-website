@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -10,22 +11,14 @@ interface NameCardsFlowProps {
 
 const NameCardsFlow = ({ names, maxVisible, isProcessing }: NameCardsFlowProps) => {
   const isMobile = useIsMobile();
-  const [cards, setCards] = useState<Array<{
-    id: number;
-    name: string;
-    x: number;
-    y: number;
-  }>>([]);
-  
+  const [cards, setCards] = useState<Array<{id: number; name: string}>>([]);
   const lastProcessingRef = useRef(false);
 
   useEffect(() => {
     if (isProcessing && !lastProcessingRef.current) {
       const newCard = {
         id: Date.now(),
-        name: names[Math.floor(Math.random() * names.length)],
-        x: 0,
-        y: isMobile ? cards.length * 60 : 0
+        name: names[Math.floor(Math.random() * names.length)]
       };
 
       setCards(prev => {
@@ -34,26 +27,24 @@ const NameCardsFlow = ({ names, maxVisible, isProcessing }: NameCardsFlowProps) 
       });
     }
     lastProcessingRef.current = isProcessing;
-  }, [isProcessing, names, maxVisible, isMobile]);
+  }, [isProcessing, names, maxVisible]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (cards.length > 0) {
-        setCards(prev => prev.slice(1));
-      }
-    }, 10000);
+    const interval = setInterval(() => {
+      setCards(prev => prev.slice(1));
+    }, 4000);
     
-    return () => clearTimeout(timeout);
-  }, [cards]);
+    return () => clearInterval(interval);
+  }, []);
 
   const containerClass = isMobile
     ? "absolute left-1/2 -translate-x-1/2 bottom-20 space-y-2 w-full px-4 max-w-xs"
-    : "absolute right-10 top-1/2 -translate-y-1/2 space-y-3 max-w-xs";
+    : "absolute right-10 top-1/2 -translate-y-1/2 space-y-3 max-w-xs z-30";
 
   return (
     <div className={containerClass}>
       <AnimatePresence>
-        {cards.map((card, index) => (
+        {cards.map((card) => (
           <motion.div
             key={card.id}
             initial={{ 
@@ -63,7 +54,7 @@ const NameCardsFlow = ({ names, maxVisible, isProcessing }: NameCardsFlowProps) 
             }}
             animate={{ 
               opacity: 1,
-              x: isMobile ? 0 : 0,
+              x: 0,
               y: 0
             }}
             exit={{ 

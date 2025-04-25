@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
-import LeadCard from './LeadCard';
 
 interface LeadFlowProps {
   onLeadProcessed: () => void;
@@ -11,118 +10,75 @@ interface LeadFlowProps {
 
 const LeadFlow = ({ onLeadProcessed, maxVisibleLeads }: LeadFlowProps) => {
   const isMobile = useIsMobile();
-  const [leads, setLeads] = useState<Array<{
-    id: number;
-    x: number;
-    y: number;
-    scale: number;
-    opacity: number;
-    rotateY: number;
-  }>>([]);
-  
-  // Using ref to track if component is mounted to prevent state updates on unmounted component
+  const [leads, setLeads] = useState<Array<{ id: number }>>([]);
   const isMountedRef = useRef(true);
 
   useEffect(() => {
-    const createNewLead = () => ({
-      id: Date.now(),
-      x: isMobile ? -150 : -300,
-      y: isMobile ? Math.random() * 100 - 50 : Math.random() * 200 - 100,
-      scale: 1,
-      opacity: 1,
-      rotateY: Math.random() * 15
-    });
-
     // Initialize with staggered leads
-    const initialLeads = Array.from({ length: maxVisibleLeads }, (_, i) => ({
-      ...createNewLead(),
-      id: i,
-      x: (isMobile ? -150 : -300) + (i * 60)
-    }));
-    
-    setLeads(initialLeads);
+    setLeads(Array.from({ length: maxVisibleLeads }, (_, i) => ({ id: i })));
 
-    // Animation frame based movement for smoother animation
-    let animationFrameId: number;
-    let lastTimestamp = 0;
-    const moveSpeed = 1.5; // Speed adjustment for smoother movement
-    
-    const animateLeads = (timestamp: number) => {
+    const interval = setInterval(() => {
       if (!isMountedRef.current) return;
       
-      // Throttle updates for better performance
-      if (timestamp - lastTimestamp > 16) { // ~60fps
-        lastTimestamp = timestamp;
-        
-        setLeads(prev => {
-          const newLeads = prev.map(lead => {
-            const newX = lead.x + moveSpeed;
-            
-            // When lead reaches logo, trigger processing
-            if (newX >= -20 && newX <= 0 && lead.opacity > 0.5) {
-              onLeadProcessed();
-              return { ...lead, opacity: 0, scale: 0.2 };
-            }
-            
-            // Update position and scale based on distance to center
-            const progress = Math.min(1, Math.max(0, (lead.x + 300) / 300));
-            const newScale = 1 - (progress * 0.75);
-            
-            return {
-              ...lead,
-              x: newX,
-              scale: newScale,
-              opacity: Math.max(0.2, 1 - progress * 0.8)
-            };
-          });
+      onLeadProcessed();
+      setLeads(prev => {
+        const newLeads = [...prev];
+        newLeads.push({ id: Date.now() });
+        if (newLeads.length > maxVisibleLeads) {
+          newLeads.shift();
+        }
+        return newLeads;
+      });
+    }, 2000); // Trigger every 2 seconds
 
-          // Remove processed leads and add new ones
-          const filteredLeads = newLeads.filter(lead => lead.x < 100);
-          while (filteredLeads.length < maxVisibleLeads) {
-            filteredLeads.unshift(createNewLead());
-          }
-
-          return filteredLeads;
-        });
-      }
-      
-      animationFrameId = requestAnimationFrame(animateLeads);
-    };
-
-    animationFrameId = requestAnimationFrame(animateLeads);
-    
-    // Cleanup
     return () => {
       isMountedRef.current = false;
-      cancelAnimationFrame(animationFrameId);
+      clearInterval(interval);
     };
-  }, [isMobile, maxVisibleLeads, onLeadProcessed]);
+  }, [maxVisibleLeads, onLeadProcessed]);
 
   return (
-    <div className="absolute inset-0">
+    <div className="absolute inset-0 overflow-hidden">
       <AnimatePresence>
-        {leads.map((lead) => (
+        {leads.map((lead, index) => (
           <motion.div
             key={lead.id}
-            className="absolute"
-            initial={{ x: lead.x, y: lead.y, scale: lead.scale, opacity: 1 }}
-            animate={{
-              x: lead.x,
-              y: lead.y,
-              scale: lead.scale,
-              opacity: lead.opacity,
-              rotateY: lead.rotateY
+            initial={{ 
+              x: isMobile ? -100 : -200,
+              y: isMobile ? index * 30 : 0,
+              opacity: 1,
+              scale: 1
             }}
-            exit={{ opacity: 0, scale: 0 }}
+            animate={{ 
+              x: isMobile ? 0 : 200,
+              y: isMobile ? index * 30 : 0,
+              opacity: [1, 0.8, 0],
+              scale: [1, 0.8, 0.3]
+            }}
+            exit={{ 
+              x: isMobile ? 100 : 400,
+              opacity: 0,
+              scale: 0.2
+            }}
             transition={{
-              type: "spring",
-              stiffness: 60,
-              damping: 14,
-              duration: 0.5
+              duration: 4,
+              ease: "easeInOut"
             }}
-            style={{ perspective: 1000 }}
+            style={{ 
+              position: 'absolute',
+              left: '20%',
+              top: isMobile ? 'auto' : '50%',
+              bottom: isMobile ? '20%' : 'auto',
+              transform: `translateY(${isMobile ? '0' : '-50%'})`,
+              zIndex: 20 - index
+            }}
+            onAnimationComplete={() => {
+              if (index === 0) {
+                onLeadProcessed();
+              }
+            }}
           >
-            <div className="bg-[#2e2e2e] text-white px-4 py-2 rounded-md shadow-lg">
+            <div className="bg-[#2e2e2e] text-white px-6 py-3 rounded-md shadow-lg whitespace-nowrap">
               Lead
             </div>
           </motion.div>
