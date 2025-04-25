@@ -44,10 +44,10 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
           }}
         />
         
-        {/* Enhanced inner glow */}
+        {/* Inner glow */}
         <div className="absolute inset-[35%] rounded-full opacity-70 blur-[20px] bg-gradient-to-r from-[#00F5A0] to-[#00D9F5]" />
         
-        {/* Logo image with enhanced effects */}
+        {/* Logo image */}
         <motion.img
           src="/lovable-uploads/b9eb9c06-5b4f-416d-af44-06190fbec508.png"
           alt="Go Focus AI Logo"

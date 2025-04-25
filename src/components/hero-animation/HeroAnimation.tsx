@@ -1,26 +1,19 @@
+
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './LeadCard';
 import CenterLogo from './CenterLogo';
+import { ANIMATION_SETTINGS, generateLeadPositions } from './constants';
 
-const LEAD_COUNT = 3;
-const LEAD_GENERATION_INTERVAL = 3500;
-const PROCESSING_DELAY_BASE = 2000;
-const STAGGER_DELAY = 0.8;
-const CONVERSION_DISPLAY_DURATION = 6000;
-
-const generateLeadPositions = () => {
-  const positions = [];
-  for (let i = 0; i < LEAD_COUNT; i++) {
-    const xPos = -350;
-    const yOffset = Math.sin((i / LEAD_COUNT) * Math.PI) * 100 - 50;
-    positions.push({ x: xPos, y: yOffset });
-  }
-  return positions;
-};
-
-const LEAD_POSITIONS = generateLeadPositions();
+const {
+  LEAD_COUNT,
+  LEAD_GENERATION_INTERVAL,
+  PROCESSING_DELAY_BASE,
+  CONVERSION_DISPLAY_DURATION,
+  STAGGER_DELAY,
+  MOBILE_LEAD_COUNT
+} = ANIMATION_SETTINGS;
 
 const NAMES = [
   'Sarah M.', 'Michael R.', 'Emma W.', 'James L.',
@@ -91,7 +84,7 @@ const HeroAnimation = () => {
         }
       }, 800);
       
-    }, 2000);
+    }, PROCESSING_DELAY_BASE);
   }, [getRandomName, getRandomAction]);
 
   const exitNameCardRight = useCallback((leadId: number) => {
@@ -113,8 +106,9 @@ const HeroAnimation = () => {
   const addNewLead = useCallback(() => {
     if (!animationActive.current) return;
     
-    const randomIndex = Math.floor(Math.random() * LEAD_POSITIONS.length);
-    const basePosition = LEAD_POSITIONS[randomIndex];
+    const positions = generateLeadPositions(isMobile ? MOBILE_LEAD_COUNT : LEAD_COUNT);
+    const randomIndex = Math.floor(Math.random() * positions.length);
+    const basePosition = positions[randomIndex];
     
     const adjustedPosition = {
       x: basePosition.x,
@@ -131,7 +125,7 @@ const HeroAnimation = () => {
     
     setLeads(prev => {
       const activeLeads = prev.filter(lead => !lead.removed && !lead.exitRight);
-      const maxVisibleLeads = isMobile ? 2 : 3;
+      const maxVisibleLeads = isMobile ? MOBILE_LEAD_COUNT : LEAD_COUNT;
       
       if (activeLeads.length >= maxVisibleLeads) {
         return prev;
@@ -144,7 +138,7 @@ const HeroAnimation = () => {
   useEffect(() => {
     animationActive.current = true;
     
-    const initialPosition = LEAD_POSITIONS[0];
+    const initialPosition = generateLeadPositions(1)[0];
     setLeads([{
       id: Date.now(),
       removed: false,

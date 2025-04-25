@@ -32,7 +32,7 @@ const LeadCard = ({
     <motion.div
       className={`absolute ${
         isConverted 
-          ? 'rounded-xl p-3 bg-[#1F1F22] border border-[#2d2d2d]/50 shadow-lg flex items-center' 
+          ? 'rounded-xl p-3 bg-[#1F1F22] border border-[#2d2d2d]/50 shadow-lg flex items-center min-w-[220px]' 
           : 'w-20 h-10 rounded-full bg-[#1F1F22] flex items-center justify-center shadow-md'
       }`}
       initial={{ 
@@ -119,7 +119,9 @@ const LeadCard = ({
         }
       }}
       style={{
-        boxShadow: isConverted ? '0 4px 12px rgba(0, 0, 0, 0.25)' : '0 2px 8px rgba(0, 0, 0, 0.2)',
+        boxShadow: isConverted 
+          ? '0 4px 12px rgba(0, 0, 0, 0.25)' 
+          : '0 2px 8px rgba(0, 0, 0, 0.2)',
         transform: isConverted ? 'translateZ(0)' : 'translateZ(0)'
       }}
     >
