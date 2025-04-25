@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -30,6 +29,7 @@ const ACTIONS = [
 const HeroAnimation = () => {
   const isMobile = useIsMobile();
   const [processingLead, setProcessingLead] = useState(false);
+  const [activeProcessingId, setActiveProcessingId] = useState<number | null>(null);
   const [leads, setLeads] = useState<Array<{
     id: number;
     removed: boolean;
@@ -41,6 +41,7 @@ const HeroAnimation = () => {
   
   const animationActive = useRef(true);
   const leadInterval = useRef<NodeJS.Timeout | null>(null);
+  const processingQueue = useRef<number[]>([]);
   
   const getRandomName = useCallback(() => 
     NAMES[Math.floor(Math.random() * NAMES.length)], []);
@@ -48,10 +49,24 @@ const HeroAnimation = () => {
   const getRandomAction = useCallback(() => 
     ACTIONS[Math.floor(Math.random() * ACTIONS.length)], []);
 
+  const processNextInQueue = useCallback(() => {
+    if (processingQueue.current.length > 0 && !processingLead) {
+      const nextLeadId = processingQueue.current[0];
+      processingQueue.current = processingQueue.current.slice(1);
+      processLead(nextLeadId);
+    }
+  }, [processingLead]);
+
   const processLead = useCallback((leadId: number) => {
     if (!animationActive.current) return;
     
+    if (processingLead) {
+      processingQueue.current.push(leadId);
+      return;
+    }
+    
     setProcessingLead(true);
+    setActiveProcessingId(leadId);
     
     setLeads(prev => 
       prev.map(lead => 
@@ -77,15 +92,17 @@ const HeroAnimation = () => {
         )
       );
       setProcessingLead(false);
+      setActiveProcessingId(null);
       
       setTimeout(() => {
         if (animationActive.current) {
+          processNextInQueue();
           addNewLead();
         }
       }, 800);
       
     }, PROCESSING_DELAY_BASE);
-  }, [getRandomName, getRandomAction]);
+  }, [getRandomName, getRandomAction, processNextInQueue]);
 
   const exitNameCardRight = useCallback((leadId: number) => {
     setTimeout(() => {
@@ -107,19 +124,20 @@ const HeroAnimation = () => {
     if (!animationActive.current) return;
     
     const positions = generateLeadPositions(isMobile ? MOBILE_LEAD_COUNT : LEAD_COUNT);
-    const randomIndex = Math.floor(Math.random() * positions.length);
-    const basePosition = positions[randomIndex];
+    const availablePositions = positions.filter(pos => 
+      !leads.some(lead => lead.position?.y === pos.y && !lead.removed && !lead.exitRight)
+    );
     
-    const adjustedPosition = {
-      x: basePosition.x,
-      y: basePosition.y + (Math.random() * 30 - 15)
-    };
+    if (availablePositions.length === 0) return;
+    
+    const randomIndex = Math.floor(Math.random() * availablePositions.length);
+    const basePosition = availablePositions[randomIndex];
     
     const newLead = {
       id: Date.now(),
       removed: false,
       absorbed: false,
-      position: adjustedPosition,
+      position: basePosition,
       exitRight: false
     };
     
@@ -133,7 +151,7 @@ const HeroAnimation = () => {
       
       return [...prev, newLead];
     });
-  }, [isMobile]);
+  }, [isMobile, leads]);
 
   useEffect(() => {
     animationActive.current = true;
@@ -164,17 +182,17 @@ const HeroAnimation = () => {
   useEffect(() => {
     if (!processingLead && leads.length > 0 && animationActive.current) {
       const leadToProcess = leads.find(lead => 
-        !lead.absorbed && !lead.removed && !lead.exitRight && !lead.convertedLead
+        !lead.absorbed && !lead.removed && !lead.exitRight && !lead.convertedLead && lead.id !== activeProcessingId
       );
       
       if (leadToProcess) {
-        const processingDelay = PROCESSING_DELAY_BASE + (leads.indexOf(leadToProcess) * 600);
+        const processingDelay = PROCESSING_DELAY_BASE / 2;
         setTimeout(() => {
           processLead(leadToProcess.id);
         }, processingDelay);
       }
     }
-  }, [leads, processingLead, processLead]);
+  }, [leads, processingLead, processLead, activeProcessingId]);
 
   useEffect(() => {
     leads.forEach(lead => {
