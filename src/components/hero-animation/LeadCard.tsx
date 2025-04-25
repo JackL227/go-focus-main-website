@@ -28,17 +28,22 @@ const LeadCard = ({
   name,
   action
 }: LeadCardProps) => {
+  // Updated size classes for more circular shape
   const sizeClasses = {
-    sm: 'w-16 h-8',
-    md: 'w-20 h-10',
-    lg: 'w-24 h-12'
+    sm: 'w-16 h-16',
+    md: 'w-20 h-20',
+    lg: 'w-24 h-24'
   };
   
   const cardSize = sizeClasses[size];
 
   return (
     <motion.div
-      className={`absolute ${isConverted ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50' : `${cardSize} rounded-pill bg-[#1F1F22]`} shadow-lg flex items-center justify-center`}
+      className={`absolute ${
+        isConverted 
+          ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50' 
+          : `${cardSize} rounded-full flex items-center justify-center bg-[#1F1F22] border border-[#2d2d2d]/50`
+      } shadow-lg`}
       initial={{ 
         x: position?.x ?? (isConverted ? 0 : -350), 
         y: position?.y ?? 0,
@@ -55,9 +60,9 @@ const LeadCard = ({
               opacity: 1,
               rotate: 0,
               transition: {
-                duration: 2.5,
+                duration: 3,
                 delay: staggerDelay,
-                ease: "easeOut"
+                ease: [0.34, 1.56, 0.64, 1]
               }
             }
           : isAbsorbed 
@@ -68,8 +73,8 @@ const LeadCard = ({
                 opacity: 0,
                 rotate: 0,
                 transition: { 
-                  duration: 0.5, 
-                  ease: "easeInOut" 
+                  duration: 0.8, 
+                  ease: [0.43, 0.13, 0.23, 0.96]
                 }
               } 
             : { 
@@ -80,7 +85,7 @@ const LeadCard = ({
                 transition: { 
                   duration: 2.5,
                   delay: index * staggerDelay,
-                  ease: "easeOut" 
+                  ease: [0.34, 1.56, 0.64, 1]
                 }
               }
       }
@@ -91,7 +96,7 @@ const LeadCard = ({
       }}
     >
       {isConverted ? (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 whitespace-nowrap">
           <CircleCheck className="w-4 h-4 text-green-400 shrink-0" />
           <div className="text-xs font-medium">
             <span className="text-white">{name} </span>
