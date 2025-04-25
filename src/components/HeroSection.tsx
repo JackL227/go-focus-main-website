@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
 import GlassmorphicHero from './GlassmorphicHero';
+import FlowAnimation from './FlowAnimation';
 
 const HeroSection = () => {
   const { user } = useAuth();
@@ -17,7 +18,7 @@ const HeroSection = () => {
   
   return (
     <section 
-      className="relative min-h-screen flex items-center pt-24 pb-0 overflow-hidden bg-[#010101]" 
+      className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden bg-[#010101]" 
       aria-label="Hero section"
     >
       {/* Glassmorphic background animation */}
@@ -61,6 +62,11 @@ const HeroSection = () => {
             </BookingWidget>
           </div>
         </div>
+      </div>
+      
+      {/* Flow Animation Component */}
+      <div className="w-full h-[500px] relative z-10 mt-8">
+        <FlowAnimation />
       </div>
       
       {/* Glass divider */}

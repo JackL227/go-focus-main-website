@@ -25,8 +25,8 @@ const FlowAnimation = () => {
       // Create new lead
       const newLead = {
         id: Date.now(),
-        x: -100,
-        y: isMobile ? Math.random() * 300 : Math.random() * 600 - 300
+        x: isMobile ? -50 : -100,
+        y: isMobile ? Math.random() * 150 - 75 : Math.random() * 300 - 150
       };
       
       setLeads(prev => [...prev.slice(-11), newLead]);
@@ -45,7 +45,7 @@ const FlowAnimation = () => {
   }, [isMobile]);
 
   return (
-    <div className="relative w-full h-screen bg-[#010101] overflow-hidden">
+    <div className="relative w-full h-full bg-transparent overflow-hidden">
       <CenterLogo onLeadProcess={() => {}} />
       <ProcessMessage message={currentMessage} isVisible={showMessage} />
       
