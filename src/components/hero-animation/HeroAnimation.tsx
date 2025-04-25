@@ -1,23 +1,26 @@
+
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './LeadCard';
 import ProcessingLogo from './ProcessingLogo';
 
+// Constants for the animation
 const LEAD_COUNT = 15;
-const MOBILE_LEAD_COUNT = 8;
 
-const generateLeadPositions = (isMobile: boolean) => {
+// Create a more natural curved path with various Y positions
+const generateLeadPositions = () => {
   const positions = [];
-  const count = isMobile ? MOBILE_LEAD_COUNT : LEAD_COUNT;
-  
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < LEAD_COUNT; i++) {
+    // Create a curved path effect by varying Y coordinates more at the edges
     const xPos = -350 - Math.random() * 100;
-    const yOffset = Math.sin(i * 0.5) * 100;
+    const yOffset = Math.random() * 300 - 150; // More vertical spread
     positions.push({ x: xPos, y: yOffset });
   }
   return positions;
 };
+
+const LEAD_POSITIONS = generateLeadPositions();
 
 const NAMES = [
   'Beyoncé', 'Samantha K', 'Michael J', 'Taylor S', 
@@ -80,27 +83,30 @@ const HeroAnimation = () => {
         )
       );
       setProcessingLead(false);
-    }, 600);
+    }, 800);
   }, [getRandomName, getRandomAction]);
 
   useEffect(() => {
     const sizeOptions: Array<'sm' | 'md' | 'lg'> = ['sm', 'md', 'lg'];
     
-    const initialLeads = generateLeadPositions(isMobile).map((position, i) => ({
+    // Initialize leads with their positions
+    const initialLeads = LEAD_POSITIONS.map((position, i) => ({
       id: i,
       removed: false,
       absorbed: false,
       size: sizeOptions[Math.floor(Math.random() * sizeOptions.length)],
-      rotate: Math.random() * 12 - 6,
+      rotate: Math.random() * 16 - 8,
       position
     }));
     
     setLeads(initialLeads);
     
+    // Continuously generate new leads
     const leadInterval = setInterval(() => {
+      // Create a new random position with more variety
       const randomPosition = {
         x: -350 - Math.random() * 150,
-        y: Math.sin(Date.now() * 0.001) * 100
+        y: Math.random() * 300 - 150
       };
       
       const randomSize = sizeOptions[Math.floor(Math.random() * sizeOptions.length)];
@@ -110,24 +116,25 @@ const HeroAnimation = () => {
         removed: false,
         absorbed: false,
         size: randomSize,
-        rotate: Math.random() * 12 - 6,
+        rotate: Math.random() * 16 - 8,
         position: randomPosition
       };
       
       setLeads(prev => {
         const filteredLeads = prev.filter(lead => !lead.removed);
-        return [...filteredLeads, newLead].slice(-(isMobile ? MOBILE_LEAD_COUNT : LEAD_COUNT));
+        return [...filteredLeads, newLead].slice(-20);
       });
-    }, 700);
+    }, 800); // Appear every ~0.8 seconds as requested
     
     return () => clearInterval(leadInterval);
-  }, [isMobile]);
+  }, []);
 
+  // Process leads one by one
   useEffect(() => {
     if (!processingLead && leads.length > 0) {
       const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed);
       if (leadToProcess) {
-        const processingDelay = 1200 + (leads.indexOf(leadToProcess) * 400);
+        const processingDelay = 1500 + (leads.indexOf(leadToProcess) * 500);
         setTimeout(() => {
           processLead(leadToProcess.id);
         }, processingDelay);
@@ -136,7 +143,7 @@ const HeroAnimation = () => {
   }, [leads, processingLead, processLead]);
 
   return (
-    <div className="relative w-full h-[600px] bg-[#050A14] overflow-hidden flex items-center justify-center">
+    <div className="relative w-full h-[600px] bg-[#010101] overflow-hidden flex items-center justify-center">
       <ProcessingLogo isProcessing={processingLead} />
       
       <AnimatePresence>
@@ -149,7 +156,7 @@ const HeroAnimation = () => {
                   isAbsorbed={lead.absorbed}
                   size={lead.size}
                   rotate={lead.rotate}
-                  staggerDelay={0.15}
+                  staggerDelay={0.2}
                   position={lead.position}
                   onComplete={() => processLead(lead.id)}
                 />
@@ -158,7 +165,7 @@ const HeroAnimation = () => {
                   index={leads.indexOf(lead)}
                   size="md"
                   position={{ x: 350, y: lead.position?.y || 0 }}
-                  staggerDelay={0.05}
+                  staggerDelay={0.1}
                   isConverted={true}
                   name={lead.convertedLead.name}
                   action={lead.convertedLead.action}

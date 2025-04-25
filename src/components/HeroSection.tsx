@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -16,7 +17,7 @@ const HeroSection = () => {
   
   return (
     <section 
-      className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden bg-gradient-to-b from-[#050A14] to-[#0A1428]" 
+      className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden bg-[#010101]" 
       aria-label="Hero section"
     >
       <div className="container-custom relative z-10 pt-8 pb-0">
@@ -57,11 +58,13 @@ const HeroSection = () => {
         </div>
       </div>
       
+      {/* Hero Animation with the lead flow */}
       <div className="w-full relative z-10 mt-8">
         <HeroAnimation />
       </div>
       
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0A1428] to-transparent z-[2]" />
+      {/* Glass divider */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#010101] to-transparent z-[2]" />
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
     </section>
