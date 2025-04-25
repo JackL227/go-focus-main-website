@@ -6,7 +6,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
 import GlassmorphicHero from './GlassmorphicHero';
-import ServiceSlideshow from './ServiceSlideshow';
 
 const HeroSection = () => {
   const { user } = useAuth();
@@ -60,11 +59,6 @@ const HeroSection = () => {
             >
               Start for Free
             </BookingWidget>
-          </div>
-          
-          {/* Service Slideshow with Flow Animation */}
-          <div className="w-full max-w-3xl mx-auto h-[300px] md:h-[400px] opacity-0 animate-fade-in [animation-delay:900ms]">
-            <ServiceSlideshow />
           </div>
         </div>
       </div>
