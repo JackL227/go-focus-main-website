@@ -17,7 +17,6 @@ const AutomatedSalesCard = ({
   index = 0,
   isRight = true 
 }: AutomatedSalesCardProps) => {
-  // Movement for right side cards vs center cards (for mobile)
   const animationProps = isRight ? {
     initial: { opacity: 0, x: 40, scale: 0.95 },
     animate: { opacity: 1, x: 0, scale: 1 },
@@ -34,15 +33,11 @@ const AutomatedSalesCard = ({
       animate={animationProps.animate}
       exit={animationProps.exit}
       transition={{ 
-        type: "spring", 
-        stiffness: 120, 
-        damping: 16,
-        duration: 0.5, 
-        delay,
-      }}
-      whileHover={{ 
-        scale: 1.02,
-        transition: { duration: 0.2 } 
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+        duration: 0.6,
+        delay 
       }}
       className="bg-[#1A1F2C]/90 rounded-lg p-4 border border-[#2A2F3C]/50 shadow-lg w-full sm:w-[280px] mb-3"
       style={{ zIndex: 30 - index % 10 }}
