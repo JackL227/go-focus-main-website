@@ -1,87 +1,91 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface LeadCardProps {
-  scale?: number;
-  opacity?: number;
-  x?: number;
-  y?: number;
-  rotate?: number;
-  rotateY?: number;
-  rotateZ?: number;
-  size?: 'sm' | 'md' | 'lg';
-  delay?: number;
-  index?: number;
+  index: number;
+  isAbsorbed?: boolean;
+  onComplete?: () => void;
 }
 
 const LeadCard = ({ 
-  scale = 1, 
-  opacity = 1, 
-  x = 0, 
-  y = 0, 
-  rotate = 0, 
-  rotateY = 0,
-  rotateZ = 0,
-  size = 'md',
-  delay = 0,
-  index = 0
+  index, 
+  isAbsorbed = false,
+  onComplete 
 }: LeadCardProps) => {
-  // Size classes for different card sizes
-  const sizeClasses = {
-    sm: 'w-14 h-8',
-    md: 'w-20 h-10',
-    lg: 'w-28 h-14'
+  const isMobile = useIsMobile();
+  const maxX = typeof window !== 'undefined' ? window.innerWidth / 2 : 500;
+  
+  // Calculate scale and opacity based on position
+  const startScale = 1;
+  const endScale = 0.3;
+  
+  // Size variants for visual diversity
+  const sizes = ['w-16 h-8', 'w-20 h-10', 'w-24 h-12'];
+  const randomSize = sizes[index % sizes.length];
+  
+  // Stagger the starting positions
+  const initialDelay = index * 0.8;
+  
+  const cardAnimationProps = {
+    initial: { 
+      x: -maxX - 100, 
+      y: isMobile ? index * 20 - 60 : index * 15 - 45,
+      scale: startScale, 
+      opacity: 0,
+      rotateY: 0,
+      rotate: (index % 3 - 1) * 5,
+    },
+    animate: isAbsorbed 
+      ? { 
+          x: 0, 
+          y: 0, 
+          scale: 0.1, 
+          opacity: 0,
+          rotateY: 45,
+          rotate: 0,
+          transition: { 
+            duration: 0.5, 
+            ease: "easeInOut" 
+          }
+        } 
+      : { 
+          x: maxX * 0.7, 
+          y: isMobile ? index * 20 - 60 : index * 15 - 45, 
+          scale: endScale, 
+          opacity: 0.7,
+          rotateY: 20,
+          rotate: (index % 3 - 1) * 3,
+          transition: { 
+            duration: 6, 
+            delay: initialDelay,
+            ease: "linear" 
+          }
+        }
   };
-
-  // Slightly randomize the card appearance for more organic look
-  const randomRotate = rotate + (Math.random() * 6 - 3);
-  const randomY = y + (Math.random() * 10 - 5);
 
   return (
     <motion.div
-      className={`${sizeClasses[size]} rounded-lg bg-[#2b2b2b] shadow-inner border border-[#3a3a3a] flex items-center justify-center`}
+      className={`absolute ${randomSize} rounded-lg bg-[#2b2b2b] shadow-lg border border-[#3a3a3a] flex items-center justify-center z-10`}
       style={{
-        x,
-        y: randomY,
-        scale,
-        opacity,
-        rotate: randomRotate,
-        rotateY,
-        rotateZ,
+        boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
         transformStyle: 'preserve-3d',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.1)',
-        zIndex: 20 - index % 10, // Ensure proper stacking
+        perspective: 1000
       }}
-      initial={{ 
-        scale, 
-        opacity, 
-        x, 
-        y: randomY, 
-        rotate: randomRotate, 
-        rotateY, 
-        rotateZ 
-      }}
-      animate={{ 
-        scale, 
-        opacity, 
-        x, 
-        y: randomY, 
-        rotate: randomRotate, 
-        rotateY, 
-        rotateZ
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 60,
-        damping: 15,
-        duration: 1.5,
-        delay
+      {...cardAnimationProps}
+      onAnimationComplete={() => {
+        if (!isAbsorbed && onComplete) {
+          onComplete();
+        }
       }}
     >
-      <div className="w-full h-full flex items-center justify-center text-sm font-medium text-white p-2">
-        <span className="whitespace-nowrap overflow-hidden text-ellipsis">Lead</span>
+      <div className="w-full h-full flex items-center justify-center">
+        <span className="text-white text-sm font-medium">Lead</span>
       </div>
+      
+      {/* Subtle gradient overlay for depth */}
+      <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
     </motion.div>
   );
 };

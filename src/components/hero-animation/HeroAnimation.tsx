@@ -1,91 +1,167 @@
+import React, { useEffect, useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
+import LeadCard from './LeadCard';
+import ProcessingLogo from './ProcessingLogo';
+import OutputCard from './OutputCard';
 
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+const NAMES = [
+  'John D', 'Sarah M', 'Michael T', 'Emma R', 'Daniel P', 
+  'Lisa W', 'Thomas B', 'Ashley K', 'Robert J', 'Jennifer L',
+  'Alex H', 'Sophia G', 'William F', 'Olivia N', 'James C',
+];
 
-const names = [
-  'Beyoncé',
-  'Samantha K',
-  'Liam J', 
-  'Olivia T',
-  'Noah P',
-  'Emma L',
+const ACTIONS = [
+  'has enrolled into the mentorship',
+  'has scheduled a demo call',
+  'confirmed booking',
+  'purchased premium plan',
+  'joined the program',
+  'requested a strategy session',
 ];
 
 const HeroAnimation = () => {
-  const [visibleNames, setVisibleNames] = useState<string[]>([]);
-
+  const isMobile = useIsMobile();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [leads, setLeads] = useState<Array<{
+    id: number;
+    removed: boolean;
+    absorbed: boolean;
+  }>>([]);
+  const [outputCards, setOutputCards] = useState<Array<{
+    id: number;
+    name: string;
+    action: string;
+  }>>([]);
+  
+  const getRandomName = useCallback(() => {
+    return NAMES[Math.floor(Math.random() * NAMES.length)];
+  }, []);
+  
+  const getRandomAction = useCallback(() => {
+    return ACTIONS[Math.floor(Math.random() * ACTIONS.length)];
+  }, []);
+  
+  const processLead = useCallback((leadId: number) => {
+    setIsProcessing(true);
+    
+    setLeads(prev => prev.map(lead => 
+      lead.id === leadId ? { ...lead, absorbed: true } : lead
+    ));
+    
+    setTimeout(() => {
+      const newOutputCard = {
+        id: Date.now(),
+        name: getRandomName(),
+        action: getRandomAction()
+      };
+      
+      setOutputCards(prev => {
+        const updatedCards = [...prev, newOutputCard];
+        return updatedCards.slice(Math.max(0, updatedCards.length - 3));
+      });
+      
+      setLeads(prev => prev.map(lead => 
+        lead.id === leadId ? { ...lead, removed: true } : lead
+      ));
+      
+      setIsProcessing(false);
+    }, 800);
+  }, [getRandomName, getRandomAction]);
+  
   useEffect(() => {
-    const interval = setInterval(() => {
-      const random = names[Math.floor(Math.random() * names.length)];
-      setVisibleNames((prev) => {
-        const updated = [...prev, random];
-        if (updated.length > 3) updated.shift();
-        return updated;
+    const initialLeads = Array(5).fill(0).map((_, i) => ({
+      id: i,
+      removed: false,
+      absorbed: false
+    }));
+    setLeads(initialLeads);
+    
+    setOutputCards([
+      { id: 100, name: getRandomName(), action: getRandomAction() },
+      { id: 101, name: getRandomName(), action: getRandomAction() }
+    ]);
+    
+    const leadInterval = setInterval(() => {
+      const newLead = { 
+        id: Date.now(), 
+        removed: false,
+        absorbed: false
+      };
+      
+      setLeads(prev => {
+        const filteredLeads = prev.filter(lead => !lead.removed);
+        const limitedLeads = [...filteredLeads, newLead].slice(-8);
+        return limitedLeads;
       });
     }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
+    
+    return () => {
+      clearInterval(leadInterval);
+    };
+  }, [getRandomName, getRandomAction]);
+  
+  useEffect(() => {
+    if (!isProcessing && leads.length > 0) {
+      const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed);
+      if (leadToProcess) {
+        const processingDelay = 2000 + (leads.indexOf(leadToProcess) * 1000);
+        setTimeout(() => {
+          processLead(leadToProcess.id);
+        }, processingDelay);
+      }
+    }
+  }, [leads, isProcessing, processLead]);
+  
   return (
     <div className="relative w-full h-[600px] bg-[#010101] overflow-hidden flex items-center justify-center">
-      {/* Glow background */}
-      <div className="absolute w-[300px] h-[300px] bg-blue-500/30 rounded-full blur-[100px] z-0"></div>
-
-      {/* Logo */}
-      <motion.img
-        src="/lovable-uploads/b9eb9c06-5b4f-416d-af44-06190fbec508.png"
-        alt="Go Focus AI"
-        className="absolute w-[120px] z-10"
-        animate={{
-          scale: [1, 1.05, 1],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-
-      {/* Incoming lead cards */}
-      {Array.from({ length: 6 }).map((_, idx) => (
-        <motion.div
-          key={idx}
-          className="absolute top-[50%] left-[-200px] w-24 h-10 bg-[#2e2e2e] text-white rounded-md shadow-lg flex items-center justify-center text-sm"
-          initial={{ x: -200, scale: 1, opacity: 1 }}
-          animate={{ 
-            x: window.innerWidth,
-            scale: 0.2,
-            opacity: 0
-          }}
-          transition={{
-            duration: 8,
-            delay: idx * 0.8,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        >
-          Lead
-        </motion.div>
-      ))}
-
-      {/* Outgoing enrollment cards */}
-      <div className="absolute right-10 top-1/2 transform -translate-y-1/2 space-y-3">
-        <h2 className="text-white text-xl font-semibold mb-4">
-          Automated <span className="text-muted">Sales Process</span>
-        </h2>
-        {visibleNames.map((name, idx) => (
-          <motion.div
-            key={`${name}-${idx}`}
-            initial={{ x: 20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -20, opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="bg-[#1d1d1d] text-white px-4 py-2 rounded-lg shadow-lg text-sm flex items-center gap-2"
-          >
-            <span className="w-2 h-2 bg-[#00ff8c] rounded-full"></span>
-            {name} has enrolled into the mentorship
-          </motion.div>
-        ))}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <AnimatePresence>
+          {leads.map((lead, index) => (
+            !lead.removed && (
+              <LeadCard 
+                key={lead.id}
+                index={index}
+                isAbsorbed={lead.absorbed}
+                onComplete={() => processLead(lead.id)}
+              />
+            )
+          ))}
+        </AnimatePresence>
+      </div>
+      
+      <ProcessingLogo isProcessing={isProcessing} />
+      
+      <div className={`
+        absolute ${isMobile ? 'bottom-10 left-0 right-0 px-4' : 'right-10 top-1/2 transform -translate-y-1/2'} 
+        z-20
+      `}>
+        <div className={`
+          ${isMobile ? 'w-full bg-[#1A1F2C]/60 backdrop-blur-sm p-4 rounded-xl' : ''}
+        `}>
+          <h2 className={`
+            text-white text-lg md:text-xl font-semibold mb-4 
+            ${isMobile ? 'text-center' : ''}
+          `}>
+            Automated <span className="text-muted">Sales Process</span>
+          </h2>
+          
+          <div className={`
+            ${isMobile ? 'flex flex-row space-x-3 overflow-x-auto py-2 scrollbar-hide' : 'space-y-3'}
+          `}>
+            <AnimatePresence>
+              {outputCards.map((card, index) => (
+                <OutputCard 
+                  key={card.id}
+                  name={card.name}
+                  action={card.action}
+                  index={index}
+                  isMobile={isMobile}
+                />
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
     </div>
   );
