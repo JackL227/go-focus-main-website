@@ -10,6 +10,9 @@ interface LeadCardProps {
   position?: {x: number, y: number};
   rotate?: number;
   staggerDelay?: number;
+  isConverted?: boolean;
+  name?: string;
+  action?: string;
 }
 
 const LeadCard = ({ 
@@ -19,7 +22,10 @@ const LeadCard = ({
   size = 'md',
   position,
   rotate = 0,
-  staggerDelay = 0.2
+  staggerDelay = 0.2,
+  isConverted = false,
+  name,
+  action
 }: LeadCardProps) => {
   const sizeClasses = {
     sm: 'w-16 h-8',
@@ -39,36 +45,52 @@ const LeadCard = ({
         opacity: 1,
         rotate: rotate ?? (Math.random() * 16 - 8)
       }}
-      animate={isAbsorbed 
-        ? { 
-            x: 0, 
-            y: 0, 
-            scale: 0.1, 
-            opacity: 0,
-            rotate: 0,
-            transition: { 
-              duration: 0.5, 
-              ease: "easeInOut" 
+      animate={
+        isConverted 
+          ? {
+              x: position?.x ?? 350,
+              y: position?.y ?? 0,
+              scale: 0.9,
+              opacity: 1,
+              transition: {
+                duration: 2.5,
+                delay: index * staggerDelay,
+                ease: "easeOut"
+              }
             }
-          } 
-        : { 
-            x: 0, 
-            y: 0, 
-            scale: 0.9,
-            opacity: 1,
-            transition: { 
-              duration: 2.5,
-              delay: index * staggerDelay,
-              ease: "easeOut" 
-            }
-          }}
+          : isAbsorbed 
+            ? { 
+                x: 0, 
+                y: 0, 
+                scale: 0.1, 
+                opacity: 0,
+                rotate: 0,
+                transition: { 
+                  duration: 0.5, 
+                  ease: "easeInOut" 
+                }
+              } 
+            : { 
+                x: 0, 
+                y: 0, 
+                scale: 0.9,
+                opacity: 1,
+                transition: { 
+                  duration: 2.5,
+                  delay: index * staggerDelay,
+                  ease: "easeOut" 
+                }
+              }
+      }
       onAnimationComplete={() => {
-        if (!isAbsorbed && onComplete) {
+        if (!isAbsorbed && !isConverted && onComplete) {
           onComplete();
         }
       }}
     >
-      <span className="text-white/90 text-sm font-medium">Lead</span>
+      <span className="text-white/90 text-xs font-medium truncate px-2">
+        {isConverted ? `${name}` : 'Lead'}
+      </span>
     </motion.div>
   );
 };
