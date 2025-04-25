@@ -20,7 +20,7 @@ const HeroSection = () => {
       className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden bg-[#010101]" 
       aria-label="Hero section"
     >
-      <div className="container-custom relative z-10 py-16">
+      <div className="container-custom relative z-10 pt-8 pb-0">
         <div className="flex flex-col items-center max-w-4xl mx-auto text-center">
           <div className="space-y-6 mb-8">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold opacity-0 animate-fade-in [animation-delay:300ms] leading-tight" aria-label="Main headline">
@@ -33,7 +33,7 @@ const HeroSection = () => {
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-in [animation-delay:700ms] mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-in [animation-delay:700ms] mb-6">
             <Button 
               size="lg" 
               className="bg-primary hover:bg-primary/90 text-background group relative overflow-hidden transition-all duration-300 hover:shadow-glow" 
@@ -58,7 +58,7 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Flow Animation - full width and prominent */}
+      {/* Enhanced Flow Animation - full width and prominent */}
       <div className="w-full h-[600px] relative z-10 mt-0">
         <FlowAnimation />
       </div>
