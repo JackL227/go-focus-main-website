@@ -8,6 +8,8 @@ interface LeadCardProps {
   onComplete?: () => void;
   size?: 'sm' | 'md' | 'lg';
   position?: {x: number, y: number};
+  rotate?: number;
+  staggerDelay?: number;
 }
 
 const LeadCard = ({ 
@@ -15,9 +17,10 @@ const LeadCard = ({
   isAbsorbed = false,
   onComplete,
   size = 'md',
-  position
+  position,
+  rotate = 0,
+  staggerDelay = 0.2
 }: LeadCardProps) => {
-  // Size variants for visual diversity
   const sizeClasses = {
     sm: 'w-16 h-8',
     md: 'w-20 h-10',
@@ -34,7 +37,7 @@ const LeadCard = ({
         y: position?.y ?? 0,
         scale: 1, 
         opacity: 1,
-        rotate: (Math.random() * 16 - 8)
+        rotate: rotate ?? (Math.random() * 16 - 8)
       }}
       animate={isAbsorbed 
         ? { 
@@ -54,8 +57,8 @@ const LeadCard = ({
             scale: 0.9,
             opacity: 1,
             transition: { 
-              duration: 3.5, 
-              delay: index * 0.2,
+              duration: 2.5,
+              delay: index * staggerDelay,
               ease: "easeOut" 
             }
           }}
