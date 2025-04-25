@@ -2,10 +2,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import LeadCard from './LeadCard';
-import ProcessingLogo from './ProcessingLogo';
+import CenterLogo from './CenterLogo';
 
-// Increased lead count
-const LEAD_COUNT = 20;
+// Increased lead count for more active animation
+const LEAD_COUNT = 25;
 
 // Create a more natural curved path with various Y positions
 const generateLeadPositions = () => {
@@ -13,7 +13,8 @@ const generateLeadPositions = () => {
   for (let i = 0; i < LEAD_COUNT; i++) {
     // Create a curved path effect with more varied positions
     const xPos = -350 - Math.random() * 150;
-    const yOffset = Math.sin(i / 3) * 150 + (Math.random() * 100 - 50);
+    // Using sine wave for smooth arching
+    const yOffset = Math.sin(i / (Math.PI * 1.5)) * 180 + (Math.random() * 80 - 40);
     positions.push({ x: xPos, y: yOffset });
   }
   return positions;
@@ -26,7 +27,8 @@ const NAMES = [
   'Drake', 'Emma W', 'Justin B', 'Rihanna',
   'Leonardo D', 'Ariana G', 'John D', 'Sarah M',
   'Robert P', 'Emily B', 'Chris H', 'David M',
-  'Sophie R', 'James T', 'Linda K', 'Mark Z'
+  'Sophie R', 'James T', 'Linda K', 'Mark Z',
+  'Priya D', 'Alex M', 'Leo C', 'Daniel J'
 ];
 
 const ACTIONS = [
@@ -37,7 +39,9 @@ const ACTIONS = [
   'enrolled in premium plan',
   'started their journey',
   'completed onboarding',
-  'activated their account'
+  'activated their account',
+  'scheduled a demo',
+  'just became a client'
 ];
 
 const HeroAnimation = () => {
@@ -61,35 +65,33 @@ const HeroAnimation = () => {
   const processLead = useCallback((leadId: number) => {
     setProcessingLead(true);
     
-    // Convert lead with smoother timing
+    // First mark as absorbed with smoother timing
+    setLeads(prev => 
+      prev.map(lead => 
+        lead.id === leadId 
+          ? { 
+              ...lead, 
+              absorbed: true,
+              convertedLead: {
+                name: getRandomName(),
+                action: getRandomAction()
+              }
+            }
+          : lead
+      )
+    );
+    
+    // Then remove after a short delay
     setTimeout(() => {
       setLeads(prev => 
         prev.map(lead => 
           lead.id === leadId 
-            ? { 
-                ...lead, 
-                absorbed: true,
-                convertedLead: {
-                  name: getRandomName(),
-                  action: getRandomAction()
-                }
-              }
+            ? { ...lead, removed: true }
             : lead
         )
       );
-      
-      // Remove absorbed lead after conversion
-      setTimeout(() => {
-        setLeads(prev => 
-          prev.map(lead => 
-            lead.id === leadId 
-              ? { ...lead, removed: true }
-              : lead
-          )
-        );
-        setProcessingLead(false);
-      }, 800);
-    }, 200);
+      setProcessingLead(false);
+    }, 800);
   }, [getRandomName, getRandomAction]);
 
   useEffect(() => {
@@ -107,11 +109,13 @@ const HeroAnimation = () => {
     
     setLeads(initialLeads);
     
-    // Generate new leads more frequently
+    // Generate new leads more frequently for a denser animation
     const leadInterval = setInterval(() => {
+      // Create a new random position with more variety
+      const randomY = Math.sin(Date.now() / 1000) * 180 + (Math.random() * 80 - 40);
       const randomPosition = {
-        x: -350 - Math.random() * 150,
-        y: Math.sin(Date.now() / 1000) * 150 + (Math.random() * 100 - 50)
+        x: -400 - Math.random() * 150,
+        y: randomY
       };
       
       const randomSize = sizeOptions[Math.floor(Math.random() * sizeOptions.length)];
@@ -127,9 +131,9 @@ const HeroAnimation = () => {
       
       setLeads(prev => {
         const filteredLeads = prev.filter(lead => !lead.removed);
-        return [...filteredLeads, newLead].slice(-25);
+        return [...filteredLeads, newLead].slice(-30); // Increased cap for more leads
       });
-    }, 600); // Reduced interval for more frequent leads
+    }, 500); // Generates leads faster (500ms instead of 600ms)
     
     return () => clearInterval(leadInterval);
   }, []);
@@ -139,7 +143,7 @@ const HeroAnimation = () => {
     if (!processingLead && leads.length > 0) {
       const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed);
       if (leadToProcess) {
-        const processingDelay = 1200 + (leads.indexOf(leadToProcess) * 400);
+        const processingDelay = 1000 + (leads.indexOf(leadToProcess) * 350);
         setTimeout(() => {
           processLead(leadToProcess.id);
         }, processingDelay);
@@ -149,7 +153,7 @@ const HeroAnimation = () => {
 
   return (
     <div className="relative w-full h-[600px] bg-[#010101] overflow-hidden flex items-center justify-center">
-      <ProcessingLogo isProcessing={processingLead} />
+      <CenterLogo onLeadProcess={() => {}} processingLead={processingLead} />
       
       <AnimatePresence>
         {leads.map((lead) => (
@@ -161,7 +165,7 @@ const HeroAnimation = () => {
                   isAbsorbed={lead.absorbed}
                   size={lead.size}
                   rotate={lead.rotate}
-                  staggerDelay={0.15}
+                  staggerDelay={0.12} // Slightly faster stagger for more fluid animation
                   position={lead.position}
                   onComplete={() => processLead(lead.id)}
                 />
@@ -169,8 +173,12 @@ const HeroAnimation = () => {
                 <LeadCard 
                   index={leads.indexOf(lead)}
                   size="md"
-                  position={{ x: 350, y: lead.position?.y || 0 }}
-                  staggerDelay={0.1}
+                  position={{ 
+                    x: 350, 
+                    // Add slight vertical variation for more natural movement
+                    y: (lead.position?.y || 0) * 0.5
+                  }}
+                  staggerDelay={0.08} // Faster stagger for output cards
                   isConverted={true}
                   name={lead.convertedLead.name}
                   action={lead.convertedLead.action}

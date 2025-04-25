@@ -11,15 +11,15 @@ interface OutputCardProps {
 }
 
 const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
-  // Movement for different layouts
+  // Movement for different layouts with more natural motion
   const animationProps = isMobile ? {
-    initial: { opacity: 0, y: 20, scale: 0.95 },
+    initial: { opacity: 0, y: 15, scale: 0.95 },
     animate: { opacity: 1, y: 0, scale: 1 },
-    exit: { opacity: 0, y: -20, scale: 0.95 }
+    exit: { opacity: 0, y: -15, scale: 0.95 }
   } : {
-    initial: { opacity: 0, x: 50, scale: 0.95 },
+    initial: { opacity: 0, x: 40, scale: 0.95 },
     animate: { opacity: 1, x: 0, scale: 1 },
-    exit: { opacity: 0, x: -50, scale: 0.95 }
+    exit: { opacity: 0, x: -40, scale: 0.95 }
   };
 
   return (
@@ -27,15 +27,15 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
       {...animationProps}
       transition={{ 
         type: "spring", 
-        stiffness: 400, 
+        stiffness: 350, 
         damping: 25,
-        mass: 1,
-        duration: 0.5, 
-        delay: index * 0.1,
+        mass: 0.8,
+        duration: 0.6, 
+        delay: index * 0.08, // Faster appearance for smoother flow
       }}
       className={`
         bg-[#1F1F22] rounded-lg p-4 border border-[#2d2d2d]/50 shadow-lg
-        ${isMobile ? 'min-w-[200px] flex-shrink-0' : 'w-full mb-3'}
+        ${isMobile ? 'min-w-[200px] flex-shrink-0' : 'w-full mb-2'} 
       `}
     >
       <div className="flex items-center space-x-2">

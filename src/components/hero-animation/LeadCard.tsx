@@ -28,7 +28,7 @@ const LeadCard = ({
   name,
   action
 }: LeadCardProps) => {
-  // Updated size classes for more circular shape
+  // Updated size classes for perfectly circular shape
   const sizeClasses = {
     sm: 'w-16 h-16',
     md: 'w-20 h-20',
@@ -42,12 +42,12 @@ const LeadCard = ({
       className={`absolute ${
         isConverted 
           ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50' 
-          : `${cardSize} rounded-full flex items-center justify-center bg-[#1F1F22] border border-[#2d2d2d]/50`
+          : `${cardSize} rounded-full flex items-center justify-center bg-[#1A1A1D] border border-[#2d2d2d]/50`
       } shadow-lg`}
       initial={{ 
         x: position?.x ?? (isConverted ? 0 : -350), 
         y: position?.y ?? 0,
-        scale: isConverted ? 0.1 : 1, 
+        scale: isConverted ? 0 : 1, 
         opacity: isConverted ? 0 : 1,
         rotate: rotate ?? (Math.random() * 16 - 8)
       }}
@@ -60,7 +60,7 @@ const LeadCard = ({
               opacity: 1,
               rotate: 0,
               transition: {
-                duration: 3,
+                duration: 3.5,
                 delay: staggerDelay,
                 ease: [0.34, 1.56, 0.64, 1]
               }
@@ -69,7 +69,7 @@ const LeadCard = ({
             ? { 
                 x: 0, 
                 y: 0, 
-                scale: 0.1, 
+                scale: 0, 
                 opacity: 0,
                 rotate: 0,
                 transition: { 
@@ -80,10 +80,10 @@ const LeadCard = ({
             : { 
                 x: 0, 
                 y: 0, 
-                scale: 0.8,
+                scale: 0.7,
                 opacity: 1,
                 transition: { 
-                  duration: 2.5,
+                  duration: 2.8,
                   delay: index * staggerDelay,
                   ease: [0.34, 1.56, 0.64, 1]
                 }
