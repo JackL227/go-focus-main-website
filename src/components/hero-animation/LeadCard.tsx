@@ -9,6 +9,8 @@ interface LeadCardProps {
   onComplete?: () => void;
   size?: 'sm' | 'md' | 'lg';
   rotate?: number;
+  staggerDelay?: number;
+  position?: {x: number, y: number};
 }
 
 const LeadCard = ({ 
@@ -16,7 +18,9 @@ const LeadCard = ({
   isAbsorbed = false,
   onComplete,
   size = 'md',
-  rotate = 0
+  rotate = 0,
+  staggerDelay = 0,
+  position
 }: LeadCardProps) => {
   const isMobile = useIsMobile();
   const maxX = typeof window !== 'undefined' ? window.innerWidth / 2 : 500;
@@ -29,16 +33,24 @@ const LeadCard = ({
   };
   
   const cardSize = sizeClasses[size];
+
+  // Calculate initial position with more variation
+  const initialX = -maxX - (Math.random() * 100) - 50;
+  const initialY = isMobile 
+    ? index * 15 - 100 + (Math.random() * 40 - 20)
+    : (Math.random() * 200 - 100);
+  
+  const initialRotate = rotate || (Math.random() * 16 - 8);
   
   return (
     <motion.div
-      className={`absolute ${cardSize} rounded-lg bg-[#1A1F2C]/90 backdrop-blur-sm shadow-lg`}
+      className={`absolute ${cardSize} rounded-lg bg-[#1A1B1F] shadow-lg flex items-center justify-center`}
       initial={{ 
-        x: -maxX - 100, 
-        y: isMobile ? index * 20 - 60 : index * 15 - 45,
+        x: position?.x ?? initialX, 
+        y: position?.y ?? initialY,
         scale: 1, 
         opacity: 0,
-        rotate: rotate
+        rotate: initialRotate
       }}
       animate={isAbsorbed 
         ? { 
@@ -51,13 +63,13 @@ const LeadCard = ({
           } 
         : { 
             x: Math.max(0, maxX * 0.5),
-            y: isMobile ? index * 20 - 60 : index * 15 - 45, 
-            scale: 0.5,
-            opacity: 0.8,
-            rotate: rotate,
+            y: position?.y ?? (isMobile ? initialY : initialY), 
+            scale: 0.9,
+            opacity: 1,
+            rotate: initialRotate,
             transition: { 
-              duration: 4.5, 
-              delay: index * 0.8,
+              duration: 3.5, 
+              delay: staggerDelay + (index * 0.2),
               ease: "easeOut" 
             }
           }}
@@ -67,9 +79,7 @@ const LeadCard = ({
         }
       }}
     >
-      <div className="w-full h-full flex items-center justify-center">
-        <span className="text-white/90 text-sm font-medium">Lead</span>
-      </div>
+      <span className="text-white/90 text-sm font-medium">Lead</span>
     </motion.div>
   );
 };

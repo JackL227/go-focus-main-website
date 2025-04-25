@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { CircleCheck } from 'lucide-react';
 
 interface AutomatedSalesCardProps {
   name: string;
@@ -37,13 +38,13 @@ const AutomatedSalesCard = ({
         duration: 0.5, 
         delay,
       }}
-      className="w-full bg-[#1A1F2C]/90 backdrop-blur-sm rounded-lg p-3 border border-[#2A2F3C]/50"
+      className="w-full bg-[#1A1B1F] rounded-lg p-3 border border-[#2A2F3C]/50"
     >
       <div className="flex items-center space-x-2">
-        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+        <CircleCheck className="w-4 h-4 text-green-400" />
         <div className="text-sm">
           <span className="text-white font-medium">{name} </span>
-          <span className="text-gray-400">{action}</span>
+          <span className="text-gray-300 text-xs">{action}</span>
         </div>
       </div>
     </motion.div>

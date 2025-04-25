@@ -58,7 +58,7 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Flow Animation - the enhanced hero animation */}
+      {/* Flow Animation - updated hero animation based on reference image */}
       <div className="w-full relative z-10 mt-8">
         <FlowAnimation />
       </div>
