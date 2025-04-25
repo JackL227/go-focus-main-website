@@ -153,7 +153,7 @@ const HeroAnimation = () => {
   return (
     <div className="relative w-full h-[600px] bg-[#010101] overflow-hidden flex items-center justify-center">
       <CenterLogo 
-        isProcessing={processingLead} 
+        processingLead={processingLead} 
         onLeadProcess={() => {}} 
       />
       
