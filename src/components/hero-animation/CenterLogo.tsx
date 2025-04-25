@@ -9,14 +9,14 @@ interface CenterLogoProps {
 
 const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
   return (
-    <div className="absolute left-1/2 -translate-x-1/2">
+    <div className="absolute left-1/2 -translate-x-1/2 z-10">
       <motion.div
         className="relative w-[230px] h-[230px] sm:w-[280px] sm:h-[280px]"
         animate={{
           scale: processingLead ? [1, 1.08, 1] : [1, 1.05, 1],
         }}
         transition={{
-          duration: processingLead ? 1.2 : 3,
+          duration: processingLead ? 1.5 : 3.5, // Slower animations overall
           ease: "easeInOut",
           times: processingLead ? [0, 0.5, 1] : [0, 0.5, 1]
         }}
@@ -38,7 +38,7 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
             opacity: processingLead ? [0.6, 0.8, 0.6] : [0.5, 0.6, 0.5]
           }}
           transition={{
-            duration: processingLead ? 0.8 : 3,
+            duration: processingLead ? 1.2 : 3.5, // Slower animations
             repeat: Infinity,
             ease: "easeInOut"
           }}
@@ -47,7 +47,7 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
         {/* Inner glow - focused on center */}
         <div className="absolute inset-[30%] rounded-full opacity-70 blur-[30px] bg-gradient-to-r from-[#00F5A0] to-[#00D9F5]" />
         
-        {/* Animated ripple effect - faster when processing */}
+        {/* Animated ripple effect - slower when processing */}
         <motion.div 
           className="absolute inset-0 border-4 border-[#00F5A0]/30 rounded-full"
           animate={{
@@ -55,7 +55,7 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
             opacity: [0.4, 0, 0.4],
           }}
           transition={{
-            duration: processingLead ? 1.5 : 3,
+            duration: processingLead ? 2 : 4, // Much slower ripple
             repeat: Infinity,
             ease: "easeInOut",
           }}
@@ -71,7 +71,7 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
               opacity: [0.8, 0, 0.8],
             }}
             transition={{
-              duration: 0.8,
+              duration: 1.2, // Slower absorption effect
               repeat: Infinity,
               ease: "easeInOut",
             }}
@@ -90,7 +90,7 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
               : ['drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))', 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))']
           }}
           transition={{
-            duration: processingLead ? 1 : 3,
+            duration: processingLead ? 1.5 : 4, // Slower animations
             repeat: Infinity,
             ease: "easeInOut"
           }}
@@ -100,7 +100,7 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
         {/* Particle effects during processing */}
         {processingLead && (
           <motion.div
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 pointer-events-none z-20"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -122,7 +122,7 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
                   opacity: [1, 0]
                 }}
                 transition={{
-                  duration: 0.8,
+                  duration: 1.2, // Slower particle effects
                   ease: "easeOut"
                 }}
                 style={{

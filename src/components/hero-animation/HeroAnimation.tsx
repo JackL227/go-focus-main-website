@@ -1,23 +1,22 @@
-
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './LeadCard';
 import CenterLogo from './CenterLogo';
 
-// Constants for the animation
-const LEAD_COUNT = 15;
-const LEAD_GENERATION_INTERVAL = 600; // Reduced for smoother flow
-const PROCESSING_DELAY_BASE = 800; // Faster processing for continuous flow
-const STAGGER_DELAY = 0.05; // Reduced for smoother flow
+// Constants for the animation - reduced count and slowed down timing
+const LEAD_COUNT = 8; // Reduced from 15 to 8 for fewer cards
+const LEAD_GENERATION_INTERVAL = 1200; // Slowed down from 600ms to 1200ms
+const PROCESSING_DELAY_BASE = 1200; // Slowed down processing
+const STAGGER_DELAY = 0.1; // Increased for slower flow
 
 // Create a more natural curved path with various Y positions
 const generateLeadPositions = () => {
   const positions = [];
   for (let i = 0; i < LEAD_COUNT; i++) {
-    // Create a curved path effect by varying Y coordinates more at the edges
+    // Create a curved path effect by varying Y coordinates
     const xPos = -350 - Math.random() * 150;
-    const yOffset = Math.random() * 300 - 150; // More vertical spread
+    const yOffset = Math.random() * 240 - 120; // Reduced vertical spread for consistency
     positions.push({ x: xPos, y: yOffset });
   }
   return positions;
@@ -68,7 +67,7 @@ const HeroAnimation = () => {
     return sizeOptions[Math.floor(Math.random() * sizeOptions.length)];
   }, []);
 
-  // Process a lead and create a converted lead
+  // Process a lead and create a converted lead - ALL leads now go behind the logo
   const processLead = useCallback((leadId: number) => {
     if (!animationActive.current) return;
     
@@ -100,12 +99,12 @@ const HeroAnimation = () => {
       );
       setProcessingLead(false);
       
-      // Generate a new lead shortly after processing to maintain flow
+      // Generate a new lead after processing with a longer delay
       setTimeout(() => {
         addNewLead();
-      }, 200);
+      }, 600); // Increased delay between new leads
       
-    }, 800); // Shorter timeout for faster recycling
+    }, 1000); // Longer timeout for more visible absorption
   }, [getRandomName, getRandomAction]);
 
   // Add a new lead with random properties
@@ -114,7 +113,7 @@ const HeroAnimation = () => {
     
     const randomPosition = {
       x: -350 - Math.random() * 150,
-      y: Math.random() * 300 - 150
+      y: Math.random() * 240 - 120
     };
     
     const newLead = {
@@ -122,13 +121,14 @@ const HeroAnimation = () => {
       removed: false,
       absorbed: false,
       size: getRandomSize(),
-      rotate: Math.random() * 16 - 8,
+      rotate: Math.random() * 12 - 6, // Reduced rotation for subtler movement
       position: randomPosition
     };
     
     setLeads(prev => {
+      // Keep fewer active leads for cleaner animation
       const filteredLeads = prev.filter(lead => !lead.removed);
-      return [...filteredLeads, newLead].slice(-20);
+      return [...filteredLeads, newLead].slice(-12); // Reduced max active leads
     });
   }, [getRandomSize]);
 
@@ -136,19 +136,19 @@ const HeroAnimation = () => {
   useEffect(() => {
     animationActive.current = true;
     
-    // Initialize leads with their positions
-    const initialLeads = LEAD_POSITIONS.map((position, i) => ({
+    // Initialize with fewer leads for a cleaner start
+    const initialLeads = LEAD_POSITIONS.slice(0, 5).map((position, i) => ({
       id: i,
       removed: false,
       absorbed: false,
       size: getRandomSize(),
-      rotate: Math.random() * 16 - 8,
+      rotate: Math.random() * 12 - 6,
       position
     }));
     
     setLeads(initialLeads);
     
-    // Continuously generate new leads
+    // Continuously generate new leads at slower interval
     const leadInterval = setInterval(() => {
       addNewLead();
     }, LEAD_GENERATION_INTERVAL);
@@ -159,14 +159,14 @@ const HeroAnimation = () => {
     };
   }, [getRandomSize, addNewLead]);
 
-  // Process leads one by one
+  // Process leads one by one with a slower cadence
   useEffect(() => {
     if (!processingLead && leads.length > 0 && animationActive.current) {
       const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed);
       if (leadToProcess) {
         // Calculate a dynamic processing delay based on lead position in the array
         // This creates a more natural flow
-        const processingDelay = PROCESSING_DELAY_BASE + (leads.indexOf(leadToProcess) * 300);
+        const processingDelay = PROCESSING_DELAY_BASE + (leads.indexOf(leadToProcess) * 400);
         setTimeout(() => {
           processLead(leadToProcess.id);
         }, processingDelay);
@@ -177,7 +177,7 @@ const HeroAnimation = () => {
   return (
     <div className="relative w-full h-[600px] overflow-hidden flex items-center justify-center">
       <CenterLogo 
-        isProcessing={processingLead} 
+        processingLead={processingLead} 
         onLeadProcess={() => {}}
       />
       

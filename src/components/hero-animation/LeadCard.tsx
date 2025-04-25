@@ -40,6 +40,7 @@ const LeadCard = ({
   const customEasing = [0.4, 0, 0.2, 1];
   
   // Calculate destination X based on viewport width for responsive flow
+  // Use a larger value to ensure cards have more time to be visible
   const destinationX = typeof window !== 'undefined' ? 
     Math.min(1000, window.innerWidth * 0.9) : 900; 
 
@@ -51,47 +52,54 @@ const LeadCard = ({
         y: position?.y ?? 0,
         scale: isConverted ? 0.1 : 1, 
         opacity: isConverted ? 0 : 0.3, // Start with lower opacity for smoother entry
-        rotate: rotate ?? (Math.random() * 16 - 8)
+        rotate: rotate ?? (Math.random() * 16 - 8),
+        zIndex: isConverted ? 20 : 5 // All regular cards start at lower z-index
       }}
       animate={
         isConverted 
           ? {
+              // When converted, move across screen
               x: destinationX,
-              y: [0, -10, 0, 10, 0], // Add floating vertical motion
-              scale: [1, 0.95, 0.9], // Gradually scale down
-              opacity: [1, 0.8, 0], // Fade out as it moves
+              y: [0, -15, 0, 15, 0], // Add more pronounced floating vertical motion
+              scale: [1, 0.98, 0.9], // Gradually scale down more subtly
+              opacity: [1, 0.9, 0], // Fade out as it moves
               rotate: 0,
+              zIndex: 20, // Converted cards appear above
               transition: {
-                duration: 4.5, // Longer, more elegant duration
-                delay: staggerDelay,
+                duration: 6.5, // Much longer duration for slower flow
+                delay: staggerDelay * 1.5, // More staggered for distinct cards
                 ease: customEasing,
                 y: { // Custom y-axis floating animation
-                  repeat: 2,
-                  duration: 4.5,
+                  repeat: 3,
+                  duration: 6.5,
                   ease: "easeInOut"
                 }
               }
             }
           : isAbsorbed 
             ? { 
+                // When absorbed, go to center and behind logo
                 x: 0, 
                 y: 0, 
                 scale: 0.1, 
                 opacity: 0,
                 rotate: 0,
+                zIndex: 1, // Lower z-index to go behind the logo
                 transition: { 
-                  duration: 0.5, 
+                  duration: 0.8, // Slower absorption
                   ease: customEasing
                 }
               } 
             : { 
+                // Normal state, flowing to center
                 x: 0, 
                 y: 0, 
                 scale: 0.8,
                 opacity: 1,
+                zIndex: 5,
                 transition: { 
-                  duration: 2.5,
-                  delay: index * staggerDelay,
+                  duration: 3.2, // Slower initial movement
+                  delay: index * staggerDelay * 1.5, // More staggered
                   ease: customEasing 
                 }
               }
