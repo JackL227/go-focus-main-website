@@ -2,7 +2,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CircleCheck } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface LeadCardProps {
   index: number;
@@ -29,28 +28,17 @@ const LeadCard = ({
   name,
   action
 }: LeadCardProps) => {
-  const isMobile = useIsMobile();
-  
-  // Dynamic sizing based on screen size
   const sizeClasses = {
-    sm: isMobile ? 'w-14 h-7' : 'w-16 h-8',
-    md: isMobile ? 'w-18 h-9' : 'w-20 h-10',
-    lg: isMobile ? 'w-20 h-10' : 'w-24 h-12'
+    sm: 'w-16 h-8',
+    md: 'w-20 h-10',
+    lg: 'w-24 h-12'
   };
   
   const cardSize = sizeClasses[size];
-  
-  // Dynamic animation parameters based on screen size
-  const finalXPosition = isMobile ? 'calc(90vw)' : '1000px';
-  const animationDuration = isMobile ? 3.5 : 4.5;
-  
+
   return (
     <motion.div
-      className={`absolute ${
-        isConverted 
-          ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50 shadow-[0_4px_20px_rgba(255,255,255,0.15)]' 
-          : `${cardSize} rounded-full bg-[#1F1F22]`
-      } shadow-lg flex items-center justify-center`}
+      className={`absolute ${isConverted ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50' : `${cardSize} rounded-pill bg-[#1F1F22]`} shadow-lg flex items-center justify-center`}
       initial={{ 
         x: position?.x ?? (isConverted ? 0 : -350), 
         y: position?.y ?? 0,
@@ -61,43 +49,26 @@ const LeadCard = ({
       animate={
         isConverted 
           ? {
-              x: finalXPosition,
-              y: [
-                position?.y ?? 0,
-                (position?.y ?? 0) - 10,
-                position?.y ?? 0,
-                (position?.y ?? 0) + 10,
-                position?.y ?? 0
-              ],
-              scale: [1, 0.95, 0.9],
-              opacity: [1, 1, 0.8, 0.4, 0],
+              x: position?.x ?? 350,
+              y: position?.y ?? 0,
+              scale: 1,
+              opacity: 1,
               rotate: 0,
               transition: {
-                duration: animationDuration,
-                delay: index * 0.05,
-                ease: [0.4, 0, 0.2, 1],
-                opacity: {
-                  times: [0, 0.6, 0.8, 0.9, 1]
-                },
-                scale: {
-                  times: [0, 0.5, 1]
-                },
-                y: {
-                  times: [0, 0.25, 0.5, 0.75, 1],
-                  repeat: 1,
-                  repeatType: "reverse"
-                }
+                duration: 2.5,
+                delay: staggerDelay,
+                ease: "easeOut"
               }
             }
           : isAbsorbed 
             ? { 
                 x: 0, 
                 y: 0, 
-                scale: 0,
+                scale: 0.1, 
                 opacity: 0,
                 rotate: 0,
                 transition: { 
-                  duration: 0.3, 
+                  duration: 0.5, 
                   ease: "easeInOut" 
                 }
               } 
