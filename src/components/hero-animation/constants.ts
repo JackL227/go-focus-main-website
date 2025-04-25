@@ -5,7 +5,9 @@ export const ANIMATION_SETTINGS = {
   PROCESSING_DELAY_BASE: 2000,
   CONVERSION_DISPLAY_DURATION: 6000,
   STAGGER_DELAY: 0.8,
-  MOBILE_LEAD_COUNT: 3
+  MOBILE_LEAD_COUNT: 3,
+  NAME_CARD_START_X: 100,  // Starting position for name cards
+  NAME_CARD_END_X: 350    // Ending position for name cards
 } as const;
 
 export const generateLeadPositions = (count: number) => {
@@ -17,3 +19,4 @@ export const generateLeadPositions = (count: number) => {
   }
   return positions;
 };
+

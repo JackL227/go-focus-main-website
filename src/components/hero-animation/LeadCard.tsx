@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CircleCheck } from 'lucide-react';
+import { ANIMATION_SETTINGS } from './constants';
 
 interface LeadCardProps {
   index: number;
@@ -46,7 +47,7 @@ const LeadCard = ({
       animate={
         exitRight
           ? {
-              x: 350,
+              x: ANIMATION_SETTINGS.NAME_CARD_END_X,
               y: position?.y ?? 0,
               scale: 0.9,
               opacity: [0.9, 0.6, 0],
@@ -63,7 +64,7 @@ const LeadCard = ({
             }
           : isConverted 
             ? {
-                x: 100,
+                x: ANIMATION_SETTINGS.NAME_CARD_START_X,
                 y: position?.y ?? 0,
                 scale: [0.1, 1.1, 1],
                 opacity: 1,
@@ -143,3 +144,4 @@ const LeadCard = ({
 };
 
 export default LeadCard;
+
