@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CircleCheck } from 'lucide-react';
@@ -52,11 +53,11 @@ const LeadCard = ({
               rotate: 0,
               zIndex: 15,
               transition: {
-                duration: 4,
+                duration: 6,
                 ease: customEasing,
                 opacity: {
                   times: [0, 0.7, 1],
-                  duration: 4
+                  duration: 6
                 }
               }
             }
@@ -64,13 +65,18 @@ const LeadCard = ({
             ? {
                 x: 100,
                 y: position?.y ?? 0,
-                scale: 1,
+                scale: [0.1, 1.1, 1],
                 opacity: 1,
                 rotate: 0,
                 zIndex: 25,
                 transition: {
-                  duration: 0.6,
-                  ease: customEasing
+                  duration: 0.8,
+                  delay: 0.2,
+                  ease: customEasing,
+                  scale: {
+                    times: [0, 0.6, 1],
+                    duration: 0.8
+                  }
                 }
               }
             : isAbsorbed 
@@ -82,7 +88,7 @@ const LeadCard = ({
                   rotate: 0,
                   zIndex: 15,
                   transition: {
-                    duration: 1.2,
+                    duration: 2,
                     ease: customEasing
                   }
                 }
@@ -93,16 +99,16 @@ const LeadCard = ({
                   opacity: [0.9, 0.8, 0.7],
                   zIndex: 20,
                   transition: {
-                    duration: 3.5,
+                    duration: 4.5,
                     delay: index * staggerDelay,
                     ease: customEasing,
                     scale: {
                       times: [0, 0.5, 1],
-                      duration: 3.5
+                      duration: 4.5
                     },
                     opacity: {
                       times: [0, 0.5, 1],
-                      duration: 3.5
+                      duration: 4.5
                     }
                   }
                 }
