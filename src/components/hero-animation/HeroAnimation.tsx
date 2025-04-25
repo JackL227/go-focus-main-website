@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -7,11 +6,14 @@ import CenterLogo from './CenterLogo';
 
 // Constants for the animation
 const LEAD_COUNT = 15;
+const MOBILE_CARD_LIMIT = 12;
 
 // Create a more natural curved path with various Y positions
-const generateLeadPositions = () => {
+const generateLeadPositions = (isMobile: boolean) => {
   const positions = [];
-  for (let i = 0; i < LEAD_COUNT; i++) {
+  const count = isMobile ? MOBILE_CARD_LIMIT : LEAD_COUNT;
+  
+  for (let i = 0; i < count; i++) {
     // Create a curved path effect by varying Y coordinates more at the edges
     const xPos = -350 - Math.random() * 100;
     const yOffset = Math.random() * 400 - 200; // More vertical spread
@@ -19,8 +21,6 @@ const generateLeadPositions = () => {
   }
   return positions;
 };
-
-const LEAD_POSITIONS = generateLeadPositions();
 
 const NAMES = [
   'Beyoncé', 'Samantha K', 'Michael J', 'Taylor S', 
@@ -49,7 +49,7 @@ const HeroAnimation = () => {
     rotate: number;
     position?: {x: number, y: number};
   }>>([]);
-  
+
   const getRandomName = useCallback(() => 
     NAMES[Math.floor(Math.random() * NAMES.length)], []);
     
@@ -87,11 +87,11 @@ const HeroAnimation = () => {
   }, [getRandomName, getRandomAction]);
 
   useEffect(() => {
-    const LEAD_POSITIONS = generateLeadPositions();
+    const positions = generateLeadPositions(isMobile);
     const sizeOptions: Array<'sm' | 'md' | 'lg'> = ['sm', 'md', 'lg'];
     
     // Initialize leads with their positions
-    const initialLeads = LEAD_POSITIONS.map((position, i) => ({
+    const initialLeads = positions.map((position, i) => ({
       id: i,
       removed: false,
       absorbed: false,
@@ -121,15 +121,16 @@ const HeroAnimation = () => {
       };
       
       setLeads(prev => {
+        const maxLeads = isMobile ? MOBILE_CARD_LIMIT : 20;
         const filteredLeads = prev.filter(lead => !lead.removed);
-        return [...filteredLeads, newLead].slice(-20);
+        return [...filteredLeads, newLead].slice(-maxLeads);
       });
-    }, 800);
+    }, isMobile ? 1000 : 800);
     
     return () => clearInterval(leadInterval);
-  }, []);
+  }, [isMobile]);
 
-  // Process leads one by one with reduced delay
+  // Process leads one by one with optimized timing
   useEffect(() => {
     if (!processingLead && leads.length > 0) {
       const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed);

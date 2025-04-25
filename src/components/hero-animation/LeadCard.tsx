@@ -30,18 +30,27 @@ const LeadCard = ({
   action
 }: LeadCardProps) => {
   const isMobile = useIsMobile();
+  
+  // Dynamic sizing based on screen size
   const sizeClasses = {
-    sm: 'w-16 h-8',
-    md: 'w-20 h-10',
-    lg: 'w-24 h-12'
+    sm: isMobile ? 'w-14 h-7' : 'w-16 h-8',
+    md: isMobile ? 'w-18 h-9' : 'w-20 h-10',
+    lg: isMobile ? 'w-20 h-10' : 'w-24 h-12'
   };
   
   const cardSize = sizeClasses[size];
-  const finalXPosition = isMobile ? window.innerWidth - 50 : 800;
+  
+  // Dynamic animation parameters based on screen size
+  const finalXPosition = isMobile ? 'calc(90vw)' : '1000px';
+  const animationDuration = isMobile ? 3.5 : 4.5;
   
   return (
     <motion.div
-      className={`absolute ${isConverted ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50' : `${cardSize} rounded-full bg-[#1F1F22]`} shadow-lg flex items-center justify-center`}
+      className={`absolute ${
+        isConverted 
+          ? 'rounded-lg p-3 bg-[#1F1F22] border border-[#2d2d2d]/50 shadow-[0_4px_20px_rgba(255,255,255,0.15)]' 
+          : `${cardSize} rounded-full bg-[#1F1F22]`
+      } shadow-lg flex items-center justify-center`}
       initial={{ 
         x: position?.x ?? (isConverted ? 0 : -350), 
         y: position?.y ?? 0,
@@ -53,19 +62,30 @@ const LeadCard = ({
         isConverted 
           ? {
               x: finalXPosition,
-              y: [position?.y ?? 0, (position?.y ?? 0) + 30, (position?.y ?? 0) - 20, position?.y ?? 0],
-              scale: 1,
-              opacity: [1, 1, 0.8, 0],
+              y: [
+                position?.y ?? 0,
+                (position?.y ?? 0) - 10,
+                position?.y ?? 0,
+                (position?.y ?? 0) + 10,
+                position?.y ?? 0
+              ],
+              scale: [1, 0.95, 0.9],
+              opacity: [1, 1, 0.8, 0.4, 0],
               rotate: 0,
               transition: {
-                duration: 4,
+                duration: animationDuration,
                 delay: index * 0.05,
-                ease: [0.43, 0.13, 0.23, 0.96],
+                ease: [0.4, 0, 0.2, 1],
                 opacity: {
-                  times: [0, 0.7, 0.85, 1]
+                  times: [0, 0.6, 0.8, 0.9, 1]
+                },
+                scale: {
+                  times: [0, 0.5, 1]
                 },
                 y: {
-                  times: [0, 0.3, 0.7, 1]
+                  times: [0, 0.25, 0.5, 0.75, 1],
+                  repeat: 1,
+                  repeatType: "reverse"
                 }
               }
             }
