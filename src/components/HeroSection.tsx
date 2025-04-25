@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -29,7 +28,7 @@ const HeroSection = () => {
             </h1>
             
             <p className="text-xl text-foreground/90 opacity-0 animate-fade-in [animation-delay:500ms]" aria-label="Subheadline">
-              <span className="block mt-2 text-primary/90">AI-powered lead conversion for Trading Mentors, Med Spas and Fitness Influencers — automatically booking calls and reviving leads.</span>
+              <span className="block mt-2 text-primary/90">AI-powered lead conversion for Trading Mentors, Med Spas, Real Estate, and Fitness Influencers — automatically booking calls and reviving leads.</span>
             </p>
           </div>
           
@@ -58,12 +57,10 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Hero Animation with the lead flow */}
       <div className="w-full relative z-10">
         <HeroAnimation />
       </div>
       
-      {/* Seamless gradient transition to next section */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent z-[2]" />
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
