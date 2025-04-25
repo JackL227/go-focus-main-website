@@ -1,80 +1,57 @@
-import React, { useRef, useEffect } from 'react';
-import { Briefcase, Flower, Dumbbell, Building2, Car, Stethoscope, ArrowUpRight } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { cn } from '@/lib/utils';
+import React from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Lightbulb, ShoppingBag, Building, BookOpen, DumbbellIcon, Car, Stethoscope } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const industries = [
   {
-    id: 1,
     title: "Trading Mentors",
-    icon: Briefcase,
-    description: "Automate lead qualification and booking for trading courses and mentorship programs.",
-    results: [
-      "+30 booked consults per month",
-      "24/7 DM handling on all platforms",
-      "No more wasted time on unqualified leads"
-    ],
-    color: "from-primary/20 to-primary/5"
+    icon: <Lightbulb className="h-8 w-8" />,
+    description: "Deliver personalized strategies to clients, answer their questions 24/7, and scale your trading mentorship business.",
+    results: ["79% increase in client retention", "2.3x more leads converted", "165 hours saved monthly"],
+    color: "from-blue-600/30 via-blue-400/20 to-blue-600/30"
   },
   {
-    id: 2,
     title: "Med Spas",
-    icon: Flower,
-    description: "Qualify and book appointments for Botox, fillers, and aesthetic treatments.",
-    results: [
-      "45% increase in lead-to-appointment rate",
-      "Automated follow-ups with personalization",
-      "No missed calls during busy hours"
-    ],
-    color: "from-[#00E676]/20 to-[#00E676]/5"
+    icon: <ShoppingBag className="h-8 w-8" />,
+    description: "Book more appointments, answer patient questions instantly, and grow your med spa business with AI automation.",
+    results: ["43% increase in booking rate", "92% client satisfaction", "28 hours saved weekly"],
+    color: "from-violet-600/30 via-violet-400/20 to-violet-600/30"
   },
   {
-    id: 3,
-    title: "Real Estate Agents",
-    icon: Building2,
-    description: "Automate client acquisition, property inquiries, and lead nurturing.",
-    results: [
-      "5x faster client onboarding",
-      "Automated intake and property matching",
-      "Higher conversion from leads to closings"
-    ],
-    color: "from-[#FFC107]/20 to-[#FFC107]/5"
-  },
-  {
-    id: 4,
     title: "Fitness Influencers",
-    icon: Dumbbell,
-    description: "Automate client acquisition, program enrollment, and coaching lead generation.",
-    results: [
-      "5x faster client onboarding",
-      "Automated intake and goal tracking",
-      "Higher conversion from followers to paid clients"
-    ],
-    color: "from-[#9C27B0]/20 to-[#9C27B0]/5"
+    icon: <DumbbellIcon className="h-8 w-8" />,
+    description: "Scale your coaching business, answer follower questions instantly, and convert fans into paying clients.",
+    results: ["3.7x increase in program signups", "55% less time spent on DMs", "129% growth in revenue"],
+    color: "from-emerald-600/30 via-emerald-400/20 to-emerald-600/30"
   },
   {
-    id: 5,
+    title: "Real Estate Agencies",
+    icon: <Building className="h-8 w-8" />,
+    description: "Capture and nurture more leads, answer property questions instantly, and close deals faster with AI automation.",
+    results: ["41% more leads captured", "2.1x faster response time", "19% higher closing rate"],
+    color: "from-amber-600/30 via-amber-400/20 to-amber-600/30"
+  },
+  {
+    title: "Course Creators",
+    icon: <BookOpen className="h-8 w-8" />,
+    description: "Increase course completion rates, answer student questions 24/7, and improve satisfaction and results.",
+    results: ["68% improvement in completion", "98% question resolution rate", "4.1x more testimonials"],
+    color: "from-pink-600/30 via-pink-400/20 to-pink-600/30"
+  },
+  {
     title: "Vehicle Aesthetic Companies",
-    icon: Car,
-    description: "Automate lead booking for car detailing, ceramic coating, and paint protection services.",
-    results: [
-      "50% increase in service bookings",
-      "Automated package recommendations",
-      "Instant quotes and availability checks"
-    ],
-    color: "from-[#2196F3]/20 to-[#2196F3]/5"
+    icon: <Car className="h-8 w-8" />,
+    description: "Convert more detailing inquiries, book appointments instantly, and showcase your vehicle transformation services.",
+    results: ["57% increase in appointments", "32% higher average order value", "3.5x customer retention"],
+    color: "from-cyan-600/30 via-cyan-400/20 to-cyan-600/30"
   },
   {
-    id: 6,
     title: "Dental Clinics",
-    icon: Stethoscope,
-    description: "Streamline patient scheduling, treatment inquiries, and follow-up communications.",
-    results: [
-      "40% faster patient intake process",
-      "Automated insurance verification",
-      "Reduced no-show rates through smart reminders"
-    ],
-    color: "from-[#4CAF50]/20 to-[#4CAF50]/5"
+    icon: <Stethoscope className="h-8 w-8" />,
+    description: "Answer patient questions instantly, reduce no-shows, and fill your appointment calendar with qualified patients.",
+    results: ["68% reduction in no-shows", "2.4x increase in new patients", "47% boost in treatment acceptance"],
+    color: "from-red-600/30 via-red-400/20 to-red-600/30"
   }
 ];
 
