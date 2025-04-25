@@ -38,18 +38,18 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
         transition: { duration: 0.2 } 
       }}
       className={`
-        bg-[#1d1d1d] rounded-lg p-4 border border-[#2d2d2d]/50 shadow-lg
+        bg-[#1c1c1e] rounded-lg p-4 border border-[#2d2d2d]/50 shadow-lg
         ${isMobile ? 'min-w-[200px] flex-shrink-0' : 'w-full mb-3'}
       `}
     >
       <div className="flex items-center space-x-2">
         <motion.div 
-          className="w-2 h-2 rounded-full bg-[#00F5A0]" 
+          className="w-2 h-2 rounded-full bg-green-400" 
           animate={{ opacity: [0.6, 1, 0.6] }}
           transition={{ duration: 1.5, repeat: Infinity }}
         />
-        <div className="text-sm">
-          <span className="text-white font-medium">{name} </span>
+        <div className="text-sm font-medium">
+          <span className="text-white">{name} </span>
           <span className="text-gray-400">{action}</span>
         </div>
       </div>

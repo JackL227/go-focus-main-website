@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -5,19 +6,30 @@ import LeadCard from './LeadCard';
 import ProcessingLogo from './ProcessingLogo';
 import OutputCard from './OutputCard';
 
+// Names pool for output cards
 const NAMES = [
-  'John D', 'Sarah M', 'Michael T', 'Emma R', 'Daniel P', 
-  'Lisa W', 'Thomas B', 'Ashley K', 'Robert J', 'Jennifer L',
-  'Alex H', 'Sophia G', 'William F', 'Olivia N', 'James C',
+  'Jayden P', 'Marie L', 'Alex F', 'Tiffany R', 'James B', 
+  'Sarah M', 'Michael T', 'Emma R', 'Daniel P', 'Lisa W',
 ];
 
+// Actions pool for output cards
 const ACTIONS = [
-  'has enrolled into the mentorship',
-  'has scheduled a demo call',
-  'confirmed booking',
+  'booked a strategy call',
+  'enrolled into mentorship',
+  'joined the waitlist',
   'purchased premium plan',
-  'joined the program',
-  'requested a strategy session',
+  'scheduled a demo',
+  'requested consultation',
+];
+
+// Predefined lead positions for a curved path effect
+const LEAD_POSITIONS = [
+  { x: -350, y: -80 },
+  { x: -300, y: -30 },
+  { x: -250, y: 20 },
+  { x: -200, y: 70 },
+  { x: -280, y: 120 },
+  { x: -350, y: 150 },
 ];
 
 const HeroAnimation = () => {
@@ -27,6 +39,9 @@ const HeroAnimation = () => {
     id: number;
     removed: boolean;
     absorbed: boolean;
+    size: 'sm' | 'md' | 'lg';
+    rotate: number;
+    position?: {x: number, y: number};
   }>>([]);
   const [outputCards, setOutputCards] = useState<Array<{
     id: number;
@@ -70,37 +85,64 @@ const HeroAnimation = () => {
   }, [getRandomName, getRandomAction]);
   
   useEffect(() => {
-    const initialLeads = Array(5).fill(0).map((_, i) => ({
-      id: i,
-      removed: false,
-      absorbed: false
-    }));
+    // Create leads with positions from the reference image and varied sizes
+    const sizeOptions: Array<'sm' | 'md' | 'lg'> = ['sm', 'md', 'lg'];
+    
+    const initialLeads = Array(8).fill(0).map((_, i) => {
+      const randomSize = sizeOptions[Math.floor(Math.random() * sizeOptions.length)];
+      
+      // Use predefined positions for some cards, random for others
+      const position = i < LEAD_POSITIONS.length 
+        ? LEAD_POSITIONS[i] 
+        : { 
+            x: -350 - Math.random() * 100, 
+            y: (Math.random() * 300) - 150
+          };
+      
+      return {
+        id: i,
+        removed: false,
+        absorbed: false,
+        size: randomSize,
+        rotate: (Math.random() * 16 - 8),
+        position
+      };
+    });
+    
     setLeads(initialLeads);
     
+    // Initialize with sample output cards
     setOutputCards([
-      { id: 100, name: getRandomName(), action: getRandomAction() },
-      { id: 101, name: getRandomName(), action: getRandomAction() }
+      { id: 1, name: "Jayden P", action: "booked a strategy call" },
+      { id: 2, name: "Marie L", action: "enrolled into mentorship" }
     ]);
     
+    // Create new leads over time
     const leadInterval = setInterval(() => {
+      const randomSize = sizeOptions[Math.floor(Math.random() * sizeOptions.length)];
+      const randomPosition = { 
+        x: -350 - Math.random() * 100, 
+        y: (Math.random() * 300) - 150
+      };
+      
       const newLead = { 
         id: Date.now(), 
         removed: false,
-        absorbed: false
+        absorbed: false,
+        size: randomSize,
+        rotate: (Math.random() * 16 - 8),
+        position: randomPosition
       };
       
       setLeads(prev => {
         const filteredLeads = prev.filter(lead => !lead.removed);
-        const limitedLeads = [...filteredLeads, newLead].slice(-8);
-        return limitedLeads;
+        return [...filteredLeads, newLead].slice(-10); // Keep a max of 10 leads
       });
-    }, 3000);
+    }, 2000);
     
-    return () => {
-      clearInterval(leadInterval);
-    };
-  }, [getRandomName, getRandomAction]);
-  
+    return () => clearInterval(leadInterval);
+  }, []);
+
   useEffect(() => {
     if (!isProcessing && leads.length > 0) {
       const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed);
@@ -123,6 +165,10 @@ const HeroAnimation = () => {
                 key={lead.id}
                 index={index}
                 isAbsorbed={lead.absorbed}
+                size={lead.size}
+                rotate={lead.rotate}
+                position={lead.position}
+                staggerDelay={index * 0.2}
                 onComplete={() => processLead(lead.id)}
               />
             )

@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface LeadCardProps {
   index: number;
@@ -22,7 +21,6 @@ const LeadCard = ({
   staggerDelay = 0,
   position
 }: LeadCardProps) => {
-  const isMobile = useIsMobile();
   const maxX = typeof window !== 'undefined' ? window.innerWidth / 2 : 500;
   
   // Size variants for visual diversity
@@ -35,19 +33,17 @@ const LeadCard = ({
   const cardSize = sizeClasses[size];
 
   // Calculate initial position with more variation
-  const initialX = -maxX - (Math.random() * 100) - 50;
-  const initialY = isMobile 
-    ? index * 15 - 100 + (Math.random() * 40 - 20)
-    : (Math.random() * 200 - 100);
+  const initialX = position?.x ?? -350 - (Math.random() * 100);
+  const initialY = position?.y ?? (Math.random() * 200 - 100);
   
   const initialRotate = rotate || (Math.random() * 16 - 8);
   
   return (
     <motion.div
-      className={`absolute ${cardSize} rounded-lg bg-[#1A1B1F] shadow-lg flex items-center justify-center`}
+      className={`absolute ${cardSize} rounded-lg bg-[#1c1c1e] shadow-lg flex items-center justify-center`}
       initial={{ 
-        x: position?.x ?? initialX, 
-        y: position?.y ?? initialY,
+        x: initialX, 
+        y: initialY,
         scale: 1, 
         opacity: 0,
         rotate: initialRotate
@@ -62,8 +58,8 @@ const LeadCard = ({
             transition: { duration: 0.5, ease: "easeInOut" }
           } 
         : { 
-            x: Math.max(0, maxX * 0.5),
-            y: position?.y ?? (isMobile ? initialY : initialY), 
+            x: Math.max(0, maxX * 0.6),
+            y: initialY, 
             scale: 0.9,
             opacity: 1,
             rotate: initialRotate,

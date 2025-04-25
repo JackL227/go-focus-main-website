@@ -38,7 +38,7 @@ const AutomatedSalesCard = ({
         duration: 0.5, 
         delay,
       }}
-      className="w-full bg-[#1A1B1F] rounded-lg p-3 border border-[#2A2F3C]/50"
+      className="w-full bg-[#1c1c1e] rounded-lg p-3 border border-[#2A2F3C]/50"
     >
       <div className="flex items-center space-x-2">
         <CircleCheck className="w-4 h-4 text-green-400" />
