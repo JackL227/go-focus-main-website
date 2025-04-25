@@ -1,6 +1,5 @@
-
 import React, { useRef, useEffect } from 'react';
-import { Briefcase, Flower, Dumbbell, Building2, ArrowUpRight } from 'lucide-react';
+import { Briefcase, Flower, Dumbbell, Building2, Car, Tooth, ArrowUpRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { cn } from '@/lib/utils';
 
@@ -52,6 +51,30 @@ const industries = [
       "Higher conversion from followers to paid clients"
     ],
     color: "from-[#9C27B0]/20 to-[#9C27B0]/5"
+  },
+  {
+    id: 5,
+    title: "Vehicle Aesthetic Companies",
+    icon: Car,
+    description: "Automate lead booking for car detailing, ceramic coating, and paint protection services.",
+    results: [
+      "50% increase in service bookings",
+      "Automated package recommendations",
+      "Instant quotes and availability checks"
+    ],
+    color: "from-[#2196F3]/20 to-[#2196F3]/5"
+  },
+  {
+    id: 6,
+    title: "Dental Clinics",
+    icon: Tooth,
+    description: "Streamline patient scheduling, treatment inquiries, and follow-up communications.",
+    results: [
+      "40% faster patient intake process",
+      "Automated insurance verification",
+      "Reduced no-show rates through smart reminders"
+    ],
+    color: "from-[#4CAF50]/20 to-[#4CAF50]/5"
   }
 ];
 
