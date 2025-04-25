@@ -8,15 +8,22 @@ interface AutomatedSalesCardProps {
   delay?: number;
   index?: number;
   isRight?: boolean;
+  emoji?: string;
 }
+
+const EMOJIS = ["🎯", "🚀", "💼", "✨", "📅", "🤝"];
 
 const AutomatedSalesCard = ({ 
   name, 
   action, 
   delay = 0, 
   index = 0,
-  isRight = true 
+  isRight = true,
+  emoji
 }: AutomatedSalesCardProps) => {
+  // Random emoji or use provided one
+  const cardEmoji = emoji || EMOJIS[index % EMOJIS.length];
+  
   // Movement for right side cards vs center cards (for mobile)
   const animationProps = isRight ? {
     initial: { opacity: 0, x: 40, scale: 0.95 },
@@ -48,10 +55,11 @@ const AutomatedSalesCard = ({
       style={{ zIndex: 30 - index % 10 }}
     >
       <div className="flex items-center space-x-2">
-        <div className="w-2 h-2 rounded-full bg-[#00FF94] animate-pulse-soft shrink-0" />
+        <div className="w-2 h-2 rounded-full bg-[#00F5A0] animate-pulse-soft shrink-0" />
         <div className="text-sm">
-          <span className="text-white font-medium">{name} </span>
+          <span className="text-white font-semibold">{name} </span>
           <span className="text-gray-400">{action}</span>
+          <span className="ml-1">{cardEmoji}</span>
         </div>
       </div>
     </motion.div>

@@ -12,31 +12,21 @@ const ProcessMessage = ({ message, isVisible }: ProcessMessageProps) => {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -20, scale: 0.9 }}
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 20
-          }}
-          className="absolute top-1/4 left-1/2 -translate-x-1/2 bg-[#1A1F2C]/80 backdrop-blur-sm border border-[#2A2F3C] px-6 py-3 rounded-lg shadow-lg z-30"
+          className="absolute z-30 py-1 px-3 rounded-full bg-[#1A1F2C]/90 backdrop-blur-sm border border-[#00F5A0]/30 shadow-md"
+          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8, y: -20 }}
+          transition={{ type: "spring", stiffness: 500, damping: 30 }}
         >
-          <span className="text-white font-medium flex items-center">
-            {message}
-            <motion.div 
-              animate={{
-                scale: [1, 1.15, 1],
-                opacity: [0.7, 1, 0.7]
+          <div className="flex items-center space-x-2">
+            <div
+              className="w-2 h-2 rounded-full bg-[#00F5A0]"
+              style={{
+                animation: "pulse 1s infinite",
               }}
-              transition={{
-                duration: 1.2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="ml-2 w-1.5 h-1.5 bg-blue-400 rounded-full"
             />
-          </span>
+            <span className="text-white text-sm font-medium">{message}</span>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

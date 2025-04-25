@@ -25,16 +25,18 @@ const NAMES = [
 
 // Actions for sales updates
 const ACTIONS = [
-  "has enrolled into the mentorship",
-  "has scheduled a demo call",
+  "booked a call",
+  "joined your mentorship",
+  "became a client",
+  "scheduled a demo",
   "confirmed booking",
   "purchased premium plan",
-  "joined the program",
-  "signed up for coaching",
   "requested a strategy session",
-  "converted from cold lead",
-  "completed onboarding"
+  "converted from cold lead"
 ];
+
+// Emojis for output cards
+const EMOJIS = ["🎯", "🚀", "💼", "✨", "📅", "🤝"];
 
 const FlowAnimation = () => {
   const isMobile = useIsMobile();
@@ -45,12 +47,17 @@ const FlowAnimation = () => {
     id: number; 
     removed: boolean;
     absorbedByLogo: boolean;
+    size: 'sm' | 'md' | 'lg';
+    rotate: number;
+    rotateY: number;
+    index: number;
   }>>([]);
   const [salesUpdates, setSalesUpdates] = useState<Array<{
     id: number;
     name: string;
     action: string;
     initialDelay: number;
+    emoji: string;
   }>>([]);
 
   // Generate random values
@@ -64,6 +71,15 @@ const FlowAnimation = () => {
   
   const getRandomMessage = useCallback(() => {
     return MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
+  }, []);
+  
+  const getRandomEmoji = useCallback(() => {
+    return EMOJIS[Math.floor(Math.random() * EMOJIS.length)]; 
+  }, []);
+  
+  const getRandomSize = useCallback((): 'sm' | 'md' | 'lg' => {
+    const sizes: ('sm' | 'md' | 'lg')[] = ['sm', 'md', 'lg'];
+    return sizes[Math.floor(Math.random() * sizes.length)];
   }, []);
 
   // Process a lead when it reaches the logo
@@ -80,7 +96,8 @@ const FlowAnimation = () => {
       id: Date.now(),
       name: getRandomName(),
       action: getRandomAction(),
-      initialDelay: 0.2
+      initialDelay: 0.2,
+      emoji: getRandomEmoji()
     };
     
     setTimeout(() => {
@@ -92,23 +109,27 @@ const FlowAnimation = () => {
       setShowMessage(false);
       setProcessingLead(false);
     }, 800);
-  }, [getRandomMessage, getRandomName, getRandomAction]);
+  }, [getRandomMessage, getRandomName, getRandomAction, getRandomEmoji]);
 
   // Initialize and manage lead generation
   useEffect(() => {
-    // Generate initial leads
+    // Generate initial leads with more variety
     const initialLeadCount = isMobile ? 8 : 12;
     const initialLeads = Array(initialLeadCount).fill(0).map((_, i) => ({
       id: i,
       removed: false,
-      absorbedByLogo: false
+      absorbedByLogo: false,
+      size: getRandomSize(),
+      rotate: (i % 3 - 1) * 5,
+      rotateY: i % 2 * 5,
+      index: i
     }));
     setLeads(initialLeads);
     
     // Initial sales updates
     setSalesUpdates([
-      { id: 1, name: getRandomName(), action: getRandomAction(), initialDelay: 0 },
-      { id: 2, name: getRandomName(), action: getRandomAction(), initialDelay: 0.3 }
+      { id: 1, name: getRandomName(), action: getRandomAction(), initialDelay: 0, emoji: getRandomEmoji() },
+      { id: 2, name: getRandomName(), action: getRandomAction(), initialDelay: 0.3, emoji: getRandomEmoji() }
     ]);
     
     // Generate new leads periodically
@@ -116,7 +137,11 @@ const FlowAnimation = () => {
       const newLead = { 
         id: Date.now(), 
         removed: false,
-        absorbedByLogo: false
+        absorbedByLogo: false,
+        size: getRandomSize(),
+        rotate: (Math.random() * 10 - 5),
+        rotateY: Math.random() * 10,
+        index: Date.now() % 10
       };
       
       setLeads(prev => {
@@ -126,7 +151,7 @@ const FlowAnimation = () => {
     }, 2000); // Generate new lead every 2 seconds
     
     return () => clearInterval(leadInterval);
-  }, [isMobile, getRandomName, getRandomAction]);
+  }, [isMobile, getRandomName, getRandomAction, getRandomEmoji, getRandomSize]);
 
   // Process leads that reach the logo
   useEffect(() => {
@@ -171,12 +196,15 @@ const FlowAnimation = () => {
       />
       
       <AnimatePresence>
-        {leads.map((lead, index) => (
+        {leads.map((lead) => (
           !lead.removed && (
             <LeadCard 
               key={lead.id}
-              index={index}
+              index={lead.index}
               isAbsorbed={lead.absorbedByLogo}
+              size={lead.size}
+              rotate={lead.rotate}
+              rotateY={lead.rotateY}
               onComplete={() => {
                 setLeads(prev => 
                   prev.map(l => 
@@ -219,6 +247,7 @@ const FlowAnimation = () => {
                   delay={update.initialDelay + (index * 0.15)}
                   index={index}
                   isRight={!isMobile}
+                  emoji={update.emoji}
                 />
               ))}
             </AnimatePresence>

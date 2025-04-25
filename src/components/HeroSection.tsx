@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
-import HeroAnimation from './hero-animation/HeroAnimation';
+import FlowAnimation from './FlowAnimation';
 
 const HeroSection = () => {
   const { user } = useAuth();
@@ -58,9 +58,9 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Hero Animation - enhanced with proper height and positioning */}
+      {/* Flow Animation - the enhanced hero animation */}
       <div className="w-full relative z-10 mt-8">
-        <HeroAnimation />
+        <FlowAnimation />
       </div>
       
       {/* Glass divider */}
