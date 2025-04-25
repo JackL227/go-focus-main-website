@@ -1,10 +1,10 @@
+
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
-import GlassmorphicHero from './GlassmorphicHero';
 import FlowAnimation from './FlowAnimation';
 
 const HeroSection = () => {
@@ -20,11 +20,6 @@ const HeroSection = () => {
       className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden bg-[#010101]" 
       aria-label="Hero section"
     >
-      {/* Glassmorphic background animation */}
-      <div className="absolute inset-0 z-0">
-        <GlassmorphicHero />
-      </div>
-      
       <div className="container-custom relative z-10 py-16">
         <div className="flex flex-col items-center max-w-4xl mx-auto text-center">
           <div className="space-y-6 mb-8">
@@ -63,8 +58,8 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Flow Animation Component */}
-      <div className="w-full h-[600px] relative z-10">
+      {/* Flow Animation - full width and prominent */}
+      <div className="w-full h-[600px] relative z-10 mt-0">
         <FlowAnimation />
       </div>
       
