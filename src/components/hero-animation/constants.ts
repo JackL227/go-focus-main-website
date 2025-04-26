@@ -1,16 +1,21 @@
+
 export const ANIMATION_SETTINGS = {
   LEAD_COUNT: 3,
-  LEAD_GENERATION_INTERVAL: 4000,
+  LEAD_GENERATION_INTERVAL: 6000, // Increased for slower, more premium feel
   PROCESSING_DELAY_BASE: 3000,
-  CONVERSION_DISPLAY_DURATION: 2000,
-  STAGGER_DELAY: 2,
+  CONVERSION_DISPLAY_DURATION: 4000, // Increased to allow for smoother transitions
+  STAGGER_DELAY: 3, // Increased for more spacing between leads
   MOBILE_LEAD_COUNT: 2,
   NAME_CARD_START_X: 100,
   NAME_CARD_END_X: 350,
   CARD_HEIGHT: 50,
   VERTICAL_SPACING: 70,
   START_X: -350,
-  NAME_CARD_DISPLAY_COUNT: 1
+  NAME_CARD_DISPLAY_COUNT: 1,
+  LEAD_SCALE_START: 1.2, // New: Starting scale for leads
+  LEAD_SCALE_END: 0.8,  // New: Ending scale before absorption
+  ABSORPTION_DURATION: 0.8, // New: Duration for absorption animation
+  RESULT_EMERGENCE_DELAY: 500, // New: Delay before showing result
 } as const;
 
 export const CONVERSION_TYPES = [

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CircleCheck } from 'lucide-react';
@@ -30,16 +29,12 @@ const LeadCard = ({
   exitRight = false
 }: LeadCardProps) => {
   const customEasing = [0.4, 0, 0.2, 1];
+  const absorptionEasing = [0.6, 0.01, 0.05, 0.95];
   
-  // Scale factor based on depth (closer items are bigger)
-  const scaleBase = 0.9 + (depth * 0.2); // Scale between 0.9 and 1.1
-  
-  // Speed factor based on depth (closer items move faster)
-  const durationBase = 4.5 - (depth * 1.5); // Duration between 3.0 and 4.5
-  
-  // Vertical wobble - more pronounced for closer items
-  const wobbleAmount = 5 + (depth * 10); // Wobble between 5px and 15px
-  
+  const scaleBase = ANIMATION_SETTINGS.LEAD_SCALE_START - (depth * 0.3);
+  const durationBase = 5.5 - (depth * 1.5);
+  const wobbleAmount = 5 + (depth * 8);
+
   return (
     <motion.div
       className={`absolute ${
@@ -50,31 +45,26 @@ const LeadCard = ({
       initial={{ 
         x: position?.x ?? -350, 
         y: position?.y ?? 0,
-        scale: isConverted ? 0.1 : scaleBase, 
+        scale: isConverted ? 0.1 : ANIMATION_SETTINGS.LEAD_SCALE_START,
         opacity: 0.5,
         rotate: Math.random() * 4 - 2,
-        zIndex: isConverted ? 25 : Math.floor(depth * 30) // Z-index based on depth
+        zIndex: isConverted ? 25 : Math.floor(depth * 30)
       }}
       animate={
         exitRight
           ? {
               x: ANIMATION_SETTINGS.NAME_CARD_END_X,
               y: position?.y ?? 0,
-              scale: 0.9,
+              scale: [0.9, 1.05],
               opacity: [0.9, 0.6, 0],
               rotate: [0, 2, 5],
               zIndex: 15,
               transition: {
-                duration: 6,
+                duration: 4,
                 ease: customEasing,
-                opacity: {
-                  times: [0, 0.7, 1],
-                  duration: 6
-                },
-                rotate: {
-                  times: [0, 0.5, 1],
-                  duration: 6
-                }
+                opacity: { times: [0, 0.7, 1], duration: 4 },
+                scale: { times: [0, 1], duration: 4 },
+                rotate: { times: [0, 0.5, 1], duration: 4 }
               }
             }
           : isConverted 
@@ -83,47 +73,41 @@ const LeadCard = ({
                 y: position?.y ?? 0,
                 scale: [0.1, 1.1, 1],
                 opacity: 1,
-                rotate: [-5, 2, 0],
+                rotate: [-2, 1, 0],
                 zIndex: 25,
                 transition: {
-                  duration: 0.8,
-                  delay: 0.2,
+                  duration: 1.2,
+                  delay: ANIMATION_SETTINGS.RESULT_EMERGENCE_DELAY / 1000,
                   ease: customEasing,
-                  scale: {
-                    times: [0, 0.6, 1],
-                    duration: 0.8
-                  },
-                  rotate: {
-                    times: [0, 0.7, 1],
-                    duration: 0.8
-                  }
+                  scale: { times: [0, 0.6, 1], duration: 1.2 },
+                  rotate: { times: [0, 0.7, 1], duration: 1.2 }
                 }
               }
             : isAbsorbed 
               ? { 
                   x: 0,
                   y: 0,
-                  scale: 0.1,
-                  opacity: 0,
+                  scale: [ANIMATION_SETTINGS.LEAD_SCALE_END, 0.1],
+                  opacity: [1, 0],
                   rotate: 0,
                   zIndex: 15,
                   filter: "brightness(1.5)",
                   transition: {
-                    duration: 0.8,
-                    ease: [0.19, 1.0, 0.22, 1.0] // Exaggerated ease-out for absorption
+                    duration: ANIMATION_SETTINGS.ABSORPTION_DURATION,
+                    ease: absorptionEasing
                   }
                 }
               : {
                   x: 0,
                   y: [position?.y ?? 0, (position?.y ?? 0) + wobbleAmount, (position?.y ?? 0) - wobbleAmount/2, position?.y ?? 0],
-                  scale: [scaleBase, scaleBase * 0.97, scaleBase * 0.94],
+                  scale: [scaleBase, scaleBase * 0.97, ANIMATION_SETTINGS.LEAD_SCALE_END],
                   opacity: [0.9, 0.85, 0.8],
-                  rotate: [Math.random() * 3 - 1.5, Math.random() * 3 - 1.5, 0],
+                  rotate: [Math.random() * 3 - 1.5, Math.random() * 2 - 1, 0],
                   zIndex: Math.floor(depth * 30),
                   transition: {
                     duration: durationBase,
                     delay: index * staggerDelay,
-                    ease: customEasing,
+                    ease: "easeInOut",
                     y: {
                       times: [0, 0.3, 0.7, 1],
                       repeat: 0,
@@ -131,15 +115,8 @@ const LeadCard = ({
                     },
                     scale: {
                       times: [0, 0.5, 1],
-                      duration: durationBase
-                    },
-                    opacity: {
-                      times: [0, 0.5, 1],
-                      duration: durationBase
-                    },
-                    rotate: {
-                      times: [0, 0.5, 1],
-                      duration: durationBase
+                      duration: durationBase,
+                      ease: "easeIn"
                     }
                   }
                 }
@@ -155,10 +132,6 @@ const LeadCard = ({
           : '0 2px 8px rgba(0, 0, 0, 0.25), 0 0 3px rgba(0, 245, 160, 0.15)',
         transform: `perspective(1000px) translateZ(${depth * 10}px)`,
       }}
-      whileHover={{
-        scale: isConverted ? 1.03 : scaleBase * 1.05,
-        transition: { duration: 0.2 }
-      }}
     >
       {isConverted ? (
         <div className="flex items-center space-x-2">
@@ -173,7 +146,6 @@ const LeadCard = ({
       ) : (
         <div className="flex items-center justify-center w-full h-full relative overflow-hidden">
           <span className="text-white/90 text-xs font-medium relative z-10">Lead</span>
-          {/* Shimmer effect */}
           <motion.div 
             className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
             animate={{
