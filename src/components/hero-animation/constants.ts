@@ -20,11 +20,13 @@ export const ANIMATION_SETTINGS = {
 
 export const CONVERSION_TYPES = [
   'joined program',
-  'enrolled',
-  'became customer',
-  'completed purchase',
-  'scheduled call',
-  'started trial'
+  'enrolled in course',
+  'became student',
+  'purchased course',
+  'scheduled consultation',
+  'started free trial',
+  'signed up for webinar',
+  'completed purchase'
 ] as const;
 
 export const generateLeadPositions = (count: number) => {

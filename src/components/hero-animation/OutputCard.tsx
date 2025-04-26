@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CircleCheck } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 
 interface OutputCardProps {
   name: string;
@@ -43,7 +43,7 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
     >
       <div className="flex items-center space-x-2">
         <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-          <CircleCheck className="w-3 h-3 text-primary shrink-0" />
+          <BookOpen className="w-3 h-3 text-primary shrink-0" />
         </div>
         <div className="text-sm font-medium">
           <span className="text-white">{name} </span>

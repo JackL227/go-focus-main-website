@@ -14,6 +14,15 @@ const industries = [
     color: "from-blue-600/30 via-blue-400/20 to-blue-600/30"
   },
   {
+    id: "course-creators",
+    title: "Course Creators",
+    icon: BookOpen,
+    description: "Increase course completion rates, answer student questions 24/7, and improve satisfaction and results.",
+    results: ["68% improvement in completion", "98% question resolution rate", "4.1x more testimonials"],
+    color: "from-pink-600/30 via-pink-400/20 to-pink-600/30",
+    featured: true
+  },
+  {
     id: "med-spas",
     title: "Med Spas",
     icon: ShoppingBag,
@@ -36,14 +45,6 @@ const industries = [
     description: "Capture and nurture more leads, answer property questions instantly, and close deals faster with AI automation.",
     results: ["41% more leads captured", "2.1x faster response time", "19% higher closing rate"],
     color: "from-amber-600/30 via-amber-400/20 to-amber-600/30"
-  },
-  {
-    id: "course-creators",
-    title: "Course Creators",
-    icon: BookOpen,
-    description: "Increase course completion rates, answer student questions 24/7, and improve satisfaction and results.",
-    results: ["68% improvement in completion", "98% question resolution rate", "4.1x more testimonials"],
-    color: "from-pink-600/30 via-pink-400/20 to-pink-600/30"
   },
   {
     id: "vehicle-aesthetic",
@@ -124,19 +125,30 @@ const IndustryResultsSection = () => {
             <div 
               key={industry.id} 
               ref={el => cardRefs.current[index] = el}
-              className="opacity-0 transition-all duration-500"
+              className={cn(
+                "opacity-0 transition-all duration-500",
+                industry.featured ? "md:col-span-2" : ""
+              )}
               style={{ transitionDelay: `${index * 200}ms` }}
             >
               <Card className={cn(
                 "h-full border-0 bg-gradient-to-b", 
                 industry.color,
+                industry.featured ? "border-2 border-primary/30" : "",
                 "hover-lift overflow-hidden"
               )}>
                 <CardHeader className="pb-2">
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                     {React.createElement(industry.icon, { className: "text-primary", size: 24 })}
                   </div>
-                  <CardTitle className="text-xl">{industry.title}</CardTitle>
+                  <CardTitle className="text-xl flex items-center gap-2">
+                    {industry.title}
+                    {industry.featured && (
+                      <span className="bg-primary/20 text-primary text-xs px-2.5 py-0.5 rounded-full">
+                        Popular
+                      </span>
+                    )}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-foreground/80 mb-6">{industry.description}</p>
@@ -150,6 +162,16 @@ const IndustryResultsSection = () => {
                       </div>
                     ))}
                   </div>
+                  
+                  {industry.id === "course-creators" && (
+                    <a 
+                      href="/course-creator" 
+                      className="mt-4 inline-flex items-center text-primary hover:underline"
+                    >
+                      View Course Creator Solution
+                      <ArrowUpRight size={16} className="ml-1" />
+                    </a>
+                  )}
                 </CardContent>
               </Card>
             </div>
