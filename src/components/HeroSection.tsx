@@ -29,7 +29,7 @@ const HeroSection = () => {
             </h1>
             
             <p className="text-xl text-foreground/90 opacity-0 animate-fade-in [animation-delay:500ms]" aria-label="Subheadline">
-              <span className="block mt-2 text-primary/90">AI-powered lead conversion for Trading Mentors, Med Spas, Real Estate, and Fitness Influencers — automatically booking calls and reviving leads.</span>
+              <span className="block mt-2 text-primary/90">We create AI systems that automate your lead generation, client follow-up, and call booking processes, helping you scale efficiently.</span>
             </p>
           </div>
           
