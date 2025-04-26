@@ -11,6 +11,7 @@ interface OutputCardProps {
 }
 
 const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
+  // Enhanced animation properties for smoother transitions
   const animationProps = isMobile ? {
     initial: { opacity: 0, y: 20, scale: 0.95, rotate: -2 },
     animate: { opacity: 1, y: 0, scale: 1, rotate: 0 },
@@ -26,10 +27,10 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
       {...animationProps}
       transition={{ 
         type: "spring", 
-        stiffness: 300, 
-        damping: 30,
+        stiffness: 280, // Slightly lower for smoother effect
+        damping: 25,  // Adjusted for less oscillation
         mass: 1,
-        duration: 0.8
+        duration: 0.9
       }}
       className={`
         bg-[#1F1F22]/90 backdrop-blur-sm rounded-lg p-4 border border-[#2d2d2d]/50 shadow-lg
@@ -38,6 +39,7 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
       `}
       whileHover={{ 
         scale: 1.02,
+        boxShadow: "0 5px 20px rgba(0,0,0,0.2), 0 0 15px rgba(0,245,160,0.2)",
         transition: { duration: 0.3 }
       }}
     >
