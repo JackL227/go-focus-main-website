@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CircleCheck } from 'lucide-react';
@@ -29,18 +28,12 @@ const LeadCard = ({
   action,
   exitRight = false
 }: LeadCardProps) => {
-  // Enhanced easing functions for smoother, more natural motion
-  const customEasing = [0.34, 0.82, 0.39, 1]; // Smooth out
-  const absorptionEasing = [0.54, 0.01, 0.3, 0.99]; // More natural absorption
+  const customEasing = [0.4, 0, 0.2, 1];
+  const absorptionEasing = [0.6, 0.01, 0.05, 0.95];
   
-  // Scale based on depth for a more realistic perspective effect
-  const scaleBase = ANIMATION_SETTINGS.LEAD_SCALE_START - (depth * 0.4);
-  
-  // Duration varies slightly based on depth for more natural movement
-  const durationBase = ANIMATION_SETTINGS.LEAD_FLOW_DURATION_BASE - (depth * ANIMATION_SETTINGS.LEAD_FLOW_DURATION_VARIATION);
-  
-  // Subtle wobble for floating effect, increases with depth
-  const wobbleAmount = 5 + (depth * 10);
+  const scaleBase = ANIMATION_SETTINGS.LEAD_SCALE_START - (depth * 0.3);
+  const durationBase = 5.5 - (depth * 1.5);
+  const wobbleAmount = 5 + (depth * 8);
 
   return (
     <motion.div
@@ -52,7 +45,7 @@ const LeadCard = ({
       initial={{ 
         x: position?.x ?? -350, 
         y: position?.y ?? 0,
-        scale: isConverted ? 0.1 : scaleBase,
+        scale: isConverted ? 0.1 : ANIMATION_SETTINGS.LEAD_SCALE_START,
         opacity: 0.5,
         rotate: Math.random() * 4 - 2,
         zIndex: isConverted ? 25 : Math.floor(depth * 30)
@@ -60,41 +53,38 @@ const LeadCard = ({
       animate={
         exitRight
           ? {
-              // Smooth exit to the right with natural easing
               x: ANIMATION_SETTINGS.NAME_CARD_END_X,
               y: position?.y ?? 0,
-              scale: [1, 0.95],
-              opacity: [1, 0.7, 0],
-              rotate: [0, 1, 2],
+              scale: [0.9, 1.05],
+              opacity: [0.9, 0.6, 0],
+              rotate: [0, 2, 5],
               zIndex: 15,
               transition: {
-                duration: ANIMATION_SETTINGS.EXIT_DURATION,
+                duration: 4,
                 ease: customEasing,
-                opacity: { times: [0, 0.7, 1], duration: ANIMATION_SETTINGS.EXIT_DURATION },
-                scale: { times: [0, 1], duration: ANIMATION_SETTINGS.EXIT_DURATION },
-                rotate: { times: [0, 0.5, 1], duration: ANIMATION_SETTINGS.EXIT_DURATION }
+                opacity: { times: [0, 0.7, 1], duration: 4 },
+                scale: { times: [0, 1], duration: 4 },
+                rotate: { times: [0, 0.5, 1], duration: 4 }
               }
             }
           : isConverted 
             ? {
-                // Smooth emergence of name card from center
                 x: ANIMATION_SETTINGS.NAME_CARD_START_X,
                 y: position?.y ?? 0,
-                scale: [0.1, 1.05, 1],
+                scale: [0.1, 1.1, 1],
                 opacity: 1,
-                rotate: [-1, 0.5, 0],
+                rotate: [-2, 1, 0],
                 zIndex: 25,
                 transition: {
-                  duration: 0.9,
+                  duration: 1.2,
                   delay: ANIMATION_SETTINGS.RESULT_EMERGENCE_DELAY / 1000,
                   ease: customEasing,
-                  scale: { times: [0, 0.7, 1], duration: 0.9 },
-                  rotate: { times: [0, 0.7, 1], duration: 0.9 }
+                  scale: { times: [0, 0.6, 1], duration: 1.2 },
+                  rotate: { times: [0, 0.7, 1], duration: 1.2 }
                 }
               }
             : isAbsorbed 
               ? { 
-                  // Smooth absorption into the center logo
                   x: 0,
                   y: 0,
                   scale: [ANIMATION_SETTINGS.LEAD_SCALE_END, 0.1],
@@ -108,16 +98,10 @@ const LeadCard = ({
                   }
                 }
               : {
-                  // Gradual flow from left to center with natural motion
                   x: 0,
-                  y: [
-                    position?.y ?? 0, 
-                    (position?.y ?? 0) + wobbleAmount, 
-                    (position?.y ?? 0) - wobbleAmount/2, 
-                    position?.y ?? 0
-                  ],
-                  scale: [scaleBase, scaleBase * 0.92, ANIMATION_SETTINGS.LEAD_SCALE_END],
-                  opacity: [0.95, 0.9, 0.85],
+                  y: [position?.y ?? 0, (position?.y ?? 0) + wobbleAmount, (position?.y ?? 0) - wobbleAmount/2, position?.y ?? 0],
+                  scale: [scaleBase, scaleBase * 0.97, ANIMATION_SETTINGS.LEAD_SCALE_END],
+                  opacity: [0.9, 0.85, 0.8],
                   rotate: [Math.random() * 3 - 1.5, Math.random() * 2 - 1, 0],
                   zIndex: Math.floor(depth * 30),
                   transition: {
@@ -130,9 +114,9 @@ const LeadCard = ({
                       duration: durationBase
                     },
                     scale: {
-                      times: [0, 0.6, 1],
+                      times: [0, 0.5, 1],
                       duration: durationBase,
-                      ease: "easeIn" // Gradually accelerate scaling down
+                      ease: "easeIn"
                     }
                   }
                 }

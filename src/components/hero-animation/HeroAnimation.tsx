@@ -1,10 +1,9 @@
-
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LeadCard from './LeadCard';
 import CenterLogo from './CenterLogo';
-import { ANIMATION_SETTINGS, generateLeadPositions, CONVERSION_TYPES } from './constants';
+import { ANIMATION_SETTINGS, generateLeadPositions } from './constants';
 import ProcessMessage from './ProcessMessage';
 import OutputCard from './OutputCard';
 
@@ -18,7 +17,8 @@ const {
   NAME_CARD_DISPLAY_COUNT
 } = ANIMATION_SETTINGS;
 
-const NAMES = ['Sarah M.', 'Michael R.', 'Emma W.', 'James L.', 'Lisa K.', 'David P.', 'Anna S.', 'John T.', 'Alex C.', 'Olivia J.', 'Daniel P.', 'Sophie W.'];
+const NAMES = ['Sarah M.', 'Michael R.', 'Emma W.', 'James L.', 'Lisa K.', 'David P.', 'Anna S.', 'John T.'];
+const ACTIONS = ['scheduled a call', 'booked a session', 'joined program', 'started trial'];
 
 const HeroAnimation = () => {
   const isMobile = useIsMobile();
@@ -50,9 +50,8 @@ const HeroAnimation = () => {
   const leadInterval = useRef<NodeJS.Timeout | null>(null);
   
   const getRandomName = useCallback(() => NAMES[Math.floor(Math.random() * NAMES.length)], []);
-  const getRandomAction = useCallback(() => CONVERSION_TYPES[Math.floor(Math.random() * CONVERSION_TYPES.length)], []);
+  const getRandomAction = useCallback(() => ACTIONS[Math.floor(Math.random() * ACTIONS.length)], []);
   
-  // Process a lead when it reaches the center
   const processLead = useCallback((leadId: number) => {
     if (!animationActive.current) return;
     
@@ -63,13 +62,10 @@ const HeroAnimation = () => {
       'Scheduling call...',
       'Booking appointment...',
       'Qualifying lead...',
-      'Processing inquiry...',
-      'Analyzing data...',
     ];
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
     setProcessMessage(randomMessage);
     
-    // Mark lead as absorbed
     setLeads(prev => prev.map(lead => lead.id === leadId ? {
       ...lead,
       absorbed: true,
@@ -79,15 +75,13 @@ const HeroAnimation = () => {
       }
     } : lead));
     
-    // After a delay, mark the lead as removed and add a converted card
     setTimeout(() => {
       setLeads(prev => {
         const processedLead = prev.find(lead => lead.id === leadId);
         
         if (processedLead?.convertedLead) {
-          // Show just one output card at a time for cleaner visual
           setOutputCards(cards => {
-            const maxCards = isMobile ? 1 : NAME_CARD_DISPLAY_COUNT;
+            const maxCards = isMobile ? 3 : NAME_CARD_DISPLAY_COUNT;
             const newCards = [
               {
                 id: Date.now(),
@@ -110,20 +104,6 @@ const HeroAnimation = () => {
       setProcessingLead(false);
       setProcessMessage('');
       
-      // Auto-remove older output cards after display duration
-      setTimeout(() => {
-        if (animationActive.current) {
-          setOutputCards(cards => {
-            if (cards.length > 0) {
-              const [_, ...rest] = cards;
-              return rest;
-            }
-            return cards;
-          });
-        }
-      }, CONVERSION_DISPLAY_DURATION);
-      
-      // Add a new lead after processing
       setTimeout(() => {
         if (animationActive.current) {
           addNewLead();
@@ -132,7 +112,6 @@ const HeroAnimation = () => {
     }, PROCESSING_DELAY_BASE);
   }, [getRandomName, getRandomAction, isMobile]);
   
-  // Add a new lead to the animation
   const addNewLead = useCallback(() => {
     if (!animationActive.current) return;
     
@@ -140,7 +119,6 @@ const HeroAnimation = () => {
     const randomIndex = Math.floor(Math.random() * positions.length);
     const basePosition = positions[randomIndex];
     
-    // Add some natural variation
     const verticalVariation = Math.random() * 40 - 20;
     const depth = Math.random();
     
@@ -170,11 +148,9 @@ const HeroAnimation = () => {
     });
   }, [isMobile]);
   
-  // Initialize animation on component mount
   useEffect(() => {
     animationActive.current = true;
     
-    // Start with a single lead
     const initialPosition = generateLeadPositions(1)[0];
     const verticalVariation = Math.random() * 30 - 15;
     
@@ -190,7 +166,6 @@ const HeroAnimation = () => {
       exitRight: false
     }]);
     
-    // Set up periodic lead generation
     const setupNextLeadInterval = () => {
       const randomInterval = LEAD_GENERATION_INTERVAL + (Math.random() * 1000 - 500);
       
@@ -204,7 +179,6 @@ const HeroAnimation = () => {
     
     setupNextLeadInterval();
     
-    // Cleanup on unmount
     return () => {
       animationActive.current = false;
       if (leadInterval.current) {
@@ -213,7 +187,6 @@ const HeroAnimation = () => {
     };
   }, [addNewLead]);
   
-  // Process leads that reach the center
   useEffect(() => {
     if (!processingLead && leads.length > 0 && animationActive.current) {
       const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed && !lead.exitRight && !lead.convertedLead);
@@ -221,9 +194,7 @@ const HeroAnimation = () => {
       if (leadToProcess) {
         const processingDelay = PROCESSING_DELAY_BASE + leads.indexOf(leadToProcess) * 600;
         setTimeout(() => {
-          if (animationActive.current) {
-            processLead(leadToProcess.id);
-          }
+          processLead(leadToProcess.id);
         }, processingDelay);
       }
     }
@@ -231,23 +202,19 @@ const HeroAnimation = () => {
   
   return (
     <div className="relative h-[280px] sm:h-[380px] w-full flex items-center justify-center overflow-hidden bg-gradient-to-b from-background/50 to-background/80">
-      {/* Enhanced background gradients */}
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-30 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent animate-pulse-soft"></div>
       </div>
       
-      {/* Central logo with glow effect */}
       <CenterLogo 
         processingLead={processingLead}
         onLeadProcess={() => {}}
       />
       
-      {/* Processing message */}
       {processMessage && (
         <ProcessMessage message={processMessage} />
       )}
       
-      {/* Lead cards animation */}
       <AnimatePresence>
         {leads.map((lead, index) => (
           <LeadCard
@@ -266,7 +233,6 @@ const HeroAnimation = () => {
         ))}
       </AnimatePresence>
       
-      {/* Output cards container */}
       <div className={`absolute ${isMobile ? 'bottom-0 left-0 right-0 flex overflow-x-auto p-4 space-x-3 pb-10' : 'top-1/2 right-8 transform -translate-y-1/2 flex flex-col max-w-[220px]'}`}>
         <AnimatePresence>
           {outputCards.map((card, index) => (
@@ -281,7 +247,6 @@ const HeroAnimation = () => {
         </AnimatePresence>
       </div>
       
-      {/* Gradient overlays for smooth transitions */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background opacity-40"></div>
         <div className="absolute left-0 right-0 bottom-0 h-20 bg-gradient-to-t from-background to-transparent"></div>

@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ANIMATION_SETTINGS } from './constants';
 
 interface CenterLogoProps {
   onLeadProcess: () => void;
@@ -14,22 +13,20 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
       <motion.div
         className="relative w-[230px] h-[230px] sm:w-[280px] sm:h-[280px]"
         animate={{
-          scale: processingLead 
-            ? [1, 1.05, 1] 
-            : [ANIMATION_SETTINGS.CENTRAL_PULSE_INTENSITY[0], ANIMATION_SETTINGS.CENTRAL_PULSE_INTENSITY[1], ANIMATION_SETTINGS.CENTRAL_PULSE_INTENSITY[0]],
+          scale: processingLead ? [1, 1.03, 1] : 1,
         }}
         transition={{
           duration: processingLead ? 0.4 : 8,
-          ease: processingLead ? "easeOut" : "easeInOut",
+          ease: "easeInOut",
           repeat: Infinity,
           repeatType: "reverse"
         }}
       >
-        {/* Enhanced primary gradient glow */}
+        {/* Refined primary gradient glow */}
         <motion.div 
           className="absolute inset-0 rounded-full"
           animate={{
-            opacity: processingLead ? [0.15, 0.3, 0.15] : [0.1, 0.2, 0.1]
+            opacity: processingLead ? [0.15, 0.25, 0.15] : [0.1, 0.15, 0.1]
           }}
           transition={{
             duration: processingLead ? 0.4 : 6,
@@ -39,9 +36,9 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
           }}
         >
           <motion.div 
-            className="absolute inset-0 bg-gradient-to-r from-[#00F5A0] to-[#00D9F5] rounded-full opacity-30 blur-[20px]"
+            className="absolute inset-0 bg-gradient-to-r from-[#00F5A0] to-[#00D9F5] rounded-full opacity-30 blur-[10px]"
             animate={{
-              scale: processingLead ? [1, 1.08, 1] : [1, 1.04, 1],
+              scale: processingLead ? [1, 1.05, 1] : [1, 1.02, 1],
             }}
             transition={{
               duration: processingLead ? 0.4 : 8,
@@ -52,14 +49,14 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
           />
         </motion.div>
         
-        {/* Enhanced inner glow */}
+        {/* Refined inner glow */}
         <motion.div 
-          className="absolute inset-[35%] rounded-full opacity-40 blur-[15px]"
+          className="absolute inset-[35%] rounded-full opacity-40 blur-[8px]"
           style={{
             background: 'linear-gradient(to right, #00F5A0, #00D9F5)'
           }}
           animate={{
-            opacity: processingLead ? [0.4, 0.7, 0.4] : [0.3, 0.5, 0.3]
+            opacity: processingLead ? [0.4, 0.6, 0.4] : [0.3, 0.4, 0.3]
           }}
           transition={{
             duration: processingLead ? 0.4 : 6,
@@ -76,8 +73,8 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
           className="w-full h-full object-contain relative z-50 p-12 sm:p-16"
           animate={{
             filter: processingLead
-              ? ['drop-shadow(0 0 10px rgba(0, 245, 160, 0.5))', 'drop-shadow(0 0 15px rgba(0, 245, 160, 0.7))', 'drop-shadow(0 0 10px rgba(0, 245, 160, 0.5))']
-              : ['drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.5))', 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))']
+              ? ['drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))', 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))']
+              : ['drop-shadow(0 0 6px rgba(0, 245, 160, 0.3))', 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.4))', 'drop-shadow(0 0 6px rgba(0, 245, 160, 0.3))']
           }}
           transition={{
             duration: processingLead ? 0.4 : 6,
@@ -91,31 +88,21 @@ const CenterLogo = ({ onLeadProcess, processingLead }: CenterLogoProps) => {
         {processingLead && (
           <>
             <motion.div
-              className="absolute inset-0 rounded-full border border-[#00F5A0]/30"
-              initial={{ scale: 0.9, opacity: 0.8 }}
-              animate={{ scale: 1.3, opacity: 0 }}
-              transition={{
-                duration: 0.8,
-                ease: "easeOut"
-              }}
-            />
-            <motion.div
               className="absolute inset-0 rounded-full border border-[#00F5A0]/20"
-              initial={{ scale: 0.9, opacity: 0.6 }}
-              animate={{ scale: 1.4, opacity: 0 }}
+              initial={{ scale: 0.9, opacity: 0.8 }}
+              animate={{ scale: 1.2, opacity: 0 }}
               transition={{
-                duration: 1,
-                delay: 0.15,
+                duration: 0.6,
                 ease: "easeOut"
               }}
             />
             <motion.div
               className="absolute inset-0 rounded-full border border-[#00F5A0]/10"
-              initial={{ scale: 0.9, opacity: 0.4 }}
-              animate={{ scale: 1.5, opacity: 0 }}
+              initial={{ scale: 0.9, opacity: 0.6 }}
+              animate={{ scale: 1.3, opacity: 0 }}
               transition={{
-                duration: 1.2,
-                delay: 0.3,
+                duration: 0.8,
+                delay: 0.1,
                 ease: "easeOut"
               }}
             />
