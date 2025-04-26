@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -29,11 +28,11 @@ const HeroSection = () => {
             </h1>
             
             <p className="text-xl text-foreground/90 opacity-0 animate-fade-in [animation-delay:500ms]" aria-label="Subheadline">
-              <span className="block mt-2 text-primary/90">We create AI systems that automate your lead generation, client follow-up, and call booking processes, helping you scale efficiently.</span>
+              <span className="block mt-2 text-primary/90">AI powered systems that automate your lead generation, client follow-up, and call booking processes, helping you scale efficiently.</span>
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-in [animation-delay:700ms] mb-0"> {/* Changed mb-6 to mb-0 */}
+          <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-in [animation-delay:700ms] mb-0">
             <Button 
               size="lg" 
               className="bg-primary hover:bg-primary/90 text-background group relative overflow-hidden transition-all duration-300 hover:shadow-glow" 
@@ -70,4 +69,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-
