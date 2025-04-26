@@ -52,13 +52,11 @@ const HeroAnimation = () => {
   const getRandomName = useCallback(() => NAMES[Math.floor(Math.random() * NAMES.length)], []);
   const getRandomAction = useCallback(() => ACTIONS[Math.floor(Math.random() * ACTIONS.length)], []);
   
-  // Process lead with enhanced visual feedback
   const processLead = useCallback((leadId: number) => {
     if (!animationActive.current) return;
     
     setProcessingLead(true);
     
-    // Show processing message
     const messages = [
       'Converting lead...',
       'Scheduling call...',
@@ -68,7 +66,6 @@ const HeroAnimation = () => {
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
     setProcessMessage(randomMessage);
     
-    // Update lead to absorbed state
     setLeads(prev => prev.map(lead => lead.id === leadId ? {
       ...lead,
       absorbed: true,
@@ -78,15 +75,12 @@ const HeroAnimation = () => {
       }
     } : lead));
     
-    // After processing delay, finalize the lead transformation
     setTimeout(() => {
       setLeads(prev => {
         const processedLead = prev.find(lead => lead.id === leadId);
         
-        // Add the output card if the lead was processed
         if (processedLead?.convertedLead) {
           setOutputCards(cards => {
-            // Keep only the most recent cards (based on mobile or desktop)
             const maxCards = isMobile ? 3 : NAME_CARD_DISPLAY_COUNT;
             const newCards = [
               {
@@ -101,18 +95,15 @@ const HeroAnimation = () => {
           });
         }
         
-        // Remove the processed lead
         return prev.map(lead => lead.id === leadId ? {
           ...lead,
           removed: true
         } : lead);
       });
       
-      // Reset processing state
       setProcessingLead(false);
       setProcessMessage('');
       
-      // Add a new lead after a short delay
       setTimeout(() => {
         if (animationActive.current) {
           addNewLead();
@@ -121,7 +112,6 @@ const HeroAnimation = () => {
     }, PROCESSING_DELAY_BASE);
   }, [getRandomName, getRandomAction, isMobile]);
   
-  // Add a new lead with enhanced spatial positioning
   const addNewLead = useCallback(() => {
     if (!animationActive.current) return;
     
@@ -129,10 +119,7 @@ const HeroAnimation = () => {
     const randomIndex = Math.floor(Math.random() * positions.length);
     const basePosition = positions[randomIndex];
     
-    // Add randomized vertical position for natural look
-    const verticalVariation = Math.random() * 30 - 15; // -15px to +15px
-    
-    // Random depth for parallax effect (0 = furthest, 1 = closest)
+    const verticalVariation = Math.random() * 40 - 20;
     const depth = Math.random();
     
     const adjustedPosition = {
@@ -161,13 +148,11 @@ const HeroAnimation = () => {
     });
   }, [isMobile]);
   
-  // Initialize animation
   useEffect(() => {
     animationActive.current = true;
     
-    // Start with one lead
     const initialPosition = generateLeadPositions(1)[0];
-    const verticalVariation = Math.random() * 20 - 10;
+    const verticalVariation = Math.random() * 30 - 15;
     
     setLeads([{
       id: Date.now(),
@@ -181,15 +166,13 @@ const HeroAnimation = () => {
       exitRight: false
     }]);
     
-    // Set up interval for new leads with slightly randomized timing
     const setupNextLeadInterval = () => {
-      // Random interval between 3-5 seconds for natural feel
-      const randomInterval = LEAD_GENERATION_INTERVAL + (Math.random() * 2000 - 1000);
+      const randomInterval = LEAD_GENERATION_INTERVAL + (Math.random() * 1000 - 500);
       
       leadInterval.current = setTimeout(() => {
         if (animationActive.current) {
           addNewLead();
-          setupNextLeadInterval(); // Set up the next interval
+          setupNextLeadInterval();
         }
       }, randomInterval);
     };
@@ -204,7 +187,6 @@ const HeroAnimation = () => {
     };
   }, [addNewLead]);
   
-  // Process leads when they're ready
   useEffect(() => {
     if (!processingLead && leads.length > 0 && animationActive.current) {
       const leadToProcess = leads.find(lead => !lead.absorbed && !lead.removed && !lead.exitRight && !lead.convertedLead);
@@ -220,23 +202,19 @@ const HeroAnimation = () => {
   
   return (
     <div className="relative h-[280px] sm:h-[380px] w-full flex items-center justify-center overflow-hidden bg-gradient-to-b from-background/50 to-background/80">
-      {/* Subtle gradient background animation */}
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-30 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent animate-pulse-soft"></div>
       </div>
       
-      {/* Center Logo */}
       <CenterLogo 
         processingLead={processingLead}
         onLeadProcess={() => {}}
       />
       
-      {/* Processing Message */}
       {processMessage && (
         <ProcessMessage message={processMessage} />
       )}
       
-      {/* Lead Cards Animation */}
       <AnimatePresence>
         {leads.map((lead, index) => (
           <LeadCard
@@ -255,7 +233,6 @@ const HeroAnimation = () => {
         ))}
       </AnimatePresence>
       
-      {/* Output Cards - Name cards showing conversion results */}
       <div className={`absolute ${isMobile ? 'bottom-0 left-0 right-0 flex overflow-x-auto p-4 space-x-3 pb-10' : 'top-1/2 right-8 transform -translate-y-1/2 flex flex-col max-w-[220px]'}`}>
         <AnimatePresence>
           {outputCards.map((card, index) => (
@@ -270,7 +247,6 @@ const HeroAnimation = () => {
         </AnimatePresence>
       </div>
       
-      {/* Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background opacity-40"></div>
         <div className="absolute left-0 right-0 bottom-0 h-20 bg-gradient-to-t from-background to-transparent"></div>
