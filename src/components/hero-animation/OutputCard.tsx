@@ -16,7 +16,7 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
   const timeRef = React.useRef(Math.random() * 10); // Random starting time for wave effect
   const { HORIZONTAL_WAVE_AMPLITUDE, HORIZONTAL_WAVE_SPEED } = ANIMATION_SETTINGS;
   
-  // Horizontal wave effect animation
+  // Enhanced horizontal wave effect animation with smoother motion
   useAnimationFrame((time) => {
     if (elementRef.current && !isMobile) {
       timeRef.current += 0.01 * HORIZONTAL_WAVE_SPEED;
@@ -46,9 +46,9 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
     }
   };
   
-  // Calculate a "freshness" value that decreases with index
+  // Calculate a "freshness" value that decreases with index for visual hierarchy
   const freshness = 1 - (index * 0.15);
-  const glowIntensity = Math.max(0.03, freshness * 0.15);
+  const glowIntensity = Math.max(0.03, freshness * 0.2);
   
   return (
     <motion.div
@@ -67,12 +67,12 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
         ${isMobile ? 'min-w-[200px] flex-shrink-0' : 'w-full'}
       `}
       style={{
-        boxShadow: `0 4px 16px rgba(0, 0, 0, 0.2), 0 0 ${8 + freshness * 10}px rgba(0, 245, 160, ${glowIntensity})`,
+        boxShadow: `0 4px 16px rgba(0, 0, 0, 0.2), 0 0 ${8 + freshness * 12}px rgba(0, 245, 160, ${glowIntensity})`,
         willChange: 'transform',
       }}
       whileHover={{ 
         scale: 1.03,
-        boxShadow: `0 6px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 245, 160, ${glowIntensity * 1.5})`,
+        boxShadow: `0 6px 20px rgba(0, 0, 0, 0.25), 0 0 16px rgba(0, 245, 160, ${glowIntensity * 2})`,
         transition: { duration: 0.2 }
       }}
     >

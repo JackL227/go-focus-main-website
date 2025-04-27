@@ -75,6 +75,7 @@ const HeroAnimation = () => {
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
     setProcessMessage(randomMessage);
     
+    // Mark the lead as absorbed
     setLeads(prev => prev.map(lead => lead.id === leadId ? {
       ...lead,
       absorbed: true,
@@ -84,10 +85,12 @@ const HeroAnimation = () => {
       }
     } : lead));
     
+    // After absorption delay, create the output card
     setTimeout(() => {
       setLeads(prev => {
         const processedLead = prev.find(lead => lead.id === leadId);
         if (processedLead?.convertedLead) {
+          // Add the converted lead to output cards
           setOutputCards(cards => {
             const maxCards = isMobile ? 3 : NAME_CARD_DISPLAY_COUNT;
             const newCards = [{
@@ -98,11 +101,13 @@ const HeroAnimation = () => {
             return newCards;
           });
         }
+        // Mark the lead as removed
         return prev.map(lead => lead.id === leadId ? {
           ...lead,
           removed: true
         } : lead);
       });
+      
       setProcessingLead(false);
       setProcessMessage('');
       
@@ -123,7 +128,11 @@ const HeroAnimation = () => {
       !lead.absorbed && 
       !lead.removed && 
       !lead.exitRight && 
-      !lead.convertedLead);
+      !lead.convertedLead &&
+      // Find leads that are close enough to the center to be processed
+      lead.position && 
+      Math.sqrt(Math.pow(lead.position.x, 2) + Math.pow(lead.position.y, 2)) < 180
+    );
   }, [leads]);
   
   const addNewLead = useCallback(() => {
@@ -139,15 +148,16 @@ const HeroAnimation = () => {
     const positions = generateLeadPositions(1);
     const basePosition = positions[0];
     
-    // Generate depth parameters - deeper effect
+    // Generate depth parameters with enhanced 3D effect
     const depth = Math.random(); // 0-1 value
     const speed = 0.6 + (depth * 0.9); // Deeper cards move slower
     const opacity = 0.6 + (depth * 0.4); // Deeper cards are more transparent
     const scale = 0.7 + (depth * 0.5); // Deeper cards are smaller
     
-    const verticalVariation = Math.random() * 60 - 30;
+    // Add more vertical variation for natural flow
+    const verticalVariation = Math.random() * 80 - 40;
     const adjustedPosition = {
-      x: basePosition.x,
+      x: basePosition.x - (Math.random() * 50), // Add more horizontal variance
       y: basePosition.y + verticalVariation,
       originalY: basePosition.y + verticalVariation // Store original Y for oscillation
     };
@@ -171,8 +181,8 @@ const HeroAnimation = () => {
   useEffect(() => {
     animationActive.current = true;
     
-    // Start with a few leads already on screen
-    const initialLeadsCount = isMobile ? 2 : Math.min(4, LEAD_COUNT);
+    // Start with a few leads already on screen with better distribution
+    const initialLeadsCount = isMobile ? 3 : Math.min(6, LEAD_COUNT);
     const initialPositions = generateLeadPositions(initialLeadsCount);
     
     const initialLeads = initialPositions.map((pos, idx) => {
@@ -180,7 +190,10 @@ const HeroAnimation = () => {
       const speed = 0.6 + (depth * 0.9);
       const opacity = 0.6 + (depth * 0.4);
       const scale = 0.7 + (depth * 0.5);
-      const verticalVariation = Math.random() * 60 - 30;
+      
+      // Create more varied starting positions for a natural feel
+      const verticalVariation = Math.random() * 80 - 40;
+      const horizontalVariation = Math.random() * 150 - 75;
       
       return {
         id: Date.now() + idx,
@@ -189,7 +202,7 @@ const HeroAnimation = () => {
         depth: depth,
         speed: speed,
         position: {
-          x: pos.x + (Math.random() * 100 - 200), // Stagger initial positions
+          x: pos.x + horizontalVariation, // More horizontal variance
           y: pos.y + verticalVariation,
           originalY: pos.y + verticalVariation
         },
@@ -203,7 +216,8 @@ const HeroAnimation = () => {
     
     // Setup interval to generate new leads
     const setupNextLeadInterval = () => {
-      const randomInterval = LEAD_GENERATION_INTERVAL + (Math.random() * 1500 - 750);
+      // Randomize interval for more natural flow
+      const randomInterval = LEAD_GENERATION_INTERVAL + (Math.random() * 1800 - 900);
       leadInterval.current = setTimeout(() => {
         if (animationActive.current) {
           addNewLead();
@@ -216,15 +230,19 @@ const HeroAnimation = () => {
     
     // Setup interval to process leads
     const setupProcessingInterval = () => {
+      // Find leads that are close to the center
+      const leadToProcess = findNextLeadToProcess();
+      
+      if (leadToProcess) {
+        processLead(leadToProcess.id);
+      }
+      
+      // Schedule next processing attempt
       processingInterval.current = setTimeout(() => {
         if (animationActive.current) {
-          const leadToProcess = findNextLeadToProcess();
-          if (leadToProcess) {
-            processLead(leadToProcess.id);
-          }
           setupProcessingInterval();
         }
-      }, 3000 + Math.random() * 2000); // Random interval between 3-5 seconds
+      }, 2500 + Math.random() * 1500); // Random interval between 2.5-4 seconds
     };
     
     // Start the first processing after a short delay
@@ -274,6 +292,7 @@ const HeroAnimation = () => {
             scale={lead.scale}
             staggerDelay={STAGGER_DELAY}
             exitRight={lead.exitRight}
+            isConverted={false}
           />
         ))}
       </AnimatePresence>

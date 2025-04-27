@@ -59,12 +59,13 @@ const LeadCard = ({
     if (elementRef.current && !isAbsorbed && !isConverted && !exitRight) {
       timeRef.current += 0.01 * OSCILLATION_SPEED * speed;
       
-      // Base movement towards center
-      const baseX = positionRef.current.x + (0.6 * speed);
+      // Base movement towards center with depth-based speed adjustment
+      const depthSpeedFactor = 0.8 + (depth * 0.6); // Deeper cards move slower
+      const baseX = positionRef.current.x + (0.7 * speed * depthSpeedFactor);
       positionRef.current.x = baseX;
       
-      // Vertical oscillation (sine wave)
-      const oscillationY = Math.sin(timeRef.current) * OSCILLATION_AMPLITUDE * depth;
+      // Vertical oscillation (sine wave) with depth-based amplitude
+      const oscillationY = Math.sin(timeRef.current) * OSCILLATION_AMPLITUDE * (0.7 + (depth * 0.5));
       const baseY = originalY + oscillationY;
       positionRef.current.y = baseY;
       
@@ -73,33 +74,48 @@ const LeadCard = ({
       let suctionX = baseX;
       let suctionY = baseY;
       
-      // Apply suction effect when close to center
+      // Apply enhanced suction effect when close to center
       if (distanceFromCenter < SUCTION_EFFECT_RADIUS) {
-        const suctionPower = 1 - (distanceFromCenter / SUCTION_EFFECT_RADIUS);
-        const pullStrength = suctionPower * SUCTION_EFFECT_STRENGTH;
+        // Calculate suction power with exponential increase as card gets closer
+        const normalizedDistance = distanceFromCenter / SUCTION_EFFECT_RADIUS;
+        const suctionPower = Math.pow(1 - normalizedDistance, 1.5) * SUCTION_EFFECT_STRENGTH;
         
-        // Calculate pull direction toward center (0,0)
-        suctionX = baseX - (baseX * pullStrength * 0.025);
-        suctionY = baseY - (baseY * pullStrength * 0.025);
+        // Apply stronger pull toward center (0,0)
+        suctionX = baseX - (baseX * suctionPower * 0.035);
+        suctionY = baseY - (baseY * suctionPower * 0.035);
       }
       
-      // Apply final position
+      // Calculate scale based on distance from center (smaller as it gets closer)
+      const distanceScale = Math.max(0.4, Math.min(1, distanceFromCenter / 300));
+      const finalScale = scale * distanceScale;
+      
+      // Apply perspective transform for 3D effect
+      const perspective = 1000;
+      const zTranslate = depth * DEPTH_Z_RANGE;
+      
+      // Apply final position with GPU acceleration
       elementRef.current.style.transform = `
-        translate3d(${suctionX}px, ${suctionY}px, ${depth * DEPTH_Z_RANGE}px)
-        scale(${scale - (Math.max(0, (1 - distanceFromCenter / 200)) * 0.3)})
+        perspective(${perspective}px)
+        translate3d(${suctionX}px, ${suctionY}px, ${zTranslate}px)
+        scale(${finalScale})
       `;
       
+      // Dynamic opacity for depth effect
+      const baseOpacity = opacity * (0.7 + (depth * 0.3));
+      
       // Update opacity based on distance to create fade effect near center
-      if (distanceFromCenter < 100) {
-        const fadeOpacity = Math.max(0.1, distanceFromCenter / 100);
-        elementRef.current.style.opacity = `${fadeOpacity * opacity}`;
+      if (distanceFromCenter < 120) {
+        const fadeOpacity = Math.max(0.2, distanceFromCenter / 120) * baseOpacity;
+        elementRef.current.style.opacity = `${fadeOpacity}`;
+      } else {
+        elementRef.current.style.opacity = `${baseOpacity}`;
       }
     }
   });
 
   // Dynamic glow effect based on depth
-  const glowIntensity = depth * 0.15; // More depth = more glow
-  const cardGlow = `0 0 ${8 + depth * 10}px rgba(0, 245, 160, ${glowIntensity})`;
+  const glowIntensity = depth * 0.2; // More depth = more glow
+  const cardGlow = `0 0 ${8 + depth * 12}px rgba(0, 245, 160, ${glowIntensity})`;
   
   return (
     <motion.div
