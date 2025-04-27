@@ -1,14 +1,21 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { CircleCheck } from 'lucide-react';
+
+import React, { useRef } from 'react';
+import { motion, useAnimationFrame } from 'framer-motion';
 import { ANIMATION_SETTINGS } from './constants';
 
 interface LeadCardProps {
   index: number;
   isAbsorbed?: boolean;
   onComplete?: () => void;
-  position?: {x: number, y: number};
+  position?: {
+    x: number;
+    y: number;
+    originalY?: number;
+  };
   depth?: number; // 0-1 value controlling parallax effect
+  speed?: number; // Movement speed multiplier
+  opacity?: number; // Opacity based on depth
+  scale?: number; // Scale based on depth
   staggerDelay?: number;
   isConverted?: boolean;
   name?: string;
@@ -16,27 +23,87 @@ interface LeadCardProps {
   exitRight?: boolean;
 }
 
-const LeadCard = ({ 
-  index, 
+const LeadCard = ({
+  index,
   isAbsorbed = false,
   onComplete,
   position,
   depth = 0.5,
+  speed = 1,
+  opacity = 1,
+  scale = 1,
   staggerDelay = 0.8,
   isConverted = false,
   name,
   action,
   exitRight = false
 }: LeadCardProps) => {
-  const customEasing = [0.4, 0, 0.2, 1];
-  const absorptionEasing = [0.6, 0.01, 0.05, 0.95];
+  const { 
+    OSCILLATION_AMPLITUDE, 
+    OSCILLATION_SPEED, 
+    SUCTION_EFFECT_RADIUS,
+    SUCTION_EFFECT_STRENGTH,
+    DEPTH_Z_RANGE,
+    LEAD_SCALE_START,
+    LEAD_SCALE_END,
+    ABSORPTION_DURATION
+  } = ANIMATION_SETTINGS;
   
-  const scaleBase = ANIMATION_SETTINGS.LEAD_SCALE_START - (depth * 0.3);
-  const durationBase = 5.5 - (depth * 1.5);
-  const wobbleAmount = 5 + (depth * 8);
+  const elementRef = useRef<HTMLDivElement>(null);
+  const timeRef = useRef(Math.random() * 100); // Random starting time for oscillation
+  const positionRef = useRef({ x: position?.x || -350, y: position?.y || 0 });
+  const originalY = position?.originalY || position?.y || 0;
+  
+  // Custom path animation using useAnimationFrame
+  useAnimationFrame((time) => {
+    if (elementRef.current && !isAbsorbed && !isConverted && !exitRight) {
+      timeRef.current += 0.01 * OSCILLATION_SPEED * speed;
+      
+      // Base movement towards center
+      const baseX = positionRef.current.x + (0.6 * speed);
+      positionRef.current.x = baseX;
+      
+      // Vertical oscillation (sine wave)
+      const oscillationY = Math.sin(timeRef.current) * OSCILLATION_AMPLITUDE * depth;
+      const baseY = originalY + oscillationY;
+      positionRef.current.y = baseY;
+      
+      // Calculate distance from center for suction effect
+      const distanceFromCenter = Math.sqrt(baseX * baseX + baseY * baseY);
+      let suctionX = baseX;
+      let suctionY = baseY;
+      
+      // Apply suction effect when close to center
+      if (distanceFromCenter < SUCTION_EFFECT_RADIUS) {
+        const suctionPower = 1 - (distanceFromCenter / SUCTION_EFFECT_RADIUS);
+        const pullStrength = suctionPower * SUCTION_EFFECT_STRENGTH;
+        
+        // Calculate pull direction toward center (0,0)
+        suctionX = baseX - (baseX * pullStrength * 0.025);
+        suctionY = baseY - (baseY * pullStrength * 0.025);
+      }
+      
+      // Apply final position
+      elementRef.current.style.transform = `
+        translate3d(${suctionX}px, ${suctionY}px, ${depth * DEPTH_Z_RANGE}px)
+        scale(${scale - (Math.max(0, (1 - distanceFromCenter / 200)) * 0.3)})
+      `;
+      
+      // Update opacity based on distance to create fade effect near center
+      if (distanceFromCenter < 100) {
+        const fadeOpacity = Math.max(0.1, distanceFromCenter / 100);
+        elementRef.current.style.opacity = `${fadeOpacity * opacity}`;
+      }
+    }
+  });
 
+  // Dynamic glow effect based on depth
+  const glowIntensity = depth * 0.15; // More depth = more glow
+  const cardGlow = `0 0 ${8 + depth * 10}px rgba(0, 245, 160, ${glowIntensity})`;
+  
   return (
     <motion.div
+      ref={elementRef}
       className={`absolute ${
         isConverted 
           ? 'rounded-xl p-3 bg-[#1F1F22]/90 backdrop-blur-sm border border-[#2d2d2d]/50 shadow-lg flex items-center min-w-[220px] z-20' 
@@ -45,41 +112,41 @@ const LeadCard = ({
       initial={{ 
         x: position?.x ?? -350, 
         y: position?.y ?? 0,
-        scale: isConverted ? 0.1 : ANIMATION_SETTINGS.LEAD_SCALE_START,
-        opacity: 0.5,
+        scale: isConverted ? 0.1 : scale * LEAD_SCALE_START,
+        opacity: opacity * 0.6,
         rotate: Math.random() * 4 - 2,
-        zIndex: isConverted ? 25 : Math.floor(depth * 30)
+        zIndex: isConverted ? 25 : Math.floor(depth * DEPTH_Z_RANGE)
       }}
       animate={
         exitRight
           ? {
-              x: ANIMATION_SETTINGS.NAME_CARD_END_X,
+              x: 400,
               y: position?.y ?? 0,
-              scale: [0.9, 1.05],
-              opacity: [0.9, 0.6, 0],
-              rotate: [0, 2, 5],
+              scale: [0.9, 0.95, 0.9],
+              opacity: [0.9, 0.7, 0],
+              rotate: [0, 2, 4],
               zIndex: 15,
               transition: {
-                duration: 4,
-                ease: customEasing,
-                opacity: { times: [0, 0.7, 1], duration: 4 },
-                scale: { times: [0, 1], duration: 4 },
-                rotate: { times: [0, 0.5, 1], duration: 4 }
+                duration: 5,
+                ease: "easeOut",
+                opacity: { times: [0, 0.7, 1], duration: 5 },
+                scale: { times: [0, 0.5, 1], duration: 5 },
+                rotate: { times: [0, 0.5, 1], duration: 5 }
               }
             }
           : isConverted 
             ? {
                 x: ANIMATION_SETTINGS.NAME_CARD_START_X,
                 y: position?.y ?? 0,
-                scale: [0.1, 1.1, 1],
+                scale: [0.1, 1.15, 1],
                 opacity: 1,
                 rotate: [-2, 1, 0],
                 zIndex: 25,
                 transition: {
                   duration: 1.2,
                   delay: ANIMATION_SETTINGS.RESULT_EMERGENCE_DELAY / 1000,
-                  ease: customEasing,
-                  scale: { times: [0, 0.6, 1], duration: 1.2 },
+                  ease: "backOut",
+                  scale: { times: [0, 0.7, 1], duration: 1.2 },
                   rotate: { times: [0, 0.7, 1], duration: 1.2 }
                 }
               }
@@ -87,56 +154,29 @@ const LeadCard = ({
               ? { 
                   x: 0,
                   y: 0,
-                  scale: [ANIMATION_SETTINGS.LEAD_SCALE_END, 0.1],
-                  opacity: [1, 0],
+                  scale: [LEAD_SCALE_END * scale, 0.05],
+                  opacity: [opacity, 0],
                   rotate: 0,
-                  zIndex: 15,
+                  zIndex: 20,
                   filter: "brightness(1.5)",
                   transition: {
-                    duration: ANIMATION_SETTINGS.ABSORPTION_DURATION,
-                    ease: absorptionEasing
+                    duration: ABSORPTION_DURATION,
+                    ease: [0.6, 0.01, 0.05, 0.95]
                   }
                 }
-              : {
-                  x: 0,
-                  y: [position?.y ?? 0, (position?.y ?? 0) + wobbleAmount, (position?.y ?? 0) - wobbleAmount/2, position?.y ?? 0],
-                  scale: [scaleBase, scaleBase * 0.97, ANIMATION_SETTINGS.LEAD_SCALE_END],
-                  opacity: [0.9, 0.85, 0.8],
-                  rotate: [Math.random() * 3 - 1.5, Math.random() * 2 - 1, 0],
-                  zIndex: Math.floor(depth * 30),
-                  transition: {
-                    duration: durationBase,
-                    delay: index * staggerDelay,
-                    ease: "easeInOut",
-                    y: {
-                      times: [0, 0.3, 0.7, 1],
-                      repeat: 0,
-                      duration: durationBase
-                    },
-                    scale: {
-                      times: [0, 0.5, 1],
-                      duration: durationBase,
-                      ease: "easeIn"
-                    }
-                  }
-                }
+              : {}
       }
-      onAnimationComplete={() => {
-        if (!isAbsorbed && !isConverted && !exitRight && onComplete) {
-          onComplete();
-        }
-      }}
       style={{
         boxShadow: isConverted 
-          ? '0 4px 16px rgba(0, 0, 0, 0.3), 0 0 4px rgba(0, 245, 160, 0.2)' 
-          : '0 2px 8px rgba(0, 0, 0, 0.25), 0 0 3px rgba(0, 245, 160, 0.15)',
-        transform: `perspective(1000px) translateZ(${depth * 10}px)`,
+          ? '0 4px 16px rgba(0, 0, 0, 0.3), 0 0 8px rgba(0, 245, 160, 0.2)' 
+          : `0 2px 8px rgba(0, 0, 0, 0.25), ${cardGlow}`,
+        willChange: 'transform, opacity',
       }}
     >
       {isConverted ? (
         <div className="flex items-center space-x-2">
           <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-            <CircleCheck className="w-4 h-4 text-primary shrink-0" />
+            <div className="w-4 h-4 text-primary shrink-0">✓</div>
           </div>
           <div className="text-xs font-medium">
             <span className="text-white">{name} </span>

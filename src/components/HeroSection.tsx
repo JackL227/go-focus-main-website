@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -5,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
 import HeroAnimation from './hero-animation/HeroAnimation';
+import GlassmorphicHero from './GlassmorphicHero';
 
 const HeroSection = () => {
   const { user } = useAuth();
@@ -19,6 +21,11 @@ const HeroSection = () => {
       className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden bg-background" 
       aria-label="Hero section"
     >
+      {/* Background animation */}
+      <div className="absolute inset-0 z-0 opacity-80">
+        <GlassmorphicHero />
+      </div>
+      
       <div className="container-custom relative z-10 pt-8 pb-0">
         <div className="flex flex-col items-center max-w-4xl mx-auto text-center mb-12">
           <div className="space-y-6 mb-8">
@@ -57,7 +64,7 @@ const HeroSection = () => {
         </div>
       </div>
       
-      <div className="w-full relative z-10">
+      <div className="w-full relative z-10 mt-6">
         <HeroAnimation />
       </div>
       

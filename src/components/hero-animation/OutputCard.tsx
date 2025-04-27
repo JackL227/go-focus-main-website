@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useAnimationFrame } from 'framer-motion';
 import { BookOpen, Calendar, Check } from 'lucide-react';
+import { ANIMATION_SETTINGS } from './constants';
 
 interface OutputCardProps {
   name: string;
@@ -11,14 +12,27 @@ interface OutputCardProps {
 }
 
 const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
+  const elementRef = React.useRef<HTMLDivElement>(null);
+  const timeRef = React.useRef(Math.random() * 10); // Random starting time for wave effect
+  const { HORIZONTAL_WAVE_AMPLITUDE, HORIZONTAL_WAVE_SPEED } = ANIMATION_SETTINGS;
+  
+  // Horizontal wave effect animation
+  useAnimationFrame((time) => {
+    if (elementRef.current && !isMobile) {
+      timeRef.current += 0.01 * HORIZONTAL_WAVE_SPEED;
+      const waveY = Math.sin(timeRef.current + index * 0.8) * HORIZONTAL_WAVE_AMPLITUDE;
+      elementRef.current.style.transform = `translateY(${waveY}px) scale(1)`;
+    }
+  });
+  
   const animationProps = isMobile ? {
-    initial: { opacity: 0, y: 20, scale: 0.95, rotate: -2 },
+    initial: { opacity: 0, y: 20, scale: 0.95, rotate: -1 },
     animate: { opacity: 1, y: 0, scale: 1, rotate: 0 },
-    exit: { opacity: 0, y: -20, scale: 0.95, rotate: 2 }
+    exit: { opacity: 0, y: -20, scale: 0.95, rotate: 1 }
   } : {
-    initial: { opacity: 0, x: 50, scale: 0.95, rotate: -3 },
-    animate: { opacity: 1, x: 0, scale: 1, rotate: 0 },
-    exit: { opacity: 0, x: -50, scale: 0.95, rotate: 3 }
+    initial: { opacity: 0, x: 50, scale: 0.95 },
+    animate: { opacity: 1, x: 0, scale: 1 },
+    exit: { opacity: 0, x: -50, scale: 0.95 }
   };
 
   // Determine icon based on action text
@@ -31,25 +45,35 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
       return <Check className="w-3 h-3 text-primary shrink-0" />;
     }
   };
-
+  
+  // Calculate a "freshness" value that decreases with index
+  const freshness = 1 - (index * 0.15);
+  const glowIntensity = Math.max(0.03, freshness * 0.15);
+  
   return (
     <motion.div
+      ref={elementRef}
       {...animationProps}
       transition={{ 
         type: "spring", 
         stiffness: 300, 
-        damping: 30,
+        damping: 24,
         mass: 1,
-        duration: 0.8
+        duration: 0.7
       }}
       className={`
-        bg-[#1F1F22]/90 backdrop-blur-sm rounded-lg p-4 border border-[#2d2d2d]/50 shadow-lg
-        hover:border-primary/30 hover:shadow-[0_0_15px_rgba(0,245,160,0.15)] transition-all duration-500
+        bg-[#1F1F22]/90 backdrop-blur-md rounded-lg p-4 border border-[#2d2d2d]/50
+        hover:border-primary/30 transition-all duration-500
         ${isMobile ? 'min-w-[200px] flex-shrink-0' : 'w-full'}
       `}
+      style={{
+        boxShadow: `0 4px 16px rgba(0, 0, 0, 0.2), 0 0 ${8 + freshness * 10}px rgba(0, 245, 160, ${glowIntensity})`,
+        willChange: 'transform',
+      }}
       whileHover={{ 
-        scale: 1.02,
-        transition: { duration: 0.3 }
+        scale: 1.03,
+        boxShadow: `0 6px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 245, 160, ${glowIntensity * 1.5})`,
+        transition: { duration: 0.2 }
       }}
     >
       <div className="flex items-center space-x-2">
