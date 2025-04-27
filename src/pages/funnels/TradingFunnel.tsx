@@ -1,8 +1,15 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
+import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
 
 const TradingFunnel = () => {
+  // For Meta Pixel tracking
+  useEffect(() => {
+    // Meta Pixel tracking code would go here
+    console.log("Trading funnel page view tracked");
+  }, []);
+
   return (
     <FunnelLayout
       niche="trading"
@@ -50,6 +57,13 @@ const TradingFunnel = () => {
       ctaText="Book My Strategy Call"
       hasCountdown={true}
       showSocialProof={true}
+      vslSection={
+        <VideoSalesLetter
+          videoId="your-trading-vsl-id"
+          title="How AI Automation Is Transforming Trading Mentorship Businesses"
+          subtitle="Watch how our AI system qualifies and books high-ticket clients for trading mentors"
+        />
+      }
     />
   );
 };

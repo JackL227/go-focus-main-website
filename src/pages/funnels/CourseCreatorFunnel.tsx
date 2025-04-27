@@ -1,9 +1,15 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
-import { BookOpen, Calendar, CheckCircle, Video } from 'lucide-react';
+import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
 
 const CourseCreatorFunnel = () => {
+  // For Meta Pixel tracking
+  useEffect(() => {
+    // Meta Pixel tracking code would go here
+    console.log("Course Creator funnel page view tracked");
+  }, []);
+  
   const benefits = [
     "Handle student questions 24/7 with AI that's trained on your course content",
     "Automatically qualify potential students and book sales calls with serious prospects only",
@@ -68,6 +74,13 @@ const CourseCreatorFunnel = () => {
       ctaText="Schedule Your Strategy Call"
       hasCountdown={true}
       showSocialProof={true}
+      vslSection={
+        <VideoSalesLetter
+          videoId="your-course-creator-vsl-id"
+          title="How AI Automation Is Scaling Course Creator Businesses"
+          subtitle="Watch how our AI system helps course creators boost enrollments and student satisfaction"
+        />
+      }
     />
   );
 };

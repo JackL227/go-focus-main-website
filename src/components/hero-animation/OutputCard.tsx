@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, Calendar, Check } from 'lucide-react';
 
 interface OutputCardProps {
   name: string;
@@ -19,6 +19,17 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
     initial: { opacity: 0, x: 50, scale: 0.95, rotate: -3 },
     animate: { opacity: 1, x: 0, scale: 1, rotate: 0 },
     exit: { opacity: 0, x: -50, scale: 0.95, rotate: 3 }
+  };
+
+  // Determine icon based on action text
+  const getIcon = () => {
+    if (action.includes('call') || action.includes('consultation') || action.includes('viewing')) {
+      return <Calendar className="w-3 h-3 text-primary shrink-0" />;
+    } else if (action.includes('course') || action.includes('enrolled') || action.includes('program') || action.includes('academy')) {
+      return <BookOpen className="w-3 h-3 text-primary shrink-0" />;
+    } else {
+      return <Check className="w-3 h-3 text-primary shrink-0" />;
+    }
   };
 
   return (
@@ -43,7 +54,7 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
     >
       <div className="flex items-center space-x-2">
         <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-          <BookOpen className="w-3 h-3 text-primary shrink-0" />
+          {getIcon()}
         </div>
         <div className="text-sm font-medium">
           <span className="text-white">{name} </span>

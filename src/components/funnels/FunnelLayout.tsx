@@ -1,7 +1,9 @@
+
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Check, Calendar, Clock, Users, Award, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { Script } from '../ui/script';
 
 interface FunnelLayoutProps {
   niche: 'trading' | 'medspa' | 'fitness';
@@ -25,6 +27,7 @@ interface FunnelLayoutProps {
   ctaText: string;
   hasCountdown?: boolean;
   showSocialProof?: boolean;
+  vslSection?: React.ReactNode;
 }
 
 const FunnelLayout: React.FC<FunnelLayoutProps> = ({
@@ -38,7 +41,8 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   urgencyText,
   ctaText,
   hasCountdown = false,
-  showSocialProof = false
+  showSocialProof = false,
+  vslSection
 }) => {
   const colorSchemes = {
     trading: {
@@ -136,19 +140,32 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
     };
   }, []);
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   useEffect(() => {
+    // Meta pixel tracking code would go here
     console.log(`Funnel page loaded: ${niche}`);
   }, [niche]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Meta Pixel Script */}
+      <Script>
+        {`
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '12345678901234567');
+          fbq('track', 'PageView');
+        `}
+      </Script>
+
+      {/* VSL Section - Placed at the top of the funnel */}
+      {vslSection}
+      
       <section className="relative min-h-[90vh] flex items-center">
         <div className="absolute inset-0 overflow-hidden">
           <div className={`w-full h-full bg-gradient-to-b ${colorScheme.gradient} opacity-10`}></div>
@@ -228,6 +245,16 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
                 </div>
               ))}
             </div>
+
+            {/* Mid-page CTA */}
+            <div className="mt-12 text-center">
+              <BookingWidget 
+                className={`text-white group text-lg px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
+              >
+                <span className="whitespace-normal">{ctaText}</span>
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
+              </BookingWidget>
+            </div>
           </div>
         </div>
       </section>
@@ -261,6 +288,16 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
                 <h3 className="text-xl font-bold mb-3">You Get Pre-Qualified Meetings</h3>
                 <p>Only speak with vetted prospects who match your ideal client profile and are ready to buy.</p>
               </div>
+            </div>
+            
+            {/* Mid-page CTA */}
+            <div className="mt-12 text-center">
+              <BookingWidget 
+                className={`text-white group text-lg px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
+              >
+                <span className="whitespace-normal">{ctaText}</span>
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
+              </BookingWidget>
             </div>
           </div>
         </div>
@@ -310,6 +347,16 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
                 </div>
               ))}
             </div>
+          </div>
+          
+          {/* Mid-page CTA */}
+          <div className="mt-12 text-center">
+            <BookingWidget 
+              className={`text-white group text-lg px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
+            >
+              <span className="whitespace-normal">{ctaText}</span>
+              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
+            </BookingWidget>
           </div>
         </div>
       </section>

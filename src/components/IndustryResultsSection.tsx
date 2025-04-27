@@ -1,8 +1,9 @@
 
 import React, { useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Lightbulb, ShoppingBag, Building, BookOpen, DumbbellIcon, Car, Stethoscope, ArrowUpRight } from "lucide-react";
+import { Lightbulb, Building, BookOpen, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link } from 'react-router-dom';
 
 const industries = [
   {
@@ -11,7 +12,8 @@ const industries = [
     icon: Lightbulb,
     description: "Deliver personalized strategies to clients, answer their questions 24/7, and scale your trading mentorship business.",
     results: ["79% increase in client retention", "2.3x more leads converted", "165 hours saved monthly"],
-    color: "from-blue-600/30 via-blue-400/20 to-blue-600/30"
+    color: "from-blue-600/30 via-blue-400/20 to-blue-600/30",
+    link: "/trading"
   },
   {
     id: "course-creators",
@@ -20,23 +22,8 @@ const industries = [
     description: "Increase course completion rates, answer student questions 24/7, and improve satisfaction and results.",
     results: ["68% improvement in completion", "98% question resolution rate", "4.1x more testimonials"],
     color: "from-pink-600/30 via-pink-400/20 to-pink-600/30",
-    featured: true
-  },
-  {
-    id: "med-spas",
-    title: "Med Spas",
-    icon: ShoppingBag,
-    description: "Book more appointments, answer patient questions instantly, and grow your med spa business with AI automation.",
-    results: ["43% increase in booking rate", "92% client satisfaction", "28 hours saved weekly"],
-    color: "from-violet-600/30 via-violet-400/20 to-violet-600/30"
-  },
-  {
-    id: "fitness-influencers",
-    title: "Fitness Influencers",
-    icon: DumbbellIcon,
-    description: "Scale your coaching business, answer follower questions instantly, and convert fans into paying clients.",
-    results: ["3.7x increase in program signups", "55% less time spent on DMs", "129% growth in revenue"],
-    color: "from-emerald-600/30 via-emerald-400/20 to-emerald-600/30"
+    featured: true,
+    link: "/course-creator"
   },
   {
     id: "real-estate",
@@ -44,23 +31,8 @@ const industries = [
     icon: Building,
     description: "Capture and nurture more leads, answer property questions instantly, and close deals faster with AI automation.",
     results: ["41% more leads captured", "2.1x faster response time", "19% higher closing rate"],
-    color: "from-amber-600/30 via-amber-400/20 to-amber-600/30"
-  },
-  {
-    id: "vehicle-aesthetic",
-    title: "Vehicle Aesthetic Companies",
-    icon: Car,
-    description: "Convert more detailing inquiries, book appointments instantly, and showcase your vehicle transformation services.",
-    results: ["57% increase in appointments", "32% higher average order value", "3.5x customer retention"],
-    color: "from-cyan-600/30 via-cyan-400/20 to-cyan-600/30"
-  },
-  {
-    id: "dental-clinics",
-    title: "Dental Clinics",
-    icon: Stethoscope,
-    description: "Answer patient questions instantly, reduce no-shows, and fill your appointment calendar with qualified patients.",
-    results: ["68% reduction in no-shows", "2.4x increase in new patients", "47% boost in treatment acceptance"],
-    color: "from-red-600/30 via-red-400/20 to-red-600/30"
+    color: "from-amber-600/30 via-amber-400/20 to-amber-600/30",
+    link: "/real-estate"
   }
 ];
 
@@ -163,14 +135,14 @@ const IndustryResultsSection = () => {
                     ))}
                   </div>
                   
-                  {industry.id === "course-creators" && (
-                    <a 
-                      href="/course-creator" 
+                  {industry.link && (
+                    <Link 
+                      to={industry.link} 
                       className="mt-4 inline-flex items-center text-primary hover:underline"
                     >
-                      View Course Creator Solution
+                      View {industry.title} Solution
                       <ArrowUpRight size={16} className="ml-1" />
-                    </a>
+                    </Link>
                   )}
                 </CardContent>
               </Card>

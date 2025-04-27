@@ -12,13 +12,14 @@ export const ANIMATION_SETTINGS = {
   VERTICAL_SPACING: 70,
   START_X: -350,
   NAME_CARD_DISPLAY_COUNT: 1,
-  LEAD_SCALE_START: 1.2, // New: Starting scale for leads
-  LEAD_SCALE_END: 0.8,  // New: Ending scale before absorption
-  ABSORPTION_DURATION: 0.8, // New: Duration for absorption animation
-  RESULT_EMERGENCE_DELAY: 500, // New: Delay before showing result
+  LEAD_SCALE_START: 1.2, // Starting scale for leads
+  LEAD_SCALE_END: 0.8,  // Ending scale before absorption
+  ABSORPTION_DURATION: 0.8, // Duration for absorption animation
+  RESULT_EMERGENCE_DELAY: 500, // Delay before showing result
 } as const;
 
 export const CONVERSION_TYPES = [
+  // Trading conversions
   'joined program',
   'enrolled in course',
   'became student',
@@ -26,7 +27,21 @@ export const CONVERSION_TYPES = [
   'scheduled consultation',
   'started free trial',
   'signed up for webinar',
-  'completed purchase'
+  'completed purchase',
+  
+  // Course creator conversions
+  'enrolled in academy',
+  'purchased membership',
+  'joined coaching program',
+  'requested curriculum',
+  'booked strategy call',
+  
+  // Real estate conversions
+  'scheduled viewing',
+  'requested valuation',
+  'booked consultation',
+  'inquired about property',
+  'scheduled call'
 ] as const;
 
 export const generateLeadPositions = (count: number) => {
