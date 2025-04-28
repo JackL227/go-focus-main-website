@@ -85,7 +85,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
         {/* Logo image with enhanced glow effect */}
         <div className="absolute inset-0 flex items-center justify-center p-12 sm:p-16 z-50">
           <img
-            src="/lovable-uploads/f4307b23-4cb7-41c3-a215-24c3e8200377.png"
+            src="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png"
             alt="Go Focus AI Logo"
             className="w-full h-full object-contain"
             style={{ 
