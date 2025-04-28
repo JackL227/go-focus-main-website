@@ -36,6 +36,27 @@ const TradingFunnel = () => {
       description: "Time back to focus on your existing clients"
     }
   ];
+  
+  const realtimeStats = [
+    {
+      title: "Qualified Leads Generated",
+      value: 87,
+      icon: "trending-up",
+      description: "New potential clients every month"
+    },
+    {
+      title: "Sales Conversion Rate",
+      value: 35,
+      icon: "percent",
+      description: "Higher than traditional methods"
+    },
+    {
+      title: "Weekly Hours Saved",
+      value: 15,
+      icon: "clock",
+      description: "Focus on your existing clients"
+    }
+  ];
 
   return (
     <FunnelLayout
@@ -43,8 +64,8 @@ const TradingFunnel = () => {
       headline="Booked 87 Sales Calls for Trading Mentors in 30 Days — Without Chasing Leads."
       subheadline="Our AI Sales Agent qualifies and books your ideal students — so you never waste time chasing cold leads again."
       benefits={benefits}
-      testimonials={[]} // Empty array as testimonials are no longer used
       metrics={metrics}
+      realtimeStats={realtimeStats}
       guaranteeText="We guarantee 30 qualified mentorship leads in 90 days — or we work for free until you do."
       urgencyText="⛔ Only 5 mentor programs onboarded/month to avoid offer saturation"
       ctaText="Book My Strategy Call"

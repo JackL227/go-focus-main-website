@@ -36,6 +36,27 @@ const RealEstateFunnel = () => {
       description: "Higher conversion from lead to listing"
     }
   ];
+  
+  const realtimeStats = [
+    {
+      title: "Increase in Qualified Leads",
+      value: 162,
+      icon: "trending-up",
+      description: "More buyer and seller leads"
+    },
+    {
+      title: "Agent Time Saved",
+      value: 24,
+      icon: "clock",
+      description: "Weekly hours saved on qualification"
+    },
+    {
+      title: "Listing Conversion Rate",
+      value: 41,
+      icon: "percent",
+      description: "Higher conversion from lead to listing"
+    }
+  ];
 
   return (
     <FunnelLayout
@@ -43,8 +64,8 @@ const RealEstateFunnel = () => {
       headline="AI Agents That Convert Real Estate Leads Into Clients — While You Sleep"
       subheadline="Our AI system attracts, nurtures, and qualifies your real estate leads 24/7, so your agents only talk to ready-to-move buyers and sellers."
       benefits={benefits}
-      testimonials={[]} // Empty array as testimonials are no longer used
       metrics={metrics}
+      realtimeStats={realtimeStats}
       guaranteeText="We guarantee to double your qualified real estate leads in 90 days — or we'll continue working for free until we do."
       urgencyText="Limited to 3 agencies per city to avoid market saturation"
       ctaText="Book Your Strategy Call"

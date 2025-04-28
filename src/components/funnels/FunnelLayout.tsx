@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { ArrowRight, Calendar, Shield } from "lucide-react";
+import { ArrowRight, Calendar, Shield, Check } from "lucide-react";
 import BookingWidget from "../BookingWidget";
 import { Script } from '../ui/script';
 import NameCardTimeline from './NameCardTimeline';
