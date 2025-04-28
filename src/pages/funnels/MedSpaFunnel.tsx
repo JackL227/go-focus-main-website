@@ -1,4 +1,3 @@
-
 import React from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 
@@ -14,20 +13,6 @@ const MedSpaFunnel = () => {
         "Auto-booking into your existing calendar",
         "Reactivation campaigns for cold leads",
         "Retention/upsell follow-through"
-      ]}
-      testimonials={[
-        {
-          quote: "From 4 to 25+ bookings per week. $20K/month increase. All automated.",
-          author: "Sarah Johnson",
-          position: "Owner",
-          company: "Luxe Skin Spa"
-        },
-        {
-          quote: "Our AI assistant increased our booking rate by 40%. It follows up with leads who don't schedule immediately and recaptures clients we would have otherwise lost.",
-          author: "Jessica Williams",
-          position: "Director",
-          company: "Pure Aesthetics"
-        }
       ]}
       metrics={[
         {

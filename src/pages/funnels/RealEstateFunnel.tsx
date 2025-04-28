@@ -1,12 +1,9 @@
-
 import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
 
 const RealEstateFunnel = () => {
-  // For Meta Pixel tracking
   useEffect(() => {
-    // Meta Pixel tracking code would go here
     console.log("Real Estate funnel page view tracked");
   }, []);
   
@@ -39,11 +36,10 @@ const RealEstateFunnel = () => {
 
   return (
     <FunnelLayout
-      niche="trading" // We'll use trading color scheme for now
+      niche="trading"
       headline="AI Agents That Convert Real Estate Leads Into Clients — While You Sleep"
       subheadline="Our AI system attracts, nurtures, and qualifies your real estate leads 24/7, so your agents only talk to ready-to-move buyers and sellers."
       benefits={benefits}
-      testimonials={[]} // Empty array as testimonials are no longer used
       metrics={metrics}
       guaranteeText="We guarantee to double your qualified real estate leads in 90 days — or we'll continue working for free until we do."
       urgencyText="Limited to 3 agencies per city to avoid market saturation"
