@@ -42,13 +42,13 @@ const CourseCreatorFunnel = () => {
       benefits={benefits}
       metrics={metrics}
       guaranteeText="If our AI agent doesn't increase your course enrollments or improve student satisfaction within 60 days, we'll refund your entire investment. We're that confident in our solution."
-      urgencyText="Limited time offer: Get 3 months of our premium tier at the standard plan price."
+      urgencyText="Limited spots available - Only 8 new clients accepted monthly"
       ctaText="Get Your Free AI Strategy Session"
       hasCountdown={true}
       showSocialProof={true}
       vslSection={
         <VideoSalesLetter
-          videoId="H3qWMyj8Eq0"
+          videoId="dQw4w9WgXcQ"
           title="Scale Your Course & Info Product Business With 24/7 AI Support"
           subtitle="Transform your course business with an AI agent that qualifies leads, answers student questions, and books sales calls while you sleep."
         />
