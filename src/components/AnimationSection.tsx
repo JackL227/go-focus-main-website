@@ -1,7 +1,9 @@
 
 import React from 'react';
+import HeroAnimation from './hero-animation/HeroAnimation';
 
-// Animation section removed
-const AnimationSection = () => null;
+const AnimationSection = () => {
+  return <HeroAnimation />;
+};
 
 export default AnimationSection;

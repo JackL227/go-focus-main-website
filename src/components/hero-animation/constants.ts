@@ -14,14 +14,14 @@ export const ANIMATION_SETTINGS = {
   VERTICAL_SPACING: 70,
   NAME_CARD_START_X: 80,
   NAME_CARD_END_X: 350,
-  ABSORPTION_DURATION: 0.7, // Slightly faster absorption
+  ABSORPTION_DURATION: 0.6, // Faster absorption for better performance
   RESULT_EMERGENCE_DELAY: 700, // Quicker emergence
   OSCILLATION_AMPLITUDE: 14, // Increased oscillation
-  OSCILLATION_SPEED: 0.8, // Adjusted for smoother flow
+  OSCILLATION_SPEED: 0.7, // Adjusted for smoother flow
   HORIZONTAL_WAVE_AMPLITUDE: 10,
   HORIZONTAL_WAVE_SPEED: 1.2,
-  SUCTION_EFFECT_RADIUS: 180, // Larger suction radius
-  SUCTION_EFFECT_STRENGTH: 3.2, // Stronger pull effect
+  SUCTION_EFFECT_RADIUS: 200, // Larger suction radius for better animation
+  SUCTION_EFFECT_STRENGTH: 3.0, // Optimized pull effect
   DEPTH_Z_RANGE: 40,
   LEAD_SCALE_START: 1.2, // Start slightly larger
   LEAD_SCALE_END: 0.2 // End slightly smaller for better absorption effect

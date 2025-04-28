@@ -1,20 +1,27 @@
+
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
+import HeroAnimation from './hero-animation/HeroAnimation';
+
 const HeroSection = () => {
-  const {
-    user
-  } = useAuth();
+  const { user } = useAuth();
   const [showAgentDemo, setShowAgentDemo] = useState(false);
+  
   const handleDemoClick = () => {
     setShowAgentDemo(true);
   };
-  return <section className="relative min-h-screen flex flex-col items-center pt-24 pb-16 overflow-hidden" aria-label="Hero section">
+  
+  return (
+    <section 
+      className="relative min-h-screen flex flex-col items-center pt-24 pb-16 overflow-hidden" 
+      aria-label="Hero section"
+    >
       <div className="container-custom relative z-10 pt-8">
-        <div className="flex flex-col items-center max-w-4xl mx-auto text-center mb-16">
+        <div className="flex flex-col items-center max-w-4xl mx-auto text-center mb-8">
           <div className="space-y-6 mb-8">
             <h1 aria-label="Main headline" className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gradient-primary py-[35px]">
               AI Agents That Convert Leads Into Revenue — 
@@ -42,7 +49,14 @@ const HeroSection = () => {
         </div>
       </div>
       
+      {/* Hero Animation Section */}
+      <div className="w-full relative z-0">
+        <HeroAnimation />
+      </div>
+      
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} initialNiche="trading" />}
-    </section>;
+    </section>
+  );
 };
+
 export default HeroSection;

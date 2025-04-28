@@ -53,7 +53,7 @@ const LeadCard = ({
   const positionRef = useRef({ x: position?.x || -350, y: position?.y || 0 });
   const originalY = position?.originalY || position?.y || 0;
   
-  // Custom path animation using useAnimationFrame
+  // Custom path animation using useAnimationFrame for performance
   useAnimationFrame((time) => {
     if (elementRef.current && !isAbsorbed && !isConverted && !exitRight) {
       timeRef.current += 0.01 * OSCILLATION_SPEED * speed;
@@ -123,8 +123,8 @@ const LeadCard = ({
       ref={elementRef}
       className={`absolute ${
         isConverted 
-          ? 'rounded-xl p-3 bg-[#1F1F22]/90 backdrop-blur-sm border border-[#2d2d2d]/50 shadow-lg flex items-center min-w-[220px] z-20' 
-          : 'w-20 h-10 rounded-full bg-[#1F1F22]/90 backdrop-blur-sm flex items-center justify-center shadow-md'
+          ? 'rounded-xl p-3 bg-background/90 backdrop-blur-sm border border-foreground/10 shadow-lg flex items-center min-w-[220px] z-20' 
+          : 'w-20 h-10 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center shadow-md'
       }`}
       initial={{ 
         x: position?.x ?? -350, 
@@ -192,6 +192,7 @@ const LeadCard = ({
           : `0 2px 8px rgba(0, 0, 0, 0.25), ${cardGlow}`,
         willChange: 'transform, opacity',
       }}
+      aria-hidden="true"
     >
       {isConverted ? (
         <div className="flex items-center space-x-2">

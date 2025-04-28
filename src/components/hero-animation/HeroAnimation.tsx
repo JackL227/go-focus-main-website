@@ -272,7 +272,7 @@ const HeroAnimation = () => {
   }, [addNewLead, findNextLeadToProcess, processLead, isMobile]);
   
   return (
-    <div className="relative w-full h-[280px] md:h-[350px] lg:h-[420px] overflow-hidden mt-6 mb-8">
+    <div className="relative w-full h-[280px] md:h-[350px] lg:h-[420px] overflow-hidden mt-6 mb-8" aria-label="AI agent animation showing leads being converted into customers">
       {/* Center logo for lead absorption */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <CenterLogo processingLead={processingLead} />

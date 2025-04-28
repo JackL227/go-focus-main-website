@@ -34,7 +34,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             ease: "easeInOut"
           }}
         >
-          <div className="w-full h-full bg-gradient-to-r from-[#00F5A0] via-[#00E2C3] to-[#00D9F5] rounded-full" />
+          <div className="w-full h-full bg-gradient-to-r from-primary to-[#00D9F5] rounded-full" />
         </motion.div>
         
         {/* Primary pulsing glow with enhanced intensity */}
@@ -51,7 +51,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
           }}
         >
           <motion.div 
-            className="absolute inset-0 bg-gradient-to-r from-[#00F5A0] to-[#00D9F5] rounded-full opacity-50 blur-[30px]"
+            className="absolute inset-0 bg-gradient-to-r from-primary to-[#00D9F5] rounded-full opacity-50 blur-[30px]"
             animate={{
               scale: processingLead ? [1, 1.06, 1] : [1, 1.03, 1],
             }}
@@ -68,7 +68,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
         <motion.div 
           className="absolute inset-[18%] rounded-full opacity-60 blur-[20px]"
           style={{
-            background: 'linear-gradient(to right, #00F5A0, #00D9F5)'
+            background: 'linear-gradient(to right, #006eda, #00D9F5)'
           }}
           animate={{
             opacity: processingLead ? [0.6, 0.75, 0.6] : [0.5, 0.6, 0.5],
@@ -85,7 +85,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
         {/* Logo image with enhanced glow effect */}
         <div className="absolute inset-0 flex items-center justify-center p-12 sm:p-16 z-50">
           <img
-            src="/lovable-uploads/b9eb9c06-5b4f-416d-af44-06190fbec508.png"
+            src="/lovable-uploads/f4307b23-4cb7-41c3-a215-24c3e8200377.png"
             alt="Go Focus AI Logo"
             className="w-full h-full object-contain"
             style={{ 
@@ -99,7 +99,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
         {processingLead && (
           <>
             <motion.div
-              className="absolute inset-0 rounded-full border-2 border-[#00F5A0]/30"
+              className="absolute inset-0 rounded-full border-2 border-primary/30"
               initial={{ scale: 0.9, opacity: 0.9 }}
               animate={{ scale: 1.4, opacity: 0 }}
               transition={{
@@ -110,7 +110,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
               }}
             />
             <motion.div
-              className="absolute inset-0 rounded-full border-2 border-[#00F5A0]/20"
+              className="absolute inset-0 rounded-full border-2 border-primary/20"
               initial={{ scale: 0.9, opacity: 0.7 }}
               animate={{ scale: 1.6, opacity: 0 }}
               transition={{
