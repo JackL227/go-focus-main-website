@@ -96,8 +96,8 @@ const IndustryResultsSection = () => {
             <div 
               key={industry.id} 
               ref={el => cardRefs.current[index] = el}
-              className="opacity-0 transition-all duration-500 h-full"
-              style={{ transitionDelay: `${index * 200}ms` }}
+              className="opacity-0 transition-all duration-500"
+              style={{ transitionDelay: `${index * 200}ms`, height: '100%' }}
             >
               <Card className={cn(
                 "h-full border-0 bg-gradient-to-b flex flex-col", 

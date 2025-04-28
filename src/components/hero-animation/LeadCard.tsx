@@ -59,13 +59,15 @@ const LeadCard = ({
       timeRef.current += 0.01 * OSCILLATION_SPEED * speed;
       
       // Base movement towards center with depth-based speed adjustment
-      const depthSpeedFactor = 0.8 + (depth * 0.6); // Deeper cards move slower
-      const baseX = positionRef.current.x + (0.7 * speed * depthSpeedFactor);
+      const depthSpeedFactor = 0.7 + (depth * 0.8); // Deeper cards move slower
+      const baseX = positionRef.current.x + (0.8 * speed * depthSpeedFactor);
       positionRef.current.x = baseX;
       
-      // Vertical oscillation (sine wave) with depth-based amplitude
-      const oscillationY = Math.sin(timeRef.current) * OSCILLATION_AMPLITUDE * (0.7 + (depth * 0.5));
-      const baseY = originalY + oscillationY;
+      // Enhanced vertical oscillation (sine wave) with depth-based amplitude
+      const oscillationY = Math.sin(timeRef.current) * OSCILLATION_AMPLITUDE * (0.6 + (depth * 0.7));
+      // Add second frequency for more natural movement
+      const secondOscillation = Math.sin(timeRef.current * 0.5) * (OSCILLATION_AMPLITUDE * 0.3);
+      const baseY = originalY + oscillationY + secondOscillation;
       positionRef.current.y = baseY;
       
       // Calculate distance from center for enhanced suction effect
@@ -77,15 +79,15 @@ const LeadCard = ({
       if (distanceFromCenter < SUCTION_EFFECT_RADIUS) {
         // Progressive suction power that increases exponentially as card gets closer
         const normalizedDistance = distanceFromCenter / SUCTION_EFFECT_RADIUS;
-        const suctionPower = Math.pow(1 - normalizedDistance, 1.8) * SUCTION_EFFECT_STRENGTH;
+        const suctionPower = Math.pow(1 - normalizedDistance, 2.2) * SUCTION_EFFECT_STRENGTH;
         
         // Apply stronger pull toward center (0,0)
-        suctionX = baseX - (baseX * suctionPower * 0.04);
-        suctionY = baseY - (baseY * suctionPower * 0.04);
+        suctionX = baseX - (baseX * suctionPower * 0.06);
+        suctionY = baseY - (baseY * suctionPower * 0.06);
       }
       
       // Calculate dynamic scale based on distance from center
-      const distanceScale = Math.max(0.3, Math.min(1, distanceFromCenter / 280));
+      const distanceScale = Math.max(0.2, Math.min(1, distanceFromCenter / 300));
       const finalScale = scale * distanceScale;
       
       // Apply perspective transform for enhanced 3D effect
@@ -100,11 +102,11 @@ const LeadCard = ({
       `;
       
       // Dynamic opacity for depth effect and proximity fade
-      const baseOpacity = opacity * (0.7 + (depth * 0.3));
+      const baseOpacity = opacity * (0.65 + (depth * 0.35));
       
       // Update opacity based on distance to create fade effect near center
       if (distanceFromCenter < 100) {
-        const fadeOpacity = Math.max(0.1, distanceFromCenter / 100) * baseOpacity;
+        const fadeOpacity = Math.max(0.05, distanceFromCenter / 100) * baseOpacity;
         elementRef.current.style.opacity = `${fadeOpacity}`;
       } else {
         elementRef.current.style.opacity = `${baseOpacity}`;
@@ -113,7 +115,7 @@ const LeadCard = ({
   });
 
   // Dynamic glow effect based on depth
-  const glowIntensity = depth * 0.2; // More depth = more glow
+  const glowIntensity = depth * 0.25; // More depth = more glow
   const cardGlow = `0 0 ${8 + depth * 12}px rgba(0, 245, 160, ${glowIntensity})`;
   
   return (
@@ -135,14 +137,15 @@ const LeadCard = ({
       animate={
         exitRight
           ? {
-              x: 400,
-              y: position?.y ?? 0,
-              scale: [0.9, 0.95, 0.9],
+              // Enhanced diagonal movement for exit
+              x: 400 + (Math.random() * 50),
+              y: (position?.y ?? 0) + (Math.random() * 80 - 40),
+              scale: [0.9, 0.92, 0.85],
               opacity: [0.9, 0.7, 0],
-              rotate: [0, 1, 2],
+              rotate: [0, Math.random() * 3 - 1.5, Math.random() * 5 - 2.5],
               zIndex: 15,
               transition: {
-                duration: 4.5,
+                duration: 4 + (Math.random() * 1.5),
                 ease: "easeOut",
                 opacity: { times: [0, 0.7, 1], duration: 4.5 },
                 scale: { times: [0, 0.5, 1], duration: 4.5 },
@@ -151,8 +154,9 @@ const LeadCard = ({
             }
           : isConverted 
             ? {
-                x: ANIMATION_SETTINGS.NAME_CARD_START_X,
-                y: position?.y ?? 0,
+                // More dynamic emergence with slight diagonal variation
+                x: ANIMATION_SETTINGS.NAME_CARD_START_X + (Math.random() * 15 - 7.5),
+                y: (position?.y ?? 0) + (Math.random() * 10 - 5),
                 scale: [0.1, 1.15, 1],
                 opacity: 1,
                 rotate: [-1, 0.5, 0],
@@ -167,16 +171,17 @@ const LeadCard = ({
               }
             : isAbsorbed 
               ? { 
+                  // Enhanced absorption effect
                   x: 0,
                   y: 0,
                   scale: [LEAD_SCALE_END * scale, 0],
                   opacity: [opacity, 0],
-                  rotate: 0,
+                  rotate: Math.random() * 10 - 5, // Add slight rotation for natural feel
                   zIndex: 20,
-                  filter: "brightness(1.5)",
+                  filter: "brightness(1.8)", // Brighter glow during absorption
                   transition: {
                     duration: ABSORPTION_DURATION,
-                    ease: [0.6, 0.01, 0.05, 0.95]
+                    ease: [0.5, 0.05, 0.1, 0.95] // Adjusted easing for smoother absorption
                   }
                 }
               : {}
