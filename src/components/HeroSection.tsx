@@ -62,7 +62,7 @@ const HeroSection = () => {
         <HeroAnimation />
       </div>
       
-      {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
+      {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} initialNiche="trading" />}
     </section>
   );
 };

@@ -27,10 +27,11 @@ interface AgentConfig {
 
 interface AIAgentDemoProps {
   onClose: () => void;
+  initialNiche?: 'trading' | 'course' | 'realestate';
 }
 
-const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose }) => {
-  const [activeNiche, setActiveNiche] = useState<string>('trading');
+const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose, initialNiche = 'trading' }) => {
+  const [activeNiche, setActiveNiche] = useState<string>(initialNiche);
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState<string>('');
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -67,56 +68,60 @@ const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose }) => {
         }
       ]
     },
-    medspa: {
-      name: 'Sarah - Med Spa AI',
-      greeting: "Hello! I'm Sarah, your virtual assistant at Pure Aesthetics Med Spa. What treatment are you interested in learning more about today?",
+    course: {
+      name: 'Emma - Course Creator AI',
+      greeting: "Hello! I'm Emma, the virtual assistant for Course Creator Academy. What type of online course or info product are you looking to create?",
       avatar: '/lovable-uploads/9dc911d9-ffea-4dc9-8c9f-53a8114665de.png',
       messages: [
         {
-          text: "Our Botox treatments start at $12 per unit. Most clients need between 20-40 units depending on the treatment area. Would you like to know about our current special offers?",
+          text: "That sounds interesting! Many of our clients have had great success with similar courses. What's your current course creation experience level?",
           delay: 1200,
           options: [
-            { text: "Yes, tell me about specials", response: "Yes, I'd like to hear about special offers" },
-            { text: "What areas do you treat?", response: "What areas can be treated?" }
+            { text: "Complete beginner", response: "I'm just starting out" },
+            { text: "Some experience", response: "I've created a few courses before" },
+            { text: "Experienced", response: "I have multiple courses already" }
           ]
         },
         {
-          text: "We're offering 20% off your first Botox treatment this month! We treat all facial areas including frown lines, crow's feet, and forehead. When was the last time you had a Botox treatment?",
+          text: "Great to know. What's your biggest challenge right now with your course business?",
           delay: 1500,
           options: [
-            { text: "Never had it", response: "This would be my first time" },
-            { text: "Within 6 months", response: "I had treatment in the last 6 months" }
+            { text: "Getting students", response: "I struggle with attracting students" },
+            { text: "Content creation", response: "Creating quality content is difficult" },
+            { text: "Student engagement", response: "Keeping students engaged through completion" }
           ]
         },
         {
-          text: "Great! I'd be happy to check our next available appointment slots for a free consultation. Our specialist can create a personalized treatment plan. Would you like to see our availability this week?",
+          text: "I understand those challenges. Our AI support system helps course creators like you overcome these exact issues. Would you like to schedule a call with our course business strategist to see how our AI can help scale your info product business?",
           delay: 2000
         }
       ]
     },
-    fitness: {
-      name: 'Mike - Fitness Coach AI',
-      greeting: "Hey there! I'm Mike, the virtual coach for Body Transformation Academy. What are your main fitness goals right now?",
+    realestate: {
+      name: 'Michael - Real Estate AI',
+      greeting: "Hi there! I'm Michael, the virtual assistant for Premier Real Estate. Are you looking to integrate AI for your buyer leads, seller leads, or both?",
       avatar: '/lovable-uploads/d410a2a7-6cd4-4de0-82f0-761a7a3f26c9.png',
       messages: [
         {
-          text: "Weight loss is our specialty! Have you worked with a fitness coach before?",
+          text: "Perfect! How many agents are currently in your real estate agency?",
           delay: 1000,
           options: [
-            { text: "Yes, I have", response: "Yes, I've worked with coaches before" },
-            { text: "No, never", response: "No, this would be my first time" }
+            { text: "Solo agent", response: "I work independently" },
+            { text: "Small team (2-5)", response: "We have a small team of agents" },
+            { text: "Large team (6+)", response: "We have a large team of agents" }
           ]
         },
         {
-          text: "Our 12-week transformation program includes personalized nutrition planning, custom workouts, and weekly check-ins. Most clients see 10-15 pounds of fat loss in the first month. Would you like to see a sample program?",
+          text: "Thanks for sharing. How many leads does your agency typically generate per month currently?",
           delay: 1500,
           options: [
-            { text: "Yes, show me", response: "Yes, I'd like to see a sample" },
-            { text: "How much is it?", response: "What's the program cost?" }
+            { text: "Under 20", response: "We generate fewer than 20 leads monthly" },
+            { text: "20-50", response: "We generate 20-50 leads monthly" },
+            { text: "50+", response: "We generate over 50 leads monthly" }
           ]
         },
         {
-          text: "I'd be happy to send more details! But first, let's schedule a free discovery call with one of our coaches to discuss your specific goals and how we can customize the program for you. Would that work for you?",
+          text: "I see. Our AI system helps real estate agencies convert more leads into appointments without agents spending hours on follow-up. Would you like to schedule a demo to see how we can help your agency close more deals?",
           delay: 2000
         }
       ]
@@ -164,7 +169,7 @@ const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose }) => {
     if (nextMessage) {
       setTimeout(() => {
         setMessages(prevMessages => [...prevMessages, {
-          sender: 'agent' as const,
+          sender: 'agent',
           text: nextMessage.text
         }]);
         setIsTyping(false);
@@ -175,7 +180,7 @@ const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose }) => {
       setTimeout(() => {
         setIsTyping(false);
         setMessages(prevMessages => [...prevMessages, {
-          sender: 'agent' as const,
+          sender: 'agent',
           text: "Great! Let me check our calendar. You can book a time that works for you using the button below."
         }]);
       }, 1500);
@@ -185,6 +190,15 @@ const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose }) => {
   const handleOptionClick = (optionText: string, response: string) => {
     setUserInput(response);
     handleUserInput(response);
+  };
+
+  const getTriggerLabel = (niche: string) => {
+    switch (niche) {
+      case 'trading': return '🔁 Trading Mentor';
+      case 'course': return '📚 Course Creator';
+      case 'realestate': return '🏠 Real Estate';
+      default: return niche;
+    }
   };
 
   return (
@@ -208,13 +222,13 @@ const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose }) => {
           <Tabs value={activeNiche} onValueChange={setActiveNiche}>
             <TabsList className="w-full grid grid-cols-3">
               <TabsTrigger value="trading" className="text-xs sm:text-sm">
-                🔁 Trading Mentor
+                {getTriggerLabel('trading')}
               </TabsTrigger>
-              <TabsTrigger value="medspa" className="text-xs sm:text-sm">
-                💉 Med Spa
+              <TabsTrigger value="course" className="text-xs sm:text-sm">
+                {getTriggerLabel('course')}
               </TabsTrigger>
-              <TabsTrigger value="fitness" className="text-xs sm:text-sm">
-                🏋️ Fitness Coach
+              <TabsTrigger value="realestate" className="text-xs sm:text-sm">
+                {getTriggerLabel('realestate')}
               </TabsTrigger>
             </TabsList>
           </Tabs>

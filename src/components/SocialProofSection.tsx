@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from 'react';
 import { Star, ArrowRight, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Button } from './ui/button';
@@ -32,6 +33,7 @@ const SocialProofSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [showAgentDemo, setShowAgentDemo] = useState(false);
+  const [selectedNiche, setSelectedNiche] = useState<'trading' | 'course' | 'realestate'>('trading');
   const maxSlides = Math.ceil(testimonials.length / 2);
 
   const nextSlide = () => {
@@ -42,7 +44,8 @@ const SocialProofSection = () => {
     setActiveSlide(prev => (prev - 1 + maxSlides) % maxSlides);
   };
 
-  const handleDemoClick = () => {
+  const handleDemoClick = (niche: 'trading' | 'course' | 'realestate') => {
+    setSelectedNiche(niche);
     setShowAgentDemo(true);
   };
 
@@ -134,14 +137,44 @@ const SocialProofSection = () => {
               </span>
             </BookingWidget>
             
-            <Button size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10" onClick={handleDemoClick}>
-              See AI Agent in Action
-            </Button>
+            <div className="relative group">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-primary/60 text-primary hover:bg-primary/10 w-full sm:w-auto"
+                onClick={() => handleDemoClick('trading')}
+              >
+                See AI Agent in Action
+              </Button>
+              
+              <div className="hidden group-hover:block absolute top-full left-0 mt-2 bg-background border border-border rounded-lg shadow-lg z-10">
+                <div className="p-2 w-48">
+                  <button 
+                    className="w-full text-left px-3 py-2 rounded hover:bg-primary/10 transition-colors"
+                    onClick={() => handleDemoClick('trading')}
+                  >
+                    🔁 Trading Mentor
+                  </button>
+                  <button 
+                    className="w-full text-left px-3 py-2 rounded hover:bg-primary/10 transition-colors"
+                    onClick={() => handleDemoClick('course')}
+                  >
+                    📚 Course Creator
+                  </button>
+                  <button 
+                    className="w-full text-left px-3 py-2 rounded hover:bg-primary/10 transition-colors"
+                    onClick={() => handleDemoClick('realestate')}
+                  >
+                    🏠 Real Estate
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
+      {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} initialNiche={selectedNiche} />}
     </section>;
 };
 

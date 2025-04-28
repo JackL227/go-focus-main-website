@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -58,9 +59,9 @@ const VideoSalesLetter = ({
 
   return (
     <section className="py-4 md:py-6 bg-background">
-      <div className="container-custom">
+      <div className="container-custom px-4 sm:px-6 md:px-8">
         <div className="max-w-4xl mx-auto">
-          <div className="relative rounded-xl overflow-hidden aspect-video bg-black/90 shadow-xl border border-foreground/10 mb-6">
+          <div className="relative rounded-xl overflow-hidden aspect-video bg-black/90 shadow-xl border border-foreground/10 mb-4">
             {videoId ? (
               <iframe 
                 title="Video Sales Letter" 
