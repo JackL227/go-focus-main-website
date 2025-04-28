@@ -1,9 +1,10 @@
 
 import React, { useEffect, useState } from 'react';
-import { ArrowRight, Check, Calendar, Clock, Users, Award, Shield } from "lucide-react";
+import { ArrowRight, Check, Calendar, Clock, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Script } from '../ui/script';
+import NameCardTimeline from './NameCardTimeline';
+import RealTimeResults from './RealTimeResults';
 
 interface FunnelLayoutProps {
   niche: 'trading' | 'medspa' | 'fitness';
@@ -35,13 +36,11 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   headline,
   subheadline,
   benefits,
-  testimonials,
   metrics,
   guaranteeText,
   urgencyText,
   ctaText,
   hasCountdown = false,
-  showSocialProof = false,
   vslSection
 }) => {
   const colorSchemes = {
@@ -95,25 +94,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
     }
   }, [hasCountdown]);
 
-  const [currentProofIndex, setCurrentProofIndex] = useState(0);
-  const socialProofs = [
-    { name: "Alex M.", action: "Booked a call", time: "2 minutes ago" },
-    { name: "Sarah L.", action: "Signed up", time: "5 minutes ago" },
-    { name: "John D.", action: "Booked a call", time: "12 minutes ago" },
-    { name: "Emma W.", action: "Made a purchase", time: "18 minutes ago" },
-    { name: "Robert K.", action: "Booked a call", time: "24 minutes ago" }
-  ];
-
-  useEffect(() => {
-    if (showSocialProof) {
-      const interval = setInterval(() => {
-        setCurrentProofIndex(prev => (prev + 1) % socialProofs.length);
-      }, 4000);
-      
-      return () => clearInterval(interval);
-    }
-  }, [showSocialProof]);
-  
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -166,45 +146,25 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       {/* VSL Section - Placed at the top of the funnel */}
       {vslSection}
       
-      <section className="relative min-h-[90vh] flex items-center">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className={`w-full h-full bg-gradient-to-b ${colorScheme.gradient} opacity-10`}></div>
-        </div>
-        
-        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/95 to-background z-[1]"></div>
-        
-        <div className="container-custom relative z-10 py-24">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-entrance">
-              {headline}
-            </h1>
-            
-            <p className="text-xl text-foreground/90 mb-8 animate-entrance max-w-3xl mx-auto">
-              {subheadline}
-            </p>
-            
-            {showSocialProof && (
-              <div className="mb-6 animate-entrance bg-background/60 backdrop-blur-sm border border-foreground/10 rounded-lg p-3 max-w-xs mx-auto">
-                <p className="text-sm">
-                  <span className="font-semibold">{socialProofs[currentProofIndex].name}</span>
-                  <span className="mx-1">{socialProofs[currentProofIndex].action}</span>
-                  <span className="text-foreground/60 text-xs">{socialProofs[currentProofIndex].time}</span>
-                </p>
+      {/* Name Card Timeline Section */}
+      <NameCardTimeline />
+      
+      {/* CTA & Limited Time Offer Section */}
+      <section className="pt-2 pb-8 bg-background">
+        <div className="container-custom">
+          <div className="max-w-xl mx-auto text-center">
+            {urgencyText && (
+              <div className="mb-4 animate-entrance">
+                <div className="inline-block bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-2">
+                  <p className="text-lg font-semibold text-red-400 animate-pulse-soft">
+                    {urgencyText}
+                  </p>
+                </div>
               </div>
             )}
             
-            <div className="flex flex-col sm:flex-row justify-center gap-4 animate-entrance">
-              <BookingWidget 
-                className={`text-white group text-lg px-7 py-3 w-full sm:w-auto ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
-              >
-                <span className="whitespace-normal">{ctaText}</span>
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
-              </BookingWidget>
-            </div>
-            
             {hasCountdown && (
-              <div className="mt-8 animate-entrance">
-                <p className="text-sm text-foreground/70 mb-2">Limited Time Offer Ends In:</p>
+              <div className="mb-6 animate-entrance">
                 <div className="flex justify-center gap-4">
                   <div className="bg-background/80 backdrop-blur-sm border border-foreground/20 rounded px-3 py-2 w-16">
                     <div className="text-xl font-bold">{String(timeRemaining.hours).padStart(2, '0')}</div>
@@ -221,147 +181,47 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
                 </div>
               </div>
             )}
+            
+            <div className="animate-entrance">
+              <BookingWidget 
+                className={`text-white group text-lg px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
+              >
+                <span className="whitespace-normal">{ctaText}</span>
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
+              </BookingWidget>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="benefits" className="py-16 bg-background/95">
+      <section id="benefits" className="py-12 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 animate-entrance">What You Get</h2>
+            <h2 className="text-3xl font-bold text-center mb-10 animate-entrance">What You Get</h2>
             
-            <div className="grid md:grid-cols-2 gap-8 stagger-animation">
+            <div className="grid md:grid-cols-2 gap-6 stagger-animation">
               {benefits.map((benefit, index) => (
                 <div 
                   key={index}
-                  className="glass-card p-6 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                  className="glass-card p-5 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
                 >
                   <div className="flex items-start">
                     <div className={`p-2 rounded-full bg-gradient-to-r ${colorScheme.accent} text-white mr-3 animate-pulse-soft`}>
-                      <Check className="h-5 w-5" />
+                      <Check className="h-4 w-4" />
                     </div>
                     <p className="text-lg">{benefit}</p>
                   </div>
                 </div>
               ))}
             </div>
-
-            {/* Mid-page CTA */}
-            <div className="mt-12 text-center">
-              <BookingWidget 
-                className={`text-white group text-lg px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
-              >
-                <span className="whitespace-normal">{ctaText}</span>
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
-              </BookingWidget>
-            </div>
           </div>
         </div>
       </section>
 
-      <section id="how-it-works" className="py-16 bg-background">
-        <div className="container-custom">
-          <h2 className="text-3xl font-bold text-center mb-12 animate-entrance">How It Works</h2>
-          
-          <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8 stagger-animation">
-              <div className="glass-card p-6 rounded-lg text-center transition-all duration-300 hover:scale-105">
-                <div className="h-16 w-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-gradient-to-r from-primary to-primary/70 text-white text-xl font-bold animate-pulse-soft">
-                  1
-                </div>
-                <h3 className="text-xl font-bold mb-3">We Build Your AI Agent</h3>
-                <p>Trained on your exact offer, pricing, and messaging to represent your business perfectly.</p>
-              </div>
-              
-              <div className="glass-card p-6 rounded-lg text-center transition-all duration-300 hover:scale-105">
-                <div className="h-16 w-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-gradient-to-r from-primary to-primary/70 text-white text-xl font-bold animate-pulse-soft">
-                  2
-                </div>
-                <h3 className="text-xl font-bold mb-3">We Connect To Your Lead Flow</h3>
-                <p>Seamlessly integrates with all channels - DMs, forms, emails, and website chat.</p>
-              </div>
-              
-              <div className="glass-card p-6 rounded-lg text-center transition-all duration-300 hover:scale-105">
-                <div className="h-16 w-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-gradient-to-r from-primary to-primary/70 text-white text-xl font-bold animate-pulse-soft">
-                  3
-                </div>
-                <h3 className="text-xl font-bold mb-3">You Get Pre-Qualified Meetings</h3>
-                <p>Only speak with vetted prospects who match your ideal client profile and are ready to buy.</p>
-              </div>
-            </div>
-            
-            {/* Mid-page CTA */}
-            <div className="mt-12 text-center">
-              <BookingWidget 
-                className={`text-white group text-lg px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
-              >
-                <span className="whitespace-normal">{ctaText}</span>
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
-              </BookingWidget>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Real-Time Results Section */}
+      <RealTimeResults />
 
-      <section id="testimonials" className="py-16 bg-background/95">
-        <div className="container-custom">
-          <h2 className="text-3xl font-bold text-center mb-12 animate-entrance">Results & Feedback</h2>
-          
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <div className="space-y-8 stagger-animation">
-              <h3 className="text-2xl font-bold mb-6 flex items-center">
-                <Users className="mr-2 h-6 w-6 text-primary" />
-                What Our Clients Say
-              </h3>
-              
-              <Carousel className="w-full">
-                <CarouselContent>
-                  {testimonials.map((testimonial, index) => (
-                    <CarouselItem key={index}>
-                      <div className="glass-card p-6 rounded-lg h-full">
-                        <p className="text-lg mb-4 italic">"{testimonial.quote}"</p>
-                        <div>
-                          <p className="font-semibold">{testimonial.author}</p>
-                          <p className="text-sm text-foreground/70">{testimonial.position}, {testimonial.company}</p>
-                        </div>
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-              </Carousel>
-            </div>
-            
-            <div className="space-y-6 stagger-animation">
-              <h3 className="text-2xl font-bold mb-6 flex items-center">
-                <Award className="mr-2 h-6 w-6 text-primary" />
-                Real Results
-              </h3>
-              
-              {metrics.map((metric, index) => (
-                <div key={index} className="glass-card p-6 rounded-lg transition-all duration-300 hover:scale-105">
-                  <h3 className="font-bold text-xl mb-2">{metric.title}</h3>
-                  <p className={`text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${colorScheme.accent} animate-pulse-soft`}>
-                    {metric.value}
-                  </p>
-                  <p className="text-foreground/70 mt-2">{metric.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          {/* Mid-page CTA */}
-          <div className="mt-12 text-center">
-            <BookingWidget 
-              className={`text-white group text-lg px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
-            >
-              <span className="whitespace-normal">{ctaText}</span>
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
-            </BookingWidget>
-          </div>
-        </div>
-      </section>
-
-      <section id="guarantee" className="py-16 bg-background">
+      <section id="guarantee" className="py-12 bg-background">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto glass-card p-8 rounded-lg animate-entrance">
             <div className="flex flex-col sm:flex-row items-center mb-4">
@@ -372,18 +232,11 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             <div className="text-center py-4 border-t border-b border-foreground/10">
               <p className="text-xl font-semibold">No long-term contracts. Cancel anytime.</p>
             </div>
-            {urgencyText && (
-              <div className="mt-6 text-center">
-                <div className="inline-block bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-2">
-                  <p className="text-lg font-semibold text-red-400 animate-pulse-soft">{urgencyText}</p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </section>
 
-      <section id="cta" className="py-16 bg-background/95">
+      <section id="final-cta" className="py-12 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto text-center animate-entrance">
             <h2 className="text-3xl font-bold mb-6">Ready To Automate Your Lead Generation?</h2>

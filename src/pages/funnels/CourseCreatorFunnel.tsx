@@ -16,31 +16,7 @@ const CourseCreatorFunnel = () => {
     "Convert more leads with intelligent follow-up sequences personalized to each prospect",
     "Get detailed analytics on common student questions and concerns to improve your course"
   ];
-  
-  const testimonials = [
-    {
-      quote: "The AI agent has transformed my online course business. I'm now enrolling 3x more students without spending hours in my inbox or DMs. The personalized follow-up sequences have been a game-changer for my conversion rates.",
-      author: "Sarah R.",
-      position: "Digital Course Creator",
-      company: "Marketing Mastery Academy",
-      rating: 5
-    },
-    {
-      quote: "As someone who values high-touch support for my students, I was skeptical about using AI. But this system actually improved student satisfaction by 58% because they get answers instantly instead of waiting for me to respond.",
-      author: "David L.",
-      position: "Founder",
-      company: "Investment Education",
-      rating: 5
-    },
-    {
-      quote: "My course completion rates have gone up by 72% since implementing the AI agent. Students who might have given up now get immediate help when they're stuck, which has also led to more referrals and testimonials.",
-      author: "Michelle K.",
-      position: "Creator",
-      company: "Health & Nutrition Programs",
-      rating: 5
-    }
-  ];
-  
+
   const metrics = [
     {
       title: "Increase in Student Enrollment",
@@ -65,7 +41,7 @@ const CourseCreatorFunnel = () => {
       headline="Scale Your Course & Info Product Business With 24/7 AI Support"
       subheadline="Transform your course business with an AI agent that qualifies leads, answers student questions, and books sales calls while you sleep."
       benefits={benefits}
-      testimonials={testimonials}
+      testimonials={[]} // Empty array as testimonials are no longer used
       metrics={metrics}
       guaranteeText="If our AI agent doesn't increase your course enrollments or improve student satisfaction within 60 days, we'll refund your entire investment. We're that confident in our solution."
       urgencyText="Limited time offer: Get 3 months of our premium tier at the standard plan price."
@@ -75,8 +51,8 @@ const CourseCreatorFunnel = () => {
       vslSection={
         <VideoSalesLetter
           videoId="H3qWMyj8Eq0"
-          title="How AI Automation Grows Your Course Business"
-          subtitle="Watch how our AI system helps course creators boost enrollments and student satisfaction"
+          title="Scale Your Course & Info Product Business With 24/7 AI Support"
+          subtitle="Transform your course business with an AI agent that qualifies leads, answers student questions, and books sales calls while you sleep."
         />
       }
     />
