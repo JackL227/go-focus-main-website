@@ -1,17 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BookingWidget from '@/components/BookingWidget';
-import NameCardTimeline from './NameCardTimeline';
-
 interface VideoSalesLetterProps {
   videoId?: string;
   videoUrl?: string;
   title: string;
   subtitle: string;
 }
-
 const VideoSalesLetter = ({
   videoId,
   videoUrl,
@@ -22,7 +18,6 @@ const VideoSalesLetter = ({
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [videoElement, setVideoElement] = useState<HTMLVideoElement | null>(null);
-
   const togglePlay = () => {
     if (videoElement) {
       if (isPlaying) {
@@ -33,14 +28,12 @@ const VideoSalesLetter = ({
       setIsPlaying(!isPlaying);
     }
   };
-
   const toggleMute = () => {
     if (videoElement) {
       videoElement.muted = !isMuted;
       setIsMuted(!isMuted);
     }
   };
-
   useEffect(() => {
     const video = document.getElementById('vsl-video') as HTMLVideoElement;
     if (video) {
@@ -57,23 +50,16 @@ const VideoSalesLetter = ({
     };
   }, []);
 
+  // Fix the missing actual video URL
   const actualVideoUrl = videoUrl || "";
-
-  return (
-    <section className="py-8 md:py-12 bg-background">
+  return <section className="py-8 md:py-12 bg-background">
       <div className="container-custom">
         <div className="max-w-4xl mx-auto">
-          <div className="relative rounded-xl overflow-hidden aspect-video bg-black/90 shadow-xl border border-foreground/10 mb-8">
-            {videoId ? (
-              <iframe
-                title="Video Sales Letter"
-                src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&controls=1&rel=0`}
-                className="absolute inset-0 w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            ) : (
-              <>
+          {/* Title and subtitle moved above the video */}
+          
+          
+          <div className="relative rounded-xl overflow-hidden aspect-video bg-black/90 shadow-xl border border-foreground/10">
+            {videoId ? <iframe title="Video Sales Letter" src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&controls=1&rel=0`} className="absolute inset-0 w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> : <>
                 <video id="vsl-video" className="absolute inset-0 w-full h-full object-cover" poster="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" playsInline>
                   <source src={actualVideoUrl} type="video/mp4" />
                   Your browser does not support the video tag.
@@ -88,8 +74,8 @@ const VideoSalesLetter = ({
                     <div className="flex-1 mx-4">
                       <div className="h-1.5 bg-white/30 rounded-full">
                         <div className="h-full bg-primary rounded-full" style={{
-                          width: `${progress}%`
-                        }} />
+                      width: `${progress}%`
+                    }} />
                       </div>
                     </div>
 
@@ -98,33 +84,10 @@ const VideoSalesLetter = ({
                     </Button>
                   </div>
                 </div>
-              </>
-            )}
+              </>}
           </div>
-
-          <div className="mb-6 animate-entrance">
-            <div className="inline-block bg-primary/10 border border-primary/30 rounded-lg px-6 py-4 mb-4">
-              <h3 className="text-xl font-bold text-primary mb-2 animate-pulse">
-                🚀 Only 8 New Clients Accepted Monthly
-              </h3>
-              <div className="flex justify-center items-center gap-2">
-                <div className="h-2 w-full bg-foreground/10 rounded-full overflow-hidden">
-                  <div className="h-full bg-primary rounded-full transition-all duration-1000" style={{
-                    width: '75%'
-                  }} />
-                </div>
-                <span className="text-sm font-medium whitespace-nowrap">
-                  6/8 Spots Filled
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <NameCardTimeline />
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default VideoSalesLetter;

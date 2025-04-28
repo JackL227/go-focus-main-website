@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
@@ -43,13 +42,13 @@ const CourseCreatorFunnel = () => {
       benefits={benefits}
       metrics={metrics}
       guaranteeText="If our AI agent doesn't increase your course enrollments or improve student satisfaction within 60 days, we'll refund your entire investment. We're that confident in our solution."
-      urgencyText="Limited spots available - Only 8 new clients accepted monthly"
+      urgencyText="Limited time offer: Get 3 months of our premium tier at the standard plan price."
       ctaText="Get Your Free AI Strategy Session"
       hasCountdown={true}
       showSocialProof={true}
       vslSection={
         <VideoSalesLetter
-          videoId="dQw4w9WgXcQ"
+          videoId="H3qWMyj8Eq0"
           title="Scale Your Course & Info Product Business With 24/7 AI Support"
           subtitle="Transform your course business with an AI agent that qualifies leads, answers student questions, and books sales calls while you sleep."
         />
