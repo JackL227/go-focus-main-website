@@ -5,7 +5,6 @@ interface TimelineItem {
   name: string;
   action: string;
   time: string;
-  avatar?: string;
 }
 
 interface NameCardTimelineProps {
@@ -13,11 +12,11 @@ interface NameCardTimelineProps {
 }
 
 const defaultItems: TimelineItem[] = [
-  { name: "Alex M.", action: "Watched 3 minutes", time: "2 minutes ago" },
+  { name: "Alex M.", action: "Booked a call", time: "2 minutes ago" },
   { name: "Sarah L.", action: "Booked a call", time: "5 minutes ago" },
-  { name: "John D.", action: "Watched 4 minutes", time: "12 minutes ago" },
+  { name: "John D.", action: "Booked a call", time: "12 minutes ago" },
   { name: "Emma W.", action: "Booked a call", time: "18 minutes ago" },
-  { name: "Robert K.", action: "Watched 2 minutes", time: "24 minutes ago" }
+  { name: "Robert K.", action: "Booked a call", time: "24 minutes ago" }
 ];
 
 const NameCardTimeline: React.FC<NameCardTimelineProps> = ({ items = defaultItems }) => {
@@ -67,11 +66,7 @@ const NameCardTimeline: React.FC<NameCardTimelineProps> = ({ items = defaultItem
                 style={{ animationDelay: `${index * 200}ms` }}
               >
                 <div className="h-9 w-9 bg-primary/10 rounded-full flex items-center justify-center mr-3">
-                  {item.action.includes("Booked") ? (
-                    <Calendar className="h-4 w-4 text-primary" />
-                  ) : (
-                    <Clock className="h-4 w-4 text-primary" />
-                  )}
+                  <Calendar className="h-4 w-4 text-primary" />
                 </div>
                 <div>
                   <p className="font-medium text-sm">{item.name}</p>

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Check, Calendar, Clock, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
@@ -41,6 +40,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   urgencyText,
   ctaText,
   hasCountdown = false,
+  showSocialProof,
   vslSection
 }) => {
   const colorSchemes = {
@@ -143,57 +143,56 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         `}
       </Script>
 
-      {/* VSL Section - Placed at the top of the funnel */}
+      {/* Main Content */}
+      <div className="mb-8">
+        <div className="container-custom max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">{headline}</h1>
+          <p className="text-xl md:text-2xl text-foreground/80 mb-8">{subheadline}</p>
+        </div>
+      </div>
+
+      {/* VSL Section */}
       {vslSection}
       
       {/* Name Card Timeline Section */}
       <NameCardTimeline />
       
-      {/* CTA & Limited Time Offer Section */}
+      {/* CTA & Limited Spots Section */}
       <section className="pt-2 pb-8 bg-background">
         <div className="container-custom">
           <div className="max-w-xl mx-auto text-center">
-            {urgencyText && (
-              <div className="mb-4 animate-entrance">
-                <div className="inline-block bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-2">
-                  <p className="text-lg font-semibold text-red-400 animate-pulse-soft">
-                    {urgencyText}
-                  </p>
+            <div className="mb-6 animate-entrance">
+              <div className="inline-block bg-primary/10 border border-primary/30 rounded-lg px-6 py-4 mb-4">
+                <h3 className="text-xl font-bold text-primary mb-2 animate-pulse">
+                  🚀 Only 8 New Clients Accepted Monthly
+                </h3>
+                <div className="flex justify-center items-center gap-2">
+                  <div className="h-2 w-full bg-foreground/10 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-primary rounded-full transition-all duration-1000"
+                      style={{ width: '75%' }}
+                    />
+                  </div>
+                  <span className="text-sm font-medium whitespace-nowrap">
+                    6/8 Spots Filled
+                  </span>
                 </div>
               </div>
-            )}
-            
-            {hasCountdown && (
-              <div className="mb-6 animate-entrance">
-                <div className="flex justify-center gap-4">
-                  <div className="bg-background/80 backdrop-blur-sm border border-foreground/20 rounded px-3 py-2 w-16">
-                    <div className="text-xl font-bold">{String(timeRemaining.hours).padStart(2, '0')}</div>
-                    <div className="text-xs text-foreground/70">Hours</div>
-                  </div>
-                  <div className="bg-background/80 backdrop-blur-sm border border-foreground/20 rounded px-3 py-2 w-16">
-                    <div className="text-xl font-bold">{String(timeRemaining.minutes).padStart(2, '0')}</div>
-                    <div className="text-xs text-foreground/70">Minutes</div>
-                  </div>
-                  <div className="bg-background/80 backdrop-blur-sm border border-foreground/20 rounded px-3 py-2 w-16">
-                    <div className="text-xl font-bold">{String(timeRemaining.seconds).padStart(2, '0')}</div>
-                    <div className="text-xs text-foreground/70">Seconds</div>
-                  </div>
-                </div>
-              </div>
-            )}
+            </div>
             
             <div className="animate-entrance">
               <BookingWidget 
                 className={`text-white group text-lg px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
               >
                 <span className="whitespace-normal">{ctaText}</span>
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
+                <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
               </BookingWidget>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Benefits Section */}
       <section id="benefits" className="py-12 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
@@ -221,6 +220,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       {/* Real-Time Results Section */}
       <RealTimeResults />
 
+      {/* Guarantee Section */}
       <section id="guarantee" className="py-12 bg-background">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto glass-card p-8 rounded-lg animate-entrance">
@@ -236,6 +236,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
+      {/* Final CTA Section */}
       <section id="final-cta" className="py-12 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto text-center animate-entrance">
@@ -264,6 +265,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="py-6 bg-background border-t border-foreground/10">
         <div className="container-custom">
           <div className="max-w-6xl mx-auto">
