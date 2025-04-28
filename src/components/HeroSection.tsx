@@ -1,28 +1,22 @@
-
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
-
 const HeroSection = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const [showAgentDemo, setShowAgentDemo] = useState(false);
-  
   const handleDemoClick = () => {
     setShowAgentDemo(true);
   };
-  
-  return (
-    <section 
-      className="relative min-h-screen flex flex-col items-center pt-24 pb-16 overflow-hidden" 
-      aria-label="Hero section"
-    >
+  return <section className="relative min-h-screen flex flex-col items-center pt-24 pb-16 overflow-hidden" aria-label="Hero section">
       <div className="container-custom relative z-10 pt-8">
         <div className="flex flex-col items-center max-w-4xl mx-auto text-center mb-16">
           <div className="space-y-6 mb-8">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gradient-primary" aria-label="Main headline">
+            <h1 aria-label="Main headline" className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gradient-primary py-[35px]">
               AI Agents That Convert Leads Into Revenue — 
               <span className="text-primary">While You Sleep.</span>
             </h1>
@@ -33,12 +27,7 @@ const HeroSection = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in [animation-delay:700ms] mb-0">
-            <Button 
-              size="lg" 
-              className="bg-primary hover:bg-primary/90 text-background group relative overflow-hidden transition-all duration-300 hover:shadow-glow" 
-              onClick={handleDemoClick}
-              aria-label="See AI agent demo"
-            >
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-background group relative overflow-hidden transition-all duration-300 hover:shadow-glow" onClick={handleDemoClick} aria-label="See AI agent demo">
               <span className="relative z-10 flex items-center">
                 See AI Agent in Action
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -46,11 +35,7 @@ const HeroSection = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
             </Button>
             
-            <BookingWidget 
-              size="lg" 
-              variant="outline" 
-              className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300"
-            >
+            <BookingWidget size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300">
               Start for Free
             </BookingWidget>
           </div>
@@ -58,8 +43,6 @@ const HeroSection = () => {
       </div>
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} initialNiche="trading" />}
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
