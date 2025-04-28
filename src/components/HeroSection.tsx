@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
-import AnimationSection from './AnimationSection';
+import HeroAnimation from './hero-animation/HeroAnimation';
 
 const HeroSection = () => {
   const { user } = useAuth();
@@ -51,7 +51,7 @@ const HeroSection = () => {
       
       {/* Hero Animation Section */}
       <div className="w-full relative z-0">
-        <AnimationSection />
+        <HeroAnimation />
       </div>
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} initialNiche="trading" />}

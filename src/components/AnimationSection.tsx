@@ -1,9 +1,9 @@
 
 import React from 'react';
-import FlowThroughHero from './hero-animation/FlowThroughHero';
+import HeroAnimation from './hero-animation/HeroAnimation';
 
 const AnimationSection = () => {
-  return <FlowThroughHero />;
+  return <HeroAnimation />;
 };
 
 export default AnimationSection;
