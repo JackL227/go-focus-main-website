@@ -21,18 +21,19 @@ const OutputCard = ({ name, action, index, isMobile }: OutputCardProps) => {
     if (elementRef.current && !isMobile) {
       timeRef.current += 0.01 * HORIZONTAL_WAVE_SPEED;
       const waveY = Math.sin(timeRef.current + index * 0.8) * HORIZONTAL_WAVE_AMPLITUDE;
-      elementRef.current.style.transform = `translateY(${waveY}px) scale(1)`;
+      elementRef.current.style.transform = `translateY(${waveY}px) translateX(${index * 2}px) rotate(${index * 0.5}deg)`;
     }
   });
   
+  // Diagonal animation for name cards
   const animationProps = isMobile ? {
     initial: { opacity: 0, y: 20, scale: 0.95, rotate: -1 },
     animate: { opacity: 1, y: 0, scale: 1, rotate: 0 },
     exit: { opacity: 0, y: -20, scale: 0.95, rotate: 1 }
   } : {
-    initial: { opacity: 0, x: 50, scale: 0.95 },
-    animate: { opacity: 1, x: 0, scale: 1 },
-    exit: { opacity: 0, x: -50, scale: 0.95 }
+    initial: { opacity: 0, x: 50, y: -30, scale: 0.95 },
+    animate: { opacity: 1, x: 0, y: 0, scale: 1 },
+    exit: { opacity: 0, x: 100, y: 30, scale: 0.95, opacity: 0 }
   };
 
   // Determine icon based on action text

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -16,12 +17,9 @@ const HeroSection = () => {
   
   return (
     <section 
-      className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden bg-background" 
+      className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden" 
       aria-label="Hero section"
     >
-      {/* Background gradient effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background z-0"></div>
-      
       <div className="container-custom relative z-10 pt-8 pb-0">
         <div className="flex flex-col items-center max-w-4xl mx-auto text-center mb-12">
           <div className="space-y-6 mb-8">
@@ -63,8 +61,6 @@ const HeroSection = () => {
       <div className="w-full relative z-10 mt-6">
         <HeroAnimation />
       </div>
-      
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#071020] to-transparent z-[2]" />
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} />}
     </section>

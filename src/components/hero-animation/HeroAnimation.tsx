@@ -11,41 +11,38 @@ import OutputCard from './OutputCard';
 const {
   LEAD_COUNT,
   LEAD_GENERATION_INTERVAL,
-  PROCESSING_DELAY_BASE,
-  CONVERSION_DISPLAY_DURATION,
-  STAGGER_DELAY,
-  MOBILE_LEAD_COUNT,
-  NAME_CARD_DISPLAY_COUNT,
-  MAX_VISIBLE_LEADS
+  RESULT_EMERGENCE_DELAY,
+  MOBILE_SCALE_FACTOR
 } = ANIMATION_SETTINGS;
 
 const NAMES = ['Sarah M.', 'Michael R.', 'Emma W.', 'James L.', 'Lisa K.', 'David P.', 'Anna S.', 'John T.', 
                'Robert Q.', 'Sophia V.', 'Thomas B.', 'Olivia N.', 'William K.', 'Ava D.', 'Alexander C.'];
 
+type Lead = {
+  id: number;
+  removed: boolean;
+  absorbed: boolean;
+  depth: number;
+  speed: number;
+  position?: {
+    x: number;
+    y: number;
+    originalY: number;
+  };
+  exitRight?: boolean;
+  opacity: number;
+  scale: number;
+  convertedLead?: {
+    name: string;
+    action: string;
+  };
+};
+
 const HeroAnimation = () => {
   const isMobile = useIsMobile();
   const [processingLead, setProcessingLead] = useState(false);
   const [processMessage, setProcessMessage] = useState('');
-  const [leads, setLeads] = useState<Array<{
-    id: number;
-    removed: boolean;
-    absorbed: boolean;
-    depth: number; // Controls parallax effect (0-1)
-    speed: number; // Controls movement speed (0.5-1.5)
-    convertedLead?: {
-      name: string;
-      action: string;
-    };
-    position?: {
-      x: number;
-      y: number;
-      originalY: number; // Base position for oscillation
-    };
-    exitRight?: boolean;
-    opacity: number; // Controls transparency based on depth
-    scale: number; // Controls size based on depth
-  }>>([]);
-  
+  const [leads, setLeads] = useState<Lead[]>([]);
   const [outputCards, setOutputCards] = useState<Array<{
     id: number;
     name: string;
@@ -94,7 +91,7 @@ const HeroAnimation = () => {
         if (processedLead?.convertedLead) {
           // Add the converted lead to output cards
           setOutputCards(cards => {
-            const maxCards = isMobile ? 3 : NAME_CARD_DISPLAY_COUNT;
+            const maxCards = isMobile ? 3 : 8;
             const newCards = [{
               id: Date.now(),
               name: processedLead.convertedLead.name,
@@ -122,7 +119,7 @@ const HeroAnimation = () => {
           }
         }
       }, 800);
-    }, PROCESSING_DELAY_BASE);
+    }, RESULT_EMERGENCE_DELAY);
   }, [getRandomName, getRandomAction, isMobile]);
   
   // Find a lead that's close to the center to process
@@ -142,8 +139,8 @@ const HeroAnimation = () => {
   const addNewLead = useCallback(() => {
     if (!animationActive.current) return;
     
-    // Calculate max visible leads based on screen size and limit
-    const maxVisibleLeads = isMobile ? MOBILE_LEAD_COUNT : Math.min(LEAD_COUNT, MAX_VISIBLE_LEADS);
+    // Calculate max visible leads based on screen size
+    const maxVisibleLeads = isMobile ? 5 : 10;
     
     // Check if we're already at capacity
     const activeLeads = leads.filter(lead => !lead.removed && !lead.absorbed && !lead.exitRight);
@@ -195,7 +192,7 @@ const HeroAnimation = () => {
     animationActive.current = true;
     
     // Start with a few leads already on screen with better distribution
-    const initialLeadsCount = isMobile ? 3 : Math.min(6, LEAD_COUNT);
+    const initialLeadsCount = isMobile ? 3 : 6;
     const initialPositions = generateLeadPositions(initialLeadsCount);
     
     const initialLeads = initialPositions.map((pos, idx) => {
@@ -276,9 +273,6 @@ const HeroAnimation = () => {
   
   return (
     <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden mt-8 mb-12">
-      {/* Animation background overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050A14]/80 to-[#071020] backdrop-blur-sm"></div>
-      
       {/* Center logo for lead absorption */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <CenterLogo processingLead={processingLead} />
@@ -303,7 +297,6 @@ const HeroAnimation = () => {
             speed={lead.speed}
             opacity={lead.opacity}
             scale={lead.scale}
-            staggerDelay={STAGGER_DELAY}
             exitRight={lead.exitRight}
             isConverted={false}
           />

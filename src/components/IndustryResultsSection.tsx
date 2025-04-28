@@ -17,7 +17,7 @@ const industries = [
   },
   {
     id: "course-creators",
-    title: "Course Creators / Info Products",
+    title: "Course Creators & Info Products",
     icon: BookOpen,
     description: "Increase course completion rates, answer student questions 24/7, and improve satisfaction and results.",
     results: ["68% improvement in completion", "98% question resolution rate", "4.1x more testimonials"],
@@ -96,11 +96,11 @@ const IndustryResultsSection = () => {
             <div 
               key={industry.id} 
               ref={el => cardRefs.current[index] = el}
-              className="opacity-0 transition-all duration-500"
+              className="opacity-0 transition-all duration-500 h-full"
               style={{ transitionDelay: `${index * 200}ms` }}
             >
               <Card className={cn(
-                "h-full border-0 bg-gradient-to-b", 
+                "h-full border-0 bg-gradient-to-b flex flex-col", 
                 industry.color,
                 industry.id === "course-creators" ? "border-2 border-primary/30" : "",
                 "hover-lift overflow-hidden"
@@ -118,9 +118,9 @@ const IndustryResultsSection = () => {
                     )}
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex-grow flex flex-col">
                   <p className="text-foreground/80 mb-6">{industry.description}</p>
-                  <div className="space-y-4">
+                  <div className="space-y-4 flex-grow">
                     {industry.results.map((result, idx) => (
                       <div key={idx} className="flex items-start">
                         <div className="mr-3 mt-1 text-primary">

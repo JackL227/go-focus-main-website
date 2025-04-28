@@ -25,7 +25,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
         <motion.div 
           className="absolute inset-[-45%] rounded-full opacity-20 blur-[80px]"
           animate={{
-            opacity: processingLead ? [0.2, 0.35, 0.2] : [0.1, 0.22, 0.1]
+            opacity: processingLead ? [0.2, 0.35, 0.2] : [0.1, 0.2, 0.1]
           }}
           transition={{
             duration: processingLead ? 1.2 : 8,
@@ -41,7 +41,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
         <motion.div 
           className="absolute inset-[-15%] rounded-full"
           animate={{
-            opacity: processingLead ? [0.25, 0.38, 0.25] : [0.2, 0.28, 0.2]
+            opacity: processingLead ? [0.25, 0.38, 0.25] : [0.2, 0.25, 0.2]
           }}
           transition={{
             duration: processingLead ? 0.8 : 6,
@@ -71,7 +71,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             background: 'linear-gradient(to right, #00F5A0, #00D9F5)'
           }}
           animate={{
-            opacity: processingLead ? [0.6, 0.75, 0.6] : [0.5, 0.62, 0.5],
+            opacity: processingLead ? [0.6, 0.75, 0.6] : [0.5, 0.6, 0.5],
             scale: processingLead ? [0.95, 1.05, 0.95] : [0.97, 1.02, 0.97],
           }}
           transition={{
@@ -83,20 +83,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
         />
         
         {/* Logo image with enhanced glow effect */}
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center p-12 sm:p-16 z-50"
-          animate={{
-            filter: processingLead
-              ? ['drop-shadow(0 0 12px rgba(0, 245, 160, 0.7))', 'drop-shadow(0 0 18px rgba(0, 245, 160, 0.9))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.7))']
-              : ['drop-shadow(0 0 8px rgba(0, 245, 160, 0.5))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))', 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.5))']
-          }}
-          transition={{
-            duration: processingLead ? 0.8 : 5,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "easeInOut"
-          }}
-        >
+        <div className="absolute inset-0 flex items-center justify-center p-12 sm:p-16 z-50">
           <img
             src="/lovable-uploads/b9eb9c06-5b4f-416d-af44-06190fbec508.png"
             alt="Go Focus AI Logo"
@@ -106,7 +93,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
               backfaceVisibility: 'hidden' // Prevent flickering
             }}
           />
-        </motion.div>
+        </div>
 
         {/* Enhanced processing ripple effects */}
         {processingLead && (

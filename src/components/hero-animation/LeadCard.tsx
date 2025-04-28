@@ -16,7 +16,6 @@ interface LeadCardProps {
   speed?: number; // Movement speed multiplier
   opacity?: number; // Opacity based on depth
   scale?: number; // Scale based on depth
-  staggerDelay?: number;
   isConverted?: boolean;
   name?: string;
   action?: string;
@@ -32,7 +31,6 @@ const LeadCard = ({
   speed = 1,
   opacity = 1,
   scale = 1,
-  staggerDelay = 0.8,
   isConverted = false,
   name,
   action,
@@ -46,7 +44,8 @@ const LeadCard = ({
     DEPTH_Z_RANGE,
     LEAD_SCALE_START,
     LEAD_SCALE_END,
-    ABSORPTION_DURATION
+    ABSORPTION_DURATION,
+    RESULT_EMERGENCE_DELAY
   } = ANIMATION_SETTINGS;
   
   const elementRef = useRef<HTMLDivElement>(null);
@@ -160,7 +159,7 @@ const LeadCard = ({
                 zIndex: 25,
                 transition: {
                   duration: 0.85,
-                  delay: ANIMATION_SETTINGS.RESULT_EMERGENCE_DELAY / 1000,
+                  delay: RESULT_EMERGENCE_DELAY / 1000,
                   ease: "backOut",
                   scale: { times: [0, 0.7, 1], duration: 0.85 },
                   rotate: { times: [0, 0.7, 1], duration: 0.85 }

@@ -1,29 +1,30 @@
 
 export const ANIMATION_SETTINGS = {
-  LEAD_COUNT: 10, // Reduced count for cleaner appearance
-  LEAD_GENERATION_INTERVAL: 3500, // Slightly faster generation
-  PROCESSING_DELAY_BASE: 1200, // Faster processing
-  CONVERSION_DISPLAY_DURATION: 5000,
-  STAGGER_DELAY: 2.5, // Balanced spacing
-  MOBILE_LEAD_COUNT: 5,
-  NAME_CARD_START_X: 60,
-  NAME_CARD_END_X: 350,
+  LEAD_COUNT: 10,
+  LEAD_GENERATION_INTERVAL: 1500,
+  START_X: -200,
+  MAX_SCALE: 1,
+  MIN_SCALE: 0.5,
+  SCALE_DECREASE_RATE: 0.004,
+  LEAD_SPEED: 4,
+  CONVERTED_SPEED: 3,
+  MOBILE_SCALE_FACTOR: 0.8,
+  // Additional settings for animation effects
   CARD_HEIGHT: 50,
   VERTICAL_SPACING: 70,
-  START_X: -350,
-  NAME_CARD_DISPLAY_COUNT: 5,
-  LEAD_SCALE_START: 1.15,
-  LEAD_SCALE_END: 0.25, // Smaller end scale for smoother absorption
-  ABSORPTION_DURATION: 1.2, // Better absorption timing
-  RESULT_EMERGENCE_DELAY: 150, // Better emergence timing
-  OSCILLATION_AMPLITUDE: 12, // Reduced for smoother movement
-  OSCILLATION_SPEED: 0.75, // Slower oscillation
-  HORIZONTAL_WAVE_AMPLITUDE: 8, // Reduced for cleaner flow
+  NAME_CARD_START_X: 60,
+  NAME_CARD_END_X: 350,
+  ABSORPTION_DURATION: 0.8,
+  RESULT_EMERGENCE_DELAY: 800,
+  OSCILLATION_AMPLITUDE: 12,
+  OSCILLATION_SPEED: 0.75,
+  HORIZONTAL_WAVE_AMPLITUDE: 8,
   HORIZONTAL_WAVE_SPEED: 1.1,
-  SUCTION_EFFECT_RADIUS: 200, // Better radius for natural flow
-  SUCTION_EFFECT_STRENGTH: 3.0, // Stronger pull
+  SUCTION_EFFECT_RADIUS: 150,
+  SUCTION_EFFECT_STRENGTH: 2.5,
   DEPTH_Z_RANGE: 30,
-  MAX_VISIBLE_LEADS: 12 // Maximum visible leads at once
+  LEAD_SCALE_START: 1.15,
+  LEAD_SCALE_END: 0.25
 } as const;
 
 export const CONVERSION_TYPES = [
@@ -64,9 +65,9 @@ export const generateLeadPositions = (count: number) => {
     const yPos = baseYPos + (Math.random() * 40 - 20);
     
     positions.push({ 
-      x: START_X - (Math.random() * 80), // Add some horizontal variance
+      x: START_X - (Math.random() * 80),
       y: yPos,
-      originalY: yPos // Store original Y for oscillation
+      originalY: yPos
     });
   }
   
