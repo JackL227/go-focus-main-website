@@ -138,24 +138,21 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       </Script>
 
       {/* Main Content */}
-      <div className="mb-8">
+      <div className="mb-6">
         <div className="container-custom max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 py-[30px] text-blue-500">{headline}</h1>
-          <p className="text-xl md:text-2xl text-foreground/80 mb-8">{subheadline}</p>
+          <p className="text-xl md:text-2xl text-foreground/80 mb-6">{subheadline}</p>
         </div>
       </div>
 
       {/* VSL Section */}
       {vslSection}
       
-      {/* Name Card Timeline Section */}
-      <NameCardTimeline />
-      
       {/* CTA & Limited Spots Section */}
-      <section className="pt-2 pb-8 bg-background">
+      <section className="py-4 md:py-6 bg-background">
         <div className="container-custom">
           <div className="max-w-xl mx-auto text-center">
-            <div className="mb-6 animate-entrance">
+            <div className="animate-entrance">
               <div className="inline-block bg-primary/10 border border-primary/30 rounded-lg px-6 py-4 mb-4">
                 <h3 className="text-xl font-bold text-primary mb-2 animate-pulse">
                   🚀 Only 8 New Clients Accepted Monthly
@@ -176,13 +173,16 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             <div className="animate-entrance">
               <BookingWidget className={`text-white group text-lg px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
                 <span className="whitespace-normal">{ctaText}</span>
-                <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
+                <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" />
               </BookingWidget>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Name Card Timeline Section */}
+      <NameCardTimeline />
+      
       {/* Benefits Section */}
       <section id="benefits" className="py-12 bg-background/95">
         <div className="container-custom">
@@ -283,4 +283,5 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       </footer>
     </div>;
 };
+
 export default FunnelLayout;
