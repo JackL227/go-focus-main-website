@@ -35,35 +35,14 @@ const FitnessFunnel = () => {
     }
   ];
   
-  const realtimeStats = [
-    {
-      title: "Monthly Revenue Increase",
-      value: 17000,
-      icon: "trending-up",
-      description: "Average growth within first 90 days"
-    },
-    {
-      title: "Weekly Qualified Calls",
-      value: 11,
-      icon: "calendar",
-      description: "Pre-qualified prospects ready to buy"
-    },
-    {
-      title: "Client Acquisition Cost",
-      value: 60,
-      icon: "dollar-sign",
-      description: "Lower than traditional marketing"
-    }
-  ];
-  
   return (
     <FunnelLayout
       niche="fitness"
       headline="From 3K/Month to 20K/Month — Without Posting or Cold DMs."
       subheadline="We install an AI system that attracts, qualifies, and books your perfect coaching clients while you train — or chill."
       benefits={benefits}
+      testimonials={[]} // Empty array as testimonials are no longer used
       metrics={metrics}
-      realtimeStats={realtimeStats}
       guaranteeText="We guarantee 15 new high-ticket clients in 90 days — or you don't pay."
       urgencyText="🔒 Limited to 3 fitness coaches/month to protect lead pool quality"
       ctaText="Book My Demo Call"

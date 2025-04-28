@@ -1,12 +1,13 @@
+
 import React, { useState, useEffect, useRef } from 'react';
-import { TrendingUp, Calendar, Zap } from 'lucide-react';
+import { TrendingUp, Users, Calendar } from 'lucide-react';
 
 interface StatItem {
   title: string;
   value: number;
   suffix?: string;
   prefix?: string;
-  icon: string;
+  icon: React.ReactNode;
   description?: string;
 }
 
@@ -14,24 +15,24 @@ interface RealTimeResultsProps {
   stats: StatItem[];
 }
 
-const defaultStats = [
+const defaultStats: StatItem[] = [
   {
     title: "Leads Generated",
     value: 364,
-    icon: "trending-up",
+    icon: <TrendingUp className="h-6 w-6 text-primary" />,
     description: "This month"
   },
   {
-    title: "AI Workflows Built",
+    title: "Appointments Booked",
     value: 87,
-    icon: "zap",
-    description: "Automated systems"
+    icon: <Calendar className="h-6 w-6 text-primary" />,
+    description: "Last 30 days"
   },
   {
-    title: "Appointments Booked",
+    title: "Clients Closed",
     value: 42,
-    icon: "calendar",
-    description: "Last 30 days"
+    icon: <Users className="h-6 w-6 text-primary" />,
+    description: "Since launch"
   }
 ];
 
@@ -92,34 +93,21 @@ const RealTimeResults: React.FC<RealTimeResultsProps> = ({ stats = defaultStats 
     return () => timers.forEach(timer => clearInterval(timer));
   }, [isInView, stats]);
 
-  const getIcon = (iconName: string) => {
-    switch (iconName) {
-      case "trending-up":
-        return <TrendingUp className="h-6 w-6 text-primary" />;
-      case "calendar":
-        return <Calendar className="h-6 w-6 text-primary" />;
-      case "zap":
-        return <Zap className="h-6 w-6 text-primary" />;
-      default:
-        return <TrendingUp className="h-6 w-6 text-primary" />;
-    }
-  };
-
   return (
-    <section ref={containerRef} className="py-8 bg-background/95">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="max-w-5xl mx-auto">
+    <section ref={containerRef} className="py-12 bg-background">
+      <div className="container-custom">
+        <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-8">Real-Time Results</h2>
           
           <div className="grid md:grid-cols-3 gap-6">
             {stats.map((stat, index) => (
               <div 
                 key={index} 
-                className="glass-card p-6 rounded-lg text-center transition-all duration-300 hover:scale-105 animate-entrance bg-background/50 border border-foreground/10"
+                className="glass-card p-6 rounded-lg text-center transition-all duration-300 hover:scale-105 animate-entrance"
                 style={{ animationDelay: `${index * 200}ms` }}
               >
                 <div className="inline-flex items-center justify-center mb-4 p-3 rounded-full bg-primary/10">
-                  {getIcon(stat.icon)}
+                  {stat.icon}
                 </div>
                 <h3 className="text-xl font-bold mb-1">{stat.title}</h3>
                 <div className="flex items-center justify-center gap-1">
@@ -129,9 +117,7 @@ const RealTimeResults: React.FC<RealTimeResultsProps> = ({ stats = defaultStats 
                   </span>
                   {stat.suffix && <span className="text-3xl font-bold">{stat.suffix}</span>}
                 </div>
-                {stat.description && (
-                  <p className="text-sm text-foreground/70 mt-1">{stat.description}</p>
-                )}
+                {stat.description && <p className="text-sm text-foreground/70 mt-1">{stat.description}</p>}
               </div>
             ))}
           </div>
