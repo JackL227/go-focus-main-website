@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -72,30 +73,32 @@ const VideoSalesLetter = ({
                 allowFullScreen
               />
             ) : (
-              <video id="vsl-video" className="absolute inset-0 w-full h-full object-cover" poster="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" playsInline>
-                <source src={actualVideoUrl} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              <>
+                <video id="vsl-video" className="absolute inset-0 w-full h-full object-cover" poster="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" playsInline>
+                  <source src={actualVideoUrl} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
 
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-4 py-3">
-                <div className="flex items-center justify-between">
-                  <Button size="sm" variant="ghost" onClick={togglePlay} className="text-white hover:bg-white/20">
-                    {isPlaying ? <Pause size={18} /> : <Play size={18} />}
-                  </Button>
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-4 py-3">
+                  <div className="flex items-center justify-between">
+                    <Button size="sm" variant="ghost" onClick={togglePlay} className="text-white hover:bg-white/20">
+                      {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+                    </Button>
 
-                  <div className="flex-1 mx-4">
-                    <div className="h-1.5 bg-white/30 rounded-full">
-                      <div className="h-full bg-primary rounded-full" style={{
-                        width: `${progress}%`
-                      }} />
+                    <div className="flex-1 mx-4">
+                      <div className="h-1.5 bg-white/30 rounded-full">
+                        <div className="h-full bg-primary rounded-full" style={{
+                          width: `${progress}%`
+                        }} />
+                      </div>
                     </div>
-                  </div>
 
-                  <Button size="sm" variant="ghost" onClick={toggleMute} className="text-white hover:bg-white/20">
-                    {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-                  </Button>
+                    <Button size="sm" variant="ghost" onClick={toggleMute} className="text-white hover:bg-white/20">
+                      {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
 

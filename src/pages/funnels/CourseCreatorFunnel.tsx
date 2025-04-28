@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
