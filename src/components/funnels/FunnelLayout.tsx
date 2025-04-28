@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Check, Calendar, Clock, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
@@ -10,13 +11,6 @@ interface FunnelLayoutProps {
   headline: string;
   subheadline: string;
   benefits: string[];
-  testimonials: {
-    quote: string;
-    author: string;
-    position: string;
-    company: string;
-    rating?: number;
-  }[];
   metrics: {
     title: string;
     value: string;
@@ -218,7 +212,19 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       </section>
 
       {/* Real-Time Results Section */}
-      <RealTimeResults />
+      <RealTimeResults stats={metrics.map(metric => ({
+        title: metric.title,
+        value: parseInt(metric.value.replace(/\D/g, '')) || 0,
+        prefix: metric.value.startsWith('$') ? '$' : '',
+        suffix: metric.value.includes('%') ? '%' : '',
+        icon: 
+          metric.title.toLowerCase().includes('revenue') || metric.title.toLowerCase().includes('cost') ? 
+            <ArrowRight className="h-6 w-6 text-primary" /> : 
+          metric.title.toLowerCase().includes('calls') || metric.title.toLowerCase().includes('appointment') ? 
+            <Calendar className="h-6 w-6 text-primary" /> : 
+            <ArrowRight className="h-6 w-6 text-primary" />,
+        description: metric.description
+      }))} />
 
       {/* Guarantee Section */}
       <section id="guarantee" className="py-12 bg-background">
