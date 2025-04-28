@@ -9,29 +9,53 @@ const CourseCreatorFunnel = () => {
   }, []);
   
   const benefits = [
-    "Handle student questions 24/7 with AI that's trained on your course content",
-    "Automatically qualify potential students and book sales calls with serious prospects only",
-    "Increase course completion rates by providing instant support and guidance",
-    "Scale your student support without hiring more team members",
-    "Convert more leads with intelligent follow-up sequences personalized to each prospect",
-    "Get detailed analytics on common student questions and concerns to improve your course"
+    "24/7 AI Agent trained on your course content for instant student support",
+    "Automated lead qualification and sales call booking",
+    "Increased course completion rates with personalized support",
+    "Scale student support without growing your team",
+    "Intelligent follow-up sequences for each prospect",
+    "Detailed analytics on student questions to improve your course"
   ];
 
   const metrics = [
     {
-      title: "Increase in Student Enrollment",
-      value: "+187%",
-      description: "Average growth in course sales within 90 days"
+      title: "Leads Generated",
+      value: 364,
+      icon: "trending-up",
+      description: "This month"
     },
     {
-      title: "Course Completion Rate",
-      value: "+72%",
-      description: "Higher completion rates with 24/7 support"
+      title: "Appointments Booked",
+      value: 87,
+      icon: "calendar",
+      description: "Last 30 days"
     },
     {
-      title: "Support Hours Saved",
-      value: "120+",
-      description: "Monthly hours saved on student support"
+      title: "Clients Closed",
+      value: 42,
+      icon: "users",
+      description: "Since launch"
+    }
+  ];
+
+  const realtimeStats = [
+    {
+      title: "Leads Generated",
+      value: 364,
+      icon: "trending-up",
+      description: "This month"
+    },
+    {
+      title: "Appointments Booked",
+      value: 87,
+      icon: "calendar",
+      description: "Last 30 days"
+    },
+    {
+      title: "Clients Closed",
+      value: 42,
+      icon: "users",
+      description: "Since launch"
     }
   ];
   
@@ -41,12 +65,12 @@ const CourseCreatorFunnel = () => {
       headline="Scale Your Course & Info Product Business With 24/7 AI Support"
       subheadline="Transform your course business with an AI agent that qualifies leads, answers student questions, and books sales calls while you sleep."
       benefits={benefits}
-      testimonials={[]} // Empty array as testimonials are no longer used
       metrics={metrics}
-      guaranteeText="If our AI agent doesn't increase your course enrollments or improve student satisfaction within 60 days, we'll refund your entire investment. We're that confident in our solution."
-      urgencyText="Limited time offer: Get 3 months of our premium tier at the standard plan price."
-      ctaText="Get Your Free AI Strategy Session"
-      hasCountdown={true}
+      realtimeStats={realtimeStats}
+      guaranteeText="If our AI agent doesn't increase your course enrollments or improve student satisfaction within 60 days, we'll refund your entire investment."
+      urgencyText="🚀 Only 8 New Clients Accepted Monthly - 6 Spots Already Filled!"
+      ctaText="Book Your Free Strategy Call"
+      hasCountdown={false}
       showSocialProof={true}
       vslSection={
         <VideoSalesLetter
