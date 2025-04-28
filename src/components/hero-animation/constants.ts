@@ -1,27 +1,28 @@
+
 export const ANIMATION_SETTINGS = {
-  LEAD_COUNT: 12, // Adjusted to optimal number
-  LEAD_GENERATION_INTERVAL: 3500, // Slowed down for smoother flow
-  PROCESSING_DELAY_BASE: 2000, // Slightly faster processing
-  CONVERSION_DISPLAY_DURATION: 5000, // Increased for smoother transitions
-  STAGGER_DELAY: 2.5, // Increased for more spacing between leads
-  MOBILE_LEAD_COUNT: 6, // Keep mobile lead count
-  NAME_CARD_START_X: 80, // Adjusted for better positioning
+  LEAD_COUNT: 8, // Reduced for smoother flow
+  LEAD_GENERATION_INTERVAL: 4000, // Slower generation
+  PROCESSING_DELAY_BASE: 1800, // Faster processing
+  CONVERSION_DISPLAY_DURATION: 5000,
+  STAGGER_DELAY: 3.0, // Increased for better spacing
+  MOBILE_LEAD_COUNT: 4,
+  NAME_CARD_START_X: 60,
   NAME_CARD_END_X: 350,
   CARD_HEIGHT: 50,
   VERTICAL_SPACING: 70,
   START_X: -350,
   NAME_CARD_DISPLAY_COUNT: 5,
-  LEAD_SCALE_START: 1.4, // Increased starting scale for better perspective
-  LEAD_SCALE_END: 0.4,  // Smaller ending scale for more dramatic shrinking effect
-  ABSORPTION_DURATION: 1.2, // Extended duration for more visible absorption
-  RESULT_EMERGENCE_DELAY: 300, // Faster response after absorption
-  OSCILLATION_AMPLITUDE: 18, // Increased vertical oscillation
-  OSCILLATION_SPEED: 1.0, // Adjusted oscillation speed
-  HORIZONTAL_WAVE_AMPLITUDE: 12, // Enhanced horizontal wave effect
-  HORIZONTAL_WAVE_SPEED: 1.4, // Increased wave speed
-  SUCTION_EFFECT_RADIUS: 220, // Increased radius to start pull effect earlier
-  SUCTION_EFFECT_STRENGTH: 2.2, // Stronger pull effect
-  DEPTH_Z_RANGE: 40, // Enhanced Z-index range for better depth perception
+  LEAD_SCALE_START: 1.2,
+  LEAD_SCALE_END: 0.3, // Smaller end scale for smoother absorption
+  ABSORPTION_DURATION: 1.4, // Longer absorption
+  RESULT_EMERGENCE_DELAY: 200,
+  OSCILLATION_AMPLITUDE: 15, // Reduced for smoother movement
+  OSCILLATION_SPEED: 0.8, // Slower oscillation
+  HORIZONTAL_WAVE_AMPLITUDE: 10,
+  HORIZONTAL_WAVE_SPEED: 1.2,
+  SUCTION_EFFECT_RADIUS: 250, // Larger radius
+  SUCTION_EFFECT_STRENGTH: 2.8, // Stronger pull
+  DEPTH_Z_RANGE: 35
 } as const;
 
 export const CONVERSION_TYPES = [

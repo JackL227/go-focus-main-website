@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -14,17 +13,14 @@ const GlassmorphicHero = () => {
     if (!ctx) return;
     
     let width = window.innerWidth;
-    let height = window.innerHeight * 0.8; // 80% of viewport height
+    let height = window.innerHeight * 0.8;
     let animationFrameId: number;
     
-    // Resize handler
     const handleResize = () => {
       width = window.innerWidth;
       height = window.innerHeight * 0.8;
       canvas.width = width;
       canvas.height = height;
-      
-      // Recreate blobs after resize
       initBlobs();
     };
     
@@ -32,7 +28,6 @@ const GlassmorphicHero = () => {
     canvas.width = width;
     canvas.height = height;
     
-    // Animation settings
     const blobCount = isMobile ? 3 : 5;
     let blobs: Blob[] = [];
     
@@ -57,11 +52,10 @@ const GlassmorphicHero = () => {
         this.angleSpeed = (Math.random() * 0.0002) + 0.0001;
         this.amplitude = Math.random() * 40 + 20;
         
-        // Brand-aligned colors
         const colors = [
-          'rgba(0, 110, 218, 0.15)', // primary blue
-          'rgba(0, 230, 118, 0.12)', // accent green
-          'rgba(255, 255, 255, 0.07)' // subtle white
+          'rgba(0, 110, 218, 0.08)', // primary blue
+          'rgba(0, 230, 118, 0.06)', // accent green
+          'rgba(255, 255, 255, 0.03)' // subtle white
         ];
         
         this.color = colors[Math.floor(Math.random() * colors.length)];
@@ -77,10 +71,8 @@ const GlassmorphicHero = () => {
         const x = this.x + this.xOffset;
         const y = this.y + this.yOffset;
         
-        // Create proper gradient
         const gradient = context.createRadialGradient(x, y, 0, x, y, this.radius);
         
-        // Extract RGB from the color string
         const rgbMatch = this.color.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/);
         if (rgbMatch) {
           const r = rgbMatch[1];
@@ -91,15 +83,13 @@ const GlassmorphicHero = () => {
           gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${a})`);
           gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
         } else {
-          // Fallback
-          gradient.addColorStop(0, 'rgba(0, 110, 218, 0.15)');
+          gradient.addColorStop(0, 'rgba(0, 110, 218, 0.08)');
           gradient.addColorStop(1, 'rgba(0, 110, 218, 0)');
         }
         
         context.fillStyle = gradient;
         context.beginPath();
         
-        // Draw a more complex blob shape using bezier curves
         for (let i = 0; i < 8; i++) {
           const angle = (i / 8) * Math.PI * 2;
           const nextAngle = ((i + 1) / 8) * Math.PI * 2;
@@ -136,25 +126,21 @@ const GlassmorphicHero = () => {
     
     initBlobs();
     
-    // Animation loop
     const animate = () => {
       if (!ctx || !canvas) return;
       
-      // Clear with a gradient background for seamless blend
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      gradient.addColorStop(0, '#050A14');
+      gradient.addColorStop(0, '#071020');
       gradient.addColorStop(1, '#0A1428');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
       
-      // Update and draw blobs
       blobs.forEach(blob => {
         blob.update();
         blob.draw(ctx);
       });
       
-      // Apply subtle blur effect for glassmorphic look
-      ctx.filter = `blur(${isMobile ? 40 : 60}px)`;
+      ctx.filter = `blur(${isMobile ? 60 : 80}px)`;
       ctx.globalCompositeOperation = 'screen';
       ctx.drawImage(canvas, 0, 0);
       ctx.filter = 'none';
@@ -174,7 +160,7 @@ const GlassmorphicHero = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full"
+      className="absolute inset-0 w-full h-full opacity-70"
       style={{ background: 'transparent' }}
       aria-hidden="true"
     />
