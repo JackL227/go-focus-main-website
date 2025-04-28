@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Check, Calendar, Clock, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
@@ -142,9 +143,12 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         `}
       </Script>
 
-      <div className="mb-6">
-        <div className="container-custom max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 py-[30px] text-blue-500">{headline}</h1>
+      <div className="mb-6 relative overflow-hidden">
+        {/* Silver gradient background overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#9F9EA1]/20 via-[#F1F1F1]/20 to-[#C8C8C9]/20 mix-blend-overlay"></div>
+        
+        <div className="container-custom max-w-4xl mx-auto text-center relative z-10">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 py-[30px] bg-gradient-to-r from-blue-500 via-[#C8C8C9] to-blue-500 bg-clip-text text-transparent">{headline}</h1>
           <p className="text-xl md:text-2xl text-foreground/80 mb-6">{subheadline}</p>
         </div>
       </div>
