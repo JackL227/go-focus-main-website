@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { getCalApi } from "@calcom/embed-react";
 import { Button } from '@/components/ui/button';
@@ -32,18 +33,19 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
         layout: "month_view"
       });
 
-      cal("on", {
-        "booking-started": () => {
-          if (window.fbq) {
+      // Track booking events with Meta Pixel
+      // Using event names from the Cal.com API
+      if (window.fbq) {
+        cal("on", {
+          // Using standard event names that are recognized by Cal.com
+          bookingStarted: () => {
             window.fbq('track', 'InitiateCheckout');
-          }
-        },
-        "booking-completed": () => {
-          if (window.fbq) {
+          },
+          bookingSuccessful: () => {
             window.fbq('track', 'Schedule');
           }
-        }
-      });
+        });
+      }
     })();
   }, []);
 
