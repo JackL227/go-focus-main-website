@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-// Removed the entire AnimationSection component
+// Animation section removed
 const AnimationSection = () => null;
 
 export default AnimationSection;

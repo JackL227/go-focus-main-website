@@ -5,7 +5,6 @@ import { ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
-import HeroAnimation from './hero-animation/HeroAnimation';
 
 const HeroSection = () => {
   const { user } = useAuth();
@@ -17,11 +16,11 @@ const HeroSection = () => {
   
   return (
     <section 
-      className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden" 
+      className="relative min-h-screen flex flex-col items-center pt-24 pb-16 overflow-hidden" 
       aria-label="Hero section"
     >
-      <div className="container-custom relative z-10 pt-8 pb-0">
-        <div className="flex flex-col items-center max-w-4xl mx-auto text-center mb-10">
+      <div className="container-custom relative z-10 pt-8">
+        <div className="flex flex-col items-center max-w-4xl mx-auto text-center mb-16">
           <div className="space-y-6 mb-8">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gradient-primary" aria-label="Main headline">
               AI Agents That Convert Leads Into Revenue — 
@@ -56,10 +55,6 @@ const HeroSection = () => {
             </BookingWidget>
           </div>
         </div>
-      </div>
-      
-      <div className="w-full relative z-10">
-        <HeroAnimation />
       </div>
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} initialNiche="trading" />}
