@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '../ui/card';
@@ -6,7 +7,7 @@ export interface OutputCardProps {
   name: string;
   index: number;
   isMobile: boolean;
-  action?: string; // Added this property to fix the build error
+  action?: string;
 }
 
 const OutputCard: React.FC<OutputCardProps> = ({ name, index, isMobile, action }) => {
@@ -16,20 +17,18 @@ const OutputCard: React.FC<OutputCardProps> = ({ name, index, isMobile, action }
     exit: { opacity: 0, y: 50, scale: 0.9 },
   };
 
-  const cardStyle = {
-    width: isMobile ? '100%' : '280px',
-    maxWidth: '100%',
-    margin: '0 auto',
-    position: 'absolute',
-    left: `calc(50% + ${index * (isMobile ? 0 : 20)}px)`,
-    top: `calc(40% + ${index * (isMobile ? 0 : 10)}px)`,
-    transform: 'translateX(-50%)',
-    zIndex: 10 - index,
-  };
-
   return (
     <motion.div
-      style={cardStyle}
+      style={{
+        width: isMobile ? '100%' : '280px',
+        maxWidth: '100%',
+        margin: '0 auto',
+        position: 'absolute' as const,
+        left: `calc(50% + ${index * (isMobile ? 0 : 20)}px)`,
+        top: `calc(40% + ${index * (isMobile ? 0 : 10)}px)`,
+        transform: 'translateX(-50%)',
+        zIndex: 10 - index,
+      }}
       variants={cardVariants}
       initial="initial"
       animate="animate"

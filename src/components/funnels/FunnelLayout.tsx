@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { ArrowRight, Check, Calendar, Clock, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
 import { Script } from '../ui/script';
-import NameCardTimeline from './NameCardTimeline';
 import RealTimeResults from './RealTimeResults';
+
 interface FunnelLayoutProps {
   niche: 'trading' | 'medspa' | 'fitness';
   headline: string;
@@ -21,6 +21,7 @@ interface FunnelLayoutProps {
   showSocialProof?: boolean;
   vslSection?: React.ReactNode;
 }
+
 const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   niche,
   headline,
@@ -57,12 +58,15 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       glow: 'shadow-[0_0_20px_rgba(168,85,247,0.6)]'
     }
   };
+
   const colorScheme = colorSchemes[niche];
+
   const [timeRemaining, setTimeRemaining] = useState({
     hours: 23,
     minutes: 59,
     seconds: 59
   });
+
   useEffect(() => {
     if (hasCountdown) {
       const interval = setInterval(() => {
@@ -89,12 +93,13 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             hours: 23,
             minutes: 59,
             seconds: 59
-          }; // Reset to 24 hours
+          };
         });
       }, 1000);
       return () => clearInterval(interval);
     }
   }, [hasCountdown]);
+
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -116,12 +121,12 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       observer.disconnect();
     };
   }, []);
+
   useEffect(() => {
-    // Meta pixel tracking code would go here
     console.log(`Funnel page loaded: ${niche}`);
   }, [niche]);
+
   return <div className="min-h-screen bg-background text-foreground">
-      {/* Meta Pixel Script */}
       <Script>
         {`
           !function(f,b,e,v,n,t,s)
@@ -137,7 +142,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         `}
       </Script>
 
-      {/* Main Content */}
       <div className="mb-6">
         <div className="container-custom max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 py-[30px] text-blue-500">{headline}</h1>
@@ -145,10 +149,8 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </div>
 
-      {/* VSL Section */}
       {vslSection}
       
-      {/* CTA & Limited Spots Section */}
       <section className="py-4 md:py-6 bg-background">
         <div className="container-custom">
           <div className="max-w-xl mx-auto text-center">
@@ -180,10 +182,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Name Card Timeline Section */}
-      <NameCardTimeline />
-      
-      {/* Benefits Section */}
       <section id="benefits" className="py-12 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
@@ -203,7 +201,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Real-Time Results Section */}
       <RealTimeResults stats={metrics.map(metric => ({
       title: metric.title,
       value: parseInt(metric.value.replace(/\D/g, '')) || 0,
@@ -213,7 +210,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       description: metric.description
     }))} />
 
-      {/* Guarantee Section */}
       <section id="guarantee" className="py-12 bg-background">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto glass-card p-8 rounded-lg animate-entrance">
@@ -229,7 +225,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Final CTA Section */}
       <section id="final-cta" className="py-12 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto text-center animate-entrance">
@@ -254,7 +249,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-6 bg-background border-t border-foreground/10">
         <div className="container-custom">
           <div className="max-w-6xl mx-auto">
