@@ -1,11 +1,9 @@
-
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Check, Calendar, Clock, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
 import { Script } from '../ui/script';
 import NameCardTimeline from './NameCardTimeline';
 import RealTimeResults from './RealTimeResults';
-
 interface FunnelLayoutProps {
   niche: 'trading' | 'medspa' | 'fitness';
   headline: string;
@@ -23,7 +21,6 @@ interface FunnelLayoutProps {
   showSocialProof?: boolean;
   vslSection?: React.ReactNode;
 }
-
 const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   niche,
   headline,
@@ -58,43 +55,52 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       secondary: 'border-purple-600 text-purple-600 hover:bg-purple-50',
       gradient: 'from-purple-50 to-purple-100',
       glow: 'shadow-[0_0_20px_rgba(168,85,247,0.6)]'
-    },
+    }
   };
-
   const colorScheme = colorSchemes[niche];
-  
   const [timeRemaining, setTimeRemaining] = useState({
     hours: 23,
     minutes: 59,
     seconds: 59
   });
-
   useEffect(() => {
     if (hasCountdown) {
       const interval = setInterval(() => {
         setTimeRemaining(prev => {
           if (prev.seconds > 0) {
-            return { ...prev, seconds: prev.seconds - 1 };
+            return {
+              ...prev,
+              seconds: prev.seconds - 1
+            };
           } else if (prev.minutes > 0) {
-            return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
+            return {
+              ...prev,
+              minutes: prev.minutes - 1,
+              seconds: 59
+            };
           } else if (prev.hours > 0) {
-            return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
+            return {
+              hours: prev.hours - 1,
+              minutes: 59,
+              seconds: 59
+            };
           }
-          return { hours: 23, minutes: 59, seconds: 59 }; // Reset to 24 hours
+          return {
+            hours: 23,
+            minutes: 59,
+            seconds: 59
+          }; // Reset to 24 hours
         });
       }, 1000);
-      
       return () => clearInterval(interval);
     }
   }, [hasCountdown]);
-
   useEffect(() => {
     const observerOptions = {
       root: null,
       rootMargin: "0px",
       threshold: 0.1
     };
-
     const observerCallback = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -102,25 +108,19 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         }
       });
     };
-
     const observer = new IntersectionObserver(observerCallback, observerOptions);
-    
     document.querySelectorAll('.animate-entrance, .stagger-animation').forEach(el => {
       observer.observe(el);
     });
-
     return () => {
       observer.disconnect();
     };
   }, []);
-
   useEffect(() => {
     // Meta pixel tracking code would go here
     console.log(`Funnel page loaded: ${niche}`);
   }, [niche]);
-
-  return (
-    <div className="min-h-screen bg-background text-foreground">
+  return <div className="min-h-screen bg-background text-foreground">
       {/* Meta Pixel Script */}
       <Script>
         {`
@@ -140,7 +140,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       {/* Main Content */}
       <div className="mb-8">
         <div className="container-custom max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{headline}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 py-[30px] text-blue-500">{headline}</h1>
           <p className="text-xl md:text-2xl text-foreground/80 mb-8">{subheadline}</p>
         </div>
       </div>
@@ -162,10 +162,9 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
                 </h3>
                 <div className="flex justify-center items-center gap-2">
                   <div className="h-2 w-full bg-foreground/10 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-primary rounded-full transition-all duration-1000"
-                      style={{ width: '75%' }}
-                    />
+                    <div className="h-full bg-primary rounded-full transition-all duration-1000" style={{
+                    width: '75%'
+                  }} />
                   </div>
                   <span className="text-sm font-medium whitespace-nowrap">
                     6/8 Spots Filled
@@ -175,9 +174,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             </div>
             
             <div className="animate-entrance">
-              <BookingWidget 
-                className={`text-white group text-lg px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
-              >
+              <BookingWidget className={`text-white group text-lg px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
                 <span className="whitespace-normal">{ctaText}</span>
                 <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
               </BookingWidget>
@@ -193,19 +190,14 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             <h2 className="text-3xl font-bold text-center mb-10 animate-entrance">What You Get</h2>
             
             <div className="grid md:grid-cols-2 gap-6 stagger-animation">
-              {benefits.map((benefit, index) => (
-                <div 
-                  key={index}
-                  className="glass-card p-5 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
-                >
+              {benefits.map((benefit, index) => <div key={index} className="glass-card p-5 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
                   <div className="flex items-start">
                     <div className={`p-2 rounded-full bg-gradient-to-r ${colorScheme.accent} text-white mr-3 animate-pulse-soft`}>
                       <Check className="h-4 w-4" />
                     </div>
                     <p className="text-lg">{benefit}</p>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </div>
@@ -213,18 +205,13 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
 
       {/* Real-Time Results Section */}
       <RealTimeResults stats={metrics.map(metric => ({
-        title: metric.title,
-        value: parseInt(metric.value.replace(/\D/g, '')) || 0,
-        prefix: metric.value.startsWith('$') ? '$' : '',
-        suffix: metric.value.includes('%') ? '%' : '',
-        icon: 
-          metric.title.toLowerCase().includes('revenue') || metric.title.toLowerCase().includes('cost') ? 
-            <ArrowRight className="h-6 w-6 text-primary" /> : 
-          metric.title.toLowerCase().includes('calls') || metric.title.toLowerCase().includes('appointment') ? 
-            <Calendar className="h-6 w-6 text-primary" /> : 
-            <ArrowRight className="h-6 w-6 text-primary" />,
-        description: metric.description
-      }))} />
+      title: metric.title,
+      value: parseInt(metric.value.replace(/\D/g, '')) || 0,
+      prefix: metric.value.startsWith('$') ? '$' : '',
+      suffix: metric.value.includes('%') ? '%' : '',
+      icon: metric.title.toLowerCase().includes('revenue') || metric.title.toLowerCase().includes('cost') ? <ArrowRight className="h-6 w-6 text-primary" /> : metric.title.toLowerCase().includes('calls') || metric.title.toLowerCase().includes('appointment') ? <Calendar className="h-6 w-6 text-primary" /> : <ArrowRight className="h-6 w-6 text-primary" />,
+      description: metric.description
+    }))} />
 
       {/* Guarantee Section */}
       <section id="guarantee" className="py-12 bg-background">
@@ -251,21 +238,17 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             
             <div className="flex flex-col items-center mb-8">
               <div className="max-w-lg w-full">
-                <BookingWidget 
-                  className={`w-full text-white group text-lg px-7 py-4 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
-                >
+                <BookingWidget className={`w-full text-white group text-lg px-7 py-4 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
                   <Calendar className="h-5 w-5 mr-2 animate-pulse-soft" />
                   <span className="whitespace-normal">{ctaText}</span>
                   <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
                 </BookingWidget>
               </div>
               
-              {hasCountdown && (
-                <div className="mt-6 flex items-center text-red-400">
+              {hasCountdown && <div className="mt-6 flex items-center text-red-400">
                   <Clock className="h-4 w-4 mr-2 animate-pulse-soft" />
                   <span className="text-sm font-medium">Limited spots available - Don't miss out!</span>
-                </div>
-              )}
+                </div>}
             </div>
           </div>
         </div>
@@ -277,11 +260,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="mb-4 md:mb-0">
-                <img 
-                  src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
-                  alt="GoFocus Logo" 
-                  className="h-24 w-auto" 
-                />
+                <img src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" alt="GoFocus Logo" className="h-24 w-auto" />
                 <p className="text-sm text-foreground/70 mt-2">AI Agents for Lead Qualification & Booking</p>
               </div>
               
@@ -302,8 +281,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default FunnelLayout;

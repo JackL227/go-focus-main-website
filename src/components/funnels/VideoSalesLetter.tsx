@@ -1,16 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BookingWidget from '@/components/BookingWidget';
-
 interface VideoSalesLetterProps {
   videoId?: string;
   videoUrl?: string;
   title: string;
   subtitle: string;
 }
-
 const VideoSalesLetter = ({
   videoId,
   videoUrl,
@@ -21,7 +18,6 @@ const VideoSalesLetter = ({
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [videoElement, setVideoElement] = useState<HTMLVideoElement | null>(null);
-
   const togglePlay = () => {
     if (videoElement) {
       if (isPlaying) {
@@ -32,14 +28,12 @@ const VideoSalesLetter = ({
       setIsPlaying(!isPlaying);
     }
   };
-
   const toggleMute = () => {
     if (videoElement) {
       videoElement.muted = !isMuted;
       setIsMuted(!isMuted);
     }
   };
-
   useEffect(() => {
     const video = document.getElementById('vsl-video') as HTMLVideoElement;
     if (video) {
@@ -58,15 +52,11 @@ const VideoSalesLetter = ({
 
   // Fix the missing actual video URL
   const actualVideoUrl = videoUrl || "";
-  
   return <section className="py-8 md:py-12 bg-background">
       <div className="container-custom">
         <div className="max-w-4xl mx-auto">
           {/* Title and subtitle moved above the video */}
-          <div className="text-center mb-6">
-            <h1 className="text-4xl md:text-5xl font-bold mb-3">{title}</h1>
-            <p className="text-xl text-foreground/80 max-w-3xl mx-auto">{subtitle}</p>
-          </div>
+          
           
           <div className="relative rounded-xl overflow-hidden aspect-video bg-black/90 shadow-xl border border-foreground/10">
             {videoId ? <iframe title="Video Sales Letter" src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&controls=1&rel=0`} className="absolute inset-0 w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> : <>
@@ -100,5 +90,4 @@ const VideoSalesLetter = ({
       </div>
     </section>;
 };
-
 export default VideoSalesLetter;
