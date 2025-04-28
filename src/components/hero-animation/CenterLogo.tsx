@@ -10,7 +10,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
   return (
     <div className="absolute left-1/2 -translate-x-1/2 z-30">
       <motion.div
-        className="relative w-[230px] h-[230px] sm:w-[280px] sm:h-[280px]"
+        className="relative w-[230px] h-[230px] sm:w-[260px] sm:h-[260px]"
         animate={{
           scale: processingLead ? [1, 1.05, 1] : [1, 1.02, 1],
         }}

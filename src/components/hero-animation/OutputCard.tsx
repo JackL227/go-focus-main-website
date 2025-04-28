@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { CheckCircle } from 'lucide-react';
 
 export interface OutputCardProps {
@@ -12,6 +11,16 @@ export interface OutputCardProps {
 }
 
 const OutputCard: React.FC<OutputCardProps> = ({ name, index, isMobile, action }) => {
+  // Calculate unique flow direction for each card (right, diagonally up-right, diagonally down-right)
+  const directions = [
+    { x: 1, y: -0.5 },  // Diagonal up-right
+    { x: 1, y: 0 },     // Straight right
+    { x: 1, y: 0.5 }    // Diagonal down-right
+  ];
+  
+  // Choose direction based on card index (cycle through directions)
+  const direction = directions[index % directions.length];
+  
   // Dynamic positioning for variety and to prevent overlap
   const verticalVariation = index * 6;
   const horizontalVariation = index * (isMobile ? 0 : 12);
@@ -21,6 +30,10 @@ const OutputCard: React.FC<OutputCardProps> = ({ name, index, isMobile, action }
   const yOffset = isMobile 
     ? index * 10 + verticalVariation 
     : diagonalOffset;
+  
+  // Create exit animation paths based on direction
+  const exitX = isMobile ? 10 : 30 + index * 15;
+  const exitY = direction.y * 50;
   
   // Different card variants for smoother animations
   const cardVariants = {
@@ -38,8 +51,8 @@ const OutputCard: React.FC<OutputCardProps> = ({ name, index, isMobile, action }
     },
     exit: { 
       opacity: 0, 
-      y: 50, 
-      x: isMobile ? 10 : 30, 
+      y: exitY, 
+      x: exitX, 
       scale: 0.9 
     },
   };

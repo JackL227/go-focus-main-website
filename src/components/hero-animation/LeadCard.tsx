@@ -1,7 +1,6 @@
 
 import React, { useRef } from 'react';
 import { motion, useAnimationFrame } from 'framer-motion';
-import { ANIMATION_SETTINGS } from './constants';
 
 interface LeadCardProps {
   index: number;
@@ -36,17 +35,17 @@ const LeadCard = ({
   action,
   exitRight = false
 }: LeadCardProps) => {
-  const { 
-    OSCILLATION_AMPLITUDE, 
-    OSCILLATION_SPEED, 
-    SUCTION_EFFECT_RADIUS,
-    SUCTION_EFFECT_STRENGTH,
-    DEPTH_Z_RANGE,
-    LEAD_SCALE_START,
-    LEAD_SCALE_END,
-    ABSORPTION_DURATION,
-    RESULT_EMERGENCE_DELAY
-  } = ANIMATION_SETTINGS;
+  // Animation settings
+  const OSCILLATION_AMPLITUDE = 14;
+  const OSCILLATION_SPEED = 0.7;
+  const SUCTION_EFFECT_RADIUS = 180;
+  const SUCTION_EFFECT_STRENGTH = 3.0;
+  const DEPTH_Z_RANGE = 40;
+  const LEAD_SCALE_START = 1.0;
+  const LEAD_SCALE_END = 0.2;
+  const ABSORPTION_DURATION = 0.6;
+  const NAME_CARD_START_X = 80;
+  const RESULT_EMERGENCE_DELAY = 500;
   
   const elementRef = useRef<HTMLDivElement>(null);
   const timeRef = useRef(Math.random() * 100); // Random starting time for oscillation
@@ -155,7 +154,7 @@ const LeadCard = ({
           : isConverted 
             ? {
                 // More dynamic emergence with slight diagonal variation
-                x: ANIMATION_SETTINGS.NAME_CARD_START_X + (Math.random() * 15 - 7.5),
+                x: NAME_CARD_START_X + (Math.random() * 15 - 7.5),
                 y: (position?.y ?? 0) + (Math.random() * 10 - 5),
                 scale: [0.1, 1.15, 1],
                 opacity: 1,
