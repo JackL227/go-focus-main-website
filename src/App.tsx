@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import TradingFunnel from "./pages/funnels/TradingFunnel";
 import CourseCreatorFunnel from "./pages/funnels/CourseCreatorFunnel";
 import RealEstateFunnel from "./pages/funnels/RealEstateFunnel";
+import { MetaPixel } from "@/components/MetaPixel";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +19,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
+        <MetaPixel />
         <Toaster />
         <Sonner />
         <BrowserRouter>
@@ -29,7 +30,6 @@ const App = () => (
             <Route path="/trading" element={<TradingFunnel />} />
             <Route path="/course-creator" element={<CourseCreatorFunnel />} />
             <Route path="/real-estate" element={<RealEstateFunnel />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

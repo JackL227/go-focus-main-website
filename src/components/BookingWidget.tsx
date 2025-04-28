@@ -1,9 +1,9 @@
-
 import React, { useEffect } from 'react';
 import { getCalApi } from "@calcom/embed-react";
 import { Button } from '@/components/ui/button';
 import { Calendar } from 'lucide-react';
 import { type ButtonProps } from '@/components/ui/button';
+import { MetaPixel } from './MetaPixel';
 
 interface BookingWidgetProps extends Omit<ButtonProps, 'onClick'> {
   className?: string;
@@ -14,6 +14,7 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
   useEffect(() => {
     (async function () {
       const cal = await getCalApi({ namespace: "30min" });
+      
       cal("ui", {
         cssVarsPerTheme: {
           light: {
@@ -29,6 +30,19 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
         },
         hideEventTypeDetails: false,
         layout: "month_view"
+      });
+
+      cal("on", {
+        "booking-started": () => {
+          if (window.fbq) {
+            window.fbq('track', 'InitiateCheckout');
+          }
+        },
+        "booking-completed": () => {
+          if (window.fbq) {
+            window.fbq('track', 'Schedule');
+          }
+        }
       });
     })();
   }, []);
