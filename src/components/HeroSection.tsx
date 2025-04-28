@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
@@ -17,11 +16,11 @@ const HeroSection = () => {
   
   return (
     <section 
-      className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden bg-gradient-to-b from-[#050A14] to-[#071020]" 
+      className="relative min-h-screen flex flex-col items-center pt-24 pb-0 overflow-hidden bg-background" 
       aria-label="Hero section"
     >
-      {/* Background gradient overlay */}
-      <div className="absolute inset-0 z-0 bg-[#050A14] opacity-95 bg-noise"></div>
+      {/* Background gradient effect */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background z-0"></div>
       
       <div className="container-custom relative z-10 pt-8 pb-0">
         <div className="flex flex-col items-center max-w-4xl mx-auto text-center mb-12">
