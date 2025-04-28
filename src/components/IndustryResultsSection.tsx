@@ -17,7 +17,7 @@ const industries = [
   },
   {
     id: "course-creators",
-    title: "Course Creators",
+    title: "Course Creators / Info Products",
     icon: BookOpen,
     description: "Increase course completion rates, answer student questions 24/7, and improve satisfaction and results.",
     results: ["68% improvement in completion", "98% question resolution rate", "4.1x more testimonials"],

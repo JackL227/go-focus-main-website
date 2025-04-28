@@ -4,9 +4,7 @@ import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
 
 const CourseCreatorFunnel = () => {
-  // For Meta Pixel tracking
   useEffect(() => {
-    // Meta Pixel tracking code would go here
     console.log("Course Creator funnel page view tracked");
   }, []);
   
@@ -63,21 +61,21 @@ const CourseCreatorFunnel = () => {
   
   return (
     <FunnelLayout
-      niche="trading" // Using the trading color scheme which fits well for course creators
-      headline="Scale Your Online Course With 24/7 AI-Powered Student Support"
+      niche="trading"
+      headline="Scale Your Course & Info Product Business With 24/7 AI Support"
       subheadline="Transform your course business with an AI agent that qualifies leads, answers student questions, and books sales calls while you sleep."
       benefits={benefits}
       testimonials={testimonials}
       metrics={metrics}
       guaranteeText="If our AI agent doesn't increase your course enrollments or improve student satisfaction within 60 days, we'll refund your entire investment. We're that confident in our solution."
       urgencyText="Limited time offer: Get 3 months of our premium tier at the standard plan price."
-      ctaText="Schedule Your Strategy Call"
+      ctaText="Get Your Free AI Strategy Session"
       hasCountdown={true}
       showSocialProof={true}
       vslSection={
         <VideoSalesLetter
-          videoId="your-course-creator-vsl-id"
-          title="How AI Automation Is Scaling Course Creator Businesses"
+          videoId="H3qWMyj8Eq0"
+          title="How AI Automation Grows Your Course Business"
           subtitle="Watch how our AI system helps course creators boost enrollments and student satisfaction"
         />
       }
