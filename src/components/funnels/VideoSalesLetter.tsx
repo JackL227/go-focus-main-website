@@ -1,8 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import BookingWidget from '@/components/BookingWidget';
 
 interface VideoSalesLetterProps {
   videoId?: string;
@@ -13,9 +11,7 @@ interface VideoSalesLetterProps {
 
 const VideoSalesLetter = ({
   videoId,
-  videoUrl,
-  title,
-  subtitle
+  videoUrl
 }: VideoSalesLetterProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -56,49 +52,56 @@ const VideoSalesLetter = ({
     };
   }, []);
 
-  // Fix the missing actual video URL
-  const actualVideoUrl = videoUrl || "";
-  
-  return <section className="py-8 md:py-12 bg-background">
-      <div className="container-custom">
-        <div className="max-w-4xl mx-auto">
-          {/* Title and subtitle moved above the video */}
-          <div className="text-center mb-6">
-            <h1 className="text-4xl md:text-5xl font-bold mb-3">{title}</h1>
-            <p className="text-xl text-foreground/80 max-w-3xl mx-auto">{subtitle}</p>
-          </div>
-          
-          <div className="relative rounded-xl overflow-hidden aspect-video bg-black/90 shadow-xl border border-foreground/10">
-            {videoId ? <iframe title="Video Sales Letter" src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&controls=1&rel=0`} className="absolute inset-0 w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> : <>
-                <video id="vsl-video" className="absolute inset-0 w-full h-full object-cover" poster="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" playsInline>
-                  <source src={actualVideoUrl} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+  return (
+    <div className="max-w-4xl mx-auto">
+      <div className="relative rounded-xl overflow-hidden aspect-video bg-black/90 shadow-xl border border-foreground/10">
+        {videoId ? (
+          <iframe 
+            title="Video Sales Letter"
+            src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&controls=1&rel=0`}
+            className="absolute inset-0 w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        ) : (
+          <>
+            <video
+              id="vsl-video"
+              className="absolute inset-0 w-full h-full object-cover"
+              poster="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png"
+              playsInline
+            >
+              <source src={videoUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
 
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-4 py-3">
-                  <div className="flex items-center justify-between">
-                    <Button size="sm" variant="ghost" onClick={togglePlay} className="text-white hover:bg-white/20">
-                      {isPlaying ? <Pause size={18} /> : <Play size={18} />}
-                    </Button>
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-4 py-3">
+              <div className="flex items-center justify-between">
+                <Button size="sm" variant="ghost" onClick={togglePlay} className="text-white hover:bg-white/20">
+                  {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+                </Button>
 
-                    <div className="flex-1 mx-4">
-                      <div className="h-1.5 bg-white/30 rounded-full">
-                        <div className="h-full bg-primary rounded-full" style={{
-                      width: `${progress}%`
-                    }} />
-                      </div>
-                    </div>
-
-                    <Button size="sm" variant="ghost" onClick={toggleMute} className="text-white hover:bg-white/20">
-                      {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-                    </Button>
+                <div className="flex-1 mx-4">
+                  <div className="h-1.5 bg-white/30 rounded-full">
+                    <div
+                      className="h-full bg-primary rounded-full"
+                      style={{
+                        width: `${progress}%`
+                      }}
+                    />
                   </div>
                 </div>
-              </>}
-          </div>
-        </div>
+
+                <Button size="sm" variant="ghost" onClick={toggleMute} className="text-white hover:bg-white/20">
+                  {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                </Button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-    </section>;
+    </div>
+  );
 };
 
 export default VideoSalesLetter;
