@@ -15,7 +15,8 @@ const {
   CONVERSION_DISPLAY_DURATION,
   STAGGER_DELAY,
   MOBILE_LEAD_COUNT,
-  NAME_CARD_DISPLAY_COUNT
+  NAME_CARD_DISPLAY_COUNT,
+  MAX_VISIBLE_LEADS
 } = ANIMATION_SETTINGS;
 
 const NAMES = ['Sarah M.', 'Michael R.', 'Emma W.', 'James L.', 'Lisa K.', 'David P.', 'Anna S.', 'John T.', 
@@ -62,6 +63,7 @@ const HeroAnimation = () => {
     return CONVERSION_TYPES[Math.floor(Math.random() * CONVERSION_TYPES.length)];
   }, []);
   
+  // Process a lead and convert it into a name card
   const processLead = useCallback((leadId: number) => {
     if (!animationActive.current) return;
     
@@ -123,6 +125,7 @@ const HeroAnimation = () => {
     }, PROCESSING_DELAY_BASE);
   }, [getRandomName, getRandomAction, isMobile]);
   
+  // Find a lead that's close to the center to process
   const findNextLeadToProcess = useCallback(() => {
     return leads.find(lead => 
       !lead.absorbed && 
@@ -135,11 +138,12 @@ const HeroAnimation = () => {
     );
   }, [leads]);
   
+  // Add a new lead to the animation
   const addNewLead = useCallback(() => {
     if (!animationActive.current) return;
     
-    // Calculate max visible leads based on screen size
-    const maxVisibleLeads = isMobile ? MOBILE_LEAD_COUNT : LEAD_COUNT;
+    // Calculate max visible leads based on screen size and limit
+    const maxVisibleLeads = isMobile ? MOBILE_LEAD_COUNT : Math.min(LEAD_COUNT, MAX_VISIBLE_LEADS);
     
     // Check if we're already at capacity
     const activeLeads = leads.filter(lead => !lead.removed && !lead.absorbed && !lead.exitRight);
@@ -157,7 +161,7 @@ const HeroAnimation = () => {
     // Add more vertical variation for natural flow
     const verticalVariation = Math.random() * 80 - 40;
     const adjustedPosition = {
-      x: basePosition.x - (Math.random() * 50), // Add more horizontal variance
+      x: basePosition.x - (Math.random() * 50), // Add horizontal variance
       y: basePosition.y + verticalVariation,
       originalY: basePosition.y + verticalVariation // Store original Y for oscillation
     };
@@ -175,6 +179,15 @@ const HeroAnimation = () => {
     };
     
     setLeads(prev => [...prev, newLead]);
+    
+    // Clean up old leads to prevent memory buildup
+    setLeads(prev => {
+      const oldLeads = prev.filter(lead => lead.removed && lead.id < Date.now() - 10000);
+      if (oldLeads.length > 10) {
+        return prev.filter(lead => !oldLeads.includes(lead));
+      }
+      return prev;
+    });
   }, [leads, isMobile]);
   
   // Initialize animation
@@ -214,7 +227,7 @@ const HeroAnimation = () => {
     
     setLeads(initialLeads);
     
-    // Setup interval to generate new leads
+    // Setup interval to generate new leads with slight randomness for natural flow
     const setupNextLeadInterval = () => {
       // Randomize interval for more natural flow
       const randomInterval = LEAD_GENERATION_INTERVAL + (Math.random() * 1800 - 900);
@@ -263,8 +276,8 @@ const HeroAnimation = () => {
   
   return (
     <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden mt-8 mb-12">
-      {/* Primary background for the animation */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 to-background/90 backdrop-blur-sm"></div>
+      {/* Animation background overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#050A14]/80 to-[#071020] backdrop-blur-sm"></div>
       
       {/* Center logo for lead absorption */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

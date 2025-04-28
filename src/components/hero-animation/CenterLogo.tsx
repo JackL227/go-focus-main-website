@@ -12,10 +12,10 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
       <motion.div
         className="relative w-[230px] h-[230px] sm:w-[280px] sm:h-[280px]"
         animate={{
-          scale: processingLead ? [1, 1.06, 1] : [1, 1.03, 1],
+          scale: processingLead ? [1, 1.05, 1] : [1, 1.02, 1],
         }}
         transition={{
-          duration: processingLead ? 0.8 : 6,
+          duration: processingLead ? 0.7 : 5,
           ease: "easeInOut",
           repeat: Infinity,
           repeatType: "reverse"
@@ -23,9 +23,9 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
       >
         {/* Enhanced outer glow effect */}
         <motion.div 
-          className="absolute inset-[-50%] rounded-full opacity-20 blur-[80px]"
+          className="absolute inset-[-45%] rounded-full opacity-20 blur-[80px]"
           animate={{
-            opacity: processingLead ? [0.2, 0.4, 0.2] : [0.1, 0.25, 0.1]
+            opacity: processingLead ? [0.2, 0.35, 0.2] : [0.1, 0.22, 0.1]
           }}
           transition={{
             duration: processingLead ? 1.2 : 8,
@@ -41,7 +41,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
         <motion.div 
           className="absolute inset-[-15%] rounded-full"
           animate={{
-            opacity: processingLead ? [0.25, 0.4, 0.25] : [0.2, 0.3, 0.2]
+            opacity: processingLead ? [0.25, 0.38, 0.25] : [0.2, 0.28, 0.2]
           }}
           transition={{
             duration: processingLead ? 0.8 : 6,
@@ -53,7 +53,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
           <motion.div 
             className="absolute inset-0 bg-gradient-to-r from-[#00F5A0] to-[#00D9F5] rounded-full opacity-50 blur-[30px]"
             animate={{
-              scale: processingLead ? [1, 1.08, 1] : [1, 1.04, 1],
+              scale: processingLead ? [1, 1.06, 1] : [1, 1.03, 1],
             }}
             transition={{
               duration: processingLead ? 0.8 : 6,
@@ -71,8 +71,8 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             background: 'linear-gradient(to right, #00F5A0, #00D9F5)'
           }}
           animate={{
-            opacity: processingLead ? [0.6, 0.8, 0.6] : [0.5, 0.65, 0.5],
-            scale: processingLead ? [0.95, 1.06, 0.95] : [0.97, 1.03, 0.97],
+            opacity: processingLead ? [0.6, 0.75, 0.6] : [0.5, 0.62, 0.5],
+            scale: processingLead ? [0.95, 1.05, 0.95] : [0.97, 1.02, 0.97],
           }}
           transition={{
             duration: processingLead ? 0.8 : 5,
@@ -87,8 +87,8 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
           className="absolute inset-0 flex items-center justify-center p-12 sm:p-16 z-50"
           animate={{
             filter: processingLead
-              ? ['drop-shadow(0 0 14px rgba(0, 245, 160, 0.7))', 'drop-shadow(0 0 20px rgba(0, 245, 160, 0.9))', 'drop-shadow(0 0 14px rgba(0, 245, 160, 0.7))']
-              : ['drop-shadow(0 0 10px rgba(0, 245, 160, 0.5))', 'drop-shadow(0 0 15px rgba(0, 245, 160, 0.7))', 'drop-shadow(0 0 10px rgba(0, 245, 160, 0.5))']
+              ? ['drop-shadow(0 0 12px rgba(0, 245, 160, 0.7))', 'drop-shadow(0 0 18px rgba(0, 245, 160, 0.9))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.7))']
+              : ['drop-shadow(0 0 8px rgba(0, 245, 160, 0.5))', 'drop-shadow(0 0 12px rgba(0, 245, 160, 0.6))', 'drop-shadow(0 0 8px rgba(0, 245, 160, 0.5))']
           }}
           transition={{
             duration: processingLead ? 0.8 : 5,
@@ -129,18 +129,6 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
               transition={{
                 duration: 1.4,
                 delay: 0.3,
-                ease: "easeOut",
-                repeat: Infinity,
-                repeatDelay: 0.1
-              }}
-            />
-            <motion.div
-              className="absolute inset-0 rounded-full border border-[#00F5A0]/15"
-              initial={{ scale: 0.9, opacity: 0.5 }}
-              animate={{ scale: 1.8, opacity: 0 }}
-              transition={{
-                duration: 1.8,
-                delay: 0.5,
                 ease: "easeOut",
                 repeat: Infinity,
                 repeatDelay: 0.1

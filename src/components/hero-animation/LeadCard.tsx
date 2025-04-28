@@ -69,27 +69,27 @@ const LeadCard = ({
       const baseY = originalY + oscillationY;
       positionRef.current.y = baseY;
       
-      // Calculate distance from center for suction effect
+      // Calculate distance from center for enhanced suction effect
       const distanceFromCenter = Math.sqrt(baseX * baseX + baseY * baseY);
       let suctionX = baseX;
       let suctionY = baseY;
       
-      // Apply enhanced suction effect when close to center
+      // Apply enhanced progressive suction effect when close to center
       if (distanceFromCenter < SUCTION_EFFECT_RADIUS) {
-        // Calculate suction power with exponential increase as card gets closer
+        // Progressive suction power that increases exponentially as card gets closer
         const normalizedDistance = distanceFromCenter / SUCTION_EFFECT_RADIUS;
-        const suctionPower = Math.pow(1 - normalizedDistance, 1.5) * SUCTION_EFFECT_STRENGTH;
+        const suctionPower = Math.pow(1 - normalizedDistance, 1.8) * SUCTION_EFFECT_STRENGTH;
         
         // Apply stronger pull toward center (0,0)
-        suctionX = baseX - (baseX * suctionPower * 0.035);
-        suctionY = baseY - (baseY * suctionPower * 0.035);
+        suctionX = baseX - (baseX * suctionPower * 0.04);
+        suctionY = baseY - (baseY * suctionPower * 0.04);
       }
       
-      // Calculate scale based on distance from center (smaller as it gets closer)
-      const distanceScale = Math.max(0.4, Math.min(1, distanceFromCenter / 300));
+      // Calculate dynamic scale based on distance from center
+      const distanceScale = Math.max(0.3, Math.min(1, distanceFromCenter / 280));
       const finalScale = scale * distanceScale;
       
-      // Apply perspective transform for 3D effect
+      // Apply perspective transform for enhanced 3D effect
       const perspective = 1000;
       const zTranslate = depth * DEPTH_Z_RANGE;
       
@@ -100,12 +100,12 @@ const LeadCard = ({
         scale(${finalScale})
       `;
       
-      // Dynamic opacity for depth effect
+      // Dynamic opacity for depth effect and proximity fade
       const baseOpacity = opacity * (0.7 + (depth * 0.3));
       
       // Update opacity based on distance to create fade effect near center
-      if (distanceFromCenter < 120) {
-        const fadeOpacity = Math.max(0.2, distanceFromCenter / 120) * baseOpacity;
+      if (distanceFromCenter < 100) {
+        const fadeOpacity = Math.max(0.1, distanceFromCenter / 100) * baseOpacity;
         elementRef.current.style.opacity = `${fadeOpacity}`;
       } else {
         elementRef.current.style.opacity = `${baseOpacity}`;
@@ -140,14 +140,14 @@ const LeadCard = ({
               y: position?.y ?? 0,
               scale: [0.9, 0.95, 0.9],
               opacity: [0.9, 0.7, 0],
-              rotate: [0, 2, 4],
+              rotate: [0, 1, 2],
               zIndex: 15,
               transition: {
-                duration: 5,
+                duration: 4.5,
                 ease: "easeOut",
-                opacity: { times: [0, 0.7, 1], duration: 5 },
-                scale: { times: [0, 0.5, 1], duration: 5 },
-                rotate: { times: [0, 0.5, 1], duration: 5 }
+                opacity: { times: [0, 0.7, 1], duration: 4.5 },
+                scale: { times: [0, 0.5, 1], duration: 4.5 },
+                rotate: { times: [0, 0.5, 1], duration: 4.5 }
               }
             }
           : isConverted 
@@ -156,21 +156,21 @@ const LeadCard = ({
                 y: position?.y ?? 0,
                 scale: [0.1, 1.15, 1],
                 opacity: 1,
-                rotate: [-2, 1, 0],
+                rotate: [-1, 0.5, 0],
                 zIndex: 25,
                 transition: {
-                  duration: 1.2,
+                  duration: 0.85,
                   delay: ANIMATION_SETTINGS.RESULT_EMERGENCE_DELAY / 1000,
                   ease: "backOut",
-                  scale: { times: [0, 0.7, 1], duration: 1.2 },
-                  rotate: { times: [0, 0.7, 1], duration: 1.2 }
+                  scale: { times: [0, 0.7, 1], duration: 0.85 },
+                  rotate: { times: [0, 0.7, 1], duration: 0.85 }
                 }
               }
             : isAbsorbed 
               ? { 
                   x: 0,
                   y: 0,
-                  scale: [LEAD_SCALE_END * scale, 0.05],
+                  scale: [LEAD_SCALE_END * scale, 0],
                   opacity: [opacity, 0],
                   rotate: 0,
                   zIndex: 20,

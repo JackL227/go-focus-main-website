@@ -22,7 +22,6 @@ const industries = [
     description: "Increase course completion rates, answer student questions 24/7, and improve satisfaction and results.",
     results: ["68% improvement in completion", "98% question resolution rate", "4.1x more testimonials"],
     color: "from-pink-600/30 via-pink-400/20 to-pink-600/30",
-    featured: true,
     link: "/course-creator"
   },
   {
@@ -97,16 +96,13 @@ const IndustryResultsSection = () => {
             <div 
               key={industry.id} 
               ref={el => cardRefs.current[index] = el}
-              className={cn(
-                "opacity-0 transition-all duration-500",
-                industry.featured ? "md:col-span-2" : ""
-              )}
+              className="opacity-0 transition-all duration-500"
               style={{ transitionDelay: `${index * 200}ms` }}
             >
               <Card className={cn(
                 "h-full border-0 bg-gradient-to-b", 
                 industry.color,
-                industry.featured ? "border-2 border-primary/30" : "",
+                industry.id === "course-creators" ? "border-2 border-primary/30" : "",
                 "hover-lift overflow-hidden"
               )}>
                 <CardHeader className="pb-2">
@@ -115,7 +111,7 @@ const IndustryResultsSection = () => {
                   </div>
                   <CardTitle className="text-xl flex items-center gap-2">
                     {industry.title}
-                    {industry.featured && (
+                    {industry.id === "course-creators" && (
                       <span className="bg-primary/20 text-primary text-xs px-2.5 py-0.5 rounded-full">
                         Popular
                       </span>
@@ -140,7 +136,7 @@ const IndustryResultsSection = () => {
                       to={industry.link} 
                       className="mt-4 inline-flex items-center text-primary hover:underline"
                     >
-                      View {industry.title} Solution
+                      View {industry.title.split(' ')[0]} Solution
                       <ArrowUpRight size={16} className="ml-1" />
                     </Link>
                   )}
