@@ -47,11 +47,13 @@ const RealEstateFunnel = () => {
       ctaText="Book Your Strategy Call"
       hasCountdown={true}
       showSocialProof={true}
+      showPromptCta={true} // New prop to show CTA above the fold
       vslSection={
         <VideoSalesLetter
           videoId="your-real-estate-vsl-id"
           title="AI Agents That Convert Real Estate Leads Into Clients — While You Sleep"
           subtitle="Our AI system attracts, nurtures, and qualifies your real estate leads 24/7, so your agents only talk to ready-to-move buyers and sellers."
+          showCtaButton={true} // New prop to show CTA button in VSL
         />
       }
     />
