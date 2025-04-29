@@ -20,6 +20,7 @@ interface FunnelLayoutProps {
   hasCountdown?: boolean;
   showSocialProof?: boolean;
   vslSection?: React.ReactNode;
+  highlightCta?: boolean; // Added new prop
 }
 const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   niche,
@@ -32,7 +33,8 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   ctaText,
   hasCountdown = false,
   showSocialProof,
-  vslSection
+  vslSection,
+  highlightCta = false // Default to false
 }) => {
   const colorSchemes = {
     trading: {
@@ -146,18 +148,28 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         `}
       </Script>
 
-      <div className="mb-4 md:mb-6 relative overflow-hidden">
+      <div className="mb-3 md:mb-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#9F9EA1]/20 via-[#F1F1F1]/20 to-[#C8C8C9]/20 mix-blend-overlay"></div>
         
         <div className="container-custom max-w-4xl mx-auto text-center relative z-10">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 py-[25px] md:py-[30px] bg-gradient-to-r from-blue-500 via-[#C8C8C9] to-blue-500 bg-clip-text text-transparent">{headline}</h1>
-          <p className="text-lg md:text-xl lg:text-2xl text-foreground/80 mb-4 md:mb-6 max-w-3xl mx-auto">{subheadline}</p>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 py-[25px] bg-gradient-to-r from-blue-500 via-[#C8C8C9] to-blue-500 bg-clip-text text-transparent">{headline}</h1>
+          <p className="text-lg md:text-xl lg:text-2xl text-foreground/80 mb-3 md:mb-4 max-w-3xl mx-auto">{subheadline}</p>
+          
+          {/* Add highlighted CTA for desktop */}
+          {highlightCta && (
+            <div className="hidden md:flex justify-center mb-3">
+              <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 md:py-4 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
+                <span className="text-wrap break-words py-0 px-0 mx-0 my-0">{ctaText}</span>
+                <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+              </BookingWidget>
+            </div>
+          )}
         </div>
       </div>
 
       {vslSection}
       
-      <section className="py-4 md:py-6 bg-background">
+      <section className="py-3 md:py-5 bg-background">
         <div className="container-custom">
           <div className="max-w-xl mx-auto text-center">
             <div className="animate-entrance">

@@ -1,120 +1,54 @@
 
-import React, { useState, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React from 'react';
+import BookingWidget from '@/components/BookingWidget';
+import { ArrowRight } from 'lucide-react';
 
 interface VideoSalesLetterProps {
-  videoId?: string;
-  videoUrl?: string;
+  videoId: string;
   title: string;
   subtitle: string;
+  showCtaAboveFold?: boolean;
 }
 
-const VideoSalesLetter = ({
+const VideoSalesLetter: React.FC<VideoSalesLetterProps> = ({
   videoId,
-  videoUrl,
   title,
-  subtitle
-}: VideoSalesLetterProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [videoElement, setVideoElement] = useState<HTMLVideoElement | null>(null);
-
-  const togglePlay = () => {
-    if (videoElement) {
-      if (isPlaying) {
-        videoElement.pause();
-      } else {
-        videoElement.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const toggleMute = () => {
-    if (videoElement) {
-      videoElement.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  };
-
-  useEffect(() => {
-    const video = document.getElementById('vsl-video') as HTMLVideoElement;
-    if (video) {
-      setVideoElement(video);
-      video.addEventListener('timeupdate', () => {
-        const currentProgress = video.currentTime / video.duration * 100;
-        setProgress(isNaN(currentProgress) ? 0 : currentProgress);
-      });
-    }
-    return () => {
-      if (video) {
-        video.removeEventListener('timeupdate', () => {});
-      }
-    };
-  }, []);
-
-  const actualVideoUrl = videoUrl || "";
-
+  subtitle,
+  showCtaAboveFold = false
+}) => {
   return (
-    <section className="py-4 md:py-6 bg-background">
-      <div className="container-custom px-4 sm:px-6 md:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="relative rounded-xl overflow-hidden aspect-video bg-black/90 shadow-xl border border-foreground/10 mb-4">
-            {videoId ? (
-              <iframe 
-                title="Video Sales Letter" 
-                src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=0&controls=1&rel=0`} 
-                className="absolute inset-0 w-full h-full" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowFullScreen
-              />
-            ) : (
-              <>
-                <video 
-                  id="vsl-video" 
-                  className="absolute inset-0 w-full h-full object-cover" 
-                  poster="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
-                  playsInline
-                >
-                  <source src={actualVideoUrl} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-4 py-3">
-                  <div className="flex items-center justify-between">
-                    <Button 
-                      size="sm" 
-                      variant="ghost" 
-                      onClick={togglePlay} 
-                      className="text-white hover:bg-white/20"
-                    >
-                      {isPlaying ? <Pause size={18} /> : <Play size={18} />}
-                    </Button>
-
-                    <div className="flex-1 mx-4">
-                      <div className="h-1.5 bg-white/30 rounded-full">
-                        <div 
-                          className="h-full bg-primary rounded-full" 
-                          style={{ width: `${progress}%` }} 
-                        />
-                      </div>
-                    </div>
-
-                    <Button 
-                      size="sm" 
-                      variant="ghost" 
-                      onClick={toggleMute} 
-                      className="text-white hover:bg-white/20"
-                    >
-                      {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-                    </Button>
-                  </div>
-                </div>
-              </>
-            )}
+    <section className="py-4 md:py-6 relative overflow-hidden">
+      <div className="container-custom max-w-5xl mx-auto">
+        {showCtaAboveFold && (
+          <div className="hidden md:flex justify-center mb-6 animate-fade-in [animation-delay:500ms]">
+            <BookingWidget 
+              className="bg-primary hover:bg-primary/90 text-white py-3 px-6 text-lg group"
+              size="lg"
+            >
+              <span className="flex items-center">
+                Get Your Free AI Strategy Session
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </span>
+            </BookingWidget>
           </div>
+        )}
+        
+        <div className="rounded-xl overflow-hidden shadow-2xl border border-foreground/10">
+          <div className="aspect-w-16 aspect-h-9">
+            <iframe
+              src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+              title={title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+        
+        <div className="text-center mt-6">
+          <h2 className="text-xl md:text-2xl font-bold mb-2">{title}</h2>
+          <p className="text-base md:text-lg text-foreground/80 mb-4">{subtitle}</p>
         </div>
       </div>
     </section>
