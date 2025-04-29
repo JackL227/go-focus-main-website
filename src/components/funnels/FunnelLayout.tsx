@@ -4,6 +4,7 @@ import { ArrowRight, Check, Calendar, Clock, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
 import { Script } from '../ui/script';
 import RealTimeResults from './RealTimeResults';
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface FunnelLayoutProps {
   niche: 'trading' | 'medspa' | 'fitness';
@@ -61,12 +62,15 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   };
 
   const colorScheme = colorSchemes[niche];
-
+  const isMobile = useIsMobile();
+  
   const [timeRemaining, setTimeRemaining] = useState({
     hours: 23,
     minutes: 59,
     seconds: 59
   });
+  
+  const [showStickyCTA, setShowStickyCTA] = useState(false);
 
   useEffect(() => {
     if (hasCountdown) {
@@ -122,6 +126,20 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       observer.disconnect();
     };
   }, []);
+  
+  // Add scroll listener for sticky CTA on mobile
+  useEffect(() => {
+    if (!isMobile) return;
+    
+    const handleScroll = () => {
+      // Show sticky CTA after scrolling down 300px
+      const scrollY = window.scrollY;
+      setShowStickyCTA(scrollY > 300);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMobile]);
 
   useEffect(() => {
     console.log(`Funnel page loaded: ${niche}`);
@@ -143,13 +161,13 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         `}
       </Script>
 
-      <div className="mb-6 relative overflow-hidden">
+      <div className="mb-4 md:mb-6 relative overflow-hidden">
         {/* Silver gradient background overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#9F9EA1]/20 via-[#F1F1F1]/20 to-[#C8C8C9]/20 mix-blend-overlay"></div>
         
         <div className="container-custom max-w-4xl mx-auto text-center relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 py-[30px] bg-gradient-to-r from-blue-500 via-[#C8C8C9] to-blue-500 bg-clip-text text-transparent">{headline}</h1>
-          <p className="text-xl md:text-2xl text-foreground/80 mb-6">{subheadline}</p>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 py-[25px] md:py-[30px] bg-gradient-to-r from-blue-500 via-[#C8C8C9] to-blue-500 bg-clip-text text-transparent">{headline}</h1>
+          <p className="text-lg md:text-xl lg:text-2xl text-foreground/80 mb-4 md:mb-6 max-w-3xl mx-auto">{subheadline}</p>
         </div>
       </div>
 
@@ -159,8 +177,8 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         <div className="container-custom">
           <div className="max-w-xl mx-auto text-center">
             <div className="animate-entrance">
-              <div className="inline-block bg-primary/10 border border-primary/30 rounded-lg px-6 py-4 mb-4">
-                <h3 className="text-xl font-bold text-primary mb-2 animate-pulse">
+              <div className="inline-block bg-primary/10 border border-primary/30 rounded-lg px-4 md:px-6 py-3 md:py-4 mb-4">
+                <h3 className="text-lg md:text-xl font-bold text-primary mb-2 animate-pulse">
                   🚀 Only 8 New Clients Accepted Monthly
                 </h3>
                 <div className="flex justify-center items-center gap-2">
@@ -177,7 +195,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             </div>
             
             <div className="animate-entrance">
-              <BookingWidget className={`text-white group text-lg px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
+              <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
                 <span className="whitespace-normal">{ctaText}</span>
                 <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" />
               </BookingWidget>
@@ -186,79 +204,87 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </section>
 
-      <section id="benefits" className="py-12 bg-background/95">
+      <section id="benefits" className="py-6 md:py-10 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-10 animate-entrance">What You Get</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8 animate-entrance">What You Get</h2>
             
-            <div className="grid md:grid-cols-2 gap-6 stagger-animation">
-              {benefits.map((benefit, index) => <div key={index} className="glass-card p-5 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
+            <div className="grid md:grid-cols-2 gap-4 md:gap-6 stagger-animation">
+              {benefits.map((benefit, index) => (
+                <div key={index} className="glass-card p-4 md:p-5 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
                   <div className="flex items-start">
                     <div className={`p-2 rounded-full bg-gradient-to-r ${colorScheme.accent} text-white mr-3 animate-pulse-soft`}>
                       <Check className="h-4 w-4" />
                     </div>
-                    <p className="text-lg">{benefit}</p>
+                    <p className="text-base md:text-lg">{benefit}</p>
                   </div>
-                </div>)}
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       <RealTimeResults stats={metrics.map(metric => ({
-      title: metric.title,
-      value: parseInt(metric.value.replace(/\D/g, '')) || 0,
-      prefix: metric.value.startsWith('$') ? '$' : '',
-      suffix: metric.value.includes('%') ? '%' : '',
-      icon: metric.title.toLowerCase().includes('revenue') || metric.title.toLowerCase().includes('cost') ? <ArrowRight className="h-6 w-6 text-primary" /> : metric.title.toLowerCase().includes('calls') || metric.title.toLowerCase().includes('appointment') ? <Calendar className="h-6 w-6 text-primary" /> : <ArrowRight className="h-6 w-6 text-primary" />,
-      description: metric.description
-    }))} />
+        title: metric.title,
+        value: parseInt(metric.value.replace(/\D/g, '')) || 0,
+        prefix: metric.value.startsWith('$') ? '$' : '',
+        suffix: metric.value.includes('%') ? '%' : '',
+        icon: metric.title.toLowerCase().includes('revenue') || metric.title.toLowerCase().includes('cost') ? 
+          <ArrowRight className="h-6 w-6 text-primary" /> : 
+          metric.title.toLowerCase().includes('calls') || metric.title.toLowerCase().includes('appointment') ? 
+          <Calendar className="h-6 w-6 text-primary" /> : 
+          <ArrowRight className="h-6 w-6 text-primary" />,
+        description: metric.description
+      }))} />
 
-      <section id="guarantee" className="py-12 bg-background">
+      <section id="guarantee" className="py-8 md:py-12 bg-background">
         <div className="container-custom">
-          <div className="max-w-3xl mx-auto glass-card p-8 rounded-lg animate-entrance">
+          <div className="max-w-3xl mx-auto glass-card p-5 md:p-8 rounded-lg animate-entrance">
             <div className="flex flex-col sm:flex-row items-center mb-4">
-              <Shield className="h-12 w-12 text-primary mr-4 flex-shrink-0 animate-pulse-soft" />
-              <h2 className="text-2xl font-bold text-center sm:text-left">Our Risk-Free Guarantee</h2>
+              <Shield className="h-10 md:h-12 w-10 md:w-12 text-primary mr-4 flex-shrink-0 animate-pulse-soft" />
+              <h2 className="text-xl md:text-2xl font-bold text-center sm:text-left">Our Risk-Free Guarantee</h2>
             </div>
-            <p className="text-lg mb-6 text-center sm:text-left">{guaranteeText}</p>
+            <p className="text-base md:text-lg mb-6 text-center sm:text-left">{guaranteeText}</p>
             <div className="text-center py-4 border-t border-b border-foreground/10">
-              <p className="text-xl font-semibold">No long-term contracts. Cancel anytime.</p>
+              <p className="text-lg md:text-xl font-semibold">No long-term contracts. Cancel anytime.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="final-cta" className="py-12 bg-background/95">
+      <section id="final-cta" className="py-8 md:py-12 bg-background/95">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto text-center animate-entrance">
-            <h2 className="text-3xl font-bold mb-6">Ready To Automate Your Lead Generation?</h2>
-            <p className="text-lg mb-8 max-w-2xl mx-auto">Book your strategy call today and we'll show you exactly how our AI system will transform your business within the next 90 days.</p>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Ready To Automate Your Lead Generation?</h2>
+            <p className="text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto">Book your strategy call today and we'll show you exactly how our AI system will transform your business within the next 90 days.</p>
             
-            <div className="flex flex-col items-center mb-8">
+            <div className="flex flex-col items-center mb-6 md:mb-8">
               <div className="max-w-lg w-full">
-                <BookingWidget className={`w-full text-white group text-lg px-7 py-4 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
+                <BookingWidget className={`w-full text-white group text-base md:text-lg px-5 md:px-7 py-3 md:py-4 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
                   <Calendar className="h-5 w-5 mr-2 animate-pulse-soft" />
                   <span className="whitespace-normal">{ctaText}</span>
                   <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
                 </BookingWidget>
               </div>
               
-              {hasCountdown && <div className="mt-6 flex items-center text-red-400">
+              {hasCountdown && (
+                <div className="mt-4 md:mt-6 flex items-center text-red-400">
                   <Clock className="h-4 w-4 mr-2 animate-pulse-soft" />
                   <span className="text-sm font-medium">Limited spots available - Don't miss out!</span>
-                </div>}
+                </div>
+              )}
             </div>
           </div>
         </div>
       </section>
 
-      <footer className="py-6 bg-background border-t border-foreground/10">
+      <footer className="py-4 md:py-6 bg-background border-t border-foreground/10">
         <div className="container-custom">
           <div className="max-w-6xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="mb-4 md:mb-0">
-                <img src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" alt="GoFocus Logo" className="h-24 w-auto" />
+                <img src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" alt="GoFocus Logo" className="h-16 md:h-24 w-auto" />
                 <p className="text-sm text-foreground/70 mt-2">AI Agents for Lead Qualification & Booking</p>
               </div>
               
@@ -279,6 +305,16 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
           </div>
         </div>
       </footer>
+      
+      {/* Sticky CTA for mobile */}
+      {isMobile && showStickyCTA && (
+        <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-foreground/10 p-3 z-50 animate-slide-in-bottom">
+          <BookingWidget className={`w-full text-white group text-base px-4 py-3 ${colorScheme.button} animate-button-pop`}>
+            <span className="whitespace-normal">{ctaText}</span>
+            <ArrowRight className="h-5 w-5 ml-1 transition-transform group-hover:translate-x-1" />
+          </BookingWidget>
+        </div>
+      )}
     </div>;
 };
 
