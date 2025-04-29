@@ -1,9 +1,9 @@
 
 import React from 'react';
+import HeroAnimation from './hero-animation/HeroAnimation';
 
-// This is a placeholder component as the animation has been temporarily removed
 const AnimationSection = () => {
-  return null; // Return null to render nothing
+  return <HeroAnimation />;
 };
 
 export default AnimationSection;
