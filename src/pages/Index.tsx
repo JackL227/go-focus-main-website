@@ -1,19 +1,16 @@
 
-import React, { useEffect, Suspense, lazy } from 'react';
+import React, { useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import HeroSection from '@/components/HeroSection';
+import HowItWorksSection from '@/components/HowItWorksSection';
+import IndustryResultsSection from '@/components/IndustryResultsSection';
+import SocialProofSection from '@/components/SocialProofSection';
+import CallToAction from '@/components/CallToAction';
+import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
 import ChatbotWidget from '@/components/chatbot/ChatbotWidget';
 import { Toaster } from '@/components/ui/toaster';
-import LoadingScreen from '@/components/LoadingScreen';
-
-// Lazy load non-critical components
-const HowItWorksSection = lazy(() => import('@/components/HowItWorksSection'));
-const IndustryResultsSection = lazy(() => import('@/components/IndustryResultsSection'));
-const SocialProofSection = lazy(() => import('@/components/SocialProofSection'));
-const CallToAction = lazy(() => import('@/components/CallToAction'));
-const Footer = lazy(() => import('@/components/Footer'));
 
 const Index = () => {
   const [showScrollTop, setShowScrollTop] = React.useState(false);
@@ -22,9 +19,7 @@ const Index = () => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 500);
     };
-    
-    // Use passive event listener for better scroll performance
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
@@ -37,30 +32,13 @@ const Index = () => {
   
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#050A14] to-[#0A1428] text-foreground overflow-x-hidden">
-      <LoadingScreen />
       <Navigation />
       <HeroSection />
-      
-      <Suspense fallback={<div className="min-h-[100px]"></div>}>
-        <HowItWorksSection />
-      </Suspense>
-      
-      <Suspense fallback={<div className="min-h-[100px]"></div>}>
-        <IndustryResultsSection />
-      </Suspense>
-      
-      <Suspense fallback={<div className="min-h-[100px]"></div>}>
-        <SocialProofSection />
-      </Suspense>
-      
-      <Suspense fallback={<div className="min-h-[100px]"></div>}>
-        <CallToAction />
-      </Suspense>
-      
-      <Suspense fallback={<div className="min-h-[100px]"></div>}>
-        <Footer />
-      </Suspense>
-      
+      <HowItWorksSection />
+      <IndustryResultsSection />
+      <SocialProofSection />
+      <CallToAction />
+      <Footer />
       <Toaster />
       
       {/* Scroll to top button */}

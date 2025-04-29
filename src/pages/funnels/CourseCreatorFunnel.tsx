@@ -47,13 +47,11 @@ const CourseCreatorFunnel = () => {
       ctaText="Get Your Free AI Strategy Session"
       hasCountdown={true}
       showSocialProof={true}
-      highlightCta={true} // Added this prop to highlight the CTA button
       vslSection={
         <VideoSalesLetter
           videoId="H3qWMyj8Eq0"
           title="Scale Your Course & Info Product Business With 24/7 AI Support"
           subtitle="We transform info-product and course creators by automating their lead qualification, booking, and sales with AI-powered systems."
-          showCtaAboveFold={true} // Added this prop to show CTA above fold
         />
       }
     />
