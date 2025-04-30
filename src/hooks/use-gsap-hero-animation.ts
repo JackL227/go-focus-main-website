@@ -57,8 +57,8 @@ export const useGsapHeroAnimation = () => {
         {
           scale: 1.5,
           opacity: 0,
-          duration: 0.7, // Slightly longer for smoother effect
-          ease: "power2.out", // Smoother easing
+          duration: 0.8, // Slightly longer for smoother effect
+          ease: "expo.out", // Natural easing
           onComplete: () => pop.remove()
         }
       );
@@ -68,9 +68,9 @@ export const useGsapHeroAnimation = () => {
       if (!containerRef.current || !logoRef.current || !isAnimating.current) return;
       
       const card = document.createElement("div");
-      card.className = "bg-background/90 backdrop-blur-sm border border-foreground/20 shadow-lg rounded-lg p-4 w-[140px] md:w-[160px]"; // Increased shadow and border opacity
+      card.className = "bg-background/90 backdrop-blur-sm border border-foreground/20 shadow-lg rounded-lg p-4 w-[140px] md:w-[160px]";
       card.innerHTML = `<div class="flex items-center gap-2">
-        <div class="w-3 h-3 rounded-full bg-primary"></div> <!-- Full opacity for better visibility -->
+        <div class="w-3 h-3 rounded-full bg-primary"></div>
         <p class="text-sm font-medium">${getRandomLeadText()}</p>
       </div>`;
       card.style.position = "absolute";
@@ -86,25 +86,25 @@ export const useGsapHeroAnimation = () => {
       const logoCenterX = logoRect.left - containerRect.left + logoRect.width / 2;
       const logoCenterY = logoRect.top - containerRect.top + logoRect.height / 2;
 
-      // Start cards further left and more visible
-      gsap.set(card, { x: -280, y: startY, opacity: 0, scale: 1.05 }); // Slightly larger for emphasis
+      // Start cards further left and more visible, with better initial opacity
+      gsap.set(card, { x: -300, y: startY, opacity: 0, scale: 1.05 }); 
       
       // Fade in first for better visibility
       gsap.to(card, { 
         opacity: 1, 
         duration: 0.8,
-        ease: "power1.inOut" 
+        ease: "easeInOut"
       });
       
-      // Then move to the center with smoother motion
+      // Then move to the center with smoother motion and slower speed
       gsap.to(card, {
-        x: logoCenterX - 50,
-        y: logoCenterY - 15,
+        x: logoCenterX - 45, // Target closer to center
+        y: logoCenterY,      // Directly to the center
         scale: 0.1,
         opacity: 0,
-        duration: 4, // Slower for smoother transition
-        ease: "power2.inOut", // Smoother easing
-        delay: 0.8, // Start after fade in
+        duration: 5,         // Slower for more deliberate motion
+        ease: "easeInOut",   // Smoother easing
+        delay: 0.8,          // Start after fade in
         onComplete: () => {
           createPopEffect(logoCenterX, logoCenterY);
           card.remove();
@@ -117,7 +117,7 @@ export const useGsapHeroAnimation = () => {
       if (!containerRef.current || !logoRef.current || !isAnimating.current) return;
       
       const nameCard = document.createElement("div");
-      nameCard.className = "bg-background/90 backdrop-blur-sm border border-foreground/20 shadow-lg rounded-lg p-4"; // Consistent with lead cards
+      nameCard.className = "bg-background/90 backdrop-blur-sm border border-foreground/20 shadow-lg rounded-lg p-4";
       nameCard.innerHTML = `<div class="flex items-center gap-3">
         <div class="shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
@@ -142,7 +142,7 @@ export const useGsapHeroAnimation = () => {
       const logoCenterX = logoRect.left - containerRect.left + logoRect.width / 2;
       const logoCenterY = logoRect.top - containerRect.top + logoRect.height / 2;
       
-      // Create different angles for different cards, more consistent spread
+      // Create different angles for different cards, more controlled spread
       const angleVariations = [-25, -5, 15, 35]; // More controlled angles for better visibility
       const angle = angleVariations[index % angleVariations.length];
       const distance = containerRect.width + 200;
@@ -150,10 +150,13 @@ export const useGsapHeroAnimation = () => {
 
       const xTarget = Math.cos(radians) * distance;
       const yTarget = Math.sin(radians) * distance;
+      
+      // Start slightly to the right of the center logo
+      const offsetX = 60; // Offset to the right of logo
 
-      // Start from center with initial opacity 0
+      // Start from slightly right of center with initial opacity 0
       gsap.set(nameCard, {
-        x: logoCenterX - 90,
+        x: logoCenterX + offsetX,
         y: logoCenterY - 30,
         opacity: 0,
         scale: 0.5
@@ -163,8 +166,8 @@ export const useGsapHeroAnimation = () => {
       gsap.to(nameCard, {
         opacity: 1,
         scale: 1,
-        duration: 0.6,
-        ease: "power2.out"
+        duration: 0.7,
+        ease: "easeOut"
       });
 
       // Then move outward with smoother motion
@@ -172,8 +175,8 @@ export const useGsapHeroAnimation = () => {
         x: logoCenterX + xTarget,
         y: logoCenterY + yTarget,
         duration: 5, // Slower for smoother transition
-        ease: "power1.inOut", // Smoother easing
-        delay: 0.6, // Start after fade in
+        ease: "easeInOut", // Consistent easing
+        delay: 0.7, // Start after fade in
         onComplete: () => {
           nameCard.remove();
         }
@@ -184,11 +187,11 @@ export const useGsapHeroAnimation = () => {
       if (!isAnimating.current) return;
       
       for (let i = 0; i < 4; i++) {
-        const timeout = setTimeout(() => spawnLead(i), i * 3000); // More time between cards for clarity
+        const timeout = setTimeout(() => spawnLead(i), i * 3500); // More time between cards for clarity
         timeouts.push(timeout);
       }
       
-      const loopTimeout = setTimeout(loopAnimation, 14000); // Slightly longer loop time for better pacing
+      const loopTimeout = setTimeout(loopAnimation, 15000); // Slightly longer loop time for better pacing
       timeouts.push(loopTimeout);
     };
     

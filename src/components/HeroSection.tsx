@@ -57,8 +57,8 @@ const HeroSection = () => {
           </div>
         </div>
         
-        {/* Enhanced Hero Animation Container */}
-        <div className="relative mx-auto w-full max-w-5xl">
+        {/* Enhanced Hero Animation Container with smoother background blend */}
+        <div className="relative mx-auto w-full max-w-5xl bg-transparent">
           <HeroAnimation />
         </div>
       </div>
