@@ -9,7 +9,7 @@ const HeroAnimation = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full h-[300px] md:h-[380px] overflow-hidden mt-6 mb-8" 
+      className="relative w-full h-[340px] md:h-[400px] overflow-hidden mt-6 mb-8 bg-transparent" 
       aria-label="AI agent animation showing leads being converted into bookings"
     >
       {/* Center - GoFocus.ai logo */}

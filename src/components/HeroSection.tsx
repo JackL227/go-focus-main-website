@@ -57,8 +57,10 @@ const HeroSection = () => {
           </div>
         </div>
         
-        {/* Hero Animation Section */}
-        <HeroAnimation />
+        {/* Enhanced Hero Animation Container */}
+        <div className="relative mx-auto w-full max-w-5xl">
+          <HeroAnimation />
+        </div>
       </div>
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} initialNiche="trading" />}

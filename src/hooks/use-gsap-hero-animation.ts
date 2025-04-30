@@ -46,7 +46,7 @@ export const useGsapHeroAnimation = () => {
       pop.style.width = "30px";
       pop.style.height = "30px";
       pop.style.borderRadius = "50%";
-      pop.style.background = "rgba(0, 110, 218, 0.6)"; // Primary color with opacity
+      pop.style.background = "rgba(0, 110, 218, 0.4)"; // Lighter blue for better integration
       pop.style.left = `${x}px`;
       pop.style.top = `${y}px`;
       pop.style.zIndex = "6";
@@ -57,8 +57,8 @@ export const useGsapHeroAnimation = () => {
         {
           scale: 1.5,
           opacity: 0,
-          duration: 0.5,
-          ease: "back.out(2)",
+          duration: 0.7, // Slightly longer for smoother effect
+          ease: "power2.out", // Smoother easing
           onComplete: () => pop.remove()
         }
       );
@@ -68,16 +68,17 @@ export const useGsapHeroAnimation = () => {
       if (!containerRef.current || !logoRef.current || !isAnimating.current) return;
       
       const card = document.createElement("div");
-      card.className = "bg-background/90 backdrop-blur-sm border border-foreground/10 shadow-md rounded-lg p-4 w-[140px] md:w-[160px]";
+      card.className = "bg-background/90 backdrop-blur-sm border border-foreground/20 shadow-lg rounded-lg p-4 w-[140px] md:w-[160px]"; // Increased shadow and border opacity
       card.innerHTML = `<div class="flex items-center gap-2">
-        <div class="w-3 h-3 rounded-full bg-primary/80"></div>
+        <div class="w-3 h-3 rounded-full bg-primary"></div> <!-- Full opacity for better visibility -->
         <p class="text-sm font-medium">${getRandomLeadText()}</p>
       </div>`;
       card.style.position = "absolute";
       card.style.zIndex = "5";
       containerRef.current.appendChild(card);
 
-      const startY = containerRef.current.offsetHeight / 2 - 100 + index * 60;
+      // Adjusted starting position for better visibility
+      const startY = containerRef.current.offsetHeight / 2 - 100 + index * 60; 
       const logoRect = logoRef.current.getBoundingClientRect();
       const containerRect = containerRef.current.getBoundingClientRect();
       
@@ -85,17 +86,25 @@ export const useGsapHeroAnimation = () => {
       const logoCenterX = logoRect.left - containerRect.left + logoRect.width / 2;
       const logoCenterY = logoRect.top - containerRect.top + logoRect.height / 2;
 
-      gsap.set(card, { x: -250, y: startY, opacity: 0 });
+      // Start cards further left and more visible
+      gsap.set(card, { x: -280, y: startY, opacity: 0, scale: 1.05 }); // Slightly larger for emphasis
       
-      gsap.to(card, { opacity: 1, duration: 0.5 });
+      // Fade in first for better visibility
+      gsap.to(card, { 
+        opacity: 1, 
+        duration: 0.8,
+        ease: "power1.inOut" 
+      });
       
+      // Then move to the center with smoother motion
       gsap.to(card, {
         x: logoCenterX - 50,
         y: logoCenterY - 15,
         scale: 0.1,
         opacity: 0,
-        duration: 3,
-        ease: "power2.inOut",
+        duration: 4, // Slower for smoother transition
+        ease: "power2.inOut", // Smoother easing
+        delay: 0.8, // Start after fade in
         onComplete: () => {
           createPopEffect(logoCenterX, logoCenterY);
           card.remove();
@@ -108,7 +117,7 @@ export const useGsapHeroAnimation = () => {
       if (!containerRef.current || !logoRef.current || !isAnimating.current) return;
       
       const nameCard = document.createElement("div");
-      nameCard.className = "bg-background/90 backdrop-blur-sm border border-foreground/10 shadow-md rounded-lg p-4";
+      nameCard.className = "bg-background/90 backdrop-blur-sm border border-foreground/20 shadow-lg rounded-lg p-4"; // Consistent with lead cards
       nameCard.innerHTML = `<div class="flex items-center gap-3">
         <div class="shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
@@ -133,14 +142,16 @@ export const useGsapHeroAnimation = () => {
       const logoCenterX = logoRect.left - containerRect.left + logoRect.width / 2;
       const logoCenterY = logoRect.top - containerRect.top + logoRect.height / 2;
       
-      // Create different angles for different cards
-      const angle = (index % 3 === 0) ? 0 : (index % 3 === 1) ? -20 : 20;
+      // Create different angles for different cards, more consistent spread
+      const angleVariations = [-25, -5, 15, 35]; // More controlled angles for better visibility
+      const angle = angleVariations[index % angleVariations.length];
       const distance = containerRect.width + 200;
       const radians = angle * (Math.PI / 180);
 
       const xTarget = Math.cos(radians) * distance;
       const yTarget = Math.sin(radians) * distance;
 
+      // Start from center with initial opacity 0
       gsap.set(nameCard, {
         x: logoCenterX - 90,
         y: logoCenterY - 30,
@@ -148,18 +159,21 @@ export const useGsapHeroAnimation = () => {
         scale: 0.5
       });
 
+      // Fade in first
       gsap.to(nameCard, {
         opacity: 1,
         scale: 1,
-        duration: 0.4,
+        duration: 0.6,
+        ease: "power2.out"
       });
 
+      // Then move outward with smoother motion
       gsap.to(nameCard, {
         x: logoCenterX + xTarget,
         y: logoCenterY + yTarget,
-        duration: 4,
-        ease: "power2.inOut",
-        delay: 0.4,
+        duration: 5, // Slower for smoother transition
+        ease: "power1.inOut", // Smoother easing
+        delay: 0.6, // Start after fade in
         onComplete: () => {
           nameCard.remove();
         }
@@ -170,11 +184,11 @@ export const useGsapHeroAnimation = () => {
       if (!isAnimating.current) return;
       
       for (let i = 0; i < 4; i++) {
-        const timeout = setTimeout(() => spawnLead(i), i * 2500);
+        const timeout = setTimeout(() => spawnLead(i), i * 3000); // More time between cards for clarity
         timeouts.push(timeout);
       }
       
-      const loopTimeout = setTimeout(loopAnimation, 12000);
+      const loopTimeout = setTimeout(loopAnimation, 14000); // Slightly longer loop time for better pacing
       timeouts.push(loopTimeout);
     };
     
