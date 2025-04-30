@@ -15,7 +15,7 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
     const fontFaceSet = document.fonts;
     
     // Mark as complete after minimum display time or when assets are loaded
-    const minDisplayTime = 1000; // 1 second minimum display time
+    const minDisplayTime = 1200; // 1.2 second minimum display time for better UX
     const startTime = Date.now();
     
     // Create a promise that resolves when the minimum time has passed
@@ -72,7 +72,7 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
           className="fixed inset-0 bg-[#050A14] flex items-center justify-center z-50"
         >
           <motion.div 
@@ -87,11 +87,13 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
               className="w-32 h-auto mb-6" 
               loading="eager"
             />
-            <div className="relative h-1 w-40 bg-foreground/10 rounded-full overflow-hidden">
+            <div className="relative h-1 w-48 bg-foreground/10 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
-                animate={{ width: "100%" }}
-                transition={{ duration: 1.5, ease: "easeInOut" }}
+                animate={{ 
+                  width: "100%",
+                  transition: { duration: 1.5, ease: "easeInOut" }
+                }}
                 className="absolute top-0 left-0 h-full bg-primary rounded-full"
               />
             </div>

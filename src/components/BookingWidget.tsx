@@ -1,5 +1,5 @@
 
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
 import { getCalApi } from "@calcom/embed-react";
 import { Button } from '@/components/ui/button';
 import { Calendar } from 'lucide-react';
@@ -11,9 +11,16 @@ interface BookingWidgetProps extends Omit<ButtonProps, 'onClick'> {
 }
 
 const BookingWidget = ({ className, variant = "default", children, ...props }: BookingWidgetProps) => {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const calInitialized = useRef(false);
+
   const initCalCom = useCallback(async () => {
+    if (calInitialized.current) return;
+    
     try {
       const cal = await getCalApi({ namespace: "30min" });
+      calInitialized.current = true;
       
       cal("ui", {
         cssVarsPerTheme: {
@@ -36,7 +43,7 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
       if (window.fbq) {
         // Register for the linkReady event using the correct format
         cal("on", {
-          action: "linkReady", // Using a valid action from Cal API
+          action: "linkReady",
           callback: () => {
             window.fbq('track', 'InitiateCheckout');
           }
@@ -44,7 +51,7 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
         
         // Register for the bookingSuccessful event using the correct format
         cal("on", {
-          action: "bookingSuccessful", // This is a valid action from Cal API
+          action: "bookingSuccessful",
           callback: () => {
             window.fbq('track', 'Schedule');
           }
@@ -56,30 +63,38 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
   }, []);
 
   useEffect(() => {
-    // Lazy load Cal.com API only when component is visible
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          initCalCom();
-          observer.disconnect();
+    if (!buttonRef.current) return;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsIntersecting(true);
         }
-      });
-    }, { threshold: 0.1 });
-
-    const element = document.querySelector('[data-cal-namespace="30min"]');
-    if (element) {
-      observer.observe(element);
+      },
+      { threshold: 0.1, rootMargin: '200px' }
+    );
+    
+    observer.observe(buttonRef.current);
+    
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+  
+  // Initialize Cal.com when the button is in viewport or close
+  useEffect(() => {
+    if (isIntersecting) {
+      initCalCom();
     }
-
-    return () => observer.disconnect();
-  }, [initCalCom]);
+  }, [isIntersecting, initCalCom]);
 
   return (
     <Button 
+      ref={buttonRef}
       data-cal-namespace="30min"
       data-cal-link="gofocus.ai/30min"
       data-cal-config='{"layout":"month_view"}'
-      className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow w-full md:w-auto max-w-xs mx-auto flex justify-center items-center text-wrap ${className}`}
+      className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow flex justify-center items-center text-wrap ${className}`}
       variant={variant}
       {...props}
     >

@@ -42,7 +42,7 @@ const CourseCreatorFunnel = () => {
       subheadline="We transform info-product and course creators by automating their lead qualification, booking, and sales with AI-powered systems."
       benefits={benefits}
       metrics={metrics}
-      guaranteeText="If our AI agent doesn't increase your course enrollments or improve student satisfaction within 60 days, we'll refund your entire investment. We're that confident in our solution."
+      guaranteeText="If our AI agent doesn't increase your course enrollments by at least 30 within 60 days, we'll refund you in full — that's how confident we are in our solution."
       urgencyText="Limited time offer: Get 3 months of our premium tier at the standard plan price."
       ctaText="Get Your Free AI Strategy Session"
       hasCountdown={true}

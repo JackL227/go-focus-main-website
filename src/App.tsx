@@ -18,7 +18,16 @@ const CourseCreatorFunnel = lazy(() => import("./pages/funnels/CourseCreatorFunn
 const RealEstateFunnel = lazy(() => import("./pages/funnels/RealEstateFunnel"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-const queryClient = new QueryClient();
+// Create a query client with optimized settings
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 30000,
+    },
+  },
+});
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -26,6 +35,20 @@ const App = () => {
   const handleLoadingComplete = () => {
     setIsLoading(false);
   };
+
+  // Prefetch important routes
+  useEffect(() => {
+    if (!isLoading) {
+      // Preload critical components after initial load
+      const prefetchTimeout = setTimeout(() => {
+        import("./components/Navigation");
+        import("./components/Footer");
+        import("./components/CallToAction");
+      }, 2000);
+      
+      return () => clearTimeout(prefetchTimeout);
+    }
+  }, [isLoading]);
 
   return (
     <QueryClientProvider client={queryClient}>
