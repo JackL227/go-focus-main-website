@@ -1,11 +1,13 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { useIsMobile } from './use-mobile';
 
 export const useGsapHeroAnimation = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
   const isAnimating = useRef(true);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!containerRef.current || !logoRef.current) return;
@@ -43,21 +45,21 @@ export const useGsapHeroAnimation = () => {
       
       const pop = document.createElement("div");
       pop.style.position = "absolute";
-      pop.style.width = "30px";
-      pop.style.height = "30px";
+      pop.style.width = isMobile ? "24px" : "30px";
+      pop.style.height = isMobile ? "24px" : "30px";
       pop.style.borderRadius = "50%";
-      pop.style.background = "rgba(0, 110, 218, 0.4)"; // Lighter blue for better integration
+      pop.style.background = "rgba(0, 110, 218, 0.5)"; // Brighter blue for better visibility
       pop.style.left = `${x}px`;
       pop.style.top = `${y}px`;
       pop.style.zIndex = "6";
       containerRef.current.appendChild(pop);
 
       gsap.fromTo(pop, 
-        { scale: 0.2, opacity: 0.6 }, 
+        { scale: 0.2, opacity: 0.7 }, // Higher initial opacity
         {
           scale: 1.5,
           opacity: 0,
-          duration: 0.8, // Slightly longer for smoother effect
+          duration: 0.9, // Slightly longer for smoother effect
           ease: "expo.out", // Natural easing
           onComplete: () => pop.remove()
         }
@@ -68,7 +70,9 @@ export const useGsapHeroAnimation = () => {
       if (!containerRef.current || !logoRef.current || !isAnimating.current) return;
       
       const card = document.createElement("div");
-      card.className = "bg-background/90 backdrop-blur-sm border border-foreground/20 shadow-lg rounded-lg p-4 w-[140px] md:w-[160px]";
+      card.className = "bg-background/95 backdrop-blur-sm border border-primary/20 shadow-lg rounded-lg p-4";
+      card.style.width = isMobile ? "130px" : "160px";
+      card.style.boxShadow = "0 4px 12px rgba(0, 110, 218, 0.15)"; // Enhanced shadow for visibility
       card.innerHTML = `<div class="flex items-center gap-2">
         <div class="w-3 h-3 rounded-full bg-primary"></div>
         <p class="text-sm font-medium">${getRandomLeadText()}</p>
@@ -77,8 +81,9 @@ export const useGsapHeroAnimation = () => {
       card.style.zIndex = "5";
       containerRef.current.appendChild(card);
 
-      // Adjusted starting position for better visibility
-      const startY = containerRef.current.offsetHeight / 2 - 100 + index * 60; 
+      // Adjusted starting position for better visibility - ensure starts fully on screen
+      const containerHeight = containerRef.current.offsetHeight;
+      const startY = (containerHeight / 2) - 80 + (index * (isMobile ? 50 : 60));
       const logoRect = logoRef.current.getBoundingClientRect();
       const containerRect = containerRef.current.getBoundingClientRect();
       
@@ -86,24 +91,32 @@ export const useGsapHeroAnimation = () => {
       const logoCenterX = logoRect.left - containerRect.left + logoRect.width / 2;
       const logoCenterY = logoRect.top - containerRect.top + logoRect.height / 2;
 
-      // Start cards further left and more visible, with better initial opacity
-      gsap.set(card, { x: -300, y: startY, opacity: 0, scale: 1.05 }); 
+      // Start cards from left edge but ensure they're visible
+      const startX = isMobile ? -140 : -220;
       
-      // Fade in first for better visibility
+      // Set initial state - fully visible from the start with higher opacity
+      gsap.set(card, { 
+        x: startX, 
+        y: startY, 
+        opacity: 0, 
+        scale: isMobile ? 0.95 : 1.05 
+      }); 
+      
+      // Fade in first with higher initial opacity for better visibility
       gsap.to(card, { 
         opacity: 1, 
         duration: 0.8,
-        ease: "easeInOut"
+        ease: "power1.inOut" // Smoother intro
       });
       
-      // Then move to the center with smoother motion and slower speed
+      // Then move to the center with optimized motion parameters
       gsap.to(card, {
-        x: logoCenterX - 45, // Target closer to center
-        y: logoCenterY,      // Directly to the center
-        scale: 0.1,
+        x: logoCenterX - 30, // Target directly to center
+        y: logoCenterY,      
+        scale: 0.2,          // Smaller final scale for better absorption effect
         opacity: 0,
-        duration: 5,         // Slower for more deliberate motion
-        ease: "easeInOut",   // Smoother easing
+        duration: isMobile ? 5.5 : 6,  // Slightly slower on mobile
+        ease: "power1.inOut", // Consistent easing
         delay: 0.8,          // Start after fade in
         onComplete: () => {
           createPopEffect(logoCenterX, logoCenterY);
@@ -117,7 +130,9 @@ export const useGsapHeroAnimation = () => {
       if (!containerRef.current || !logoRef.current || !isAnimating.current) return;
       
       const nameCard = document.createElement("div");
-      nameCard.className = "bg-background/90 backdrop-blur-sm border border-foreground/20 shadow-lg rounded-lg p-4";
+      nameCard.className = "bg-background/95 backdrop-blur-sm border border-primary/20 shadow-lg rounded-lg p-4";
+      nameCard.style.width = isMobile ? "170px" : "200px";
+      nameCard.style.boxShadow = "0 4px 12px rgba(0, 110, 218, 0.15)"; // Enhanced shadow for visibility
       nameCard.innerHTML = `<div class="flex items-center gap-3">
         <div class="shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
@@ -131,7 +146,6 @@ export const useGsapHeroAnimation = () => {
         </div>
       </div>`;
       nameCard.style.position = "absolute";
-      nameCard.style.width = "180px";
       nameCard.style.zIndex = "5";
       containerRef.current.appendChild(nameCard);
 
@@ -142,40 +156,43 @@ export const useGsapHeroAnimation = () => {
       const logoCenterX = logoRect.left - containerRect.left + logoRect.width / 2;
       const logoCenterY = logoRect.top - containerRect.top + logoRect.height / 2;
       
-      // Create different angles for different cards, more controlled spread
-      const angleVariations = [-25, -5, 15, 35]; // More controlled angles for better visibility
+      // Create more controlled angles for different cards
+      const angleVariations = isMobile ? 
+        [-20, 0, 20] : // More restricted angles for mobile
+        [-25, -5, 15, 35]; // More spread for desktop
+      
       const angle = angleVariations[index % angleVariations.length];
-      const distance = containerRect.width + 200;
+      const distance = containerRect.width * (isMobile ? 0.8 : 1) + 100; // Adjust distance based on screen size
       const radians = angle * (Math.PI / 180);
 
       const xTarget = Math.cos(radians) * distance;
       const yTarget = Math.sin(radians) * distance;
       
-      // Start slightly to the right of the center logo
-      const offsetX = 60; // Offset to the right of logo
+      // Start right of center logo (important for visual flow)
+      const offsetX = isMobile ? 50 : 70; // Offset to the right of logo - increased for better visibility
 
-      // Start from slightly right of center with initial opacity 0
+      // Start from right of center with initial opacity 0
       gsap.set(nameCard, {
         x: logoCenterX + offsetX,
-        y: logoCenterY - 30,
+        y: logoCenterY - 20,
         opacity: 0,
-        scale: 0.5
+        scale: 0.7
       });
 
-      // Fade in first
+      // Fade in first with higher initial opacity
       gsap.to(nameCard, {
         opacity: 1,
-        scale: 1,
+        scale: 0.95,
         duration: 0.7,
-        ease: "easeOut"
+        ease: "power1.out"
       });
 
-      // Then move outward with smoother motion
+      // Then move outward with smoother motion and appropriate timing
       gsap.to(nameCard, {
         x: logoCenterX + xTarget,
         y: logoCenterY + yTarget,
-        duration: 5, // Slower for smoother transition
-        ease: "easeInOut", // Consistent easing
+        duration: isMobile ? 5 : 6, // Slightly faster on mobile
+        ease: "power1.inOut", // Consistent easing
         delay: 0.7, // Start after fade in
         onComplete: () => {
           nameCard.remove();
@@ -186,12 +203,16 @@ export const useGsapHeroAnimation = () => {
     const loopAnimation = () => {
       if (!isAnimating.current) return;
       
-      for (let i = 0; i < 4; i++) {
-        const timeout = setTimeout(() => spawnLead(i), i * 3500); // More time between cards for clarity
+      // Adjust card frequency for mobile
+      const cardCount = isMobile ? 3 : 4;
+      const cardInterval = isMobile ? 4000 : 3500; // More time between cards on mobile
+      
+      for (let i = 0; i < cardCount; i++) {
+        const timeout = setTimeout(() => spawnLead(i), i * cardInterval);
         timeouts.push(timeout);
       }
       
-      const loopTimeout = setTimeout(loopAnimation, 15000); // Slightly longer loop time for better pacing
+      const loopTimeout = setTimeout(loopAnimation, (cardCount * cardInterval) + 2000);
       timeouts.push(loopTimeout);
     };
     
@@ -212,7 +233,7 @@ export const useGsapHeroAnimation = () => {
         leads.forEach(lead => lead.remove());
       }
     };
-  }, []);
+  }, [isMobile]); // Add isMobile as a dependency
 
   return { containerRef, logoRef };
 };
