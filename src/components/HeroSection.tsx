@@ -5,7 +5,6 @@ import { ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
-import AnimationSection from './AnimationSection';
 
 const HeroSection = () => {
   const { user } = useAuth();
@@ -33,8 +32,8 @@ const HeroSection = () => {
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in [animation-delay:700ms] mb-0">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-background group relative overflow-hidden transition-all duration-300 hover:shadow-glow" onClick={handleDemoClick} aria-label="See AI agent demo">
+          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in [animation-delay:700ms] mb-0 justify-center w-full">
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-background group relative overflow-hidden transition-all duration-300 hover:shadow-glow w-full sm:w-auto max-w-xs mx-auto" onClick={handleDemoClick} aria-label="See AI agent demo">
               <span className="relative z-10 flex items-center">
                 See AI Agent in Action
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -42,16 +41,11 @@ const HeroSection = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
             </Button>
             
-            <BookingWidget size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300">
+            <BookingWidget size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300 w-full sm:w-auto max-w-xs mx-auto">
               Start for Free
             </BookingWidget>
           </div>
         </div>
-      </div>
-      
-      {/* Animation Section */}
-      <div className="w-full relative z-0">
-        <AnimationSection />
       </div>
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} initialNiche="trading" />}

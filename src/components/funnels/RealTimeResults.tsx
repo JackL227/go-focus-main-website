@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { TrendingUp, Users, Calendar } from 'lucide-react';
+import { TrendingUp, Users, Calendar, Clock } from 'lucide-react';
 
 interface StatItem {
   title: string;
@@ -13,6 +13,7 @@ interface StatItem {
 
 interface RealTimeResultsProps {
   stats: StatItem[];
+  niche?: string;
 }
 
 const defaultStats: StatItem[] = [
@@ -36,8 +37,40 @@ const defaultStats: StatItem[] = [
   }
 ];
 
-const RealTimeResults: React.FC<RealTimeResultsProps> = ({ stats = defaultStats }) => {
-  const [countValues, setCountValues] = useState<number[]>(stats.map(() => 0));
+const courseCreatorStats: StatItem[] = [
+  {
+    title: "Leads Captured",
+    value: 382,
+    icon: <TrendingUp className="h-6 w-6 text-primary" />,
+    description: "This month"
+  },
+  {
+    title: "Calls Booked",
+    value: 117,
+    icon: <Calendar className="h-6 w-6 text-primary" />,
+    description: "Last 30 days"
+  },
+  {
+    title: "Avg. Response Time",
+    value: 3.2,
+    suffix: " min",
+    icon: <Clock className="h-6 w-6 text-primary" />,
+    description: "All inquiries"
+  },
+  {
+    title: "Conversion Rate",
+    value: 21.5,
+    suffix: "%",
+    icon: <TrendingUp className="h-6 w-6 text-primary" />,
+    description: "Leads to calls"
+  }
+];
+
+const RealTimeResults: React.FC<RealTimeResultsProps> = ({ stats = defaultStats, niche }) => {
+  // Use course creator stats when on the course creator page
+  const finalStats = niche === "course" ? courseCreatorStats : stats;
+  
+  const [countValues, setCountValues] = useState<number[]>(finalStats.map(() => 0));
   const [isInView, setIsInView] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameIds = useRef<number[]>([]);
@@ -68,7 +101,7 @@ const RealTimeResults: React.FC<RealTimeResultsProps> = ({ stats = defaultStats 
     if (!isInView) return;
 
     // Slot machine style counter animation for each stat
-    stats.forEach((stat, index) => {
+    finalStats.forEach((stat, index) => {
       // Start higher than target for slot machine effect
       let startValue = Math.min(stat.value * 5, 9999);
       const endValue = stat.value;
@@ -84,9 +117,11 @@ const RealTimeResults: React.FC<RealTimeResultsProps> = ({ stats = defaultStats 
         let easedProgress = 1 - Math.pow(1 - progress, 3);
         
         // Adjust speed - faster at first, then gradually slow down
-        const currentValue = Math.floor(
-          startValue - (startValue - endValue) * easedProgress
-        );
+        const currentValue = 
+          // Handle decimal values
+          typeof endValue === 'number' && endValue % 1 !== 0
+            ? Number((startValue - (startValue - endValue) * easedProgress).toFixed(1))
+            : Math.floor(startValue - (startValue - endValue) * easedProgress);
         
         setCountValues(prev => {
           const newValues = [...prev];
@@ -115,7 +150,7 @@ const RealTimeResults: React.FC<RealTimeResultsProps> = ({ stats = defaultStats 
     return () => {
       animationFrameIds.current.forEach((id) => cancelAnimationFrame(id));
     };
-  }, [isInView, stats]);
+  }, [isInView, finalStats]);
 
   return (
     <section ref={containerRef} className="py-8 md:py-10 bg-background">
@@ -123,8 +158,8 @@ const RealTimeResults: React.FC<RealTimeResultsProps> = ({ stats = defaultStats 
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-8">Real-Time Results</h2>
           
-          <div className="grid md:grid-cols-3 gap-4 md:gap-6">
-            {stats.map((stat, index) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {finalStats.map((stat, index) => (
               <div 
                 key={index} 
                 className="glass-card p-4 md:p-6 rounded-lg text-center transition-all duration-300 hover:scale-105 animate-entrance"

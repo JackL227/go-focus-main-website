@@ -1,10 +1,9 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { getCalApi } from "@calcom/embed-react";
 import { Button } from '@/components/ui/button';
 import { Calendar } from 'lucide-react';
 import { type ButtonProps } from '@/components/ui/button';
-import { MetaPixel } from './MetaPixel';
 
 interface BookingWidgetProps extends Omit<ButtonProps, 'onClick'> {
   className?: string;
@@ -12,8 +11,8 @@ interface BookingWidgetProps extends Omit<ButtonProps, 'onClick'> {
 }
 
 const BookingWidget = ({ className, variant = "default", children, ...props }: BookingWidgetProps) => {
-  useEffect(() => {
-    (async function () {
+  const initCalCom = useCallback(async () => {
+    try {
       const cal = await getCalApi({ namespace: "30min" });
       
       cal("ui", {
@@ -35,7 +34,7 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
 
       // Track booking events with Meta Pixel
       if (window.fbq) {
-        // Register for the bookingStarted event using the correct format
+        // Register for the linkReady event using the correct format
         cal("on", {
           action: "linkReady", // Using a valid action from Cal API
           callback: () => {
@@ -51,8 +50,29 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
           }
         });
       }
-    })();
+    } catch (error) {
+      console.error("Error initializing Cal.com:", error);
+    }
   }, []);
+
+  useEffect(() => {
+    // Lazy load Cal.com API only when component is visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          initCalCom();
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.1 });
+
+    const element = document.querySelector('[data-cal-namespace="30min"]');
+    if (element) {
+      observer.observe(element);
+    }
+
+    return () => observer.disconnect();
+  }, [initCalCom]);
 
   return (
     <Button 

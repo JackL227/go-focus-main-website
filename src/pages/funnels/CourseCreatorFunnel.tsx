@@ -47,6 +47,7 @@ const CourseCreatorFunnel = () => {
       ctaText="Get Your Free AI Strategy Session"
       hasCountdown={true}
       showSocialProof={true}
+      nicheFunnel="course"
       vslSection={
         <VideoSalesLetter
           videoId="H3qWMyj8Eq0"
