@@ -22,7 +22,6 @@ const HeroAnimation = () => {
         {leadCards.map((lead) => (
           <LeadCard 
             key={lead.id} 
-            id={lead.id}
             text={lead.text}
             status={lead.status}
             delay={lead.delay}
