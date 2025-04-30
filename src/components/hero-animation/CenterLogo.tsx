@@ -10,9 +10,9 @@ interface CenterLogoProps {
 const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
   const isMobile = useIsMobile();
   
-  // More significant size reduction for mobile
+  // More optimized size reduction for mobile
   const logoSize = isMobile ? 
-    { width: "150px", height: "150px" } : 
+    { width: "160px", height: "160px" } : 
     { width: "230px", height: "230px" };
     
   return (
@@ -91,7 +91,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
           }}
         />
         
-        {/* Logo image with subtle inset effect - improved padding for mobile */}
+        {/* Logo image with improved mobile sizing */}
         <div className="absolute inset-0 flex items-center justify-center p-8 sm:p-14 z-50">
           <img
             src="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png"
@@ -105,15 +105,15 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
           />
         </div>
 
-        {/* Subtle processing ripple effects - reduced size for mobile */}
+        {/* Subtle processing ripple effects - optimized for visibility on mobile */}
         {processingLead && (
           <>
             <motion.div
               className="absolute inset-0 rounded-full border border-primary/10"
               initial={{ scale: 0.9, opacity: 0.5 }}
-              animate={{ scale: isMobile ? 1.2 : 1.3, opacity: 0 }}
+              animate={{ scale: isMobile ? 1.25 : 1.3, opacity: 0 }}
               transition={{
-                duration: isMobile ? 1 : 1.2,
+                duration: isMobile ? 1.2 : 1.2,
                 ease: "easeInOut",
                 repeat: Infinity,
                 repeatDelay: 0.3
@@ -122,9 +122,9 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             <motion.div
               className="absolute inset-0 rounded-full border border-primary/8"
               initial={{ scale: 0.9, opacity: 0.3 }}
-              animate={{ scale: isMobile ? 1.3 : 1.5, opacity: 0 }}
+              animate={{ scale: isMobile ? 1.4 : 1.5, opacity: 0 }}
               transition={{
-                duration: isMobile ? 1.5 : 1.8,
+                duration: isMobile ? 1.7 : 1.8,
                 delay: 0.4,
                 ease: "easeInOut",
                 repeat: Infinity,
