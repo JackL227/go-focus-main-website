@@ -10,9 +10,9 @@ interface CenterLogoProps {
 const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
   const isMobile = useIsMobile();
   
-  // Scale down logo size for mobile
+  // More significant size reduction for mobile
   const logoSize = isMobile ? 
-    { width: "180px", height: "180px" } : 
+    { width: "150px", height: "150px" } : 
     { width: "230px", height: "230px" };
     
   return (
@@ -21,7 +21,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
         className="relative"
         style={logoSize}
         animate={{
-          scale: processingLead ? [1, 1.02, 1] : [1, 1.01, 1], // Subtler scale animation
+          scale: processingLead ? [1, 1.02, 1] : [1, 1.01, 1],
         }}
         transition={{
           duration: processingLead ? 0.7 : 5,
@@ -32,9 +32,9 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
       >
         {/* Very light outer background for better blending */}
         <motion.div 
-          className="absolute inset-[-15%] rounded-full opacity-5 blur-[40px]" // Reduced opacity and blur
+          className="absolute inset-[-15%] rounded-full opacity-5 blur-[40px]"
           animate={{
-            opacity: processingLead ? [0.05, 0.07, 0.05] : [0.04, 0.06, 0.04] // Very subtle opacity animation
+            opacity: processingLead ? [0.05, 0.07, 0.05] : [0.04, 0.06, 0.04]
           }}
           transition={{
             duration: processingLead ? 1.5 : 8,
@@ -43,14 +43,14 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             ease: "easeInOut"
           }}
         >
-          <div className="w-full h-full bg-gradient-to-r from-primary/50 to-[#00D9F5]/50 rounded-full" /> {/* Reduced opacity in gradient colors */}
+          <div className="w-full h-full bg-gradient-to-r from-primary/50 to-[#00D9F5]/50 rounded-full" />
         </motion.div>
         
         {/* Minimal pulsing effect with reduced intensity */}
         <motion.div 
-          className="absolute inset-[-8%] rounded-full" // Reduced size
+          className="absolute inset-[-8%] rounded-full"
           animate={{
-            opacity: processingLead ? [0.10, 0.14, 0.10] : [0.08, 0.12, 0.08] // Subtler opacity
+            opacity: processingLead ? [0.10, 0.14, 0.10] : [0.08, 0.12, 0.08]
           }}
           transition={{
             duration: processingLead ? 1 : 6,
@@ -60,9 +60,9 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
           }}
         >
           <motion.div 
-            className="absolute inset-0 bg-gradient-to-r from-primary/40 to-[#00D9F5]/40 rounded-full opacity-25 blur-[15px]" // Reduced opacity and blur
+            className="absolute inset-0 bg-gradient-to-r from-primary/40 to-[#00D9F5]/40 rounded-full opacity-25 blur-[15px]"
             animate={{
-              scale: processingLead ? [1, 1.02, 1] : [1, 1.01, 1], // Subtler scale
+              scale: processingLead ? [1, 1.02, 1] : [1, 1.01, 1],
             }}
             transition={{
               duration: processingLead ? 0.8 : 6,
@@ -75,13 +75,13 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
         
         {/* Inner core with depth effect instead of glow */}
         <motion.div 
-          className="absolute inset-[18%] rounded-full opacity-35 blur-[6px]" // Reduced blur and opacity
+          className="absolute inset-[18%] rounded-full opacity-35 blur-[6px]"
           style={{
-            background: 'linear-gradient(135deg, rgba(0,110,218,0.5), rgba(0,217,245,0.4))' // Directional gradient for depth
+            background: 'linear-gradient(135deg, rgba(0,110,218,0.5), rgba(0,217,245,0.4))'
           }}
           animate={{
-            opacity: processingLead ? [0.35, 0.45, 0.35] : [0.3, 0.4, 0.3], // Subtler opacity
-            scale: processingLead ? [0.98, 1.01, 0.98] : [0.99, 1.01, 0.99], // Subtler scale
+            opacity: processingLead ? [0.35, 0.45, 0.35] : [0.3, 0.4, 0.3],
+            scale: processingLead ? [0.98, 1.01, 0.98] : [0.99, 1.01, 0.99],
           }}
           transition={{
             duration: processingLead ? 0.9 : 5,
@@ -91,42 +91,42 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
           }}
         />
         
-        {/* Logo image with subtle inset effect */}
-        <div className="absolute inset-0 flex items-center justify-center p-12 sm:p-14 z-50">
+        {/* Logo image with subtle inset effect - improved padding for mobile */}
+        <div className="absolute inset-0 flex items-center justify-center p-8 sm:p-14 z-50">
           <img
             src="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png"
             alt="Go Focus AI Logo"
             className="w-full h-full object-contain"
             style={{ 
-              transform: 'translateZ(0)', // Force GPU acceleration
-              backfaceVisibility: 'hidden', // Prevent flickering
-              filter: 'drop-shadow(0 0 1px rgba(0,0,0,0.05))' // Very subtle shadow for depth
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden',
+              filter: 'drop-shadow(0 0 1px rgba(0,0,0,0.05))'
             }}
           />
         </div>
 
-        {/* Very subtle processing ripple effects */}
+        {/* Subtle processing ripple effects - reduced size for mobile */}
         {processingLead && (
           <>
             <motion.div
-              className="absolute inset-0 rounded-full border border-primary/10" // Thinner border, lower opacity
+              className="absolute inset-0 rounded-full border border-primary/10"
               initial={{ scale: 0.9, opacity: 0.5 }}
-              animate={{ scale: 1.3, opacity: 0 }}
+              animate={{ scale: isMobile ? 1.2 : 1.3, opacity: 0 }}
               transition={{
-                duration: 1.2, // Slower for smoother effect
-                ease: "easeInOut", // Smoother easing
+                duration: isMobile ? 1 : 1.2,
+                ease: "easeInOut",
                 repeat: Infinity,
                 repeatDelay: 0.3
               }}
             />
             <motion.div
-              className="absolute inset-0 rounded-full border border-primary/8" // Even lower opacity for second ring
+              className="absolute inset-0 rounded-full border border-primary/8"
               initial={{ scale: 0.9, opacity: 0.3 }}
-              animate={{ scale: 1.5, opacity: 0 }}
+              animate={{ scale: isMobile ? 1.3 : 1.5, opacity: 0 }}
               transition={{
-                duration: 1.8, // Slower for smoother effect
+                duration: isMobile ? 1.5 : 1.8,
                 delay: 0.4,
-                ease: "easeInOut", // Smoother easing
+                ease: "easeInOut",
                 repeat: Infinity,
                 repeatDelay: 0.2
               }}
