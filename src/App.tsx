@@ -34,19 +34,41 @@ const App = () => {
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
+    
+    // Report performance metrics after load
+    if (typeof window !== 'undefined' && 'performance' in window) {
+      setTimeout(() => {
+        const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+        
+        // Log core metrics only in development
+        if (import.meta.env.DEV) {
+          console.log('📊 Performance Metrics:');
+          console.log(`⚡ Time to Interactive: ${Math.round(navigationEntry.domInteractive)}ms`);
+          console.log(`✅ Page Load Complete: ${Math.round(navigationEntry.loadEventEnd)}ms`);
+        }
+      }, 1000);
+    }
   };
 
-  // Prefetch important routes
+  // Prefetch important routes and preload critical components
   useEffect(() => {
     if (!isLoading) {
       // Preload critical components after initial load
       const prefetchTimeout = setTimeout(() => {
         import("./components/Navigation");
         import("./components/Footer");
-        import("./components/CallToAction");
       }, 2000);
       
-      return () => clearTimeout(prefetchTimeout);
+      // Preload other components with lower priority
+      const secondaryPrefetchTimeout = setTimeout(() => {
+        import("./components/CallToAction");
+        import("./components/BookingWidget");
+      }, 4000);
+      
+      return () => {
+        clearTimeout(prefetchTimeout);
+        clearTimeout(secondaryPrefetchTimeout);
+      };
     }
   }, [isLoading]);
 
@@ -60,7 +82,15 @@ const App = () => {
           <Sonner />
           {!isLoading && (
             <BrowserRouter>
-              <Suspense fallback={<div className="w-full h-screen flex items-center justify-center">Loading...</div>}>
+              <Suspense fallback={<div className="w-full h-screen flex items-center justify-center">
+                <div className="animate-pulse">
+                  <img 
+                    src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
+                    alt="GoFocus.ai" 
+                    className="w-20 h-auto opacity-60" 
+                  />
+                </div>
+              </div>}>
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />

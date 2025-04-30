@@ -44,15 +44,14 @@ function getLCP() {
 // Helper to estimate CLS (simplified)
 function getCLS() {
   let cls = 0;
-  const observer = new PerformanceObserver((list) => {
-    for (const entry of list.getEntries()) {
-      if (!(entry as any).hadRecentInput) {
-        cls += (entry as any).value;
-      }
-    }
-  });
-  
   try {
+    const observer = new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        if (!(entry as any).hadRecentInput) {
+          cls += (entry as any).value;
+        }
+      }
+    });
     observer.observe({type: 'layout-shift', buffered: true});
   } catch (e) {
     // Fallback if Layout Instability API is not supported
@@ -61,7 +60,7 @@ function getCLS() {
   return cls;
 }
 
-// Initialize the app
+// Initialize the app with optimized settings
 const init = () => {
   const rootElement = document.getElementById('root');
   if (rootElement) {
@@ -69,10 +68,19 @@ const init = () => {
     root.render(<App />);
   }
   
-  // Report performance metrics in development
-  if (import.meta.env.DEV) {
+  // Report performance metrics in development or when debug flag is present
+  if (import.meta.env.DEV || window.location.search.includes('debug=perf')) {
     reportWebVitals();
   }
 };
+
+// Register a service worker for better caching (if supported)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {
+      // Silent catch - service worker is optional
+    });
+  });
+}
 
 init();

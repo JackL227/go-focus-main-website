@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
+import AnimationSection from './AnimationSection';
 
 const HeroSection = () => {
   const { user } = useAuth();
@@ -32,7 +33,7 @@ const HeroSection = () => {
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in [animation-delay:700ms] mb-0 justify-center w-full max-w-md mx-auto">
+          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in [animation-delay:700ms] mb-8 justify-center w-full max-w-md mx-auto">
             <Button 
               size="lg" 
               className="bg-primary hover:bg-primary/90 text-background group relative overflow-hidden transition-all duration-300 hover:shadow-glow w-full"
@@ -55,6 +56,9 @@ const HeroSection = () => {
             </BookingWidget>
           </div>
         </div>
+        
+        {/* Hero Animation Section */}
+        <AnimationSection />
       </div>
       
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} initialNiche="trading" />}

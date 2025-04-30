@@ -36,21 +36,17 @@ export type OutputCard = {
 
 const NAMES = [
   'Sarah M.', 'Michael R.', 'Emma W.', 'James L.', 'Lisa K.', 'David P.',
-  'Anna S.', 'John T.', 'Robert Q.', 'Sophia V.', 'Thomas B.', 'Olivia N.'
+  'Anna S.', 'John T.', 'Robert Q.', 'Sophia V.'
 ];
 
-const CONVERSION_TYPES = [
+const ACTIONS = [
+  'booked a call',
+  'scheduled consultation',
   'joined program',
   'enrolled in course',
-  'scheduled consultation',
+  'requested demo',
   'started free trial',
-  'signed up for webinar',
-  'completed purchase',
-  'booked strategy call',
-  'scheduled viewing',
-  'requested valuation',
-  'inquired about property',
-  'scheduled call'
+  'booked strategy call'
 ];
 
 // Generate starting positions with a more defined left-side funnel shape
@@ -95,7 +91,7 @@ export const useHeroAnimation = (isMobile: boolean) => {
     NAMES[Math.floor(Math.random() * NAMES.length)], []);
   
   const getRandomAction = useCallback(() => 
-    CONVERSION_TYPES[Math.floor(Math.random() * CONVERSION_TYPES.length)], []);
+    ACTIONS[Math.floor(Math.random() * ACTIONS.length)], []);
   
   // Process a lead and convert it into an output card
   const processLead = useCallback((leadId: number) => {
@@ -166,7 +162,7 @@ export const useHeroAnimation = (isMobile: boolean) => {
           }
         }
       }, 800);
-    }, 700); // Faster emergence for smoother flow
+    }, 1500); // Slightly faster emergence for smoother flow
   }, [getRandomName, getRandomAction, isMobile]);
   
   // Find a lead that's close to the center to process
@@ -237,7 +233,7 @@ export const useHeroAnimation = (isMobile: boolean) => {
     animationActive.current = true;
     
     // Start with a few leads already on screen
-    const initialLeadsCount = isMobile ? 2 : 5;
+    const initialLeadsCount = isMobile ? 3 : 5;
     const initialPositions = generateLeadPositions(initialLeadsCount, isMobile);
     
     const initialLeads = initialPositions.map((pos, idx) => {

@@ -19,19 +19,24 @@ const CourseCreatorFunnel = () => {
 
   const metrics = [
     {
-      title: "Increase in Student Enrollment",
-      value: "+187%",
-      description: "Average growth in course sales within 90 days"
+      title: "Leads Captured",
+      value: "382",
+      description: "New qualified leads in last 30 days"
     },
     {
-      title: "Course Completion Rate",
-      value: "+72%",
-      description: "Higher completion rates with 24/7 support"
+      title: "Calls Booked",
+      value: "117",
+      description: "Sales calls scheduled automatically"
     },
     {
-      title: "Support Hours Saved",
-      value: "120+",
-      description: "Monthly hours saved on student support"
+      title: "Avg. Response Time",
+      value: "3.2 min",
+      description: "Average AI response time to inquiries"
+    },
+    {
+      title: "Conversion Rate",
+      value: "21.5%",
+      description: "Lead-to-call booking conversion"
     }
   ];
   

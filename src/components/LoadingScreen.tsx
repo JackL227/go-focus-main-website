@@ -8,6 +8,7 @@ interface LoadingScreenProps {
 
 const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     // Get a list of all the critical assets
@@ -15,8 +16,26 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
     const fontFaceSet = document.fonts;
     
     // Mark as complete after minimum display time or when assets are loaded
-    const minDisplayTime = 1200; // 1.2 second minimum display time for better UX
+    const minDisplayTime = 1500; // 1.5 second minimum display time for better UX
     const startTime = Date.now();
+    
+    // Simulate progress from 0 to 75% (saving the last 25% for actual loading)
+    const startProgress = () => {
+      let currentProgress = 0;
+      
+      const interval = setInterval(() => {
+        currentProgress += 2;
+        if (currentProgress >= 75) {
+          clearInterval(interval);
+        } else {
+          setProgress(currentProgress);
+        }
+      }, 25);
+      
+      return interval;
+    };
+    
+    const progressInterval = startProgress();
     
     // Create a promise that resolves when the minimum time has passed
     const minTimePromise = new Promise<void>((resolve) => {
@@ -44,8 +63,11 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
     // When all promises are resolved, hide the loading screen
     Promise.all([minTimePromise, fontsPromise, imagesPromise])
       .then(() => {
+        clearInterval(progressInterval);
+        setProgress(100); // Jump to 100%
+        
         const timeElapsed = Date.now() - startTime;
-        const additionalDelay = Math.max(0, minDisplayTime - timeElapsed);
+        const additionalDelay = Math.max(0, minDisplayTime - timeElapsed) + 300; // Add 300ms buffer
         
         // Add a small delay before hiding to ensure minimum display time
         setTimeout(() => {
@@ -57,12 +79,15 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
       })
       .catch(() => {
         // Fallback in case of errors
+        clearInterval(progressInterval);
+        setProgress(100);
+        
         setTimeout(() => {
           setIsLoading(false);
           if (onLoadingComplete) {
             onLoadingComplete();
           }
-        }, Math.max(0, minDisplayTime - (Date.now() - startTime)));
+        }, Math.max(0, minDisplayTime - (Date.now() - startTime)) + 300);
       });
   }, [onLoadingComplete]);
 
@@ -81,22 +106,36 @@ const LoadingScreen = ({ onLoadingComplete }: LoadingScreenProps) => {
             transition={{ duration: 0.5 }}
             className="flex flex-col items-center"
           >
-            <img 
-              src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
-              alt="GoFocus.ai" 
-              className="w-32 h-auto mb-6" 
-              loading="eager"
-            />
-            <div className="relative h-1 w-48 bg-foreground/10 rounded-full overflow-hidden">
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              <img 
+                src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
+                alt="GoFocus.ai" 
+                className="w-32 h-auto mb-6" 
+                loading="eager"
+              />
+            </motion.div>
+            
+            <div className="relative h-1.5 w-48 bg-foreground/10 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
-                animate={{ 
-                  width: "100%",
-                  transition: { duration: 1.5, ease: "easeInOut" }
-                }}
+                animate={{ width: `${progress}%` }}
                 className="absolute top-0 left-0 h-full bg-primary rounded-full"
+                transition={{ ease: "easeInOut" }}
               />
             </div>
+            
+            <motion.p 
+              className="text-xs text-foreground/70 mt-3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              Loading AI-powered systems...
+            </motion.p>
           </motion.div>
         </motion.div>
       )}
