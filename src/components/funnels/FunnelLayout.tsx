@@ -4,7 +4,6 @@ import BookingWidget from "../BookingWidget";
 import { Script } from '../ui/script';
 import RealTimeResults from './RealTimeResults';
 import { useIsMobile } from "@/hooks/use-mobile";
-
 interface FunnelLayoutProps {
   niche: 'trading' | 'medspa' | 'fitness';
   nicheFunnel?: 'trading' | 'course' | 'realestate'; // Added for specific funnel types
@@ -23,7 +22,6 @@ interface FunnelLayoutProps {
   showSocialProof?: boolean;
   vslSection?: React.ReactNode;
 }
-
 const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   niche,
   nicheFunnel,
@@ -69,7 +67,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
     seconds: 59
   });
   const [showStickyCTA, setShowStickyCTA] = useState(false);
-  
   useEffect(() => {
     if (hasCountdown) {
       const interval = setInterval(() => {
@@ -102,7 +99,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       return () => clearInterval(interval);
     }
   }, [hasCountdown]);
-  
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -124,7 +120,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       observer.disconnect();
     };
   }, []);
-  
   useEffect(() => {
     if (!isMobile) return;
     const handleScroll = () => {
@@ -134,13 +129,10 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMobile]);
-  
   useEffect(() => {
     console.log(`Funnel page loaded: ${niche}`);
   }, [niche]);
-  
-  return (
-    <div className="min-h-screen bg-background text-foreground">
+  return <div className="min-h-screen bg-background text-foreground">
       <Script>
         {`
           !function(f,b,e,v,n,t,s)
@@ -164,16 +156,12 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
           <p className="text-lg md:text-xl lg:text-2xl text-foreground/80 mb-4 md:mb-6 max-w-3xl mx-auto">{subheadline}</p>
           
           {/* Added CTA button at the top for desktop visibility without scrolling */}
-          {nicheFunnel === "course" && !isMobile && (
-            <div className="mt-6 mb-2 flex justify-center">
-              <BookingWidget 
-                className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}
-              >
+          {nicheFunnel === "course" && !isMobile && <div className="mt-6 mb-2 flex justify-center">
+              <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
                 <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
                 <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
               </BookingWidget>
-            </div>
-          )}
+            </div>}
         </div>
       </div>
 
@@ -216,43 +204,34 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8 animate-entrance">What You Get</h2>
             
             <div className="grid md:grid-cols-2 gap-4 md:gap-6 stagger-animation">
-              {benefits.map((benefit, index) => (
-                <div key={index} className="glass-card p-4 md:p-5 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
+              {benefits.map((benefit, index) => <div key={index} className="glass-card p-4 md:p-5 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
                   <div className="flex items-start">
                     <div className={`p-2 rounded-full bg-gradient-to-r ${colorScheme.accent} text-white mr-3 animate-pulse-soft`}>
                       <Check className="h-4 w-4" />
                     </div>
                     <p className="text-base md:text-lg">{benefit}</p>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </div>
       </section>
 
-      <RealTimeResults 
-        stats={metrics.map(metric => ({
-          title: metric.title,
-          value: parseInt(metric.value.replace(/\D/g, '')) || 0,
-          prefix: metric.value.startsWith('$') ? '$' : '',
-          suffix: metric.value.includes('%') ? '%' : '',
-          icon: metric.title.toLowerCase().includes('revenue') || metric.title.toLowerCase().includes('cost') ? 
-            <ArrowRight className="h-6 w-6 text-primary" /> : 
-            metric.title.toLowerCase().includes('calls') || metric.title.toLowerCase().includes('appointment') ? 
-              <Calendar className="h-6 w-6 text-primary" /> : 
-              <ArrowRight className="h-6 w-6 text-primary" />,
-          description: metric.description
-        }))}
-        niche={nicheFunnel}
-      />
+      <RealTimeResults stats={metrics.map(metric => ({
+      title: metric.title,
+      value: parseInt(metric.value.replace(/\D/g, '')) || 0,
+      prefix: metric.value.startsWith('$') ? '$' : '',
+      suffix: metric.value.includes('%') ? '%' : '',
+      icon: metric.title.toLowerCase().includes('revenue') || metric.title.toLowerCase().includes('cost') ? <ArrowRight className="h-6 w-6 text-primary" /> : metric.title.toLowerCase().includes('calls') || metric.title.toLowerCase().includes('appointment') ? <Calendar className="h-6 w-6 text-primary" /> : <ArrowRight className="h-6 w-6 text-primary" />,
+      description: metric.description
+    }))} niche={nicheFunnel} />
 
       <section id="guarantee" className="py-8 md:py-12 bg-background">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto glass-card p-5 md:p-8 rounded-lg animate-entrance">
             <div className="flex flex-col sm:flex-row items-center mb-4">
               <Shield className="h-10 md:h-12 w-10 md:w-12 text-primary mr-4 flex-shrink-0 animate-pulse-soft" />
-              <h2 className="text-xl md:text-2xl font-bold text-center sm:text-left">Our Risk-Free Guarantee</h2>
+              <h2 className="text-xl md:text-2xl font-bold text-center sm:text-left">Our Guarantee</h2>
             </div>
             <p className="text-base md:text-lg mb-6 text-center sm:text-left">{guaranteeText}</p>
             <div className="text-center py-4 border-t border-b border-foreground/10">
@@ -272,7 +251,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
               <div className="max-w-lg w-full flex justify-center">
                 <BookingWidget className={`w-full md:w-auto max-w-xs text-white group text-base md:text-lg px-5 md:px-7 py-3 md:py-4 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
                   <Calendar className="h-5 w-5 mr-2 flex-shrink-0 animate-pulse-soft" />
-                  <span className="text-wrap break-words text-sm">{ctaText}</span>
+                  <span className="text-wrap break-words text-xs">{ctaText}</span>
                   <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
                 </BookingWidget>
               </div>
@@ -321,8 +300,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
           </BookingWidget>
         </div>
       </div>}
-    </div>
-  );
+    </div>;
 };
-
 export default FunnelLayout;
