@@ -106,7 +106,8 @@ const RealTimeResults: React.FC<RealTimeResultsProps> = ({ stats = defaultStats,
       let startValue = Math.min(stat.value * 5, 9999);
       const endValue = stat.value;
       
-      const totalDuration = 1500; // 1.5 seconds
+      // Increased duration by 50% (from 1500ms to 3000ms)
+      const totalDuration = 3000; // 3 seconds instead of 1.5 seconds
       const startTime = performance.now();
       
       const animate = (currentTime: number) => {
