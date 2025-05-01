@@ -40,26 +40,26 @@ const defaultStats: StatItem[] = [
 const courseCreatorStats: StatItem[] = [
   {
     title: "Leads Captured",
-    value: 382,
+    value: 4016,
     icon: <TrendingUp className="h-6 w-6 text-primary" />,
     description: "This month"
   },
   {
     title: "Calls Booked",
-    value: 117,
+    value: 1121,
     icon: <Calendar className="h-6 w-6 text-primary" />,
     description: "Last 30 days"
   },
   {
     title: "Avg. Response Time",
-    value: 3.2,
-    suffix: " min",
+    value: 46,
+    suffix: " sec",
     icon: <Clock className="h-6 w-6 text-primary" />,
     description: "All inquiries"
   },
   {
     title: "Conversion Rate",
-    value: 21.5,
+    value: 64.9,
     suffix: "%",
     icon: <TrendingUp className="h-6 w-6 text-primary" />,
     description: "Leads to calls"
