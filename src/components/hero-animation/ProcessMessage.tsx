@@ -23,10 +23,10 @@ const ProcessMessage = ({ message }: ProcessMessageProps) => {
             className="h-2 w-2 bg-primary rounded-full inline-block"
             animate={{ y: ["0%", "-50%", "0%"] }}
             transition={{
-              duration: 0.6,
+              duration: 0.9,
               repeat: Infinity,
               repeatType: "loop",
-              delay: i * 0.1,
+              delay: i * 0.2,
               ease: "easeInOut"
             }}
           />
