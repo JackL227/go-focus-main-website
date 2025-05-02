@@ -15,8 +15,6 @@ const AuthCallback = lazy(() => import("./pages/AuthCallback"));
 const TradingFunnel = lazy(() => import("./pages/funnels/TradingFunnel"));
 const CourseCreatorFunnel = lazy(() => import("./pages/funnels/CourseCreatorFunnel"));
 const RealEstateFunnel = lazy(() => import("./pages/funnels/RealEstateFunnel"));
-const FitnessFunnel = lazy(() => import("./pages/funnels/FitnessFunnel"));
-const ThankYouPage = lazy(() => import("./pages/ThankYouPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Create a query client with optimized settings
@@ -98,8 +96,6 @@ const App = () => {
                   <Route path="/trading" element={<TradingFunnel />} />
                   <Route path="/course-creator" element={<CourseCreatorFunnel />} />
                   <Route path="/real-estate" element={<RealEstateFunnel />} />
-                  <Route path="/fitness" element={<FitnessFunnel />} />
-                  <Route path="/thank-you" element={<ThankYouPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>

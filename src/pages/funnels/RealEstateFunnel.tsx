@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
-import MetaPixel from '@/components/MetaPixel';
 
 const RealEstateFunnel = () => {
   useEffect(() => {
@@ -42,31 +41,26 @@ const RealEstateFunnel = () => {
   ];
   
   return (
-    <>
-      {/* Meta Pixel PageView tracking */}
-      <MetaPixel event="PageView" options={{ page: 'real-estate-funnel' }} />
-      
-      <FunnelLayout
-        niche="trading" // Using trading theme colors
-        headline="Automate Your Real Estate Lead Flow While Your Agents Focus on Closing Deals"
-        subheadline="Our AI system captures, qualifies, and nurtures real estate leads 24/7, booking appointments only with serious buyers ready to make decisions."
-        benefits={benefits}
-        metrics={metrics}
-        guaranteeText="If our AI agent doesn't book at least 30 qualified property viewings within 90 days of implementation, we'll refund your entire investment — that's our guarantee to your agency."
-        urgencyText="Limited availability: We onboard just 5 real estate agencies per month to ensure optimal results."
-        ctaText="Book Your Real Estate AI Strategy Call"
-        hasCountdown={true}
-        showSocialProof={true}
-        nicheFunnel="realestate"
-        vslSection={
-          <VideoSalesLetter
-            videoId="H3qWMyj8Eq0" // Using the same video ID, can be updated later
-            title="Automate Your Real Estate Lead Flow While Your Agents Focus on Closing Deals"
-            subtitle="Our AI system captures, qualifies, and nurtures real estate leads 24/7, booking appointments only with serious buyers ready to make decisions."
-          />
-        }
-      />
-    </>
+    <FunnelLayout
+      niche="trading" // Using trading theme colors
+      headline="Automate Your Real Estate Lead Flow While Your Agents Focus on Closing Deals"
+      subheadline="Our AI system captures, qualifies, and nurtures real estate leads 24/7, booking appointments only with serious buyers ready to make decisions."
+      benefits={benefits}
+      metrics={metrics}
+      guaranteeText="If our AI agent doesn't book at least 30 qualified property viewings within 90 days of implementation, we'll refund your entire investment — that's our guarantee to your agency."
+      urgencyText="Limited availability: We onboard just 5 real estate agencies per month to ensure optimal results."
+      ctaText="Book Your Real Estate AI Strategy Call"
+      hasCountdown={true}
+      showSocialProof={true}
+      nicheFunnel="realestate"
+      vslSection={
+        <VideoSalesLetter
+          videoId="H3qWMyj8Eq0" // Using the same video ID, can be updated later
+          title="Automate Your Real Estate Lead Flow While Your Agents Focus on Closing Deals"
+          subtitle="Our AI system captures, qualifies, and nurtures real estate leads 24/7, booking appointments only with serious buyers ready to make decisions."
+        />
+      }
+    />
   );
 };
 
