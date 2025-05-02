@@ -56,8 +56,8 @@ const TradingFunnel = () => {
   return (
     <FunnelLayout
       niche="trading"
-      headline="Booked 87 Sales Calls for Trading Mentors in 30 Days — Without Chasing Leads."
-      subheadline="Our AI Sales Agent qualifies and books your ideal students — so you never waste time chasing cold leads again."
+      headline="Grow Your Trading Mentorship Business With AI Systems That Sell & Scale for You"
+      subheadline="We build and install full AI sales systems that reactivate old leads, close new ones, and grow your mentorship without manual work."
       benefits={benefits}
       metrics={metrics}
       guaranteeText="We guarantee 30 qualified mentorship leads in 90 days — or we work for free until you do."
@@ -86,8 +86,8 @@ const TradingFunnel = () => {
       vslSection={
         <VideoSalesLetter
           videoId="H3qWMyj8Eq0"
-          title="Booked 87 Sales Calls for Trading Mentors in 30 Days — Without Chasing Leads."
-          subtitle="Our AI Sales Agent qualifies and books your ideal students — so you never waste time chasing cold leads again."
+          title="Grow Your Trading Mentorship Business With AI Systems That Sell & Scale for You"
+          subtitle="We build and install full AI sales systems that reactivate old leads, close new ones, and grow your mentorship without manual work."
         />
       }
     />
