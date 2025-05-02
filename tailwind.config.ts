@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -125,8 +126,8 @@ export default {
           '100%': { transform: 'scale(1.5)', opacity: '0' }
         },
         'button-pop': {
-          '0%, 100%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.05)' },
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.03)' },
           '100%': { transform: 'scale(1)' }
         },
         'shadow-pulse': {
@@ -159,7 +160,7 @@ export default {
         'float': 'float 6s ease-in-out infinite',
         'glow': 'glow 4s ease-in-out infinite',
         'ripple': 'ripple 2s ease-out infinite',
-        'button-pop': 'button-pop 2s ease-in-out infinite',
+        'button-pop': 'button-pop 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite',
         'shadow-pulse': 'shadow-pulse 2s ease-in-out infinite',
         'typing-dot': 'typing-dot 1s ease-in-out infinite',
         'lead-flow': 'lead-flow 8s linear infinite',

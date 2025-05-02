@@ -94,7 +94,7 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
       data-cal-namespace="30min"
       data-cal-link="gofocus.ai/30min"
       data-cal-config='{"layout":"month_view"}'
-      className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow flex justify-center items-center text-wrap ${className}`}
+      className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow animate-button-pop ${className}`}
       variant={variant}
       {...props}
     >
