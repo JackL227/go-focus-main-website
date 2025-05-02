@@ -1,10 +1,13 @@
+
 import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
+import { trackCustomEvent } from '@/utils/metaPixel';
 
 const FitnessFunnel = () => {
   useEffect(() => {
     console.log("Fitness funnel page view tracked");
+    trackCustomEvent('FitnessFunnelView');
   }, []);
   
   const benefits = [

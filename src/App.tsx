@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { useState, useEffect, lazy, Suspense } from "react";
 import LoadingScreen from "./components/LoadingScreen";
+import MetaPixelTracker from "./components/tracking/MetaPixelTracker";
 
 // Lazy load routes for performance optimization
 const Index = lazy(() => import("./pages/Index"));
@@ -80,6 +81,9 @@ const App = () => {
           <Sonner />
           {!isLoading && (
             <BrowserRouter>
+              {/* Add Meta Pixel Tracker for all route changes */}
+              <MetaPixelTracker />
+              
               <Suspense fallback={<div className="w-full h-screen flex items-center justify-center">
                 <div className="animate-pulse">
                   <img 

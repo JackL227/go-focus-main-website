@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
 import ChatbotWidget from '@/components/chatbot/ChatbotWidget';
 import { Toaster } from '@/components/ui/toaster';
+import { trackCustomEvent } from '@/utils/metaPixel';
 
 const Index = () => {
   const [showScrollTop, setShowScrollTop] = React.useState(false);
@@ -21,6 +22,11 @@ const Index = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  useEffect(() => {
+    trackCustomEvent('HomepageView');
+    console.log('Meta Pixel: Homepage view tracked');
   }, []);
   
   const scrollToTop = () => {

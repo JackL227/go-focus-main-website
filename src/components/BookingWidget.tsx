@@ -4,6 +4,7 @@ import { getCalApi } from "@calcom/embed-react";
 import { Button } from '@/components/ui/button';
 import { Calendar } from 'lucide-react';
 import { type ButtonProps } from '@/components/ui/button';
+import { trackEvent } from '@/utils/metaPixel';
 
 interface BookingWidgetProps extends Omit<ButtonProps, 'onClick'> {
   className?: string;
@@ -22,6 +23,18 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
       const cal = await getCalApi({ namespace: "30min" });
       calInitialized.current = true;
       
+      // Track the booking intent when calendar opens
+      cal.on('bookingPageLoaded', () => {
+        trackEvent('InitiateBooking');
+        console.log("Meta Pixel: Tracked InitiateBooking event");
+      });
+      
+      // Track successful booking
+      cal.on('bookingSuccessful', () => {
+        trackEvent('Schedule');
+        console.log("Meta Pixel: Tracked Schedule event");
+      });
+      
       cal("ui", {
         cssVarsPerTheme: {
           light: {
@@ -30,7 +43,7 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
             "cal-text": "#111111"
           },
           dark: {
-            "cal-brand": "#006EDA",
+            "cal-brand": "#006EDA", 
             "cal-bg": "#050A14",
             "cal-text": "#cecece"
           }
@@ -69,6 +82,11 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
     }
   }, [isIntersecting, initCalCom]);
 
+  const handleClick = () => {
+    trackEvent('BookingButtonClick');
+    console.log("Meta Pixel: Tracked BookingButtonClick event");
+  };
+
   return (
     <Button 
       ref={buttonRef}
@@ -77,6 +95,7 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
       data-cal-config='{"layout":"month_view"}'
       className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow animate-button-pop ${className}`}
       variant={variant}
+      onClick={handleClick}
       {...props}
     >
       {children || (

@@ -1,13 +1,14 @@
-
 import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
 import BookingWidget from "@/components/BookingWidget";
 import { ArrowRight } from "lucide-react";
+import { trackCustomEvent } from '@/utils/metaPixel';
 
 const TradingFunnel = () => {
   useEffect(() => {
     console.log("Trading funnel page view tracked");
+    trackCustomEvent('TradingFunnelView');
   }, []);
 
   const benefits = [

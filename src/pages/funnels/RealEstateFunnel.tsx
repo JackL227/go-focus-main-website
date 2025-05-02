@@ -2,10 +2,12 @@
 import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
+import { trackCustomEvent } from '@/utils/metaPixel';
 
 const RealEstateFunnel = () => {
   useEffect(() => {
     console.log("Real Estate funnel page view tracked");
+    trackCustomEvent('RealEstateFunnelView');
   }, []);
   
   const benefits = [
