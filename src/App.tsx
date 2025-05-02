@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { useState, useEffect, lazy, Suspense } from "react";
 import LoadingScreen from "./components/LoadingScreen";
-import { MetaPixel } from "@/components/MetaPixel";
 
 // Lazy load routes for performance optimization
 const Index = lazy(() => import("./pages/Index"));
@@ -76,7 +75,6 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <AuthProvider>
-          <MetaPixel />
           <LoadingScreen onLoadingComplete={handleLoadingComplete} />
           <Toaster />
           <Sonner />

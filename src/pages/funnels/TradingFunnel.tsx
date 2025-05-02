@@ -3,17 +3,11 @@ import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
 import BookingWidget from "@/components/BookingWidget";
-import { MetaPixel } from '@/components/MetaPixel';
 import { ArrowRight } from "lucide-react";
 
 const TradingFunnel = () => {
   useEffect(() => {
     console.log("Trading funnel page view tracked");
-    // Ensure Meta Pixel is initialized with proper ID for this page
-    if (window.fbq) {
-      window.fbq('init', '1090380949802626');
-      window.fbq('track', 'PageView');
-    }
   }, []);
 
   const benefits = [
@@ -61,9 +55,6 @@ const TradingFunnel = () => {
 
   return (
     <>
-      {/* Include Meta Pixel at the top of the component */}
-      <MetaPixel pixelId="1090380949802626" event="PageView" />
-      
       <FunnelLayout
         niche="trading"
         headline="Grow Your Trading Mentorship Business With AI Systems That Sell & Scale for You"

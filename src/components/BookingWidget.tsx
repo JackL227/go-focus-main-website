@@ -38,27 +38,6 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
         hideEventTypeDetails: false,
         layout: "month_view"
       });
-
-      // Track booking events with Meta Pixel
-      if (window.fbq) {
-        // Track InitiateCheckout when the booking widget is opened/ready
-        cal("on", {
-          action: "linkReady",
-          callback: () => {
-            console.log("Cal.com booking widget ready - tracking InitiateCheckout");
-            window.fbq('track', 'InitiateCheckout');
-          }
-        });
-        
-        // Track Schedule event on successful booking
-        cal("on", {
-          action: "bookingSuccessful",
-          callback: () => {
-            console.log("Cal.com booking successful - tracking Schedule");
-            window.fbq('track', 'Schedule');
-          }
-        });
-      }
     } catch (error) {
       console.error("Error initializing Cal.com:", error);
     }
