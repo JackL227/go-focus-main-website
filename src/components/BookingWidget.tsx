@@ -41,18 +41,20 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
 
       // Track booking events with Meta Pixel
       if (window.fbq) {
-        // Register for the linkReady event using the correct format
+        // Track InitiateCheckout when the booking widget is opened/ready
         cal("on", {
           action: "linkReady",
           callback: () => {
+            console.log("Cal.com booking widget ready - tracking InitiateCheckout");
             window.fbq('track', 'InitiateCheckout');
           }
         });
         
-        // Register for the bookingSuccessful event using the correct format
+        // Track Schedule event on successful booking
         cal("on", {
           action: "bookingSuccessful",
           callback: () => {
+            console.log("Cal.com booking successful - tracking Schedule");
             window.fbq('track', 'Schedule');
           }
         });

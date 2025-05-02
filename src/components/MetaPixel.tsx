@@ -4,6 +4,7 @@ import { Script } from './ui/script';
 
 interface MetaPixelProps {
   event?: 'PageView' | 'InitiateCheckout' | 'Schedule';
+  pixelId?: string;
 }
 
 declare global {
@@ -12,13 +13,17 @@ declare global {
   }
 }
 
-export const MetaPixel: React.FC<MetaPixelProps> = ({ event = 'PageView' }) => {
+export const MetaPixel: React.FC<MetaPixelProps> = ({ 
+  event = 'PageView', 
+  pixelId = '1090380949802626'  // Default to landing page pixel ID
+}) => {
   useEffect(() => {
     // Initialize fbq if not already done
     if (window.fbq) {
       window.fbq('track', event);
+      console.log(`Meta Pixel: Tracked ${event} event with pixel ID ${pixelId}`);
     }
-  }, [event]);
+  }, [event, pixelId]);
 
   return (
     <Script>
@@ -31,8 +36,8 @@ export const MetaPixel: React.FC<MetaPixelProps> = ({ event = 'PageView' }) => {
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1369353511050455');
-        fbq('track', 'PageView');
+        fbq('init', '${pixelId}');
+        fbq('track', '${event}');
       `}
     </Script>
   );

@@ -3,11 +3,17 @@ import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
 import BookingWidget from "@/components/BookingWidget";
+import { MetaPixel } from '@/components/MetaPixel';
 import { ArrowRight } from "lucide-react";
 
 const TradingFunnel = () => {
   useEffect(() => {
     console.log("Trading funnel page view tracked");
+    // Ensure Meta Pixel is initialized with proper ID for this page
+    if (window.fbq) {
+      window.fbq('init', '1090380949802626');
+      window.fbq('track', 'PageView');
+    }
   }, []);
 
   const benefits = [
@@ -54,43 +60,48 @@ const TradingFunnel = () => {
   );
 
   return (
-    <FunnelLayout
-      niche="trading"
-      headline="Grow Your Trading Mentorship Business With AI Systems That Sell & Scale for You"
-      subheadline="We build and install full AI sales systems that reactivate old leads, close new ones, and grow your mentorship without manual work."
-      benefits={benefits}
-      metrics={metrics}
-      guaranteeText="We guarantee 30 qualified mentorship leads in 90 days — or we work for free until you do."
-      urgencyText="⛔ Only 5 mentor programs onboarded/month to avoid offer saturation"
-      ctaText={ctaText}
-      hasCountdown={true}
-      showSocialProof={true}
-      nicheFunnel="trading"
-      topCTA={<TopCTAButton />}
-      benefitsCTA={
-        <div className="mt-8 flex justify-center">
-          <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-blue-600 hover:bg-blue-700 shadow-[0_0_20px_rgba(59,130,246,0.6)] animate-button-pop">
-            <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
-            <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-          </BookingWidget>
-        </div>
-      }
-      resultsCTA={
-        <div className="mt-8 flex justify-center">
-          <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-blue-600 hover:bg-blue-700 shadow-[0_0_20px_rgba(59,130,246,0.6)] animate-button-pop">
-            <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
-            <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-          </BookingWidget>
-        </div>
-      }
-      vslSection={
-        <VideoSalesLetter
-          videoId="H3qWMyj8Eq0"
-          title="Grow Your Trading Mentorship Business With AI Systems That Sell & Scale for You"
-          subtitle="We build and install full AI sales systems that reactivate old leads, close new ones, and grow your mentorship without manual work."
-        />
-      }
-    />
+    <>
+      {/* Include Meta Pixel at the top of the component */}
+      <MetaPixel pixelId="1090380949802626" event="PageView" />
+      
+      <FunnelLayout
+        niche="trading"
+        headline="Grow Your Trading Mentorship Business With AI Systems That Sell & Scale for You"
+        subheadline="We build and install full AI sales systems that reactivate old leads, close new ones, and grow your mentorship without manual work."
+        benefits={benefits}
+        metrics={metrics}
+        guaranteeText="We guarantee 30 qualified mentorship leads in 90 days — or we work for free until you do."
+        urgencyText="⛔ Only 5 mentor programs onboarded/month to avoid offer saturation"
+        ctaText={ctaText}
+        hasCountdown={true}
+        showSocialProof={true}
+        nicheFunnel="trading"
+        topCTA={<TopCTAButton />}
+        benefitsCTA={
+          <div className="mt-8 flex justify-center">
+            <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-blue-600 hover:bg-blue-700 shadow-[0_0_20px_rgba(59,130,246,0.6)] animate-button-pop">
+              <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
+              <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+            </BookingWidget>
+          </div>
+        }
+        resultsCTA={
+          <div className="mt-8 flex justify-center">
+            <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-blue-600 hover:bg-blue-700 shadow-[0_0_20px_rgba(59,130,246,0.6)] animate-button-pop">
+              <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
+              <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+            </BookingWidget>
+          </div>
+        }
+        vslSection={
+          <VideoSalesLetter
+            videoId="H3qWMyj8Eq0"
+            title="Grow Your Trading Mentorship Business With AI Systems That Sell & Scale for You"
+            subtitle="We build and install full AI sales systems that reactivate old leads, close new ones, and grow your mentorship without manual work."
+          />
+        }
+      />
+    </>
   );
 };
 

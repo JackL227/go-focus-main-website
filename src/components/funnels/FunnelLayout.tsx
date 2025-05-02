@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Check, Calendar, Clock, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
-import { Script } from '../ui/script';
+import { MetaPixel } from '../MetaPixel';
 import RealTimeResults from './RealTimeResults';
 import { useIsMobile } from "@/hooks/use-mobile";
+
 interface FunnelLayoutProps {
   niche: 'trading' | 'medspa' | 'fitness';
   nicheFunnel?: 'trading' | 'course' | 'realestate'; // Added for specific funnel types
@@ -25,6 +26,7 @@ interface FunnelLayoutProps {
   benefitsCTA?: React.ReactNode; // New prop for CTA below benefits section
   resultsCTA?: React.ReactNode; // New prop for CTA below results section
 }
+
 const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   niche,
   nicheFunnel,
@@ -139,21 +141,9 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
     console.log(`Funnel page loaded: ${niche}`);
   }, [niche]);
   return <div className="min-h-screen bg-background text-foreground">
-      <Script>
-        {`
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '12345678901234567');
-          fbq('track', 'PageView');
-        `}
-      </Script>
-
+      {/* Use Meta Pixel component with the proper pixel ID for booking funnel pages */}
+      <MetaPixel pixelId="1369353511050455" event="PageView" />
+      
       <div className="mb-4 md:mb-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#9F9EA1]/20 via-[#F1F1F1]/20 to-[#C8C8C9]/20 mix-blend-overlay"></div>
         
@@ -313,4 +303,5 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       </div>}
     </div>;
 };
+
 export default FunnelLayout;
