@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
 import ChatbotWidget from '@/components/chatbot/ChatbotWidget';
 import { Toaster } from '@/components/ui/toaster';
+import MetaPixel from '@/components/MetaPixel';
 
 const Index = () => {
   const [showScrollTop, setShowScrollTop] = React.useState(false);
@@ -32,6 +33,9 @@ const Index = () => {
   
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#050A14] to-[#0A1428] text-foreground overflow-x-hidden">
+      {/* Meta Pixel tracking */}
+      <MetaPixel event="PageView" options={{ page: 'homepage' }} />
+      
       <Navigation />
       <HeroSection />
       <HowItWorksSection />

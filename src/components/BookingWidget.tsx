@@ -38,6 +38,34 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
         hideEventTypeDetails: false,
         layout: "month_view"
       });
+      
+      // Track booking events
+      cal("on", {
+        action: "bookingStarted",
+        callback: () => {
+          if (window.fbq) {
+            window.fbq('track', 'InitiateCheckout', {
+              content_name: 'Strategy Call Booking Started'
+            });
+            console.log('🔍 Meta Pixel: Tracked booking started (InitiateCheckout)');
+          }
+        }
+      });
+      
+      cal("on", {
+        action: "bookingSuccessful",
+        callback: () => {
+          if (window.fbq) {
+            window.fbq('track', 'Schedule', {
+              content_name: 'Strategy Call Booked',
+              currency: 'USD',
+              value: 0
+            });
+            console.log('🔍 Meta Pixel: Tracked booking completed (Schedule)');
+          }
+        }
+      });
+      
     } catch (error) {
       console.error("Error initializing Cal.com:", error);
     }
@@ -68,6 +96,16 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
       initCalCom();
     }
   }, [isIntersecting, initCalCom]);
+  
+  // Track the button click
+  const handleClick = () => {
+    if (window.fbq) {
+      window.fbq('track', 'Contact', {
+        content_name: 'Booking Button Clicked'
+      });
+      console.log('🔍 Meta Pixel: Tracked button click (Contact)');
+    }
+  };
 
   return (
     <Button 
@@ -77,6 +115,7 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
       data-cal-config='{"layout":"month_view"}'
       className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow animate-button-pop ${className}`}
       variant={variant}
+      onClick={handleClick}
       {...props}
     >
       {children || (

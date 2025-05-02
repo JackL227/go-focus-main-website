@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
+import MetaPixel from '@/components/MetaPixel';
 
 const CourseCreatorFunnel = () => {
   useEffect(() => {
@@ -41,26 +42,31 @@ const CourseCreatorFunnel = () => {
   ];
   
   return (
-    <FunnelLayout
-      niche="trading"
-      headline="Scale Your Course & Info Product Business With 24/7 AI Support"
-      subheadline="We transform info-product and course creators by automating their lead qualification, booking, and sales with AI-powered systems."
-      benefits={benefits}
-      metrics={metrics}
-      guaranteeText="If our AI agent doesn't increase your course enrollments by at least 30 within 60 days, we'll refund you in full — that's how confident we are in our solution."
-      urgencyText="Limited time offer: Get 3 months of our premium tier at the standard plan price."
-      ctaText="Get Your Free AI Strategy Session"
-      hasCountdown={true}
-      showSocialProof={true}
-      nicheFunnel="course"
-      vslSection={
-        <VideoSalesLetter
-          videoId="H3qWMyj8Eq0"
-          title="Scale Your Course & Info Product Business With 24/7 AI Support"
-          subtitle="We transform info-product and course creators by automating their lead qualification, booking, and sales with AI-powered systems."
-        />
-      }
-    />
+    <>
+      {/* Meta Pixel PageView tracking */}
+      <MetaPixel event="PageView" options={{ page: 'course-creator-funnel' }} />
+      
+      <FunnelLayout
+        niche="trading"
+        headline="Scale Your Course & Info Product Business With 24/7 AI Support"
+        subheadline="We transform info-product and course creators by automating their lead qualification, booking, and sales with AI-powered systems."
+        benefits={benefits}
+        metrics={metrics}
+        guaranteeText="If our AI agent doesn't increase your course enrollments by at least 30 within 60 days, we'll refund you in full — that's how confident we are in our solution."
+        urgencyText="Limited time offer: Get 3 months of our premium tier at the standard plan price."
+        ctaText="Get Your Free AI Strategy Session"
+        hasCountdown={true}
+        showSocialProof={true}
+        nicheFunnel="course"
+        vslSection={
+          <VideoSalesLetter
+            videoId="H3qWMyj8Eq0"
+            title="Scale Your Course & Info Product Business With 24/7 AI Support"
+            subtitle="We transform info-product and course creators by automating their lead qualification, booking, and sales with AI-powered systems."
+          />
+        }
+      />
+    </>
   );
 };
 

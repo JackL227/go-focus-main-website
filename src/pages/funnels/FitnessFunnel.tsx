@@ -1,6 +1,8 @@
+
 import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
+import MetaPixel from '@/components/MetaPixel';
 
 const FitnessFunnel = () => {
   useEffect(() => {
@@ -35,25 +37,30 @@ const FitnessFunnel = () => {
   ];
   
   return (
-    <FunnelLayout
-      niche="fitness"
-      headline="From 3K/Month to 20K/Month — Without Posting or Cold DMs."
-      subheadline="We install an AI system that attracts, qualifies, and books your perfect coaching clients while you train — or chill."
-      benefits={benefits}
-      metrics={metrics}
-      guaranteeText="We guarantee 15 new high-ticket clients in 90 days — or you don't pay."
-      urgencyText="🔒 Limited to 3 fitness coaches/month to protect lead pool quality"
-      ctaText="Book My Demo Call"
-      hasCountdown={true}
-      showSocialProof={true}
-      vslSection={
-        <VideoSalesLetter
-          videoId="fitness-vsl-id"
-          title="From 3K/Month to 20K/Month — Without Posting or Cold DMs."
-          subtitle="We install an AI system that attracts, qualifies, and books your perfect coaching clients while you train — or chill."
-        />
-      }
-    />
+    <>
+      {/* Meta Pixel PageView tracking */}
+      <MetaPixel event="PageView" options={{ page: 'fitness-funnel' }} />
+      
+      <FunnelLayout
+        niche="fitness"
+        headline="From 3K/Month to 20K/Month — Without Posting or Cold DMs."
+        subheadline="We install an AI system that attracts, qualifies, and books your perfect coaching clients while you train — or chill."
+        benefits={benefits}
+        metrics={metrics}
+        guaranteeText="We guarantee 15 new high-ticket clients in 90 days — or you don't pay."
+        urgencyText="🔒 Limited to 3 fitness coaches/month to protect lead pool quality"
+        ctaText="Book My Demo Call"
+        hasCountdown={true}
+        showSocialProof={true}
+        vslSection={
+          <VideoSalesLetter
+            videoId="fitness-vsl-id"
+            title="From 3K/Month to 20K/Month — Without Posting or Cold DMs."
+            subtitle="We install an AI system that attracts, qualifies, and books your perfect coaching clients while you train — or chill."
+          />
+        }
+      />
+    </>
   );
 };
 

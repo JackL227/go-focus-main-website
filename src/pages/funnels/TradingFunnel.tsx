@@ -4,6 +4,7 @@ import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
 import BookingWidget from "@/components/BookingWidget";
 import { ArrowRight } from "lucide-react";
+import MetaPixel from '@/components/MetaPixel';
 
 const TradingFunnel = () => {
   useEffect(() => {
@@ -55,6 +56,9 @@ const TradingFunnel = () => {
 
   return (
     <>
+      {/* Meta Pixel PageView tracking */}
+      <MetaPixel event="PageView" options={{ page: 'trading-funnel' }} />
+      
       <FunnelLayout
         niche="trading"
         headline="Grow Your Trading Mentorship Business With AI Systems That Sell & Scale for You"
