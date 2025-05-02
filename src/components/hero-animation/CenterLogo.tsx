@@ -24,7 +24,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
           scale: processingLead ? [1, 1.02, 1] : [1, 1.01, 1],
         }}
         transition={{
-          duration: processingLead ? 0.9 : 5,
+          duration: processingLead ? 0.7 : 5,
           ease: "easeInOut",
           repeat: Infinity,
           repeatType: "reverse"
@@ -53,7 +53,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             opacity: processingLead ? [0.10, 0.14, 0.10] : [0.08, 0.12, 0.08]
           }}
           transition={{
-            duration: processingLead ? 1.8 : 6,
+            duration: processingLead ? 1 : 6,
             repeat: Infinity,
             repeatType: "reverse",
             ease: "easeInOut"
@@ -65,7 +65,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
               scale: processingLead ? [1, 1.02, 1] : [1, 1.01, 1],
             }}
             transition={{
-              duration: processingLead ? 1.8 : 6,
+              duration: processingLead ? 0.8 : 6,
               repeat: Infinity,
               repeatType: "reverse",
               ease: "easeInOut"
@@ -84,7 +84,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             scale: processingLead ? [0.98, 1.01, 0.98] : [0.99, 1.01, 0.99],
           }}
           transition={{
-            duration: processingLead ? 1.8 : 5,
+            duration: processingLead ? 0.9 : 5,
             repeat: Infinity,
             repeatType: "reverse",
             ease: "easeInOut"
@@ -113,7 +113,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
               initial={{ scale: 0.9, opacity: 0.5 }}
               animate={{ scale: isMobile ? 1.25 : 1.3, opacity: 0 }}
               transition={{
-                duration: isMobile ? 1.8 : 1.8,
+                duration: isMobile ? 1.2 : 1.2,
                 ease: "easeInOut",
                 repeat: Infinity,
                 repeatDelay: 0.3
@@ -124,7 +124,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
               initial={{ scale: 0.9, opacity: 0.3 }}
               animate={{ scale: isMobile ? 1.4 : 1.5, opacity: 0 }}
               transition={{
-                duration: isMobile ? 1.8 : 1.8,
+                duration: isMobile ? 1.7 : 1.8,
                 delay: 0.4,
                 ease: "easeInOut",
                 repeat: Infinity,
