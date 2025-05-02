@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Check, Calendar, Clock, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
-import { MetaPixel } from '../MetaPixel';
 import RealTimeResults from './RealTimeResults';
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -142,7 +141,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   }, [niche]);
   return <div className="min-h-screen bg-background text-foreground">
       {/* Use Meta Pixel component with the proper pixel ID for booking funnel pages */}
-      <MetaPixel pixelId="1369353511050455" event="PageView" />
+      
       
       <div className="mb-4 md:mb-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#9F9EA1]/20 via-[#F1F1F1]/20 to-[#C8C8C9]/20 mix-blend-overlay"></div>
@@ -221,7 +220,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       value: parseInt(metric.value.replace(/\D/g, '')) || 0,
       prefix: metric.value.startsWith('$') ? '$' : '',
       suffix: metric.value.includes('%') ? '%' : metric.value.includes('sec') ? ' sec' : metric.value.includes('min') ? ' min' : '',
-      icon: metric.title.toLowerCase().includes('revenue') || metric.title.toLowerCase().includes('cost') ? <ArrowRight className="h-6 w-6 text-primary" /> : metric.title.toLowerCase().includes('calls') || metric.title.toLowerCase().includes('appointment') ? <Calendar className="h-6 w-6 text-primary" /> : <ArrowRight className="h-6 w-6 text-primary" />,
+      icon: metric.title.toLowerCase().includes('revenue') || metric.title.toLowerCase().includes('cost') ? <ArrowRight className="h-6 w-6 text-primary" /> : metric.title.toLowerCase().includes('calls') || metric.title.toLowerCase().includes('appointment') ? <Calendar className="h-6 w-6 text-primary" : <ArrowRight className="h-6 w-6 text-primary" />,
       description: metric.description
     }))} niche={nicheFunnel} />
 
