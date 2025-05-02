@@ -24,7 +24,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
           scale: processingLead ? [1, 1.02, 1] : [1, 1.01, 1],
         }}
         transition={{
-          duration: processingLead ? 0.7 : 5,
+          duration: processingLead ? 0.9 : 5, // Slowed down from 0.7 to 0.9
           ease: "easeInOut",
           repeat: Infinity,
           repeatType: "reverse"
@@ -37,7 +37,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             opacity: processingLead ? [0.05, 0.07, 0.05] : [0.04, 0.06, 0.04]
           }}
           transition={{
-            duration: processingLead ? 1.5 : 8,
+            duration: processingLead ? 0.9 : 8, // Slowed down from 1.5 to 0.9
             repeat: Infinity,
             repeatType: "reverse",
             ease: "easeInOut"
@@ -53,7 +53,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             opacity: processingLead ? [0.10, 0.14, 0.10] : [0.08, 0.12, 0.08]
           }}
           transition={{
-            duration: processingLead ? 1 : 6,
+            duration: processingLead ? 0.9 : 6, // Slowed down from 1 to 0.9
             repeat: Infinity,
             repeatType: "reverse",
             ease: "easeInOut"
@@ -65,7 +65,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
               scale: processingLead ? [1, 1.02, 1] : [1, 1.01, 1],
             }}
             transition={{
-              duration: processingLead ? 0.8 : 6,
+              duration: processingLead ? 0.9 : 6, // Slowed down from 0.8 to 0.9
               repeat: Infinity,
               repeatType: "reverse",
               ease: "easeInOut"
@@ -84,7 +84,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             scale: processingLead ? [0.98, 1.01, 0.98] : [0.99, 1.01, 0.99],
           }}
           transition={{
-            duration: processingLead ? 0.9 : 5,
+            duration: processingLead ? 0.9 : 5, // Slowed down from 0.9 to 0.9 (already set properly)
             repeat: Infinity,
             repeatType: "reverse",
             ease: "easeInOut"
@@ -113,7 +113,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
               initial={{ scale: 0.9, opacity: 0.5 }}
               animate={{ scale: isMobile ? 1.25 : 1.3, opacity: 0 }}
               transition={{
-                duration: isMobile ? 1.2 : 1.2,
+                duration: 0.9, // Slowed down to 0.9 seconds
                 ease: "easeInOut",
                 repeat: Infinity,
                 repeatDelay: 0.3
@@ -124,11 +124,11 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
               initial={{ scale: 0.9, opacity: 0.3 }}
               animate={{ scale: isMobile ? 1.4 : 1.5, opacity: 0 }}
               transition={{
-                duration: isMobile ? 1.7 : 1.8,
-                delay: 0.4,
+                duration: 0.9, // Slowed down from 1.8 to 0.9 seconds
+                delay: 0.3, // Reduced delay from 0.4 to 0.3
                 ease: "easeInOut",
                 repeat: Infinity,
-                repeatDelay: 0.2
+                repeatDelay: 0.3 // Added consistent repeatDelay
               }}
             />
           </>

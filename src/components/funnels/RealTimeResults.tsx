@@ -66,9 +66,42 @@ const courseCreatorStats: StatItem[] = [
   }
 ];
 
+const realEstateStats: StatItem[] = [
+  {
+    title: "Leads Captured",
+    value: 472,
+    icon: <TrendingUp className="h-6 w-6 text-primary" />,
+    description: "This month"
+  },
+  {
+    title: "Calls Booked",
+    value: 126,
+    icon: <Calendar className="h-6 w-6 text-primary" />,
+    description: "Property viewings arranged"
+  },
+  {
+    title: "Avg. Response Time",
+    value: 1.6,
+    suffix: " min",
+    icon: <Clock className="h-6 w-6 text-primary" />,
+    description: "All inquiries"
+  },
+  {
+    title: "Conversion Rate",
+    value: 27.3,
+    suffix: "%",
+    icon: <TrendingUp className="h-6 w-6 text-primary" />,
+    description: "Lead to viewing rate"
+  }
+];
+
 const RealTimeResults: React.FC<RealTimeResultsProps> = ({ stats = defaultStats, niche }) => {
-  // Use course creator stats when on the course creator page
-  const finalStats = niche === "course" ? courseCreatorStats : stats;
+  // Use specific stats based on niche
+  const finalStats = niche === "course" 
+    ? courseCreatorStats 
+    : niche === "realestate" 
+      ? realEstateStats 
+      : stats;
   
   const [countValues, setCountValues] = useState<number[]>(finalStats.map(() => 0));
   const [isInView, setIsInView] = useState(false);

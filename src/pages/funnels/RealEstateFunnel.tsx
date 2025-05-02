@@ -9,49 +9,55 @@ const RealEstateFunnel = () => {
   }, []);
   
   const benefits = [
-    "24/7 lead qualification for both buyer and seller leads",
-    "Automatic follow-up system that nurtures leads for months",
-    "Detailed property requirement collection from buyers",
-    "Seller lead qualification and property valuation scheduling",
-    "Direct calendar integration for high-intent viewings and valuations",
-    "AI-powered response to common real estate questions"
-  ];
-  
-  const metrics = [
-    {
-      title: "Increase in Qualified Leads",
-      value: "+162%",
-      description: "More qualified buyer and seller leads"
-    },
-    {
-      title: "Agent Time Saved",
-      value: "24+ Hours",
-      description: "Weekly hours saved on lead qualification"
-    },
-    {
-      title: "Listing Conversion Rate",
-      value: "+41%",
-      description: "Higher conversion from lead to listing"
-    }
+    "24/7 AI lead qualification system to screen property inquiries automatically",
+    "Automated appointment scheduling with only serious, pre-qualified buyers",
+    "Smart follow-up that nurtures leads until they're ready to view properties",
+    "Property detail chatbots that answer questions instantly when prospects browse listings",
+    "Client-property matching system that recommends ideal properties based on preferences",
+    "Performance dashboard tracking leads, conversions, and time saved for your agents"
   ];
 
+  const metrics = [
+    {
+      title: "Leads Captured",
+      value: "472",
+      description: "New qualified leads in last 30 days"
+    },
+    {
+      title: "Calls Booked",
+      value: "126",
+      description: "Viewing appointments scheduled"
+    },
+    {
+      title: "Avg. Response Time",
+      value: "1.6 min",
+      description: "Average AI response time to inquiries"
+    },
+    {
+      title: "Conversion Rate",
+      value: "27.3%",
+      description: "Lead-to-appointment conversion"
+    }
+  ];
+  
   return (
     <FunnelLayout
-      niche="trading"
-      headline="AI Agents That Convert Real Estate Leads Into Clients — While You Sleep"
-      subheadline="Our AI system attracts, nurtures, and qualifies your real estate leads 24/7, so your agents only talk to ready-to-move buyers and sellers."
+      niche="trading" // Using trading theme colors
+      headline="Automate Your Real Estate Lead Flow While Your Agents Focus on Closing Deals"
+      subheadline="Our AI system captures, qualifies, and nurtures real estate leads 24/7, booking appointments only with serious buyers ready to make decisions."
       benefits={benefits}
       metrics={metrics}
-      guaranteeText="We guarantee to double your qualified real estate leads in 90 days — or we'll continue working for free until we do."
-      urgencyText="Limited to 3 agencies per city to avoid market saturation"
-      ctaText="Book Your Strategy Call"
+      guaranteeText="If our AI agent doesn't book at least 30 qualified property viewings within 90 days of implementation, we'll refund your entire investment — that's our guarantee to your agency."
+      urgencyText="Limited availability: We onboard just 5 real estate agencies per month to ensure optimal results."
+      ctaText="Book Your Real Estate AI Strategy Call"
       hasCountdown={true}
       showSocialProof={true}
+      nicheFunnel="realestate"
       vslSection={
         <VideoSalesLetter
-          videoId="your-real-estate-vsl-id"
-          title="AI Agents That Convert Real Estate Leads Into Clients — While You Sleep"
-          subtitle="Our AI system attracts, nurtures, and qualifies your real estate leads 24/7, so your agents only talk to ready-to-move buyers and sellers."
+          videoId="H3qWMyj8Eq0" // Using the same video ID, can be updated later
+          title="Automate Your Real Estate Lead Flow While Your Agents Focus on Closing Deals"
+          subtitle="Our AI system captures, qualifies, and nurtures real estate leads 24/7, booking appointments only with serious buyers ready to make decisions."
         />
       }
     />
