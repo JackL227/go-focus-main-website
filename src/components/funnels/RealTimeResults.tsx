@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { TrendingUp, Users, Calendar, Clock } from 'lucide-react';
 
@@ -95,13 +94,44 @@ const realEstateStats: StatItem[] = [
   }
 ];
 
+const tradingStats: StatItem[] = [
+  {
+    title: "Leads Captured",
+    value: 472,
+    icon: <TrendingUp className="h-6 w-6 text-primary" />,
+    description: "New potential clients every month"
+  },
+  {
+    title: "Calls Booked",
+    value: 126,
+    icon: <Calendar className="h-6 w-6 text-primary" />,
+    description: "Sales calls scheduled automatically"
+  },
+  {
+    title: "Avg. Response Time",
+    value: 1.6,
+    suffix: " min",
+    icon: <Clock className="h-6 w-6 text-primary" />,
+    description: "Average response to inquiries"
+  },
+  {
+    title: "Conversion Rate",
+    value: 27.3,
+    suffix: "%",
+    icon: <TrendingUp className="h-6 w-6 text-primary" />,
+    description: "Lead to call conversion rate"
+  }
+];
+
 const RealTimeResults: React.FC<RealTimeResultsProps> = ({ stats = defaultStats, niche }) => {
   // Use specific stats based on niche
   const finalStats = niche === "course" 
     ? courseCreatorStats 
     : niche === "realestate" 
       ? realEstateStats 
-      : stats;
+      : niche === "trading"
+        ? tradingStats
+        : stats;
   
   const [countValues, setCountValues] = useState<number[]>(finalStats.map(() => 0));
   const [isInView, setIsInView] = useState(false);
