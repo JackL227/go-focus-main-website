@@ -21,6 +21,9 @@ interface FunnelLayoutProps {
   hasCountdown?: boolean;
   showSocialProof?: boolean;
   vslSection?: React.ReactNode;
+  topCTA?: React.ReactNode; // New prop for CTA above video
+  benefitsCTA?: React.ReactNode; // New prop for CTA below benefits section
+  resultsCTA?: React.ReactNode; // New prop for CTA below results section
 }
 const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   niche,
@@ -34,7 +37,10 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   ctaText,
   hasCountdown = false,
   showSocialProof,
-  vslSection
+  vslSection,
+  topCTA,
+  benefitsCTA,
+  resultsCTA
 }) => {
   const colorSchemes = {
     trading: {
@@ -156,6 +162,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
           <p className="text-lg md:text-xl lg:text-2xl text-foreground/80 mb-4 md:mb-6 max-w-3xl mx-auto">{subheadline}</p>
           
           {/* Added CTA button at the top for desktop visibility without scrolling */}
+          {topCTA && topCTA}
           {nicheFunnel === "course" && !isMobile && <div className="mt-6 mb-2 flex justify-center">
               <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
                 <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
@@ -213,6 +220,8 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
                   </div>
                 </div>)}
             </div>
+            
+            {benefitsCTA && <div className="mt-8">{benefitsCTA}</div>}
           </div>
         </div>
       </section>
@@ -221,10 +230,12 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       title: metric.title,
       value: parseInt(metric.value.replace(/\D/g, '')) || 0,
       prefix: metric.value.startsWith('$') ? '$' : '',
-      suffix: metric.value.includes('%') ? '%' : '',
+      suffix: metric.value.includes('%') ? '%' : metric.value.includes('sec') ? ' sec' : metric.value.includes('min') ? ' min' : '',
       icon: metric.title.toLowerCase().includes('revenue') || metric.title.toLowerCase().includes('cost') ? <ArrowRight className="h-6 w-6 text-primary" /> : metric.title.toLowerCase().includes('calls') || metric.title.toLowerCase().includes('appointment') ? <Calendar className="h-6 w-6 text-primary" /> : <ArrowRight className="h-6 w-6 text-primary" />,
       description: metric.description
     }))} niche={nicheFunnel} />
+
+      {resultsCTA && <div className="container-custom max-w-4xl mx-auto text-center">{resultsCTA}</div>}
 
       <section id="guarantee" className="py-8 md:py-12 bg-background">
         <div className="container-custom">

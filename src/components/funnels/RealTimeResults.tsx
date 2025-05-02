@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { TrendingUp, Users, Calendar, Clock } from 'lucide-react';
 
@@ -97,26 +98,26 @@ const realEstateStats: StatItem[] = [
 const tradingStats: StatItem[] = [
   {
     title: "Leads Captured",
-    value: 472,
+    value: 4016,
     icon: <TrendingUp className="h-6 w-6 text-primary" />,
     description: "New potential clients every month"
   },
   {
     title: "Calls Booked",
-    value: 126,
+    value: 1121,
     icon: <Calendar className="h-6 w-6 text-primary" />,
     description: "Sales calls scheduled automatically"
   },
   {
     title: "Avg. Response Time",
-    value: 1.6,
-    suffix: " min",
+    value: 46,
+    suffix: " sec",
     icon: <Clock className="h-6 w-6 text-primary" />,
     description: "Average response to inquiries"
   },
   {
     title: "Conversion Rate",
-    value: 27.3,
+    value: 64.9,
     suffix: "%",
     icon: <TrendingUp className="h-6 w-6 text-primary" />,
     description: "Lead to call conversion rate"
