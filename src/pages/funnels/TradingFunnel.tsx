@@ -4,16 +4,10 @@ import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
 import BookingWidget from "@/components/BookingWidget";
 import { ArrowRight } from "lucide-react";
-import { Script } from '@/components/ui/script';
 
 const TradingFunnel = () => {
   useEffect(() => {
     console.log("Trading funnel page view tracked");
-    
-    // Fire custom event for trading funnel view
-    if (window.fbq) {
-      window.fbq('trackCustom', 'TradingFunnelView');
-    }
   }, []);
 
   const benefits = [
@@ -61,15 +55,6 @@ const TradingFunnel = () => {
 
   return (
     <>
-      {/* Script to track funnel-specific custom events */}
-      <Script>
-        {`
-        if (window.fbq) {
-          fbq('trackCustom', 'TradingFunnelPageView');
-        }
-        `}
-      </Script>
-      
       <FunnelLayout
         niche="trading"
         headline="Grow Your Trading Mentorship Business With AI Systems That Sell & Scale for You"
