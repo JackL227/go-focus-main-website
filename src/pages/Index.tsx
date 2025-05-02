@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
 import ChatbotWidget from '@/components/chatbot/ChatbotWidget';
 import { Toaster } from '@/components/ui/toaster';
+import { Script } from '@/components/ui/script';
 
 const Index = () => {
   const [showScrollTop, setShowScrollTop] = React.useState(false);
@@ -23,6 +24,13 @@ const Index = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
+  useEffect(() => {
+    // Fire custom event for homepage view
+    if (window.fbq) {
+      window.fbq('trackCustom', 'HomepageView');
+    }
+  }, []);
+  
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -32,6 +40,15 @@ const Index = () => {
   
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#050A14] to-[#0A1428] text-foreground overflow-x-hidden">
+      {/* Script to track homepage specific events */}
+      <Script>
+        {`
+        if (window.fbq) {
+          fbq('trackCustom', 'MainLandingPageView');
+        }
+        `}
+      </Script>
+      
       <Navigation />
       <HeroSection />
       <HowItWorksSection />

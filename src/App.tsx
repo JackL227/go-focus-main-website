@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { useState, useEffect, lazy, Suspense } from "react";
 import LoadingScreen from "./components/LoadingScreen";
+import MetaPixelTracker from "./components/tracking/MetaPixelTracker";
 
 // Lazy load routes for performance optimization
 const Index = lazy(() => import("./pages/Index"));
@@ -80,25 +81,27 @@ const App = () => {
           <Sonner />
           {!isLoading && (
             <BrowserRouter>
-              <Suspense fallback={<div className="w-full h-screen flex items-center justify-center">
-                <div className="animate-pulse">
-                  <img 
-                    src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
-                    alt="GoFocus.ai" 
-                    className="w-20 h-auto opacity-60" 
-                  />
-                </div>
-              </div>}>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/auth/callback" element={<AuthCallback />} />
-                  <Route path="/trading" element={<TradingFunnel />} />
-                  <Route path="/course-creator" element={<CourseCreatorFunnel />} />
-                  <Route path="/real-estate" element={<RealEstateFunnel />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
+              <MetaPixelTracker>
+                <Suspense fallback={<div className="w-full h-screen flex items-center justify-center">
+                  <div className="animate-pulse">
+                    <img 
+                      src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
+                      alt="GoFocus.ai" 
+                      className="w-20 h-auto opacity-60" 
+                    />
+                  </div>
+                </div>}>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/auth/callback" element={<AuthCallback />} />
+                    <Route path="/trading" element={<TradingFunnel />} />
+                    <Route path="/course-creator" element={<CourseCreatorFunnel />} />
+                    <Route path="/real-estate" element={<RealEstateFunnel />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Suspense>
+              </MetaPixelTracker>
             </BrowserRouter>
           )}
         </AuthProvider>

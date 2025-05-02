@@ -38,6 +38,28 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
         hideEventTypeDetails: false,
         layout: "month_view"
       });
+
+      // Track booking events with Meta Pixel
+      cal("on", {
+        action: "eventTypeSelected",
+        callback: () => {
+          if (window.fbq) {
+            window.fbq('track', 'InitiateCheckout');
+            console.log('Meta Pixel: InitiateCheckout event fired');
+          }
+        }
+      });
+
+      cal("on", {
+        action: "bookingSuccessful",
+        callback: () => {
+          if (window.fbq) {
+            window.fbq('track', 'Schedule');
+            console.log('Meta Pixel: Schedule event fired');
+          }
+        }
+      });
+      
     } catch (error) {
       console.error("Error initializing Cal.com:", error);
     }
@@ -69,6 +91,14 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
     }
   }, [isIntersecting, initCalCom]);
 
+  // Track click event with Meta Pixel
+  const handleButtonClick = () => {
+    if (window.fbq) {
+      window.fbq('track', 'Lead');
+      console.log('Meta Pixel: Lead event fired');
+    }
+  };
+
   return (
     <Button 
       ref={buttonRef}
@@ -77,6 +107,7 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
       data-cal-config='{"layout":"month_view"}'
       className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow animate-button-pop ${className}`}
       variant={variant}
+      onClick={handleButtonClick}
       {...props}
     >
       {children || (
