@@ -12,9 +12,13 @@ const MetaPixelTracker: React.FC = () => {
 
   // Track page views when route changes
   useEffect(() => {
-    trackPageView();
-    console.log(`Meta Pixel: Tracking page view for ${location.pathname}`);
-  }, [location]);
+    // Small timeout to ensure DOM is fully loaded
+    const timeoutId = setTimeout(() => {
+      trackPageView(location.pathname);
+    }, 100);
+    
+    return () => clearTimeout(timeoutId);
+  }, [location.pathname]);
 
   // The component doesn't render anything
   return null;
