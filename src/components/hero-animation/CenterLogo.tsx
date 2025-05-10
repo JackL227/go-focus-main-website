@@ -12,11 +12,11 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
   
   // More optimized size reduction for mobile
   const logoSize = isMobile ? 
-    { width: "160px", height: "160px" } : 
+    { width: "130px", height: "130px" } : 
     { width: "230px", height: "230px" };
     
   return (
-    <div className="absolute left-1/2 -translate-x-1/2 z-30">
+    <div className={`absolute left-1/2 -translate-x-1/2 z-30 ${isMobile ? 'scale-90' : ''}`}>
       <motion.div
         className="relative"
         style={logoSize}
@@ -24,7 +24,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
           scale: processingLead ? [1, 1.02, 1] : [1, 1.01, 1],
         }}
         transition={{
-          duration: processingLead ? 0.9 : 5, // Slowed down from 0.7 to 0.9
+          duration: processingLead ? 0.9 : 5,
           ease: "easeInOut",
           repeat: Infinity,
           repeatType: "reverse"
@@ -37,7 +37,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             opacity: processingLead ? [0.05, 0.07, 0.05] : [0.04, 0.06, 0.04]
           }}
           transition={{
-            duration: processingLead ? 0.9 : 8, // Slowed down from 1.5 to 0.9
+            duration: processingLead ? 0.9 : 8,
             repeat: Infinity,
             repeatType: "reverse",
             ease: "easeInOut"
@@ -53,7 +53,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             opacity: processingLead ? [0.10, 0.14, 0.10] : [0.08, 0.12, 0.08]
           }}
           transition={{
-            duration: processingLead ? 0.9 : 6, // Slowed down from 1 to 0.9
+            duration: processingLead ? 0.9 : 6,
             repeat: Infinity,
             repeatType: "reverse",
             ease: "easeInOut"
@@ -65,7 +65,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
               scale: processingLead ? [1, 1.02, 1] : [1, 1.01, 1],
             }}
             transition={{
-              duration: processingLead ? 0.9 : 6, // Slowed down from 0.8 to 0.9
+              duration: processingLead ? 0.9 : 6,
               repeat: Infinity,
               repeatType: "reverse",
               ease: "easeInOut"
@@ -84,7 +84,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             scale: processingLead ? [0.98, 1.01, 0.98] : [0.99, 1.01, 0.99],
           }}
           transition={{
-            duration: processingLead ? 0.9 : 5, // Slowed down from 0.9 to 0.9 (already set properly)
+            duration: processingLead ? 0.9 : 5,
             repeat: Infinity,
             repeatType: "reverse",
             ease: "easeInOut"
@@ -92,7 +92,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
         />
         
         {/* Logo image with improved mobile sizing */}
-        <div className="absolute inset-0 flex items-center justify-center p-8 sm:p-14 z-50">
+        <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-14 z-50">
           <img
             src="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png"
             alt="Go Focus AI Logo"
@@ -111,24 +111,24 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
             <motion.div
               className="absolute inset-0 rounded-full border border-primary/10"
               initial={{ scale: 0.9, opacity: 0.5 }}
-              animate={{ scale: isMobile ? 1.25 : 1.3, opacity: 0 }}
+              animate={{ scale: isMobile ? 1.15 : 1.3, opacity: 0 }}
               transition={{
-                duration: 0.9, // Slowed down to 0.9 seconds
+                duration: 0.9,
                 ease: "easeInOut",
                 repeat: Infinity,
-                repeatDelay: 0.3
+                repeatDelay: 0.2
               }}
             />
             <motion.div
               className="absolute inset-0 rounded-full border border-primary/8"
               initial={{ scale: 0.9, opacity: 0.3 }}
-              animate={{ scale: isMobile ? 1.4 : 1.5, opacity: 0 }}
+              animate={{ scale: isMobile ? 1.25 : 1.5, opacity: 0 }}
               transition={{
-                duration: 0.9, // Slowed down from 1.8 to 0.9 seconds
-                delay: 0.3, // Reduced delay from 0.4 to 0.3
+                duration: 0.9,
+                delay: 0.2,
                 ease: "easeInOut",
                 repeat: Infinity,
-                repeatDelay: 0.3 // Added consistent repeatDelay
+                repeatDelay: 0.2
               }}
             />
           </>

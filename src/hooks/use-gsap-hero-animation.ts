@@ -45,8 +45,8 @@ export const useGsapHeroAnimation = () => {
       
       const pop = document.createElement("div");
       pop.style.position = "absolute";
-      pop.style.width = isMobile ? "20px" : "30px";
-      pop.style.height = isMobile ? "20px" : "30px";
+      pop.style.width = isMobile ? "16px" : "30px";
+      pop.style.height = isMobile ? "16px" : "30px";
       pop.style.borderRadius = "50%";
       pop.style.background = "rgba(0, 110, 218, 0.5)"; 
       pop.style.left = `${x}px`;
@@ -70,21 +70,20 @@ export const useGsapHeroAnimation = () => {
       if (!containerRef.current || !logoRef.current || !isAnimating.current) return;
       
       const card = document.createElement("div");
-      card.className = "bg-background/95 backdrop-blur-sm border border-primary/20 shadow-lg rounded-lg p-4";
+      card.className = "lead-card bg-background/95 backdrop-blur-sm border border-primary/20 shadow-lg rounded-lg p-3";
       
-      // Enhanced card visibility for mobile with better styling
+      // Mobile-optimized card styles
       if (isMobile) {
-        card.style.width = "130px";
-        card.style.boxShadow = "0 6px 16px rgba(0, 110, 218, 0.3)";
-        card.style.border = "1px solid rgba(0, 110, 218, 0.3)";
+        card.style.width = "110px";
+        card.style.boxShadow = "0 4px 10px rgba(0, 110, 218, 0.2)";
       } else {
         card.style.width = "160px";
         card.style.boxShadow = "0 4px 14px rgba(0, 110, 218, 0.25)";
       }
       
-      card.innerHTML = `<div class="flex items-center gap-2">
-        <div class="w-3 h-3 rounded-full bg-primary"></div>
-        <p class="text-sm font-medium">${getRandomLeadText()}</p>
+      card.innerHTML = `<div class="flex items-center gap-1">
+        <div class="w-2 h-2 rounded-full bg-primary"></div>
+        <p class="text-xs font-medium">${getRandomLeadText()}</p>
       </div>`;
       card.style.position = "absolute";
       card.style.zIndex = "5";
@@ -100,20 +99,20 @@ export const useGsapHeroAnimation = () => {
       const logoCenterX = logoRect.left - containerRect.left + logoRect.width / 2;
       const logoCenterY = logoRect.top - containerRect.top + logoRect.height / 2;
 
-      // Improved starting position - ensure cards are visible on all devices
-      // For mobile: start closer to the visible area of the screen
-      const startX = isMobile ? Math.max(-60, -containerWidth * 0.2) : -160;
+      // Mobile-optimized start position
+      // Move cards closer to the visible area for small screens
+      const startX = isMobile ? -110 : -160;
       
-      // Create more balanced vertical distribution
+      // Improved vertical distribution for mobile
       let startY;
       if (isMobile) {
-        // Tighter vertical distribution for better visibility on mobile
-        const verticalSpace = containerHeight * 0.6;
-        const positions = [-1, 0, 1];
+        // More visible distribution on mobile
+        const positions = [-1, -0.5, 0, 0.5, 1];
         const position = positions[index % positions.length];
+        const verticalSpace = containerHeight * 0.6;
         startY = logoCenterY + (position * (verticalSpace / 3));
       } else {
-        // Desktop version remains similar but more balanced
+        // Desktop version remains similar
         startY = (containerHeight / 2) - 80 + (index * 60);
       }
       
@@ -122,7 +121,7 @@ export const useGsapHeroAnimation = () => {
         x: startX, 
         y: startY, 
         opacity: 0, 
-        scale: isMobile ? 0.95 : 1 
+        scale: isMobile ? 0.9 : 1 
       }); 
       
       // Fade in with higher initial opacity for better visibility
@@ -132,13 +131,13 @@ export const useGsapHeroAnimation = () => {
         ease: "power1.inOut"
       });
       
-      // Optimized path to center
+      // Optimized path to center - slightly faster on mobile
       gsap.to(card, {
-        x: logoCenterX - (isMobile ? 20 : 30),
+        x: logoCenterX - (isMobile ? 15 : 30),
         y: logoCenterY,      
         scale: 0.2,
         opacity: 0,
-        duration: isMobile ? 4 : 5.5,
+        duration: isMobile ? 3 : 5.5,
         ease: "power1.inOut",
         delay: 0.5,
         onComplete: () => {
@@ -153,30 +152,43 @@ export const useGsapHeroAnimation = () => {
       if (!containerRef.current || !logoRef.current || !isAnimating.current) return;
       
       const nameCard = document.createElement("div");
-      nameCard.className = "bg-background/95 backdrop-blur-sm border border-primary/20 shadow-lg rounded-lg p-4";
+      nameCard.className = "name-card bg-background/95 backdrop-blur-sm border border-primary/20 shadow-lg rounded-lg p-3";
       
       // Adjust card size for better visibility on mobile
       if (isMobile) {
-        nameCard.style.width = "160px";
-        nameCard.style.boxShadow = "0 6px 16px rgba(0, 110, 218, 0.3)";
-        nameCard.style.border = "1px solid rgba(0, 110, 218, 0.3)";
+        nameCard.style.width = "140px";
+        nameCard.style.boxShadow = "0 4px 12px rgba(0, 110, 218, 0.25)";
       } else {
         nameCard.style.width = "200px";
-        nameCard.style.boxShadow = "0 4px 14px rgba(0, 110, 218, 0.25)";
       }
       
-      nameCard.innerHTML = `<div class="flex items-center gap-3">
-        <div class="shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-          </svg>
-        </div>
-        <div>
-          <h4 class="text-sm font-semibold">${getRandomName()}</h4>
-          <p class="text-xs text-foreground/70">Just now</p>
-        </div>
-      </div>`;
+      // Simplified content for mobile
+      const cardContent = isMobile ? 
+        `<div class="flex items-center gap-2">
+          <div class="shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-xs font-semibold">${getRandomName()}</h4>
+          </div>
+        </div>` :
+        `<div class="flex items-center gap-3">
+          <div class="shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-primary">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold">${getRandomName()}</h4>
+            <p class="text-xs text-foreground/70">Just now</p>
+          </div>
+        </div>`;
+      
+      nameCard.innerHTML = cardContent;
       nameCard.style.position = "absolute";
       nameCard.style.zIndex = "5";
       containerRef.current.appendChild(nameCard);
@@ -190,14 +202,14 @@ export const useGsapHeroAnimation = () => {
       // Create optimized angle variations for mobile
       // Mobile needs tighter angles to keep cards on screen
       const angleVariations = isMobile ? 
-        [10, 25, 40] : // More visible angles for mobile
+        [0, 15, 30, 45, 60] : // More visible angles for mobile, covering more of the screen
         [-25, -5, 15, 35]; // Desktop angles unchanged
       
       const angle = angleVariations[index % angleVariations.length];
       
       // Calculate distance based on container width - adjusted for mobile visibility
       const distance = isMobile ? 
-        containerRect.width * 0.7 : // Shorter distance for mobile
+        containerRect.width * 0.5 : // Shorter distance for mobile to keep cards visible
         containerRect.width * 1 + 100; // Original distance for desktop
         
       const radians = angle * (Math.PI / 180);
@@ -208,7 +220,7 @@ export const useGsapHeroAnimation = () => {
       
       // Improved starting position
       // For mobile: ensure proper spacing from logo edge
-      const offsetX = isMobile ? 50 : 70;
+      const offsetX = isMobile ? 30 : 70;
 
       // Set initial position - ensuring cards start from right of logo
       gsap.set(nameCard, {
@@ -221,7 +233,7 @@ export const useGsapHeroAnimation = () => {
       // Fade in with improved opacity
       gsap.to(nameCard, {
         opacity: 1,
-        scale: isMobile ? 0.9 : 0.95,
+        scale: isMobile ? 0.95 : 0.95,
         duration: 0.6,
         ease: "power1.out"
       });
@@ -230,7 +242,7 @@ export const useGsapHeroAnimation = () => {
       gsap.to(nameCard, {
         x: logoCenterX + xTarget,
         y: logoCenterY + yTarget,
-        duration: isMobile ? 4 : 5.5,
+        duration: isMobile ? 3 : 5.5,
         ease: "power1.inOut",
         delay: 0.6,
         onComplete: () => {
@@ -243,8 +255,8 @@ export const useGsapHeroAnimation = () => {
       if (!isAnimating.current) return;
       
       // Adjust card frequency and count for better visibility
-      const cardCount = isMobile ? 3 : 4;
-      const cardInterval = isMobile ? 4000 : 3500; // Slightly slower on mobile for better visibility
+      const cardCount = isMobile ? 5 : 4; // More cards for mobile to ensure visibility
+      const cardInterval = isMobile ? 2500 : 3500; // Faster on mobile for better perception of activity
       
       for (let i = 0; i < cardCount; i++) {
         const timeout = setTimeout(() => spawnLead(i), i * cardInterval);
