@@ -10,13 +10,13 @@ interface CenterLogoProps {
 const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
   const isMobile = useIsMobile();
   
-  // More optimized size reduction for mobile
+  // Better size reduction for mobile to fit our updated animation
   const logoSize = isMobile ? 
-    { width: "130px", height: "130px" } : 
+    { width: "100px", height: "100px" } : 
     { width: "230px", height: "230px" };
     
   return (
-    <div className={`absolute left-1/2 -translate-x-1/2 z-30 ${isMobile ? 'scale-90' : ''}`}>
+    <div className={`absolute left-1/2 -translate-x-1/2 z-30 ${isMobile ? 'scale-75' : ''}`}>
       <motion.div
         className="relative"
         style={logoSize}
@@ -92,7 +92,7 @@ const CenterLogo = ({ processingLead = false }: CenterLogoProps) => {
         />
         
         {/* Logo image with improved mobile sizing */}
-        <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-14 z-50">
+        <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-14 z-50">
           <img
             src="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png"
             alt="Go Focus AI Logo"

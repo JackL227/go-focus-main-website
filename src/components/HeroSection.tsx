@@ -35,7 +35,7 @@ const HeroSection = () => {
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in [animation-delay:700ms] mb-6 md:mb-8 justify-center w-full max-w-md mx-auto">
+          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in [animation-delay:700ms] mb-4 md:mb-6 justify-center w-full max-w-md mx-auto">
             <Button 
               size={isMobile ? "default" : "lg"}
               className="bg-primary hover:bg-primary/90 text-background group relative overflow-hidden transition-all duration-300 hover:shadow-glow w-full"
@@ -59,7 +59,7 @@ const HeroSection = () => {
           </div>
         </div>
         
-        {/* Enhanced Hero Animation Container with proper mobile sizing */}
+        {/* Enhanced Hero Animation Container with increased height for mobile */}
         <div className="relative mx-auto w-full max-w-5xl bg-transparent">
           <HeroAnimation />
         </div>

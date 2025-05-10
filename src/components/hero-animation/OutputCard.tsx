@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
@@ -11,6 +10,33 @@ export interface OutputCardProps {
 }
 
 const OutputCard: React.FC<OutputCardProps> = ({ name, index, isMobile, action }) => {
+  // Mobile-optimized variants with clear visibility and slower animations
+  const mobileVariants = {
+    initial: { 
+      opacity: 0, 
+      x: -20,
+      scale: 0.9
+    },
+    animate: { 
+      opacity: 1, 
+      x: 0,
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        delay: index * 0.1,
+      }
+    },
+    exit: { 
+      opacity: 0, 
+      x: 50, 
+      scale: 0.9,
+      transition: {
+        duration: 1.2,
+      }
+    },
+  };
+  
+  // Desktop variants remain the same
   // Calculate unique flow direction for each card (right, diagonally up-right, diagonally down-right)
   const directions = [
     { x: 1, y: -0.5 },  // Diagonal up-right
@@ -36,7 +62,7 @@ const OutputCard: React.FC<OutputCardProps> = ({ name, index, isMobile, action }
   const exitY = direction.y * 50;
   
   // Different card variants for smoother animations
-  const cardVariants = {
+  const desktopCardVariants = {
     initial: { 
       opacity: 0, 
       y: 50 + verticalVariation, 
@@ -57,38 +83,44 @@ const OutputCard: React.FC<OutputCardProps> = ({ name, index, isMobile, action }
     },
   };
 
-  // Mobile sizing adjustments
-  const cardWidth = isMobile ? '90%' : '220px';
-  const cardMaxWidth = isMobile ? '280px' : '100%';
+  // Choose appropriate variants based on device type
+  const variants = isMobile ? mobileVariants : desktopCardVariants;
+
+  // Mobile-optimized card sizing
+  const cardStyle = isMobile ? {
+    width: '130px',
+    maxWidth: '130px',
+  } : {
+    width: '220px',
+    maxWidth: '100%',
+    position: 'relative',
+    zIndex: 10 - index,
+    margin: isMobile ? '0 auto' : undefined,
+    transform: isMobile ? undefined : `translateY(${index * 5}px)`,
+  };
 
   return (
     <motion.div
       className="shadow-lg"
-      style={{
-        width: cardWidth,
-        maxWidth: cardMaxWidth,
-        position: 'relative',
-        zIndex: 10 - index,
-        margin: isMobile ? '0 auto' : undefined,
-        transform: isMobile ? undefined : `translateY(${index * 5}px)`,
-      }}
-      variants={cardVariants}
+      style={cardStyle}
+      variants={variants}
       initial="initial"
       animate="animate"
       exit="exit"
       transition={{ 
-        duration: 0.35, 
-        delay: index * 0.08,
+        duration: isMobile ? 0.7 : 0.35, 
+        delay: index * (isMobile ? 0.1 : 0.08),
         ease: "easeOut" 
       }}
       aria-label={`${name} ${action}`}
+      layout
     >
-      <div className="bg-background/90 backdrop-blur-sm border border-foreground/10 shadow-md rounded-lg p-4">
-        <div className="text-primary rounded-lg mb-2 inline-flex">
-          <CheckCircle className="h-5 w-5" />
+      <div className="bg-background/90 backdrop-blur-sm border border-foreground/10 shadow-md rounded-lg p-3">
+        <div className="text-primary rounded-lg mb-1 inline-flex">
+          <CheckCircle className="h-4 w-4" />
         </div>
-        <h3 className="text-base font-semibold mb-1">{name}</h3>
-        <p className="text-xs text-foreground/70">{action || 'Lead Qualification'}</p>
+        <h3 className="text-xs font-semibold mb-1">{name}</h3>
+        <p className="text-[10px] text-foreground/70">{action || 'Lead Qualification'}</p>
       </div>
     </motion.div>
   );

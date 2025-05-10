@@ -15,7 +15,7 @@ interface LeadCardProps {
   absorbed?: boolean;
   removed?: boolean;
 
-  // New properties from HeroAnimation.tsx
+  // New properties for mobile animation
   id?: number;
   text?: string;
   status?: 'absorbed' | 'waiting' | 'moving';
@@ -31,7 +31,8 @@ const LeadCard: React.FC<LeadCardProps> = ({
   removed = false,
   text = 'New Lead',
   status,
-  delay = 0
+  delay = 0,
+  id
 }) => {
   // Use the text prop if provided, otherwise generate random text based on depth
   const leadText = text || (() => {
@@ -82,37 +83,36 @@ const LeadCard: React.FC<LeadCardProps> = ({
     );
   }
   
-  // If no position provided, use the new version with status-based animations
-  // This handles the HeroAnimation.tsx use case
+  // Mobile-optimized variants with improved visibility
   const variants = {
     initial: { 
-      x: -70, 
+      x: -50, 
       y: 0,
       opacity: 0,
       scale: 0.9 
     },
     waiting: { 
-      x: -40, 
-      opacity: 1,
-      scale: 1,
-      transition: { 
-        delay: delay * 0.3,
-        duration: 0.5,
-        ease: "easeOut" 
-      }
-    },
-    moving: { 
       x: 0, 
       opacity: 1,
       scale: 1,
       transition: { 
-        delay: delay * 0.1,
-        duration: 0.7,
+        delay: delay * 0.3,
+        duration: 0.8,
+        ease: "easeOut" 
+      }
+    },
+    moving: { 
+      x: 90, 
+      opacity: 1,
+      scale: 0.9,
+      transition: { 
+        delay: 0,
+        duration: 1.2,
         ease: "easeInOut" 
       }
     },
     absorbed: { 
-      x: 40, 
+      x: 140, 
       y: 0,
       opacity: 0,
       scale: 0.5,
@@ -125,14 +125,16 @@ const LeadCard: React.FC<LeadCardProps> = ({
   
   return (
     <motion.div
-      className="mb-3 bg-background/90 backdrop-blur-sm border border-foreground/10 shadow-md rounded-lg p-4 w-[140px] md:w-[160px]"
+      className="bg-background/90 backdrop-blur-sm border border-foreground/10 shadow-md rounded-lg p-3 w-[130px] z-10"
       variants={variants}
       initial="initial"
       animate={status || "waiting"}
+      exit={{ opacity: 0, scale: 0.7, transition: { duration: 0.3 } }}
+      layout
     >
       <div className="flex items-center gap-2">
         <div className="w-3 h-3 rounded-full bg-primary/80"></div>
-        <p className="text-sm font-medium">{leadText}</p>
+        <p className="text-xs font-medium">{leadText}</p>
       </div>
     </motion.div>
   );
