@@ -30,8 +30,9 @@ const BookingWidget = ({
     try {
       // Initialize Cal.com with the namespace from the embed code
       const cal = await getCalApi();
-      Cal("init", "30min", {origin:"https://cal.com"});
-      cal.ns["30min"]("ui", {
+      // Use window.Cal instead of Cal directly
+      window.Cal("init", "30min", {origin:"https://cal.com"});
+      window.Cal.ns["30min"]("ui", {
         hideEventTypeDetails: false,
         layout: "month_view"
       });
