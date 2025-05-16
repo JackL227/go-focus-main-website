@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
@@ -86,18 +87,24 @@ const OutputCard: React.FC<OutputCardProps> = ({ name, index, isMobile, action }
   // Choose appropriate variants based on device type
   const variants = isMobile ? mobileVariants : desktopCardVariants;
 
-  // Mobile-optimized card sizing
-  const cardStyle = isMobile ? {
+  // Fix for the TypeScript error - using proper CSS properties for motion.div
+  const mobileStyle = {
     width: '130px',
     maxWidth: '130px',
-  } : {
+  };
+  
+  const desktopStyle = {
     width: '220px',
     maxWidth: '100%',
-    position: 'relative',
+    position: 'relative' as const, // Type assertion to fix the error
     zIndex: 10 - index,
-    margin: isMobile ? '0 auto' : undefined,
+    marginLeft: isMobile ? 'auto' : undefined,
+    marginRight: isMobile ? 'auto' : undefined,
     transform: isMobile ? undefined : `translateY(${index * 5}px)`,
   };
+
+  // Choose style based on device type
+  const cardStyle = isMobile ? mobileStyle : desktopStyle;
 
   return (
     <motion.div

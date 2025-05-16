@@ -1,7 +1,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Lightbulb, Building, BookOpen, ArrowUpRight } from "lucide-react";
+import { Lightbulb, BookOpen, Building, ArrowUpRight, Utensils, ShoppingBag, Stethoscope } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from 'react-router-dom';
 
@@ -23,15 +23,21 @@ const industries = [
     results: ["68% improvement in completion", "98% question resolution rate", "4.1x more testimonials"],
     color: "from-pink-600/30 via-pink-400/20 to-pink-600/30",
     link: "/course-creator"
+  }
+];
+
+const additionalIndustries = [
+  {
+    name: "Medical Clients",
+    icon: Stethoscope,
   },
   {
-    id: "real-estate",
-    title: "Real Estate Agencies",
-    icon: Building,
-    description: "Capture and nurture more leads, answer property questions instantly, and close deals faster with AI automation.",
-    results: ["41% more leads captured", "2.1x faster response time", "19% higher closing rate"],
-    color: "from-amber-600/30 via-amber-400/20 to-amber-600/30",
-    link: "/real-estate"
+    name: "Ecommerce",
+    icon: ShoppingBag,
+  },
+  {
+    name: "Restaurants",
+    icon: Utensils,
   }
 ];
 
@@ -91,7 +97,7 @@ const IndustryResultsSection = () => {
           </p>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 mx-auto max-w-4xl">
           {industries.map((industry, index) => (
             <div 
               key={industry.id} 
@@ -144,6 +150,30 @@ const IndustryResultsSection = () => {
               </Card>
             </div>
           ))}
+        </div>
+        
+        {/* Additional industries section */}
+        <div 
+          className="mt-16 text-center opacity-0 animate-fade-in"
+          style={{ animationDelay: "600ms", animationFillMode: "forwards" }}
+        >
+          <h3 className="text-xl md:text-2xl font-semibold mb-8">
+            We also serve clients in these industries
+          </h3>
+          
+          <div className="flex flex-wrap justify-center gap-6 max-w-2xl mx-auto">
+            {additionalIndustries.map((industry, idx) => (
+              <div 
+                key={idx} 
+                className="flex flex-col items-center p-4 bg-background/10 backdrop-blur-sm border border-foreground/10 rounded-xl hover-lift"
+              >
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                  {React.createElement(industry.icon, { className: "text-primary", size: 20 })}
+                </div>
+                <span className="font-medium">{industry.name}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
