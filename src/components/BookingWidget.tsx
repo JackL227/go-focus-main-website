@@ -28,7 +28,7 @@ const BookingWidget = ({
     if (calInitialized.current) return;
     
     try {
-      const cal = await getCalApi({ namespace: "30min" });
+      const cal = await getCalApi();
       calInitialized.current = true;
       
       // Track the booking intent when calendar opens
@@ -90,18 +90,28 @@ const BookingWidget = ({
     }
   }, [isIntersecting, initCalCom]);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     trackEvent('BookingButtonClick');
     console.log("Meta Pixel: Tracked BookingButtonClick event");
+    
+    try {
+      // Make sure Cal.com is initialized
+      if (!calInitialized.current) {
+        await initCalCom();
+      }
+      
+      // Explicitly trigger the Cal.com popup
+      const cal = await getCalApi();
+      cal("showModal", { calLink: "gofocus.ai/30min" });
+    } catch (error) {
+      console.error("Error opening Cal.com modal:", error);
+    }
   };
 
   return (
     <Button 
       ref={buttonRef}
-      data-cal-namespace="30min"
-      data-cal-link="gofocus.ai/30min"
-      data-cal-config='{"layout":"month_view"}'
-      className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow animate-button-pop ${className}`}
+      className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow ${className}`}
       variant={variant}
       size={size}
       onClick={handleClick}

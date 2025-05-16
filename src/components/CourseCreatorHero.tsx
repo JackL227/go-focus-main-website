@@ -1,8 +1,6 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Users, Video, CheckCircle, ArrowRight } from 'lucide-react';
-import { Button } from './ui/button';
 import BookingWidget from './BookingWidget';
 
 const CourseCreatorHero = () => {
