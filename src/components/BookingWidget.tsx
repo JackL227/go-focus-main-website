@@ -63,9 +63,9 @@ const BookingWidget = ({
         }; 
       })(window, "https://app.cal.com/embed/embed.js", "init");
       
-      // Initialize with the provided configuration
-      window.Cal("init", "30min", {origin:"https://cal.com"});
-      window.Cal.ns["30min"]("ui", {
+      // Initialize with the new namespace
+      window.Cal("init", "30-minute-strategy-call", {origin:"https://cal.com"});
+      window.Cal.ns["30-minute-strategy-call"]("ui", {
         hideEventTypeDetails: false,
         layout: "month_view"
       });
@@ -127,10 +127,10 @@ const BookingWidget = ({
     console.log("Meta Pixel: Tracked BookingButtonClick event");
     
     try {
-      // Use the Cal namespace directly as specified in the embed code
-      if (window.Cal && window.Cal.ns && window.Cal.ns["30min"]) {
-        window.Cal.ns["30min"]("showModal", { 
-          calLink: "gofocus.ai/30min",
+      // Use the new namespace for showing the modal
+      if (window.Cal && window.Cal.ns && window.Cal.ns["30-minute-strategy-call"]) {
+        window.Cal.ns["30-minute-strategy-call"]("showModal", { 
+          calLink: "ethan-gofocus.ai/30-minute-strategy-call",
         });
       } else {
         console.error("Cal.com namespace not available");
@@ -143,8 +143,8 @@ const BookingWidget = ({
   return (
     <Button 
       ref={buttonRef}
-      data-cal-link="gofocus.ai/30min"
-      data-cal-namespace="30min"
+      data-cal-link="ethan-gofocus.ai/30-minute-strategy-call"
+      data-cal-namespace="30-minute-strategy-call"
       data-cal-config='{"layout":"month_view"}'
       className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow ${className}`}
       variant={variant}
