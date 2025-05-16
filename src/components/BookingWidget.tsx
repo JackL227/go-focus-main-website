@@ -28,33 +28,67 @@ const BookingWidget = ({
     if (calInitialized.current) return;
     
     try {
-      const cal = await getCalApi();
-      if (!cal) {
-        console.error("Cal.com API not available");
-        return;
+      // Add the Cal.com script to the head if not already present
+      if (!document.querySelector('script[src="https://app.cal.com/embed/embed.js"]')) {
+        const script = document.createElement('script');
+        script.src = "https://app.cal.com/embed/embed.js";
+        script.async = true;
+        document.head.appendChild(script);
       }
+
+      // Initialize Cal using the embed code approach
+      (function (C, A, L) { 
+        let p = function (a: any, ar: any) { a.q.push(ar); }; 
+        let d = C.document; 
+        C.Cal = C.Cal || function () { 
+          let cal = C.Cal; 
+          let ar = arguments; 
+          if (!cal.loaded) { 
+            cal.ns = {}; 
+            cal.q = cal.q || []; 
+            cal.loaded = true; 
+          } 
+          if (ar[0] === L) { 
+            const api = function () { p(api, arguments); }; 
+            const namespace = ar[1]; 
+            api.q = api.q || []; 
+            if(typeof namespace === "string"){
+              cal.ns[namespace] = cal.ns[namespace] || api;
+              p(cal.ns[namespace], ar);
+              p(cal, ["initNamespace", namespace]);
+            } else p(cal, ar); 
+            return;
+          }
+          p(cal, ar); 
+        }; 
+      })(window, "https://app.cal.com/embed/embed.js", "init");
       
-      // Initialize Cal.com with proper configuration
-      cal("init", {
-        origin: "https://app.cal.com",
+      // Initialize with the provided configuration
+      window.Cal("init", "30min", {origin:"https://cal.com"});
+      window.Cal.ns["30min"]("ui", {
+        hideEventTypeDetails: false,
+        layout: "month_view"
       });
       
-      // Track events via direct cal api methods
-      cal("on", {
-        action: "BOOKING_PAGE_LOADED",
-        callback: () => {
-          trackEvent('InitiateBooking');
-          console.log("Meta Pixel: Tracked InitiateBooking event");
-        }
-      });
-      
-      cal("on", {
-        action: "BOOKING_SUCCESSFUL",
-        callback: () => {
-          trackEvent('Schedule');
-          console.log("Meta Pixel: Tracked Schedule event");
-        }
-      });
+      // Set up event tracking
+      const cal = await getCalApi();
+      if (cal) {
+        cal("on", {
+          action: "BOOKING_PAGE_LOADED",
+          callback: () => {
+            trackEvent('InitiateBooking');
+            console.log("Meta Pixel: Tracked InitiateBooking event");
+          }
+        });
+        
+        cal("on", {
+          action: "BOOKING_SUCCESSFUL",
+          callback: () => {
+            trackEvent('Schedule');
+            console.log("Meta Pixel: Tracked Schedule event");
+          }
+        });
+      }
       
       calInitialized.current = true;
     } catch (error) {
@@ -93,21 +127,14 @@ const BookingWidget = ({
     console.log("Meta Pixel: Tracked BookingButtonClick event");
     
     try {
-      // Use the getCalApi to access the Cal instance properly
-      getCalApi().then((cal) => {
-        if (!cal) {
-          console.error("Cal.com API not available");
-          return;
-        }
-        
-        cal("showModal", {
+      // Use the Cal namespace directly as specified in the embed code
+      if (window.Cal && window.Cal.ns && window.Cal.ns["30min"]) {
+        window.Cal.ns["30min"]("showModal", { 
           calLink: "gofocus.ai/30min",
-          config: {
-            hideEventTypeDetails: false,
-            layout: "month_view"
-          }
         });
-      });
+      } else {
+        console.error("Cal.com namespace not available");
+      }
     } catch (error) {
       console.error("Error opening Cal.com modal:", error);
     }
@@ -116,6 +143,9 @@ const BookingWidget = ({
   return (
     <Button 
       ref={buttonRef}
+      data-cal-link="gofocus.ai/30min"
+      data-cal-namespace="30min"
+      data-cal-config='{"layout":"month_view"}'
       className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow ${className}`}
       variant={variant}
       size={size}
@@ -130,7 +160,7 @@ const BookingWidget = ({
 // Add Cal to the window object for TypeScript
 declare global {
   interface Window {
-    Cal?: any;
+    Cal: any;
   }
 }
 
