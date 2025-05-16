@@ -2,6 +2,7 @@
 import React from 'react';
 import { CheckCircle, MessageSquare, FilterX, Calendar, ArrowUpRight, Zap } from 'lucide-react';
 import { Button } from './ui/button';
+import BookingWidget from './BookingWidget';
 
 const ProgramSection = () => {
   return (
@@ -146,10 +147,13 @@ const ProgramSection = () => {
             </div>
           </div>
           
-          <div className="mt-12 text-center">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-background">
-              Schedule Your Discovery Call
-            </Button>
+          <div className="mt-12 text-center flex justify-center gap-4">
+            <BookingWidget size="lg" className="bg-primary hover:bg-primary/90 text-background">
+              Get My Personalised Demo
+            </BookingWidget>
+            <BookingWidget size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10">
+              Speak To An Expert
+            </BookingWidget>
           </div>
         </div>
       </div>

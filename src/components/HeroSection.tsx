@@ -54,7 +54,7 @@ const HeroSection = () => {
               variant="outline" 
               className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300 w-full"
             >
-              Start for Free
+              Get My Personalised Demo
             </BookingWidget>
           </div>
         </div>

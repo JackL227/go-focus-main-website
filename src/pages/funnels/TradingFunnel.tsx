@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
@@ -43,13 +44,16 @@ const TradingFunnel = () => {
     }
   ];
 
-  const ctaText = "Book My Strategy Call";
+  const ctaText = "Get My Personalised Demo";
 
   const TopCTAButton = () => (
-    <div className="mt-6 mb-8 flex justify-center">
+    <div className="mt-6 mb-8 flex justify-center gap-4">
       <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-blue-600 hover:bg-blue-700 shadow-[0_0_20px_rgba(59,130,246,0.6)] animate-button-pop">
         <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
         <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+      </BookingWidget>
+      <BookingWidget variant="outline" className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
       </BookingWidget>
     </div>
   );
@@ -70,18 +74,24 @@ const TradingFunnel = () => {
         nicheFunnel="trading"
         topCTA={<TopCTAButton />}
         benefitsCTA={
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex justify-center gap-4">
             <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-blue-600 hover:bg-blue-700 shadow-[0_0_20px_rgba(59,130,246,0.6)] animate-button-pop">
               <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
               <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
             </BookingWidget>
+            <BookingWidget variant="outline" className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop">
+              <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
+            </BookingWidget>
           </div>
         }
         resultsCTA={
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex justify-center gap-4">
             <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-blue-600 hover:bg-blue-700 shadow-[0_0_20px_rgba(59,130,246,0.6)] animate-button-pop">
               <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
               <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+            </BookingWidget>
+            <BookingWidget variant="outline" className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop">
+              <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
             </BookingWidget>
           </div>
         }

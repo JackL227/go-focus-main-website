@@ -73,14 +73,17 @@ const CourseCreatorHero = () => {
                   className="bg-primary hover:bg-primary/90 text-background group"
                 >
                   <span className="flex items-center">
-                    Book Your Strategy Call
+                    Get My Personalised Demo
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </span>
                 </BookingWidget>
                 
-                <Button size="lg" variant="outline" className="border-primary/60 text-primary hover:bg-primary/10">
-                  See How It Works
-                </Button>
+                <BookingWidget 
+                  variant="outline" 
+                  className="border-primary/60 text-primary hover:bg-primary/10"
+                >
+                  Speak To An Expert
+                </BookingWidget>
               </div>
             </motion.div>
           </div>

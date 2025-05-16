@@ -74,6 +74,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
     seconds: 59
   });
   const [showStickyCTA, setShowStickyCTA] = useState(false);
+  
   useEffect(() => {
     if (hasCountdown) {
       const interval = setInterval(() => {
@@ -106,6 +107,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       return () => clearInterval(interval);
     }
   }, [hasCountdown]);
+  
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -127,6 +129,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       observer.disconnect();
     };
   }, []);
+  
   useEffect(() => {
     if (!isMobile) return;
     const handleScroll = () => {
@@ -136,9 +139,11 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMobile]);
+  
   useEffect(() => {
     console.log(`Funnel page loaded: ${niche}`);
   }, [niche]);
+  
   return <div className="min-h-screen bg-background text-foreground">
       {/* Meta Pixel is implemented directly in index.html */}
       
@@ -151,10 +156,13 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
           
           {/* Added CTA button at the top for desktop visibility without scrolling */}
           {topCTA && topCTA}
-          {nicheFunnel === "course" && !isMobile && <div className="mt-6 mb-2 flex justify-center">
+          {nicheFunnel === "course" && !isMobile && <div className="mt-6 mb-2 flex justify-center gap-4">
               <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
-                <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
+                <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Get My Personalised Demo</span>
                 <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+              </BookingWidget>
+              <BookingWidget variant="outline" className={`border-2 ${colorScheme.secondary} text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop`}>
+                <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
               </BookingWidget>
             </div>}
         </div>
@@ -183,10 +191,13 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
               </div>
             </div>
             
-            <div className="animate-entrance flex justify-center">
+            <div className="animate-entrance flex justify-center gap-4">
               <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
-                <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
+                <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Get My Personalised Demo</span>
                 <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+              </BookingWidget>
+              <BookingWidget variant="outline" className={`border-2 ${colorScheme.secondary} text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop`}>
+                <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
               </BookingWidget>
             </div>
           </div>
@@ -251,11 +262,14 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             <p className="text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto">Book your strategy call today and we'll show you exactly how our AI system will transform your business within the next 90 days.</p>
             
             <div className="flex flex-col items-center mb-6 md:mb-8">
-              <div className="max-w-lg w-full flex justify-center">
-                <BookingWidget className={`w-full md:w-auto max-w-xs text-white group text-base md:text-lg px-5 md:px-7 py-3 md:py-4 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
+              <div className="max-w-lg w-full flex justify-center gap-4">
+                <BookingWidget className={`md:w-auto max-w-xs text-white group text-base md:text-lg px-5 md:px-7 py-3 md:py-4 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
                   <Calendar className="h-5 w-5 mr-2 flex-shrink-0 animate-pulse-soft" />
-                  <span className="text-wrap break-words text-xs">{ctaText}</span>
+                  <span className="text-wrap break-words text-xs">Get My Personalised Demo</span>
                   <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
+                </BookingWidget>
+                <BookingWidget variant="outline" className={`md:w-auto max-w-xs border-2 ${colorScheme.secondary} text-base md:text-lg px-5 md:px-7 py-3 md:py-4 animate-button-pop`}>
+                  <span className="text-wrap break-words text-xs">Speak To An Expert</span>
                 </BookingWidget>
               </div>
               
@@ -296,10 +310,13 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       </footer>
       
       {isMobile && showStickyCTA && <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-foreground/10 p-3 z-50 animate-slide-in-bottom">
-        <div className="flex justify-center">
-          <BookingWidget className={`max-w-xs text-white group text-base px-4 py-3 ${colorScheme.button} animate-button-pop`}>
-            <span className="text-wrap break-words">{ctaText}</span>
+        <div className="flex justify-center gap-4">
+          <BookingWidget className={`text-white group text-base px-4 py-3 ${colorScheme.button} animate-button-pop`}>
+            <span className="text-wrap break-words">Get My Personalised Demo</span>
             <ArrowRight className="h-5 w-5 ml-1 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+          </BookingWidget>
+          <BookingWidget variant="outline" className={`border ${colorScheme.secondary} text-base px-4 py-3 animate-button-pop`}>
+            <span className="text-wrap break-words">Speak To An Expert</span>
           </BookingWidget>
         </div>
       </div>}

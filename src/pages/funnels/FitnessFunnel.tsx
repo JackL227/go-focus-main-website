@@ -2,6 +2,8 @@
 import React, { useEffect } from 'react';
 import FunnelLayout from '@/components/funnels/FunnelLayout';
 import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
+import { ArrowRight } from "lucide-react";
+import BookingWidget from "@/components/BookingWidget";
 import { trackCustomEvent } from '@/utils/metaPixel';
 
 const FitnessFunnel = () => {
@@ -36,6 +38,21 @@ const FitnessFunnel = () => {
       description: "Compared to traditional marketing"
     }
   ];
+
+  const ctaText = "Get My Personalised Demo";
+  
+  // Create consistent CTA components for each section
+  const ButtonGroup = () => (
+    <div className="flex justify-center gap-4">
+      <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-purple-600 hover:bg-purple-700 shadow-[0_0_20px_rgba(168,85,247,0.6)] animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
+        <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+      </BookingWidget>
+      <BookingWidget variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
+      </BookingWidget>
+    </div>
+  );
   
   return (
     <FunnelLayout
@@ -46,9 +63,12 @@ const FitnessFunnel = () => {
       metrics={metrics}
       guaranteeText="We guarantee 15 new high-ticket clients in 90 days — or you don't pay."
       urgencyText="🔒 Limited to 3 fitness coaches/month to protect lead pool quality"
-      ctaText="Book My Demo Call"
+      ctaText={ctaText}
       hasCountdown={true}
       showSocialProof={true}
+      topCTA={<div className="mt-6 mb-8"><ButtonGroup /></div>}
+      benefitsCTA={<div className="mt-8"><ButtonGroup /></div>}
+      resultsCTA={<div className="mt-8"><ButtonGroup /></div>}
       vslSection={
         <VideoSalesLetter
           videoId="fitness-vsl-id"

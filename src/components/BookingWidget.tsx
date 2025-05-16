@@ -98,12 +98,7 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
       onClick={handleClick}
       {...props}
     >
-      {children || (
-        <>
-          <Calendar className="mr-2 h-5 w-5 flex-shrink-0 animate-pulse-soft" />
-          <span className="text-center break-words">Book a Demo</span>
-        </>
-      )}
+      {children}
     </Button>
   );
 };

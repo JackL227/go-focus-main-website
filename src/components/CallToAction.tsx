@@ -39,8 +39,15 @@ const CallToAction = () => {
                   size="lg" 
                   className="bg-primary hover:bg-primary/90 text-background group flex items-center"
                 >
-                  Start for Free
+                  Get My Personalised Demo
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </BookingWidget>
+                <BookingWidget 
+                  size="lg" 
+                  variant="outline"
+                  className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary"
+                >
+                  Speak To An Expert
                 </BookingWidget>
               </div>
             </div>
