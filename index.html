@@ -1,136 +1,41 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Go Focus AI | AI Agents for Trading Mentors & Info Product Creators</title>
-  
-  <meta name="description" content="Go Focus AI builds AI-powered sales agents and automations for Trading Mentors and Info Product Creators. Automate lead conversion, booking, and sales — 24/7." />
-  <meta name="author" content="Go Focus AI" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://gofocus.ai/" />
-  <link rel="icon" type="image/x-icon" href="./favicon.ico" />
-
-  <!-- Performance optimization -->
-  <link rel="preload" href="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" as="image" fetchpriority="high" />
-  <link rel="preload" href="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png" as="image" fetchpriority="high" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://api.cal.com" crossorigin>
-  <link rel="dns-prefetch" href="https://api.cal.com">
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:title" content="Go Focus AI | Automated Sales Agents for Trading Mentors & Course Creators" />
-  <meta property="og:description" content="Automate your customer journey with AI. Book more calls, close more sales, and grow on autopilot." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://gofocus.ai/" />
-  <meta property="og:image" content="https://gofocus.ai/path-to-your-opengraph-image.png" />
-  
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@gofocusai" />
-  <meta name="twitter:title" content="Go Focus AI | AI Sales Automation for Trading Mentors & Info Creators" />
-  <meta name="twitter:description" content="Build your AI sales agent. Book more qualified calls and close sales automatically. Designed for trading mentors and info product businesses." />
-  <meta name="twitter:image" content="https://gofocus.ai/path-to-your-twitter-image.png" />
-  
-  <!-- Critical CSS -->
-  <style>
-    /* Minimal critical CSS for initial render */
-    :root {
-      --background: #050A14;
-      --foreground: #ffffff;
-      --primary: #006EDA;
-    }
-    
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: var(--background);
-      color: var(--foreground);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-    
-    .loading-screen {
-      position: fixed;
-      inset: 0;
-      background-color: var(--background);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-    
-    .loading-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .loading-bar {
-      position: relative;
-      height: 4px;
-      width: 160px;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 9999px;
-      overflow: hidden;
-      margin-top: 24px;
-    }
-    
-    .loading-progress {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      background-color: var(--primary);
-      border-radius: 9999px;
-      animation: loading 1.5s ease-in-out infinite;
-    }
-    
-    @keyframes loading {
-      0% { width: 0; }
-      50% { width: 100%; }
-      100% { width: 0; }
-    }
-  </style>
-  
-  <!-- Meta Pixel Code -->
-  <script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1090380949802626');
-  fbq('track', 'PageView');
-  </script>
-  <!-- End Meta Pixel Code (script part) -->
-</head>
-
-<body>
-  <!-- Meta Pixel Code (noscript part) -->
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=1090380949802626&ev=PageView&noscript=1"
-  /></noscript>
-  <!-- End Meta Pixel Code (noscript part) -->
-  
-  <div id="root">
-    <!-- Initial loading screen (replaced by React) -->
-    <div class="loading-screen">
-      <div class="loading-content">
-        <img src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" alt="GoFocus.ai" width="128" height="auto" />
-        <div class="loading-bar">
-          <div class="loading-progress"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script type="module" src="/src/main.tsx"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Go Focus AI</title>
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1170159831450192');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1170159831450192&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+    <!-- Cal element-click embed code begins -->
+    <script type="text/javascript">
+      (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+      Cal("init", "30min", {origin:"https://cal.com"});
+      
+      Cal.ns["30min"]("ui", {"hideEventTypeDetails":false,"layout":"month_view"});
+    </script>
+    <!-- Cal element-click embed code ends -->
+    <!-- Lovable Script Tag - Required for Select feature -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

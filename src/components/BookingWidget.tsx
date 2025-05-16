@@ -1,10 +1,16 @@
-
 import React, { useEffect, useCallback, useState, useRef } from 'react';
 import { getCalApi } from "@calcom/embed-react";
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { type ButtonProps } from '@/components/ui/button';
 import { trackEvent } from '@/utils/metaPixel';
+
+// Add type declaration for the Cal object on the window
+declare global {
+  interface Window {
+    Cal: any;
+  }
+}
 
 interface BookingWidgetProps extends Omit<ButtonProps, 'onClick'> {
   className?: string;
@@ -110,8 +116,7 @@ const BookingWidget = ({
     console.log("Meta Pixel: Tracked BookingButtonClick event");
     
     try {
-      // Use data-cal-link attribute to open the calendar
-      // This aligns with the provided embed code instructions
+      // Use window.Cal instead of Cal directly
       window.Cal.ns["30min"]("showModal", { calLink: "gofocus.ai/30min" });
     } catch (error) {
       console.error("Error opening Cal.com modal:", error);
@@ -134,12 +139,5 @@ const BookingWidget = ({
     </Button>
   );
 };
-
-// Add Cal to the window object for TypeScript
-declare global {
-  interface Window {
-    Cal: any;
-  }
-}
 
 export default BookingWidget;
