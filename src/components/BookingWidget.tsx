@@ -28,28 +28,35 @@ const BookingWidget = ({
     if (calInitialized.current) return;
     
     try {
-      // Initialize Cal.com with the namespace from the embed code
       const cal = await getCalApi();
-      // Use window.Cal instead of Cal directly
-      window.Cal("init", "30min", {origin:"https://cal.com"});
-      window.Cal.ns["30min"]("ui", {
-        hideEventTypeDetails: false,
-        layout: "month_view"
+      if (!cal) {
+        console.error("Cal.com API not available");
+        return;
+      }
+      
+      // Initialize Cal.com with proper configuration
+      cal("init", {
+        origin: "https://app.cal.com",
+      });
+      
+      // Track events via direct cal api methods
+      cal("on", {
+        action: "BOOKING_PAGE_LOADED",
+        callback: () => {
+          trackEvent('InitiateBooking');
+          console.log("Meta Pixel: Tracked InitiateBooking event");
+        }
+      });
+      
+      cal("on", {
+        action: "BOOKING_SUCCESSFUL",
+        callback: () => {
+          trackEvent('Schedule');
+          console.log("Meta Pixel: Tracked Schedule event");
+        }
       });
       
       calInitialized.current = true;
-      
-      // Track the booking intent when calendar opens
-      cal.on('bookingPageLoaded', () => {
-        trackEvent('InitiateBooking');
-        console.log("Meta Pixel: Tracked InitiateBooking event");
-      });
-      
-      // Track successful booking
-      cal.on('bookingSuccessful', () => {
-        trackEvent('Schedule');
-        console.log("Meta Pixel: Tracked Schedule event");
-      });
     } catch (error) {
       console.error("Error initializing Cal.com:", error);
     }
@@ -81,38 +88,26 @@ const BookingWidget = ({
     }
   }, [isIntersecting, initCalCom]);
 
-  // Load Cal.com script if needed
-  useEffect(() => {
-    // Add the Cal.com script to the head if not already present
-    if (!document.querySelector('script[src="https://app.cal.com/embed/embed.js"]')) {
-      const script = document.createElement('script');
-      script.src = "https://app.cal.com/embed/embed.js";
-      document.head.appendChild(script);
-      
-      // Global initialization
-      window.Cal = window.Cal || function() {
-        const cal = window.Cal;
-        const args = arguments;
-        if (!cal.loaded) {
-          cal.ns = {};
-          cal.q = cal.q || [];
-          script.onload = function() {
-            cal.loaded = true;
-          };
-        }
-        cal.q.push(args);
-      };
-    }
-  }, []);
-
   const handleClick = () => {
     trackEvent('BookingButtonClick');
     console.log("Meta Pixel: Tracked BookingButtonClick event");
     
     try {
-      // Use data-cal-link attribute to open the calendar
-      // This aligns with the provided embed code instructions
-      window.Cal.ns["30min"]("showModal", { calLink: "gofocus.ai/30min" });
+      // Use the getCalApi to access the Cal instance properly
+      getCalApi().then((cal) => {
+        if (!cal) {
+          console.error("Cal.com API not available");
+          return;
+        }
+        
+        cal("showModal", {
+          calLink: "gofocus.ai/30min",
+          config: {
+            hideEventTypeDetails: false,
+            layout: "month_view"
+          }
+        });
+      });
     } catch (error) {
       console.error("Error opening Cal.com modal:", error);
     }
@@ -121,9 +116,6 @@ const BookingWidget = ({
   return (
     <Button 
       ref={buttonRef}
-      data-cal-link="gofocus.ai/30min"
-      data-cal-namespace="30min"
-      data-cal-config='{"layout":"month_view"}'
       className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow ${className}`}
       variant={variant}
       size={size}
@@ -138,7 +130,7 @@ const BookingWidget = ({
 // Add Cal to the window object for TypeScript
 declare global {
   interface Window {
-    Cal: any;
+    Cal?: any;
   }
 }
 
