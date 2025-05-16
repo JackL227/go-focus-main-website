@@ -41,9 +41,41 @@ const FitnessFunnel = () => {
 
   const ctaText = "Get My Personalised Demo";
   
-  // Create consistent CTA components for each section
-  const ButtonGroup = () => (
-    <div className="flex justify-center gap-4">
+  // Top buttons - side by side
+  const TopButtons = () => (
+    <div className="mt-6 mb-8 flex justify-center gap-4">
+      <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-purple-600 hover:bg-purple-700 shadow-[0_0_20px_rgba(168,85,247,0.6)] animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
+        <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+      </BookingWidget>
+      <BookingWidget variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
+      </BookingWidget>
+    </div>
+  );
+
+  // Benefits - Single demo button
+  const BenefitsButton = () => (
+    <div className="mt-8 flex justify-center">
+      <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-purple-600 hover:bg-purple-700 shadow-[0_0_20px_rgba(168,85,247,0.6)] animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
+        <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+      </BookingWidget>
+    </div>
+  );
+
+  // Results - Single expert button
+  const ResultsButton = () => (
+    <div className="mt-8 flex justify-center">
+      <BookingWidget variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
+      </BookingWidget>
+    </div>
+  );
+
+  // Final CTA - side by side again
+  const FinalButtons = () => (
+    <div className="max-w-lg w-full flex justify-center gap-4">
       <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-purple-600 hover:bg-purple-700 shadow-[0_0_20px_rgba(168,85,247,0.6)] animate-button-pop">
         <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
         <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
@@ -66,9 +98,10 @@ const FitnessFunnel = () => {
       ctaText={ctaText}
       hasCountdown={true}
       showSocialProof={true}
-      topCTA={<div className="mt-6 mb-8"><ButtonGroup /></div>}
-      benefitsCTA={<div className="mt-8"><ButtonGroup /></div>}
-      resultsCTA={<div className="mt-8"><ButtonGroup /></div>}
+      topCTA={<TopButtons />}
+      benefitsCTA={<BenefitsButton />}
+      resultsCTA={<ResultsButton />}
+      finalCTA={<FinalButtons />}
       vslSection={
         <VideoSalesLetter
           videoId="fitness-vsl-id"

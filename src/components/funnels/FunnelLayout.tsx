@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Check, Calendar, Clock, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
@@ -24,6 +25,7 @@ interface FunnelLayoutProps {
   topCTA?: React.ReactNode; // New prop for CTA above video
   benefitsCTA?: React.ReactNode; // New prop for CTA below benefits section
   resultsCTA?: React.ReactNode; // New prop for CTA below results section
+  finalCTA?: React.ReactNode; // New prop for final CTA section
 }
 
 const FunnelLayout: React.FC<FunnelLayoutProps> = ({
@@ -41,7 +43,8 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   vslSection,
   topCTA,
   benefitsCTA,
-  resultsCTA
+  resultsCTA,
+  finalCTA
 }) => {
   const colorSchemes = {
     trading: {
@@ -144,6 +147,36 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
     console.log(`Funnel page loaded: ${niche}`);
   }, [niche]);
   
+  // Default buttons for the layout
+  const SideBySideButtons = () => (
+    <div className="flex justify-center gap-4">
+      <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Get My Personalised Demo</span>
+        <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+      </BookingWidget>
+      <BookingWidget variant="outline" className={`border-2 ${colorScheme.secondary} text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop`}>
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
+      </BookingWidget>
+    </div>
+  );
+
+  const DemoButton = () => (
+    <div className="flex justify-center">
+      <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Get My Personalised Demo</span>
+        <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+      </BookingWidget>
+    </div>
+  );
+
+  const ExpertButton = () => (
+    <div className="flex justify-center">
+      <BookingWidget variant="outline" className={`border-2 ${colorScheme.secondary} text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop`}>
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
+      </BookingWidget>
+    </div>
+  );
+  
   return <div className="min-h-screen bg-background text-foreground">
       {/* Meta Pixel is implemented directly in index.html */}
       
@@ -156,15 +189,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
           
           {/* Added CTA button at the top for desktop visibility without scrolling */}
           {topCTA && topCTA}
-          {nicheFunnel === "course" && !isMobile && <div className="mt-6 mb-2 flex justify-center gap-4">
-              <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
-                <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Get My Personalised Demo</span>
-                <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-              </BookingWidget>
-              <BookingWidget variant="outline" className={`border-2 ${colorScheme.secondary} text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop`}>
-                <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
-              </BookingWidget>
-            </div>}
+          {nicheFunnel === "course" && !isMobile && !topCTA && <div className="mt-6 mb-2"><SideBySideButtons /></div>}
         </div>
       </div>
 
@@ -191,14 +216,8 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
               </div>
             </div>
             
-            <div className="animate-entrance flex justify-center gap-4">
-              <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
-                <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Get My Personalised Demo</span>
-                <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-              </BookingWidget>
-              <BookingWidget variant="outline" className={`border-2 ${colorScheme.secondary} text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop`}>
-                <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
-              </BookingWidget>
+            <div className="animate-entrance">
+              <SideBySideButtons />
             </div>
           </div>
         </div>
@@ -220,7 +239,8 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
                 </div>)}
             </div>
             
-            {benefitsCTA && <div className="mt-8">{benefitsCTA}</div>}
+            {benefitsCTA && benefitsCTA}
+            {!benefitsCTA && <div className="mt-8"><DemoButton /></div>}
           </div>
         </div>
       </section>
@@ -238,7 +258,8 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       description: metric.description
     }))} niche={nicheFunnel} />
 
-      {resultsCTA && <div className="container-custom max-w-4xl mx-auto text-center">{resultsCTA}</div>}
+      {resultsCTA && resultsCTA}
+      {!resultsCTA && <div className="container-custom max-w-4xl mx-auto text-center"><div className="mt-8"><ExpertButton /></div></div>}
 
       <section id="guarantee" className="py-8 md:py-12 bg-background">
         <div className="container-custom">
@@ -251,6 +272,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             <div className="text-center py-4 border-t border-b border-foreground/10">
               <p className="text-lg md:text-xl font-semibold">No long-term contracts. Cancel anytime.</p>
             </div>
+            <div className="mt-6"><DemoButton /></div>
           </div>
         </div>
       </section>
@@ -262,16 +284,10 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             <p className="text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto">Book your strategy call today and we'll show you exactly how our AI system will transform your business within the next 90 days.</p>
             
             <div className="flex flex-col items-center mb-6 md:mb-8">
-              <div className="max-w-lg w-full flex justify-center gap-4">
-                <BookingWidget className={`md:w-auto max-w-xs text-white group text-base md:text-lg px-5 md:px-7 py-3 md:py-4 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
-                  <Calendar className="h-5 w-5 mr-2 flex-shrink-0 animate-pulse-soft" />
-                  <span className="text-wrap break-words text-xs">Get My Personalised Demo</span>
-                  <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1 animate-pulse-soft" />
-                </BookingWidget>
-                <BookingWidget variant="outline" className={`md:w-auto max-w-xs border-2 ${colorScheme.secondary} text-base md:text-lg px-5 md:px-7 py-3 md:py-4 animate-button-pop`}>
-                  <span className="text-wrap break-words text-xs">Speak To An Expert</span>
-                </BookingWidget>
-              </div>
+              {finalCTA && finalCTA}
+              {!finalCTA && <div className="max-w-lg w-full">
+                <SideBySideButtons />
+              </div>}
               
               {hasCountdown && <div className="mt-4 md:mt-6 flex items-center text-red-400">
                 <Clock className="h-4 w-4 mr-2 animate-pulse-soft" />

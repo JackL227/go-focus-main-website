@@ -2,16 +2,24 @@
 import React, { useEffect, useCallback, useState, useRef } from 'react';
 import { getCalApi } from "@calcom/embed-react";
 import { Button } from '@/components/ui/button';
-import { Calendar } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { type ButtonProps } from '@/components/ui/button';
 import { trackEvent } from '@/utils/metaPixel';
 
 interface BookingWidgetProps extends Omit<ButtonProps, 'onClick'> {
   className?: string;
   children?: React.ReactNode;
+  isDemoButton?: boolean;
 }
 
-const BookingWidget = ({ className, variant = "default", children, ...props }: BookingWidgetProps) => {
+const BookingWidget = ({ 
+  className, 
+  variant = "default", 
+  size = "default",
+  children, 
+  isDemoButton,
+  ...props 
+}: BookingWidgetProps) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const calInitialized = useRef(false);
@@ -95,6 +103,7 @@ const BookingWidget = ({ className, variant = "default", children, ...props }: B
       data-cal-config='{"layout":"month_view"}'
       className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow animate-button-pop ${className}`}
       variant={variant}
+      size={size}
       onClick={handleClick}
       {...props}
     >
