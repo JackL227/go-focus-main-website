@@ -27,7 +27,7 @@ interface AgentConfig {
 
 interface AIAgentDemoProps {
   onClose: () => void;
-  initialNiche?: 'trading' | 'course' | 'realestate';
+  initialNiche?: 'trading' | 'course';
 }
 
 const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose, initialNiche = 'trading' }) => {
@@ -93,35 +93,6 @@ const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose, initialNiche = 'trad
         },
         {
           text: "I understand those challenges. Our AI support system helps course creators like you overcome these exact issues. Would you like to schedule a call with our course business strategist to see how our AI can help scale your info product business?",
-          delay: 2000
-        }
-      ]
-    },
-    realestate: {
-      name: 'Michael - Real Estate AI',
-      greeting: "Hi there! I'm Michael, the virtual assistant for Premier Real Estate. Are you looking to integrate AI for your buyer leads, seller leads, or both?",
-      avatar: '/lovable-uploads/d410a2a7-6cd4-4de0-82f0-761a7a3f26c9.png',
-      messages: [
-        {
-          text: "Perfect! How many agents are currently in your real estate agency?",
-          delay: 1000,
-          options: [
-            { text: "Solo agent", response: "I work independently" },
-            { text: "Small team (2-5)", response: "We have a small team of agents" },
-            { text: "Large team (6+)", response: "We have a large team of agents" }
-          ]
-        },
-        {
-          text: "Thanks for sharing. How many leads does your agency typically generate per month currently?",
-          delay: 1500,
-          options: [
-            { text: "Under 20", response: "We generate fewer than 20 leads monthly" },
-            { text: "20-50", response: "We generate 20-50 leads monthly" },
-            { text: "50+", response: "We generate over 50 leads monthly" }
-          ]
-        },
-        {
-          text: "I see. Our AI system helps real estate agencies convert more leads into appointments without agents spending hours on follow-up. Would you like to schedule a demo to see how we can help your agency close more deals?",
           delay: 2000
         }
       ]
@@ -196,7 +167,6 @@ const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose, initialNiche = 'trad
     switch (niche) {
       case 'trading': return '🔁 Trading Mentor';
       case 'course': return '📚 Course Creator';
-      case 'realestate': return '🏠 Real Estate';
       default: return niche;
     }
   };
@@ -220,15 +190,12 @@ const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose, initialNiche = 'trad
           </div>
           
           <Tabs value={activeNiche} onValueChange={setActiveNiche}>
-            <TabsList className="w-full grid grid-cols-3">
+            <TabsList className="w-full grid grid-cols-2">
               <TabsTrigger value="trading" className="text-xs sm:text-sm">
                 {getTriggerLabel('trading')}
               </TabsTrigger>
               <TabsTrigger value="course" className="text-xs sm:text-sm">
                 {getTriggerLabel('course')}
-              </TabsTrigger>
-              <TabsTrigger value="realestate" className="text-xs sm:text-sm">
-                {getTriggerLabel('realestate')}
               </TabsTrigger>
             </TabsList>
           </Tabs>

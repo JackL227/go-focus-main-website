@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { Star, ArrowRight, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Button } from './ui/button';
@@ -33,7 +32,7 @@ const SocialProofSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [showAgentDemo, setShowAgentDemo] = useState(false);
-  const [selectedNiche, setSelectedNiche] = useState<'trading' | 'course' | 'realestate'>('trading');
+  const [selectedNiche, setSelectedNiche] = useState<'trading' | 'course'>('trading');
   const maxSlides = Math.ceil(testimonials.length / 2);
 
   const nextSlide = () => {
@@ -44,7 +43,7 @@ const SocialProofSection = () => {
     setActiveSlide(prev => (prev - 1 + maxSlides) % maxSlides);
   };
 
-  const handleDemoClick = (niche: 'trading' | 'course' | 'realestate') => {
+  const handleDemoClick = (niche: 'trading' | 'course') => {
     setSelectedNiche(niche);
     setShowAgentDemo(true);
   };
@@ -160,12 +159,6 @@ const SocialProofSection = () => {
                     onClick={() => handleDemoClick('course')}
                   >
                     📚 Course Creator
-                  </button>
-                  <button 
-                    className="w-full text-left px-3 py-2 rounded hover:bg-primary/10 transition-colors"
-                    onClick={() => handleDemoClick('realestate')}
-                  >
-                    🏠 Real Estate
                   </button>
                 </div>
               </div>
