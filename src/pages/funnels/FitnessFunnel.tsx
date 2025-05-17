@@ -5,12 +5,16 @@ import VideoSalesLetter from '@/components/funnels/VideoSalesLetter';
 import { ArrowRight } from "lucide-react";
 import BookingWidget from "@/components/BookingWidget";
 import { trackCustomEvent } from '@/utils/metaPixel';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const FitnessFunnel = () => {
   useEffect(() => {
     console.log("Fitness funnel page view tracked");
     trackCustomEvent('FitnessFunnelView');
   }, []);
+  
+  const isMobile = useIsMobile();
+  const ctaText = "Get My Personalised Demo";
   
   const benefits = [
     "AI Agent that handles outreach & inbound messages 24/7",
@@ -38,18 +42,16 @@ const FitnessFunnel = () => {
       description: "Compared to traditional marketing"
     }
   ];
-
-  const ctaText = "Get My Personalised Demo";
   
-  // Top buttons - side by side
+  // Top buttons - side by side or stacked on mobile
   const TopButtons = () => (
-    <div className="mt-6 mb-8 flex justify-center gap-4">
-      <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-purple-600 hover:bg-purple-700 shadow-[0_0_20px_rgba(168,85,247,0.6)] animate-button-pop">
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
+    <div className={`mt-6 mb-8 ${isMobile ? 'flex flex-col space-y-4' : 'flex justify-center gap-4'}`}>
+      <BookingWidget className="text-white group bg-purple-600 hover:bg-purple-700 shadow-[0_0_20px_rgba(168,85,247,0.6)] animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0">{ctaText}</span>
         <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
       </BookingWidget>
-      <BookingWidget variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop">
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
+      <BookingWidget variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0">Speak To An Expert</span>
       </BookingWidget>
     </div>
   );
@@ -57,8 +59,8 @@ const FitnessFunnel = () => {
   // Benefits - Single demo button
   const BenefitsButton = () => (
     <div className="mt-8 flex justify-center">
-      <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-purple-600 hover:bg-purple-700 shadow-[0_0_20px_rgba(168,85,247,0.6)] animate-button-pop">
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
+      <BookingWidget className="text-white group bg-purple-600 hover:bg-purple-700 shadow-[0_0_20px_rgba(168,85,247,0.6)] animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0">{ctaText}</span>
         <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
       </BookingWidget>
     </div>
@@ -67,21 +69,21 @@ const FitnessFunnel = () => {
   // Results - Single expert button
   const ResultsButton = () => (
     <div className="mt-8 flex justify-center">
-      <BookingWidget variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop">
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
+      <BookingWidget variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0">Speak To An Expert</span>
       </BookingWidget>
     </div>
   );
 
-  // Final CTA - side by side again
+  // Final CTA - side by side or stacked on mobile
   const FinalButtons = () => (
-    <div className="max-w-lg w-full flex justify-center gap-4">
-      <BookingWidget className="text-white group text-base md:text-lg px-5 md:px-7 py-3 bg-purple-600 hover:bg-purple-700 shadow-[0_0_20px_rgba(168,85,247,0.6)] animate-button-pop">
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">{ctaText}</span>
+    <div className={`max-w-lg w-full ${isMobile ? 'flex flex-col space-y-4' : 'flex justify-center gap-4'}`}>
+      <BookingWidget className="text-white group bg-purple-600 hover:bg-purple-700 shadow-[0_0_20px_rgba(168,85,247,0.6)] animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0">{ctaText}</span>
         <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
       </BookingWidget>
-      <BookingWidget variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop">
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
+      <BookingWidget variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 animate-button-pop">
+        <span className="text-wrap break-words py-0 px-0 mx-0 my-0">Speak To An Expert</span>
       </BookingWidget>
     </div>
   );

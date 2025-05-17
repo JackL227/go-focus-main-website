@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Check, Calendar, Clock, Shield } from "lucide-react";
 import BookingWidget from "../BookingWidget";
@@ -325,14 +324,11 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
         </div>
       </footer>
       
-      {isMobile && showStickyCTA && <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-foreground/10 p-3 z-50 animate-slide-in-bottom">
-        <div className="flex justify-center gap-4">
-          <BookingWidget className={`text-white group text-base px-4 py-3 ${colorScheme.button} animate-button-pop`}>
+      {isMobile && showStickyCTA && <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-foreground/10 p-4 z-50 animate-slide-in-bottom">
+        <div className="flex flex-col space-y-3 max-w-[300px] mx-auto">
+          <BookingWidget className={`text-white group bg-${niche === 'medspa' ? 'teal' : niche === 'fitness' ? 'purple' : 'blue'}-600 animate-button-pop w-full`}>
             <span className="text-wrap break-words">Get My Personalised Demo</span>
             <ArrowRight className="h-5 w-5 ml-1 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-          </BookingWidget>
-          <BookingWidget variant="outline" className={`border ${colorScheme.secondary} text-base px-4 py-3 animate-button-pop`}>
-            <span className="text-wrap break-words">Speak To An Expert</span>
           </BookingWidget>
         </div>
       </div>}

@@ -23,6 +23,8 @@ const buttonVariants = cva(
         demo: "bg-blue-600 hover:bg-blue-700 text-white shadow-[0_0_20px_rgba(59,130,246,0.6)] transform transition-all duration-300 hover:scale-105",
         // Add new expert button variant for consistency
         expert: "border-2 border-blue-600 text-blue-600 hover:bg-blue-50 transform transition-all duration-300 hover:scale-105",
+        // Add new funnel-mobile variant
+        "funnel-mobile": "w-full max-w-[300px] mx-auto text-base px-4 py-3 font-medium",
       },
       size: {
         default: "h-10 px-4 py-2",

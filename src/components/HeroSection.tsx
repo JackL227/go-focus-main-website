@@ -35,9 +35,8 @@ const HeroSection = () => {
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in [animation-delay:700ms] mb-4 md:mb-6 justify-center w-full max-w-md mx-auto">
+          <div className={`${isMobile ? 'flex flex-col space-y-4 w-full max-w-[300px]' : 'flex flex-row gap-4 max-w-md'} animate-fade-in [animation-delay:700ms] mb-4 md:mb-6 mx-auto`}>
             <Button 
-              size={isMobile ? "default" : "lg"}
               className="bg-primary hover:bg-primary/90 text-background group relative overflow-hidden transition-all duration-300 hover:shadow-glow w-full"
               onClick={handleDemoClick}
               aria-label="See AI agent demo"
@@ -50,7 +49,6 @@ const HeroSection = () => {
             </Button>
             
             <BookingWidget 
-              size={isMobile ? "default" : "lg"}
               variant="outline" 
               className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300 w-full"
             >

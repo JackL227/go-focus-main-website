@@ -4,8 +4,11 @@ import { CheckCircle, ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
 import BookingWidget from './BookingWidget';
 import ServiceSlideshow from './ServiceSlideshow';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const CallToAction = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <section className="relative bg-gradient-to-b from-background/90 to-background py-20">
       <div className="container-custom relative z-10">
@@ -34,16 +37,14 @@ const CallToAction = () => {
                 ))}
               </ul>
               
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className={`${isMobile ? 'flex flex-col space-y-4' : 'flex flex-row gap-4'}`}>
                 <BookingWidget 
-                  size="lg" 
                   className="bg-primary hover:bg-primary/90 text-background group flex items-center"
                 >
                   Get My Personalised Demo
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </BookingWidget>
                 <BookingWidget 
-                  size="lg" 
                   variant="outline"
                   className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary"
                 >

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { type ButtonProps } from '@/components/ui/button';
 import { trackEvent } from '@/utils/metaPixel';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface BookingWidgetProps extends Omit<ButtonProps, 'onClick'> {
   className?: string;
@@ -23,6 +24,7 @@ const BookingWidget = ({
   const [isIntersecting, setIsIntersecting] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const calInitialized = useRef(false);
+  const isMobile = useIsMobile();
 
   const initCalCom = useCallback(async () => {
     if (calInitialized.current) return;
@@ -140,14 +142,18 @@ const BookingWidget = ({
     }
   };
 
+  // Apply mobile-specific styling when on mobile
+  const mobileVariant = isMobile ? "funnel-mobile" : variant;
+  const buttonClassName = `${isMobile ? "text-base py-3" : ""} ${className || ""}`;
+
   return (
     <Button 
       ref={buttonRef}
       data-cal-link="ethan-gofocus.ai/30-minute-strategy-call"
       data-cal-namespace="30-minute-strategy-call"
       data-cal-config='{"layout":"month_view"}'
-      className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow ${className}`}
-      variant={variant}
+      className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow ${buttonClassName}`}
+      variant={mobileVariant}
       size={size}
       onClick={handleClick}
       {...props}
