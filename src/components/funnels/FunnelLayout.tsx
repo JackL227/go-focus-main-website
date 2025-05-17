@@ -214,10 +214,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
                 </div>
               </div>
             </div>
-            
-            <div className="animate-entrance">
-              <SideBySideButtons />
-            </div>
           </div>
         </div>
       </section>
