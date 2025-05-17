@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useSupabaseClient } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 import {
   Table,
   TableBody,
@@ -44,7 +44,6 @@ interface Client {
 }
 
 const Clients = () => {
-  const supabase = useSupabaseClient();
   const { user } = useAuth();
   const [clients, setClients] = useState<Client[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
