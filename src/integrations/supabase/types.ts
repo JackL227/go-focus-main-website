@@ -85,29 +85,144 @@ export type Database = {
           },
         ]
       }
+      clients: {
+        Row: {
+          company_name: string
+          created_at: string
+          id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          company_name: string
+          created_at?: string
+          id?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          company_name?: string
+          created_at?: string
+          id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      metrics: {
+        Row: {
+          client_id: string
+          created_at: string
+          date: string
+          id: string
+          metric_name: string
+          metric_value: number
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          date?: string
+          id?: string
+          metric_name: string
+          metric_value: number
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          date?: string
+          id?: string
+          metric_name?: string
+          metric_value?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "metrics_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_tickets: {
+        Row: {
+          category: string
+          client_id: string
+          created_at: string
+          description: string
+          id: string
+          priority: string
+          status: string
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          client_id: string
+          created_at?: string
+          description: string
+          id?: string
+          priority: string
+          status?: string
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          client_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          priority?: string
+          status?: string
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_tickets_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_profiles: {
         Row: {
           business_type: string | null
+          client_id: string | null
           created_at: string
           full_name: string | null
           id: string
           referral_code: string | null
+          role: Database["public"]["Enums"]["user_role"] | null
           updated_at: string
         }
         Insert: {
           business_type?: string | null
+          client_id?: string | null
           created_at?: string
           full_name?: string | null
           id: string
           referral_code?: string | null
+          role?: Database["public"]["Enums"]["user_role"] | null
           updated_at?: string
         }
         Update: {
           business_type?: string | null
+          client_id?: string | null
           created_at?: string
           full_name?: string | null
           id?: string
           referral_code?: string | null
+          role?: Database["public"]["Enums"]["user_role"] | null
           updated_at?: string
         }
         Relationships: []
@@ -120,7 +235,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_role: "admin" | "client"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -235,6 +350,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["admin", "client"],
+    },
   },
 } as const

@@ -8,11 +8,17 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { useState, useEffect, lazy, Suspense } from "react";
 import LoadingScreen from "./components/LoadingScreen";
 import MetaPixelTracker from "./components/tracking/MetaPixelTracker";
+import AuthGuard from "./components/auth/AuthGuard";
 
 // Lazy load routes for performance optimization
 const Index = lazy(() => import("./pages/Index"));
 const Auth = lazy(() => import("./pages/Auth"));
 const AuthCallback = lazy(() => import("./pages/AuthCallback"));
+const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
+const Clients = lazy(() => import("./pages/dashboard/Clients"));
+const Metrics = lazy(() => import("./pages/dashboard/Metrics"));
+const Support = lazy(() => import("./pages/dashboard/Support"));
+const Settings = lazy(() => import("./pages/dashboard/Settings"));
 const TradingFunnel = lazy(() => import("./pages/funnels/TradingFunnel"));
 const CourseCreatorFunnel = lazy(() => import("./pages/funnels/CourseCreatorFunnel"));
 const RealEstateFunnel = lazy(() => import("./pages/funnels/RealEstateFunnel"));
@@ -97,6 +103,35 @@ const App = () => {
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/auth/callback" element={<AuthCallback />} />
+                  
+                  {/* Protected Dashboard Routes */}
+                  <Route path="/dashboard" element={
+                    <AuthGuard>
+                      <Dashboard />
+                    </AuthGuard>
+                  } />
+                  <Route path="/dashboard/clients" element={
+                    <AuthGuard requireAdmin={true}>
+                      <Clients />
+                    </AuthGuard>
+                  } />
+                  <Route path="/dashboard/metrics" element={
+                    <AuthGuard>
+                      <Metrics />
+                    </AuthGuard>
+                  } />
+                  <Route path="/dashboard/support" element={
+                    <AuthGuard>
+                      <Support />
+                    </AuthGuard>
+                  } />
+                  <Route path="/dashboard/settings" element={
+                    <AuthGuard>
+                      <Settings />
+                    </AuthGuard>
+                  } />
+                  
+                  {/* Funnel Routes */}
                   <Route path="/trading" element={<TradingFunnel />} />
                   <Route path="/course-creator" element={<CourseCreatorFunnel />} />
                   <Route path="/real-estate" element={<RealEstateFunnel />} />
