@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -22,6 +21,7 @@ const Settings = lazy(() => import("./pages/dashboard/Settings"));
 const TradingFunnel = lazy(() => import("./pages/funnels/TradingFunnel"));
 const CourseCreatorFunnel = lazy(() => import("./pages/funnels/CourseCreatorFunnel"));
 const RealEstateFunnel = lazy(() => import("./pages/funnels/RealEstateFunnel"));
+const ThankYou = lazy(() => import("./pages/ThankYou"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Create a query client with optimized settings
@@ -103,6 +103,7 @@ const App = () => {
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/auth/callback" element={<AuthCallback />} />
+                  <Route path="/thank-you" element={<ThankYou />} />
                   
                   {/* Protected Dashboard Routes */}
                   <Route path="/dashboard" element={
