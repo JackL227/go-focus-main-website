@@ -43,15 +43,12 @@ const FitnessFunnel = () => {
     }
   ];
   
-  // Top buttons - side by side or stacked on mobile
+  // Top buttons - single demo button now
   const TopButtons = () => (
-    <div className={`mt-6 mb-8 ${isMobile ? 'flex flex-col space-y-4' : 'flex justify-center gap-4'}`}>
+    <div className="mt-6 mb-8 flex justify-center">
       <BookingWidget className="text-white group bg-purple-600 hover:bg-purple-700 shadow-[0_0_20px_rgba(168,85,247,0.6)] animate-button-pop">
         <span className="text-wrap break-words py-0 px-0 mx-0 my-0">{ctaText}</span>
         <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-      </BookingWidget>
-      <BookingWidget variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 animate-button-pop">
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0">Speak To An Expert</span>
       </BookingWidget>
     </div>
   );
@@ -66,24 +63,12 @@ const FitnessFunnel = () => {
     </div>
   );
 
-  // Results - Single expert button
-  const ResultsButton = () => (
-    <div className="mt-8 flex justify-center">
-      <BookingWidget variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 animate-button-pop">
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0">Speak To An Expert</span>
-      </BookingWidget>
-    </div>
-  );
-
-  // Final CTA - side by side or stacked on mobile
+  // Final CTA - single button now
   const FinalButtons = () => (
-    <div className={`max-w-lg w-full ${isMobile ? 'flex flex-col space-y-4' : 'flex justify-center gap-4'}`}>
+    <div className="max-w-lg w-full flex justify-center">
       <BookingWidget className="text-white group bg-purple-600 hover:bg-purple-700 shadow-[0_0_20px_rgba(168,85,247,0.6)] animate-button-pop">
         <span className="text-wrap break-words py-0 px-0 mx-0 my-0">{ctaText}</span>
         <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-      </BookingWidget>
-      <BookingWidget variant="outline" className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 animate-button-pop">
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0">Speak To An Expert</span>
       </BookingWidget>
     </div>
   );
@@ -102,7 +87,6 @@ const FitnessFunnel = () => {
       showSocialProof={true}
       topCTA={<TopButtons />}
       benefitsCTA={<BenefitsButton />}
-      resultsCTA={<ResultsButton />}
       finalCTA={<FinalButtons />}
       vslSection={
         <VideoSalesLetter

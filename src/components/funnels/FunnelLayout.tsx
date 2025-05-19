@@ -23,7 +23,6 @@ interface FunnelLayoutProps {
   vslSection?: React.ReactNode;
   topCTA?: React.ReactNode; // New prop for CTA above video
   benefitsCTA?: React.ReactNode; // New prop for CTA below benefits section
-  resultsCTA?: React.ReactNode; // New prop for CTA below results section
   finalCTA?: React.ReactNode; // New prop for final CTA section
 }
 
@@ -42,7 +41,6 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   vslSection,
   topCTA,
   benefitsCTA,
-  resultsCTA,
   finalCTA
 }) => {
   const colorSchemes = {
@@ -148,30 +146,10 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
   
   // Default buttons for the layout
   const SideBySideButtons = () => (
-    <div className="flex justify-center gap-4">
-      <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Get My Personalised Demo</span>
-        <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-      </BookingWidget>
-      <BookingWidget variant="outline" className={`border-2 ${colorScheme.secondary} text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop`}>
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
-      </BookingWidget>
-    </div>
-  );
-
-  const DemoButton = () => (
     <div className="flex justify-center">
       <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
         <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Get My Personalised Demo</span>
         <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-      </BookingWidget>
-    </div>
-  );
-
-  const ExpertButton = () => (
-    <div className="flex justify-center">
-      <BookingWidget variant="outline" className={`border-2 ${colorScheme.secondary} text-base md:text-lg px-5 md:px-7 py-3 animate-button-pop`}>
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Speak To An Expert</span>
       </BookingWidget>
     </div>
   );
@@ -188,7 +166,14 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
           
           {/* Added CTA button at the top for desktop visibility without scrolling */}
           {topCTA && topCTA}
-          {nicheFunnel === "course" && !isMobile && !topCTA && <div className="mt-6 mb-2"><SideBySideButtons /></div>}
+          {nicheFunnel === "course" && !isMobile && !topCTA && <div className="mt-6 mb-2">
+            <div className="flex justify-center">
+              <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
+                <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Get My Personalised Demo</span>
+                <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+              </BookingWidget>
+            </div>
+          </div>}
         </div>
       </div>
 
@@ -235,7 +220,14 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             </div>
             
             {benefitsCTA && benefitsCTA}
-            {!benefitsCTA && <div className="mt-8"><DemoButton /></div>}
+            {!benefitsCTA && <div className="mt-8">
+              <div className="flex justify-center">
+                <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
+                  <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Get My Personalised Demo</span>
+                  <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+                </BookingWidget>
+              </div>
+            </div>}
           </div>
         </div>
       </section>
@@ -253,8 +245,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
       description: metric.description
     }))} niche={nicheFunnel} />
 
-      {resultsCTA && resultsCTA}
-      {!resultsCTA && <div className="container-custom max-w-4xl mx-auto text-center"><div className="mt-8"><ExpertButton /></div></div>}
+      {/* Removed the resultsCTA section completely */}
 
       <section id="guarantee" className="py-8 md:py-12 bg-background">
         <div className="container-custom">
@@ -267,7 +258,14 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             <div className="text-center py-4 border-t border-b border-foreground/10">
               <p className="text-lg md:text-xl font-semibold">No long-term contracts. Cancel anytime.</p>
             </div>
-            <div className="mt-6"><DemoButton /></div>
+            <div className="mt-6">
+              <div className="flex justify-center">
+                <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
+                  <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Get My Personalised Demo</span>
+                  <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+                </BookingWidget>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -281,7 +279,12 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
             <div className="flex flex-col items-center mb-6 md:mb-8">
               {finalCTA && finalCTA}
               {!finalCTA && <div className="max-w-lg w-full">
-                <SideBySideButtons />
+                <div className="flex justify-center">
+                  <BookingWidget className={`text-white group text-base md:text-lg px-5 md:px-7 py-3 ${colorScheme.button} ${colorScheme.glow} animate-button-pop`}>
+                    <span className="text-wrap break-words py-0 px-0 mx-0 my-0 text-sm">Get My Personalised Demo</span>
+                    <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
+                  </BookingWidget>
+                </div>
               </div>}
               
               {hasCountdown && <div className="mt-4 md:mt-6 flex items-center text-red-400">

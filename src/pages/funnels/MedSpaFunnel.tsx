@@ -15,15 +15,12 @@ const MedSpaFunnel = () => {
   const isMobile = useIsMobile();
   const ctaText = "Get My Personalised Demo";
   
-  // Top buttons - side by side or stacked on mobile
+  // Top buttons - single demo button now
   const TopButtons = () => (
-    <div className={`mt-6 mb-8 ${isMobile ? 'flex flex-col space-y-4' : 'flex justify-center gap-4'}`}>
+    <div className="mt-6 mb-8 flex justify-center">
       <BookingWidget className="text-white group bg-teal-600 hover:bg-teal-700 shadow-[0_0_20px_rgba(20,184,166,0.6)] animate-button-pop">
         <span className="text-wrap break-words py-0 px-0 mx-0 my-0">{ctaText}</span>
         <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-      </BookingWidget>
-      <BookingWidget variant="outline" className="border-2 border-teal-600 text-teal-600 hover:bg-teal-50 animate-button-pop">
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0">Speak To An Expert</span>
       </BookingWidget>
     </div>
   );
@@ -38,24 +35,12 @@ const MedSpaFunnel = () => {
     </div>
   );
 
-  // Results - Single expert button
-  const ResultsButton = () => (
-    <div className="mt-8 flex justify-center">
-      <BookingWidget variant="outline" className="border-2 border-teal-600 text-teal-600 hover:bg-teal-50 animate-button-pop">
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0">Speak To An Expert</span>
-      </BookingWidget>
-    </div>
-  );
-
-  // Final CTA - side by side on desktop, stacked on mobile
+  // Final CTA - single button now
   const FinalButtons = () => (
-    <div className={`max-w-lg w-full ${isMobile ? 'flex flex-col space-y-4' : 'flex justify-center gap-4'}`}>
+    <div className="max-w-lg w-full flex justify-center">
       <BookingWidget className="text-white group bg-teal-600 hover:bg-teal-700 shadow-[0_0_20px_rgba(20,184,166,0.6)] animate-button-pop">
         <span className="text-wrap break-words py-0 px-0 mx-0 my-0">{ctaText}</span>
         <ArrowRight className="h-5 w-5 ml-2 flex-shrink-0 transition-transform group-hover:translate-x-1" />
-      </BookingWidget>
-      <BookingWidget variant="outline" className="border-2 border-teal-600 text-teal-600 hover:bg-teal-50 animate-button-pop">
-        <span className="text-wrap break-words py-0 px-0 mx-0 my-0">Speak To An Expert</span>
       </BookingWidget>
     </div>
   );
@@ -96,7 +81,6 @@ const MedSpaFunnel = () => {
       showSocialProof={true}
       topCTA={<TopButtons />}
       benefitsCTA={<BenefitsButton />}
-      resultsCTA={<ResultsButton />}
       finalCTA={<FinalButtons />}
     />
   );
