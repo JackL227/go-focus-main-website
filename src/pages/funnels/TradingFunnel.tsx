@@ -47,7 +47,7 @@ const TradingFunnel = () => {
     }
   ];
 
-  const ctaText = "Get My Personalised Demo";
+  const ctaText = "Book My Free Strategy Call";
 
   // Top buttons - single demo button now
   const TopButtons = () => (
