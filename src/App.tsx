@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -52,6 +53,11 @@ const App = () => {
           console.log(`⚡ Time to Interactive: ${Math.round(navigationEntry.domInteractive)}ms`);
           console.log(`✅ Page Load Complete: ${Math.round(navigationEntry.loadEventEnd)}ms`);
         }
+        
+        // Debug routing information
+        console.log('🔍 Current URL:', window.location.href);
+        console.log('🔍 Current pathname:', window.location.pathname);
+        console.log('🔍 Current origin:', window.location.origin);
       }, 1000);
     }
   };
@@ -136,6 +142,8 @@ const App = () => {
                   <Route path="/trading" element={<TradingFunnel />} />
                   <Route path="/course-creator" element={<CourseCreatorFunnel />} />
                   <Route path="/real-estate" element={<RealEstateFunnel />} />
+                  
+                  {/* Catch all route - must be last */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
