@@ -75,13 +75,21 @@ const Auth = () => {
     password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
   });
 
-  // Signup form schema
+  // Signup form schema with enhanced validation
   const signupSchema = z.object({
-    fullName: z.string().min(2, { message: "Full name must be at least 2 characters" }),
+    fullName: z.string()
+      .min(2, { message: "Full name must be at least 2 characters" })
+      .max(100, { message: "Full name must be less than 100 characters" })
+      .regex(/^[a-zA-Z\s-']+$/, { message: "Full name can only contain letters, spaces, hyphens, and apostrophes" }),
     email: z.string().email({ message: "Please enter a valid email address" }),
-    password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
+    password: z.string()
+      .min(8, { message: "Password must be at least 8 characters long" })
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, { message: "Password must contain at least one uppercase letter, one lowercase letter, and one number" }),
     businessType: z.enum(["Trading Mentor", "Med Spa", "Vehicle Aesthetics"]),
-    referralCode: z.string().optional(),
+    referralCode: z.string()
+      .max(50, { message: "Referral code must be less than 50 characters" })
+      .regex(/^[a-zA-Z0-9-_]*$/, { message: "Referral code can only contain letters, numbers, hyphens, and underscores" })
+      .optional(),
   });
 
   // Login form
@@ -105,7 +113,7 @@ const Auth = () => {
     },
   });
 
-  // Handle login
+  // Handle login with improved error handling
   const handleLogin = async (values: z.infer<typeof loginSchema>) => {
     try {
       setIsLoading(true);
@@ -114,7 +122,19 @@ const Auth = () => {
         password: values.password,
       });
 
-      if (error) throw error;
+      if (error) {
+        // Generic error message for security
+        let errorMessage = "Unable to login. Please check your credentials and try again.";
+        
+        // Only show specific errors for known safe cases
+        if (error.message.includes('Invalid login credentials')) {
+          errorMessage = "Invalid email or password. Please try again.";
+        } else if (error.message.includes('Email not confirmed')) {
+          errorMessage = "Please check your email and click the confirmation link before logging in.";
+        }
+        
+        throw new Error(errorMessage);
+      }
       
       toast({
         title: "Login successful",
@@ -131,14 +151,19 @@ const Auth = () => {
     }
   };
 
-  // Handle signup
+  // Handle signup with email redirect configuration
   const handleSignup = async (values: z.infer<typeof signupSchema>) => {
     try {
       setIsLoading(true);
+      
+      // Security: Configure email redirect URL
+      const redirectUrl = `${window.location.origin}/`;
+      
       const { error } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
         options: {
+          emailRedirectTo: redirectUrl,
           data: {
             full_name: values.fullName,
             business_type: values.businessType,
@@ -147,11 +172,23 @@ const Auth = () => {
         },
       });
 
-      if (error) throw error;
+      if (error) {
+        // Generic error message for security
+        let errorMessage = "Unable to create account. Please try again.";
+        
+        // Only show specific errors for known safe cases
+        if (error.message.includes('already registered')) {
+          errorMessage = "An account with this email already exists. Please try logging in instead.";
+        } else if (error.message.includes('Password')) {
+          errorMessage = "Password does not meet requirements. Please choose a stronger password.";
+        }
+        
+        throw new Error(errorMessage);
+      }
       
       toast({
         title: "Signup successful",
-        description: "Please check your email for verification.",
+        description: "Please check your email for verification instructions.",
       });
       
       // Switch to login tab after successful signup
@@ -167,14 +204,16 @@ const Auth = () => {
     }
   };
 
-  // Handle OAuth
+  // Handle OAuth with improved error handling
   const handleOAuth = async (provider: 'google' | 'apple') => {
     try {
       setIsLoading(true);
+      const redirectUrl = `${window.location.origin}/auth/callback`;
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUrl,
         }
       });
 
@@ -183,7 +222,7 @@ const Auth = () => {
       toast({
         variant: "destructive",
         title: `${provider} login failed`,
-        description: error.message || "Unable to login. Please try again.",
+        description: "Unable to login with this provider. Please try again or use email/password.",
       });
       setIsLoading(false);
     }
@@ -223,6 +262,7 @@ const Auth = () => {
                                 className="pl-10" 
                                 {...field} 
                                 disabled={isLoading}
+                                autoComplete="email"
                               />
                             </div>
                           </FormControl>
@@ -245,6 +285,7 @@ const Auth = () => {
                                 className="pl-10" 
                                 {...field} 
                                 disabled={isLoading}
+                                autoComplete="current-password"
                               />
                               <button 
                                 type="button" 
@@ -314,7 +355,12 @@ const Auth = () => {
                         <FormItem>
                           <FormLabel>Full Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="John Doe" {...field} disabled={isLoading} />
+                            <Input 
+                              placeholder="John Doe" 
+                              {...field} 
+                              disabled={isLoading}
+                              autoComplete="name"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -335,6 +381,7 @@ const Auth = () => {
                                 className="pl-10" 
                                 {...field} 
                                 disabled={isLoading}
+                                autoComplete="email"
                               />
                             </div>
                           </FormControl>
@@ -357,6 +404,7 @@ const Auth = () => {
                                 className="pl-10" 
                                 {...field} 
                                 disabled={isLoading}
+                                autoComplete="new-password"
                               />
                               <button 
                                 type="button" 
@@ -402,7 +450,12 @@ const Auth = () => {
                         <FormItem>
                           <FormLabel>Referral Code (Optional)</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter code if you have one" {...field} disabled={isLoading} />
+                            <Input 
+                              placeholder="Enter code if you have one" 
+                              {...field} 
+                              disabled={isLoading}
+                              maxLength={50}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

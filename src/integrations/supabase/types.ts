@@ -43,47 +43,28 @@ export type Database = {
           leads_qualified?: number | null
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "agent_metrics_agent_id_fkey"
-            columns: ["agent_id"]
-            isOneToOne: false
-            referencedRelation: "ai_agents"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      ai_agents: {
+      carbonp_docs: {
         Row: {
-          created_at: string
-          id: string
-          name: string
-          type: string
-          user_id: string
+          content: string
+          embedding: string | null
+          id: number
+          metadata: Json | null
         }
         Insert: {
-          created_at?: string
-          id?: string
-          name: string
-          type: string
-          user_id: string
+          content: string
+          embedding?: string | null
+          id?: number
+          metadata?: Json | null
         }
         Update: {
-          created_at?: string
-          id?: string
-          name?: string
-          type?: string
-          user_id?: string
+          content?: string
+          embedding?: string | null
+          id?: number
+          metadata?: Json | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "ai_agents_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       clients: {
         Row: {
@@ -106,6 +87,27 @@ export type Database = {
           id?: string
           status?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      matts_docs: {
+        Row: {
+          content: string
+          embedding: string | null
+          id: number
+          metadata: Json | null
+        }
+        Insert: {
+          content: string
+          embedding?: string | null
+          id?: number
+          metadata?: Json | null
+        }
+        Update: {
+          content?: string
+          embedding?: string | null
+          id?: number
+          metadata?: Json | null
         }
         Relationships: []
       }
@@ -232,7 +234,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      match_documents: {
+        Args: { query_embedding: string; match_count: number; filter: Json }
+        Returns: {
+          id: number
+          content: string
+          metadata: Json
+          similarity: number
+        }[]
+      }
     }
     Enums: {
       user_role: "admin" | "client"

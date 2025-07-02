@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useAuth } from '@/contexts/AuthContext';
+import { sanitizeText } from '@/utils/sanitization';
 
 // Define the allowed status values as a type
 type ClientStatus = "active" | "pending" | "disabled";
@@ -44,7 +45,7 @@ interface Client {
 }
 
 const Clients = () => {
-  const { user } = useAuth();
+  const { userProfile } = useAuth();
   const [clients, setClients] = useState<Client[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isAddClientDialogOpen, setIsAddClientDialogOpen] = useState<boolean>(false);
@@ -80,15 +81,22 @@ const Clients = () => {
 
   const addClient = async () => {
     try {
-      if (!newClientName.trim()) {
-        toast.error('Please enter a company name');
+      const sanitizedName = sanitizeText(newClientName.trim());
+      
+      if (!sanitizedName || sanitizedName.length < 2) {
+        toast.error('Please enter a valid company name (at least 2 characters)');
+        return;
+      }
+
+      if (sanitizedName.length > 100) {
+        toast.error('Company name must be less than 100 characters');
         return;
       }
 
       const { data, error } = await supabase
         .from('clients')
         .insert([{
-          company_name: newClientName,
+          company_name: sanitizedName,
           status: newClientStatus,
         }])
         .select();
@@ -112,7 +120,8 @@ const Clients = () => {
     fetchClients();
   }, []);
 
-  if (!user || user.role !== 'admin') {
+  // Security: Check if user has admin role using userProfile
+  if (!userProfile || userProfile.role !== 'admin') {
     return (
       <div className="container mx-auto p-6 text-center">
         <h1 className="text-2xl font-semibold mb-4">Unauthorized</h1>
@@ -142,6 +151,7 @@ const Clients = () => {
                   placeholder="Enter company name"
                   value={newClientName}
                   onChange={(e) => setNewClientName(e.target.value)}
+                  maxLength={100}
                 />
               </div>
               <div className="space-y-2">

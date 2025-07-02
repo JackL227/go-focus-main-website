@@ -34,6 +34,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
+import { sanitizeUserContent, sanitizeText, checkRateLimit } from '@/utils/sanitization';
 
 interface SupportTicket {
   id: string;
@@ -85,6 +86,7 @@ const Support = () => {
   });
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch tickets
   useEffect(() => {
@@ -125,6 +127,29 @@ const Support = () => {
     fetchTickets();
   }, [user, userProfile, isAdmin, toast]);
 
+  const validateFormData = (data: TicketFormData): string | null => {
+    const sanitizedSubject = sanitizeText(data.subject.trim());
+    const sanitizedDescription = sanitizeText(data.description.trim());
+    
+    if (!sanitizedSubject || sanitizedSubject.length < 5) {
+      return 'Subject must be at least 5 characters long';
+    }
+    
+    if (sanitizedSubject.length > 200) {
+      return 'Subject must be less than 200 characters';
+    }
+    
+    if (!sanitizedDescription || sanitizedDescription.length < 10) {
+      return 'Description must be at least 10 characters long';
+    }
+    
+    if (sanitizedDescription.length > 2000) {
+      return 'Description must be less than 2000 characters';
+    }
+    
+    return null;
+  };
+
   const handleAddTicket = async () => {
     if (!user?.id || !userProfile?.client_id) {
       toast({
@@ -134,16 +159,43 @@ const Support = () => {
       });
       return;
     }
+
+    // Rate limiting check
+    if (!checkRateLimit(user.id, 3, 300000)) { // 3 tickets per 5 minutes
+      toast({
+        variant: "destructive",
+        title: "Rate Limit Exceeded",
+        description: "Please wait before submitting another ticket."
+      });
+      return;
+    }
+
+    // Validate form data
+    const validationError = validateFormData(formData);
+    if (validationError) {
+      toast({
+        variant: "destructive",
+        title: "Validation Error",
+        description: validationError
+      });
+      return;
+    }
     
     try {
+      setIsSubmitting(true);
+      
+      // Sanitize inputs
+      const sanitizedSubject = sanitizeUserContent(formData.subject);
+      const sanitizedDescription = sanitizeUserContent(formData.description);
+      
       const { data, error } = await supabase
         .from('support_tickets')
         .insert([
           {
             client_id: userProfile.client_id,
             user_id: user.id,
-            subject: formData.subject,
-            description: formData.description,
+            subject: sanitizedSubject,
+            description: sanitizedDescription,
             priority: formData.priority,
             category: formData.category,
             status: 'open'
@@ -166,12 +218,23 @@ const Support = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to submit support ticket."
+        description: "Failed to submit support ticket. Please try again."
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleUpdateTicketStatus = async (ticketId: string, newStatus: string) => {
+    if (!isAdmin) {
+      toast({
+        variant: "destructive",
+        title: "Unauthorized",
+        description: "You don't have permission to update ticket status."
+      });
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from('support_tickets')
@@ -218,6 +281,13 @@ const Support = () => {
       priority: 'medium',
       category: 'technical',
     });
+  };
+
+  const handleFormDataChange = (field: keyof TicketFormData, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   return (
@@ -316,18 +386,19 @@ const Support = () => {
                 <Input
                   id="subject"
                   value={formData.subject}
-                  onChange={(e) =>
-                    setFormData({ ...formData, subject: e.target.value })
-                  }
+                  onChange={(e) => handleFormDataChange('subject', e.target.value)}
+                  maxLength={200}
+                  placeholder="Brief description of your issue"
                 />
+                <div className="text-xs text-muted-foreground">
+                  {formData.subject.length}/200 characters
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="category">Category</Label>
                 <Select
                   value={formData.category}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, category: value })
-                  }
+                  onValueChange={(value) => handleFormDataChange('category', value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select category" />
@@ -345,9 +416,7 @@ const Support = () => {
                 <Label htmlFor="priority">Priority</Label>
                 <Select
                   value={formData.priority}
-                  onValueChange={(value) =>
-                    setFormData({ ...formData, priority: value as any })
-                  }
+                  onValueChange={(value) => handleFormDataChange('priority', value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select priority" />
@@ -366,11 +435,13 @@ const Support = () => {
                   id="description"
                   rows={5}
                   value={formData.description}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
-                  }
+                  onChange={(e) => handleFormDataChange('description', e.target.value)}
                   placeholder="Please describe your issue in detail"
+                  maxLength={2000}
                 />
+                <div className="text-xs text-muted-foreground">
+                  {formData.description.length}/2000 characters
+                </div>
               </div>
             </div>
             <DialogFooter>
@@ -380,10 +451,13 @@ const Support = () => {
                   setIsAddDialogOpen(false);
                   resetForm();
                 }}
+                disabled={isSubmitting}
               >
                 Cancel
               </Button>
-              <Button onClick={handleAddTicket}>Submit Ticket</Button>
+              <Button onClick={handleAddTicket} disabled={isSubmitting}>
+                {isSubmitting ? 'Submitting...' : 'Submit Ticket'}
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

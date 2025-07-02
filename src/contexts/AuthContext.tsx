@@ -75,18 +75,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     // First set up the auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_, session) => {
+      (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.id);
+        
+        // Only synchronous state updates here to prevent deadlock
         setSession(session);
         setUser(session?.user ?? null);
         
+        // Defer profile fetching to prevent recursion/deadlock
         if (session?.user) {
-          const profile = await fetchUserProfile(session.user.id);
-          setUserProfile(profile);
+          setTimeout(() => {
+            fetchUserProfile(session.user.id).then(profile => {
+              if (profile) {
+                setUserProfile(profile);
+              }
+              setIsLoading(false);
+            }).catch(error => {
+              console.error('Error fetching profile after auth change:', error);
+              setIsLoading(false);
+            });
+          }, 0);
         } else {
           setUserProfile(null);
+          setIsLoading(false);
         }
-        
-        setIsLoading(false);
       }
     );
 
@@ -100,6 +112,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUserProfile(profile);
       }
       
+      setIsLoading(false);
+    }).catch(error => {
+      console.error('Error getting initial session:', error);
       setIsLoading(false);
     });
 
