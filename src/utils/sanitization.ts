@@ -1,78 +1,48 @@
-
-// Utility functions for input sanitization and validation
-
-/**
- * Sanitizes HTML content to prevent XSS attacks
- */
-export const sanitizeHtml = (input: string): string => {
-  if (!input) return '';
-  
-  // Basic HTML entity encoding
-  return input
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
-    .replace(/\//g, '&#x2F;');
-};
-
-/**
- * Sanitizes text input by removing potentially dangerous characters
- */
 export const sanitizeText = (input: string): string => {
-  if (!input) return '';
+  if (!input || typeof input !== 'string') {
+    return '';
+  }
   
-  // Remove null bytes and control characters except newlines and tabs
-  return input.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+  // Remove potential XSS patterns
+  return input
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/javascript:/gi, '')
+    .replace(/on\w+\s*=/gi, '')
+    .replace(/style\s*=/gi, '')
+    .trim();
 };
 
-/**
- * Validates and sanitizes email addresses
- */
 export const sanitizeEmail = (email: string): string => {
-  if (!email) return '';
+  if (!email || typeof email !== 'string') {
+    return '';
+  }
   
   // Basic email sanitization - remove dangerous characters
   return email
     .toLowerCase()
-    .trim()
-    .replace(/[<>"\s]/g, '');
+    .replace(/[<>'"]/g, '')
+    .trim();
 };
 
-/**
- * Sanitizes user-generated content for database storage
- */
-export const sanitizeUserContent = (content: string): string => {
-  if (!content) return '';
+export const sanitizePhoneNumber = (phone: string): string => {
+  if (!phone || typeof phone !== 'string') {
+    return '';
+  }
   
-  // Sanitize HTML and remove control characters
-  return sanitizeHtml(sanitizeText(content.trim()));
+  // Keep only numbers, spaces, hyphens, parentheses, and plus sign
+  return phone.replace(/[^0-9\s\-\(\)\+]/g, '').trim();
 };
 
-/**
- * Rate limiting helper - simple in-memory store
- * In production, use Redis or similar
- */
-const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
-
-export const checkRateLimit = (
-  identifier: string, 
-  maxRequests: number = 5, 
-  windowMs: number = 60000
-): boolean => {
-  const now = Date.now();
-  const entry = rateLimitStore.get(identifier);
+export const validateBusinessType = (businessType: string): boolean => {
+  const allowedTypes = [
+    'trading_mentor',
+    'med_spa',
+    'fitness_influencer',
+    'real_estate',
+    'course_creator',
+    'other'
+  ];
   
-  if (!entry || now > entry.resetTime) {
-    rateLimitStore.set(identifier, { count: 1, resetTime: now + windowMs });
-    return true;
-  }
-  
-  if (entry.count >= maxRequests) {
-    return false;
-  }
-  
-  entry.count++;
-  return true;
+  return allowedTypes.includes(businessType.toLowerCase());
 };

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
+import { sanitizeText, sanitizeEmail, validateBusinessType } from '@/utils/sanitization';
 
 const Settings = () => {
   const { user, userProfile, refreshProfile } = useAuth();
@@ -36,11 +37,30 @@ const Settings = () => {
     try {
       setIsSaving(true);
       
+      // Sanitize inputs
+      const sanitizedFullName = sanitizeText(formData.fullName);
+      const sanitizedBusinessType = sanitizeText(formData.businessType);
+      
+      // Validation
+      if (!sanitizedFullName || sanitizedFullName.length < 2) {
+        toast({
+          variant: "destructive",
+          title: "Validation Error",
+          description: "Full name must be at least 2 characters long."
+        });
+        return;
+      }
+      
+      if (sanitizedBusinessType && !validateBusinessType(sanitizedBusinessType) && sanitizedBusinessType !== 'other') {
+        // Allow 'other' or custom business types for flexibility
+        console.log('Custom business type:', sanitizedBusinessType);
+      }
+      
       const { error } = await supabase
         .from('user_profiles')
         .update({
-          full_name: formData.fullName,
-          business_type: formData.businessType
+          full_name: sanitizedFullName,
+          business_type: sanitizedBusinessType
         })
         .eq('id', user.id);
 
@@ -97,6 +117,7 @@ const Settings = () => {
                 value={formData.fullName}
                 onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                 disabled={isSaving}
+                maxLength={100}
               />
             </div>
             <div className="space-y-2">
@@ -106,6 +127,7 @@ const Settings = () => {
                 value={formData.businessType}
                 onChange={(e) => setFormData({ ...formData, businessType: e.target.value })}
                 disabled={isSaving}
+                maxLength={50}
               />
             </div>
           </CardContent>

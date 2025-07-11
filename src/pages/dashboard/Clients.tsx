@@ -10,27 +10,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-  DialogDescription,
-} from '@/components/ui/dialog';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { toast } from "sonner";
 import { useAuth } from '@/contexts/AuthContext';
 import { sanitizeText } from '@/utils/sanitization';
+import DashboardLayout from '@/components/dashboard/DashboardLayout';
+import AddClientDialog from '@/components/dashboard/AddClientDialog';
 
 // Define the allowed status values as a type
 type ClientStatus = "active" | "pending" | "disabled";
@@ -48,9 +33,6 @@ const Clients = () => {
   const { userProfile } = useAuth();
   const [clients, setClients] = useState<Client[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isAddClientDialogOpen, setIsAddClientDialogOpen] = useState<boolean>(false);
-  const [newClientName, setNewClientName] = useState<string>("");
-  const [newClientStatus, setNewClientStatus] = useState<ClientStatus>("pending");
   
   const fetchClients = async () => {
     try {
@@ -79,25 +61,25 @@ const Clients = () => {
     }
   };
 
-  const addClient = async () => {
+  const addClient = async (clientName: string, clientStatus: ClientStatus) => {
     try {
-      const sanitizedName = sanitizeText(newClientName.trim());
+      const sanitizedName = sanitizeText(clientName.trim());
       
       if (!sanitizedName || sanitizedName.length < 2) {
         toast.error('Please enter a valid company name (at least 2 characters)');
-        return;
+        return false;
       }
 
       if (sanitizedName.length > 100) {
         toast.error('Company name must be less than 100 characters');
-        return;
+        return false;
       }
 
       const { data, error } = await supabase
         .from('clients')
         .insert([{
           company_name: sanitizedName,
-          status: newClientStatus,
+          status: clientStatus,
         }])
         .select();
 
@@ -107,12 +89,11 @@ const Clients = () => {
 
       toast.success('Client added successfully');
       fetchClients();
-      setIsAddClientDialogOpen(false);
-      setNewClientName("");
-      setNewClientStatus("pending");
+      return true;
     } catch (error) {
       console.error('Error adding client:', error);
       toast.error('Failed to add client');
+      return false;
     }
   };
 
@@ -123,103 +104,68 @@ const Clients = () => {
   // Security: Check if user has admin role using userProfile
   if (!userProfile || userProfile.role !== 'admin') {
     return (
-      <div className="container mx-auto p-6 text-center">
-        <h1 className="text-2xl font-semibold mb-4">Unauthorized</h1>
-        <p>You do not have permission to view this page.</p>
-      </div>
+      <DashboardLayout>
+        <div className="container mx-auto p-6 text-center">
+          <h1 className="text-2xl font-semibold mb-4">Unauthorized</h1>
+          <p>You do not have permission to view this page.</p>
+        </div>
+      </DashboardLayout>
     );
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Clients</h1>
-        <Dialog open={isAddClientDialogOpen} onOpenChange={setIsAddClientDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>Add Client</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add New Client</DialogTitle>
-              <DialogDescription>Add a new client to your dashboard.</DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div className="space-y-2">
-                <label htmlFor="companyName">Company Name</label>
-                <Input
-                  id="companyName"
-                  placeholder="Enter company name"
-                  value={newClientName}
-                  onChange={(e) => setNewClientName(e.target.value)}
-                  maxLength={100}
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="status">Status</label>
-                <Select value={newClientStatus} onValueChange={(value: ClientStatus) => setNewClientStatus(value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="disabled">Disabled</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsAddClientDialogOpen(false)}>Cancel</Button>
-              <Button onClick={addClient}>Add Client</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-      
-      {isLoading ? (
-        <div className="text-center py-10">Loading clients...</div>
-      ) : (
-        <div className="rounded-md border">
-          <Table>
-            <TableCaption>A list of all your clients.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[250px]">Company Name</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {clients.length > 0 ? (
-                clients.map((client) => (
-                  <TableRow key={client.id}>
-                    <TableCell className="font-medium">{client.company_name}</TableCell>
-                    <TableCell>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        client.status === 'active' ? 'bg-green-100 text-green-800' :
-                        client.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
-                        {client.status.charAt(0).toUpperCase() + client.status.slice(1)}
-                      </span>
-                    </TableCell>
-                    <TableCell>{new Date(client.created_at).toLocaleDateString()}</TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="sm">View</Button>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={4} className="text-center">No clients found</TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+    <DashboardLayout>
+      <div className="container mx-auto p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-semibold">Clients</h1>
+          <AddClientDialog onAddClient={addClient} />
         </div>
-      )}
-    </div>
+        
+        {isLoading ? (
+          <div className="text-center py-10">Loading clients...</div>
+        ) : (
+          <div className="rounded-md border">
+            <Table>
+              <TableCaption>A list of all your clients.</TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[250px]">Company Name</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Created</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {clients.length > 0 ? (
+                  clients.map((client) => (
+                    <TableRow key={client.id}>
+                      <TableCell className="font-medium">{client.company_name}</TableCell>
+                      <TableCell>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          client.status === 'active' ? 'bg-green-100 text-green-800' :
+                          client.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-red-100 text-red-800'
+                        }`}>
+                          {client.status.charAt(0).toUpperCase() + client.status.slice(1)}
+                        </span>
+                      </TableCell>
+                      <TableCell>{new Date(client.created_at).toLocaleDateString()}</TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="sm">View</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center">No clients found</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </div>
+    </DashboardLayout>
   );
 };
 
