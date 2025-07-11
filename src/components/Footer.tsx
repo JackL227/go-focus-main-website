@@ -91,7 +91,7 @@ const Footer = () => {
         
         {/* Copyright */}
         <div className="pt-8 border-t border-foreground/10 text-center text-foreground/50 text-sm">
-          <p>&copy; {new Date().getFullYear()} Go Focus AI. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} IA GFOCUS INC. All rights reserved. Operated under the brand GoFocus AI.</p>
         </div>
       </div>
     </footer>

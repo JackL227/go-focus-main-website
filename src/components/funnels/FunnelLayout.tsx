@@ -319,7 +319,7 @@ const FunnelLayout: React.FC<FunnelLayoutProps> = ({
                 <p className="mt-1 text-center md:text-right">
                   <a href="tel:+15145667802">(514) 566-7802</a>
                 </p>
-                <p className="mt-1">© {new Date().getFullYear()} Go Focus AI. All rights reserved.</p>
+                <p className="mt-1">© {new Date().getFullYear()} IA GFOCUS INC. All rights reserved. Operated under the brand GoFocus AI.</p>
               </div>
             </div>
           </div>
