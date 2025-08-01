@@ -46,3 +46,28 @@ export const validateBusinessType = (businessType: string): boolean => {
   
   return allowedTypes.includes(businessType.toLowerCase());
 };
+
+export const sanitizeUserContent = (input: string): string => {
+  return sanitizeText(input);
+};
+
+// Simple in-memory rate limiting
+const rateLimitStore = new Map<string, number[]>();
+
+export const checkRateLimit = (userId: string, maxRequests: number, windowMs: number): boolean => {
+  const now = Date.now();
+  const userRequests = rateLimitStore.get(userId) || [];
+  
+  // Filter out requests outside the window
+  const recentRequests = userRequests.filter(timestamp => now - timestamp < windowMs);
+  
+  if (recentRequests.length >= maxRequests) {
+    return false;
+  }
+  
+  // Add current request
+  recentRequests.push(now);
+  rateLimitStore.set(userId, recentRequests);
+  
+  return true;
+};
