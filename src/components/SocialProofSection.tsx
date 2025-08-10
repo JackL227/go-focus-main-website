@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 import BookingWidget from './BookingWidget';
 import AIAgentDemo from './AIAgentDemo';
 import ChannelsSection from './ChannelsSection';
-
 const testimonials = [{
   id: 1,
   name: "Daniel",
@@ -27,27 +26,22 @@ const testimonials = [{
   content: "As an engineering and energy auditing firm our time is critical. The AI agent streamlines our lead qualification process ensuring we only engage with serious clients who are genuinely interested in our services.",
   rating: 5
 }];
-
 const SocialProofSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [showAgentDemo, setShowAgentDemo] = useState(false);
   const [selectedNiche, setSelectedNiche] = useState<'trading' | 'course'>('trading');
   const maxSlides = Math.ceil(testimonials.length / 2);
-
   const nextSlide = () => {
     setActiveSlide(prev => (prev + 1) % maxSlides);
   };
-
   const prevSlide = () => {
     setActiveSlide(prev => (prev - 1 + maxSlides) % maxSlides);
   };
-
   const handleDemoClick = (niche: 'trading' | 'course') => {
     setSelectedNiche(niche);
     setShowAgentDemo(true);
   };
-
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -59,19 +53,16 @@ const SocialProofSection = () => {
     }, {
       threshold: 0.1
     });
-
     const section = sectionRef.current;
     if (section) {
       observer.observe(section);
     }
-
     return () => {
       if (section) {
         observer.unobserve(section);
       }
     };
   }, []);
-
   return <section id="testimonials" className="relative py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#071020] to-[#050A14] z-0"></div>
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
@@ -136,33 +127,7 @@ const SocialProofSection = () => {
               </span>
             </BookingWidget>
             
-            <div className="relative group">
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="border-primary/60 text-primary hover:bg-primary/10 w-full sm:w-auto"
-                onClick={() => handleDemoClick('trading')}
-              >
-                See AI Agent in Action
-              </Button>
-              
-              <div className="hidden group-hover:block absolute top-full left-0 mt-2 bg-background border border-border rounded-lg shadow-lg z-10">
-                <div className="p-2 w-48">
-                  <button 
-                    className="w-full text-left px-3 py-2 rounded hover:bg-primary/10 transition-colors"
-                    onClick={() => handleDemoClick('trading')}
-                  >
-                    🔁 Trading Mentor
-                  </button>
-                  <button 
-                    className="w-full text-left px-3 py-2 rounded hover:bg-primary/10 transition-colors"
-                    onClick={() => handleDemoClick('course')}
-                  >
-                    📚 Course Creator
-                  </button>
-                </div>
-              </div>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -170,5 +135,4 @@ const SocialProofSection = () => {
       {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} initialNiche={selectedNiche} />}
     </section>;
 };
-
 export default SocialProofSection;
