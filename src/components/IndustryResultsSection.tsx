@@ -134,9 +134,6 @@ const IndustryResultsSection = () => {
                     ))}
                   </div>
                   
-                  <button className="mt-auto text-sm text-primary hover:underline text-left">
-                    {industry.cta}
-                  </button>
                 </CardContent>
               </Card>
             </div>
