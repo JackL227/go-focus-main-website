@@ -30,7 +30,7 @@ const BookingWidget = ({
     if (calInitialized.current) return;
     
     try {
-      // Initialize Cal using the provided script approach
+      // Initialize Cal using the floating popup approach
       (function (C, A, L) { 
         let p = function (a: any, ar: any) { a.q.push(ar); }; 
         let d = C.document; 
@@ -60,9 +60,16 @@ const BookingWidget = ({
       
       // Initialize with the provided configuration
       window.Cal("init", "30-minute-strategy-call-with-gofocus-ai", {origin:"https://app.cal.com"});
+      
+      // Set up the floating button
+      window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]("floatingButton", {
+        "calLink": "ethan-gofocus.ai/30-minute-strategy-call-with-gofocus-ai",
+        "config": {"layout": "month_view"}
+      });
+      
       window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]("ui", {
-        hideEventTypeDetails: false,
-        layout: "month_view"
+        "hideEventTypeDetails": false,
+        "layout": "month_view"
       });
 
       // Set up event tracking
@@ -136,8 +143,9 @@ const BookingWidget = ({
         return;
       }
 
-      // Use the namespace to show the modal
+      // Trigger the floating button popup
       if (window.Cal.ns && window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]) {
+        // Simulate clicking the floating button or open the popup directly
         window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]("showModal", { 
           calLink: "ethan-gofocus.ai/30-minute-strategy-call-with-gofocus-ai",
         });
@@ -146,7 +154,7 @@ const BookingWidget = ({
         window.open("https://cal.com/ethan-gofocus.ai/30-minute-strategy-call-with-gofocus-ai", "_blank");
       }
     } catch (error) {
-      console.error("Error opening Cal.com modal:", error);
+      console.error("Error opening Cal.com popup:", error);
       // Fallback: open directly in new tab
       window.open("https://cal.com/ethan-gofocus.ai/30-minute-strategy-call-with-gofocus-ai", "_blank");
     }
