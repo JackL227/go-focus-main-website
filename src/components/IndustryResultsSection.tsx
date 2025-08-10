@@ -111,7 +111,7 @@ const IndustryResultsSection = () => {
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <Card className={cn(
-                "h-full aspect-square border-0 bg-gradient-to-b flex flex-col", 
+                "h-80 border-0 bg-gradient-to-b flex flex-col", 
                 industry.color,
                 "hover-lift overflow-hidden"
               )}>
