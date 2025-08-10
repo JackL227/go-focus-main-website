@@ -20,7 +20,7 @@ const industries = [
     emoji: "🍽",
     icon: Utensils,
     description: "Handle all inbound calls for reservations, orders, and FAQs with human-like AI — reducing missed calls and boosting revenue during peak hours.",
-    results: ["92% reduction in missed calls", "2.8x more orders handled without staff involvement", "150 hours saved monthly"],
+    results: ["99% reduction in missed calls", "2.8x more orders handled without staff involvement", "150 hours saved monthly"],
     color: "from-orange-600/30 via-orange-400/20 to-orange-600/30",
     cta: "View Restaurant Solution →"
   },
