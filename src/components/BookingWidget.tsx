@@ -30,15 +30,7 @@ const BookingWidget = ({
     if (calInitialized.current) return;
     
     try {
-      // Add the Cal.com script to the head if not already present
-      if (!document.querySelector('script[src="https://app.cal.com/embed/embed.js"]')) {
-        const script = document.createElement('script');
-        script.src = "https://app.cal.com/embed/embed.js";
-        script.async = true;
-        document.head.appendChild(script);
-      }
-
-      // Initialize Cal using the embed code approach
+      // Initialize Cal using the provided script approach
       (function (C, A, L) { 
         let p = function (a: any, ar: any) { a.q.push(ar); }; 
         let d = C.document; 
@@ -48,6 +40,7 @@ const BookingWidget = ({
           if (!cal.loaded) { 
             cal.ns = {}; 
             cal.q = cal.q || []; 
+            d.head.appendChild(d.createElement("script")).src = A; 
             cal.loaded = true; 
           } 
           if (ar[0] === L) { 
@@ -65,31 +58,35 @@ const BookingWidget = ({
         }; 
       })(window, "https://app.cal.com/embed/embed.js", "init");
       
-      // Initialize with the new namespace
+      // Initialize with the provided configuration
       window.Cal("init", "30-minute-strategy-call-with-gofocus-ai", {origin:"https://app.cal.com"});
       window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]("ui", {
         hideEventTypeDetails: false,
         layout: "month_view"
       });
-      
+
       // Set up event tracking
-      const cal = await getCalApi();
-      if (cal) {
-        cal("on", {
-          action: "BOOKING_PAGE_LOADED",
-          callback: () => {
-            trackEvent('InitiateBooking');
-            console.log("Meta Pixel: Tracked InitiateBooking event");
-          }
-        });
-        
-        cal("on", {
-          action: "BOOKING_SUCCESSFUL",
-          callback: () => {
-            trackEvent('Schedule');
-            console.log("Meta Pixel: Tracked Schedule event");
-          }
-        });
+      try {
+        const cal = await getCalApi();
+        if (cal) {
+          cal("on", {
+            action: "BOOKING_PAGE_LOADED",
+            callback: () => {
+              trackEvent('InitiateBooking');
+              console.log("Meta Pixel: Tracked InitiateBooking event");
+            }
+          });
+          
+          cal("on", {
+            action: "BOOKING_SUCCESSFUL",
+            callback: () => {
+              trackEvent('Schedule');
+              console.log("Meta Pixel: Tracked Schedule event");
+            }
+          });
+        }
+      } catch (trackingError) {
+        console.log("Cal API tracking setup failed, but widget will still work:", trackingError);
       }
       
       calInitialized.current = true;
@@ -129,16 +126,29 @@ const BookingWidget = ({
     console.log("Meta Pixel: Tracked BookingButtonClick event");
     
     try {
-      // Use the new namespace for showing the modal
-      if (window.Cal && window.Cal.ns && window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]) {
+      // Ensure Cal is initialized first
+      if (!window.Cal) {
+        initCalCom();
+        // Give it a moment to initialize
+        setTimeout(() => {
+          handleClick();
+        }, 500);
+        return;
+      }
+
+      // Use the namespace to show the modal
+      if (window.Cal.ns && window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]) {
         window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]("showModal", { 
           calLink: "ethan-gofocus.ai/30-minute-strategy-call-with-gofocus-ai",
         });
       } else {
-        console.error("Cal.com namespace not available");
+        // Fallback: open directly in new tab
+        window.open("https://cal.com/ethan-gofocus.ai/30-minute-strategy-call-with-gofocus-ai", "_blank");
       }
     } catch (error) {
       console.error("Error opening Cal.com modal:", error);
+      // Fallback: open directly in new tab
+      window.open("https://cal.com/ethan-gofocus.ai/30-minute-strategy-call-with-gofocus-ai", "_blank");
     }
   };
 
