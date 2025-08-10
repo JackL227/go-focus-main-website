@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button } from './ui/button';
+import BookingWidget from './BookingWidget';
 
 const ServiceSlideshow = () => {
   const niches = [
@@ -56,10 +56,20 @@ const ServiceSlideshow = () => {
         {niches.map((niche, index) => (
           <div 
             key={index}
-            className="relative aspect-square flex flex-col justify-center items-center rounded-xl overflow-hidden bg-gradient-to-br from-background/90 to-background/60 border border-primary/20 backdrop-blur-sm p-6 hover:border-primary/40 transition-all duration-300"
+            className="relative aspect-square flex flex-col justify-between rounded-xl overflow-hidden bg-gradient-to-br from-background/90 to-background/60 border border-primary/20 backdrop-blur-sm p-4 hover:border-primary/40 transition-all duration-300"
           >
-            <div className="text-6xl mb-4">{niche.emoji}</div>
-            <h3 className="text-lg font-semibold text-primary text-center">{niche.title}</h3>
+            <div className="flex flex-col items-center flex-1 justify-center">
+              <div className="text-4xl mb-3">{niche.emoji}</div>
+              <h3 className="text-base font-semibold text-primary text-center">{niche.title}</h3>
+            </div>
+            
+            <BookingWidget 
+              variant="outline" 
+              size="sm"
+              className="w-full mt-3 text-xs border-primary/40 text-primary hover:bg-primary/10"
+            >
+              {niche.cta}
+            </BookingWidget>
           </div>
         ))}
       </div>
