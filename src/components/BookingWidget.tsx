@@ -61,12 +61,6 @@ const BookingWidget = ({
       // Initialize with the provided configuration
       window.Cal("init", "30-minute-strategy-call-with-gofocus-ai", {origin:"https://app.cal.com"});
       
-      // Set up the floating button
-      window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]("floatingButton", {
-        "calLink": "ethan-gofocus.ai/30-minute-strategy-call-with-gofocus-ai",
-        "config": {"layout": "month_view"}
-      });
-      
       window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]("ui", {
         "hideEventTypeDetails": false,
         "layout": "month_view"
