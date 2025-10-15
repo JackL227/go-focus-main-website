@@ -23,6 +23,7 @@ const TradingFunnel = lazy(() => import("./pages/funnels/TradingFunnel"));
 const CourseCreatorFunnel = lazy(() => import("./pages/funnels/CourseCreatorFunnel"));
 const RealEstateFunnel = lazy(() => import("./pages/funnels/RealEstateFunnel"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Create a query client with optimized settings
@@ -106,10 +107,11 @@ const App = () => {
                 </div>
               </div>}>
                 <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/auth/callback" element={<AuthCallback />} />
-                  <Route path="/thank-you" element={<ThankYou />} />
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/thank-you" element={<ThankYou />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   
                   {/* Protected Dashboard Routes */}
                   <Route path="/dashboard" element={

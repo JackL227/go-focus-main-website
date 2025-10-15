@@ -56,7 +56,7 @@ const Footer = () => {
                 <a href="/fitness" className="text-foreground/70 hover:text-primary transition-colors">Fitness Coaches</a>
               </li>
               <li>
-                <a href="#" className="text-foreground/70 hover:text-primary transition-colors">Privacy Policy</a>
+                <a href="/privacy-policy" className="text-foreground/70 hover:text-primary transition-colors">Privacy Policy</a>
               </li>
               <li>
                 <a href="#" className="text-foreground/70 hover:text-primary transition-colors">Terms of Service</a>
