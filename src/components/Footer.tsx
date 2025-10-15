@@ -1,10 +1,7 @@
-
 import React from 'react';
 import { Mail, Phone, Shield, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
-
 const Footer = () => {
-  return (
-    <footer className="bg-[#050A14] text-foreground pt-16 pb-8 border-t border-foreground/10">
+  return <footer className="bg-[#050A14] text-foreground pt-16 pb-8 border-t border-foreground/10">
       <div className="container-custom">
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Company Info */}
@@ -13,9 +10,7 @@ const Footer = () => {
               <img src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" alt="GoFocus Logo" className="h-24 w-auto" />
             </div>
             
-            <p className="text-foreground/70 mb-6">
-              We help Trading Mentors, Med Spas, and Fitness Coaches convert more leads into revenue using custom-trained AI agents that respond, qualify, and book clients 24/7.
-            </p>
+            <p className="text-foreground/70 mb-6">We service business owners </p>
             
             <div className="flex space-x-4">
               <a href="#" className="text-foreground/50 hover:text-primary transition-colors">
@@ -94,8 +89,6 @@ const Footer = () => {
           <p>&copy; {new Date().getFullYear()} IA GFOCUS INC. All rights reserved. Operated under the brand GoFocus AI.</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
