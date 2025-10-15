@@ -10,7 +10,7 @@ const Footer = () => {
               <img src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" alt="GoFocus Logo" className="h-24 w-auto" />
             </div>
             
-            <p className="text-foreground/70 mb-6">We service business owners </p>
+            <p className="text-foreground/70 mb-6">We service business owners with AI powered Marketing systems in order to scale operations more efficiently, and with less manual labour. </p>
             
             <div className="flex space-x-4">
               <a href="#" className="text-foreground/50 hover:text-primary transition-colors">
