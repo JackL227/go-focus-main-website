@@ -59,9 +59,9 @@ const BookingWidget = ({
       })(window, "https://app.cal.com/embed/embed.js", "init");
       
       // Initialize with the provided configuration
-      window.Cal("init", "30-minute-strategy-call-with-gofocus-ai", {origin:"https://app.cal.com"});
+      window.Cal("init", "45-minute-strategy-call-with-gofocus-ai", {origin:"https://app.cal.com"});
       
-      window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]("ui", {
+      window.Cal.ns["45-minute-strategy-call-with-gofocus-ai"]("ui", {
         "hideEventTypeDetails": false,
         "layout": "month_view"
       });
@@ -138,19 +138,19 @@ const BookingWidget = ({
       }
 
       // Trigger the floating button popup
-      if (window.Cal.ns && window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]) {
+      if (window.Cal.ns && window.Cal.ns["45-minute-strategy-call-with-gofocus-ai"]) {
         // Simulate clicking the floating button or open the popup directly
-        window.Cal.ns["30-minute-strategy-call-with-gofocus-ai"]("showModal", { 
-          calLink: "ethan-gofocus.ai/30-minute-strategy-call-with-gofocus-ai",
+        window.Cal.ns["45-minute-strategy-call-with-gofocus-ai"]("showModal", { 
+          calLink: "ethan-gofocus.ai/45-minute-strategy-call-with-gofocus-ai",
         });
       } else {
         // Fallback: open directly in new tab
-        window.open("https://cal.com/ethan-gofocus.ai/30-minute-strategy-call-with-gofocus-ai", "_blank");
+        window.open("https://cal.com/ethan-gofocus.ai/45-minute-strategy-call-with-gofocus-ai", "_blank");
       }
     } catch (error) {
       console.error("Error opening Cal.com popup:", error);
       // Fallback: open directly in new tab
-      window.open("https://cal.com/ethan-gofocus.ai/30-minute-strategy-call-with-gofocus-ai", "_blank");
+      window.open("https://cal.com/ethan-gofocus.ai/45-minute-strategy-call-with-gofocus-ai", "_blank");
     }
   };
 
@@ -161,8 +161,8 @@ const BookingWidget = ({
   return (
     <Button 
       ref={buttonRef}
-      data-cal-link="ethan-gofocus.ai/30-minute-strategy-call-with-gofocus-ai"
-      data-cal-namespace="30-minute-strategy-call-with-gofocus-ai"
+      data-cal-link="ethan-gofocus.ai/45-minute-strategy-call-with-gofocus-ai"
+      data-cal-namespace="45-minute-strategy-call-with-gofocus-ai"
       data-cal-config='{"layout":"month_view"}'
       className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow ${buttonClassName}`}
       variant={mobileVariant}
