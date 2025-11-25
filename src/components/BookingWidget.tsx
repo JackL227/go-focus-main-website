@@ -126,32 +126,11 @@ const BookingWidget = ({
     trackEvent('BookingButtonClick');
     console.log("Meta Pixel: Tracked BookingButtonClick event");
     
-    try {
-      // Ensure Cal is initialized first
-      if (!window.Cal) {
-        initCalCom();
-        // Give it a moment to initialize
-        setTimeout(() => {
-          handleClick();
-        }, 500);
-        return;
-      }
-
-      // Trigger the floating button popup
-      if (window.Cal.ns && window.Cal.ns["45-minute-strategy-call-with-gofocus-ai"]) {
-        // Simulate clicking the floating button or open the popup directly
-        window.Cal.ns["45-minute-strategy-call-with-gofocus-ai"]("showModal", { 
-          calLink: "ethan-gofocus.ai/45-minute-strategy-call-with-gofocus-ai",
-        });
-      } else {
-        // Fallback: open directly in new tab
-        window.open("https://cal.com/ethan-gofocus.ai/45-minute-strategy-call-with-gofocus-ai", "_blank");
-      }
-    } catch (error) {
-      console.error("Error opening Cal.com popup:", error);
-      // Fallback: open directly in new tab
-      window.open("https://cal.com/ethan-gofocus.ai/45-minute-strategy-call-with-gofocus-ai", "_blank");
+    // Ensure Cal is initialized
+    if (!window.Cal) {
+      initCalCom();
     }
+    // Cal.com will handle the click automatically via data attributes
   };
 
   // Apply mobile-specific styling when on mobile
