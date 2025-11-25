@@ -89,7 +89,7 @@ const SocialProofSection = () => {
                       <div className="flex justify-between items-start mb-4">
                         <div>
                           <h4 className="font-bold">{testimonial.name}</h4>
-                          <p className="text-sm text-foreground/70">{testimonial.position}, {testimonial.company}</p>
+                          <p className="text-sm text-foreground/70">{testimonial.position}{testimonial.company && `, ${testimonial.company}`}</p>
                         </div>
                         <div className="flex">
                           {[...Array(testimonial.rating)].map((_, i) => <Star key={i} size={16} className="text-[#FFC107]" fill="#FFC107" />)}
