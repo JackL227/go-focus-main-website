@@ -24,6 +24,13 @@ const testimonials = [{
   company: "Innoveum",
   content: "As an engineering and energy auditing firm our time is critical. The AI agent streamlines our lead qualification process ensuring we only engage with serious clients who are genuinely interested in our services.",
   rating: 5
+}, {
+  id: 4,
+  name: "Valon Berisha",
+  position: "Home Remodeler",
+  company: "SpotOnBuilding Solutions",
+  content: "Working with Ethan and Jack has made me over $105k in the last 2 months. Their systems got me top quality leads and I closed them in person. They are very good people and treat you like family.",
+  rating: 5
 }];
 const SocialProofSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
