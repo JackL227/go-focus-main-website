@@ -97,7 +97,7 @@ const SocialProofSection = () => {
             transform: `translateX(-${activeSlide * 100}%)`,
             display: 'flex'
           }}>
-              {[0, 1].map(page => <div key={page} className="w-full flex-shrink-0 grid md:grid-cols-2 gap-6">
+              {Array.from({ length: maxSlides }).map((_, page) => <div key={page} className="w-full flex-shrink-0 grid md:grid-cols-2 gap-6">
                   {testimonials.slice(page * 2, page * 2 + 2).map(testimonial => <div key={testimonial.id} className="glass-card p-6 rounded-xl hover:shadow-lg transition-all">
                       <div className="flex justify-between items-start mb-4">
                         <div>
