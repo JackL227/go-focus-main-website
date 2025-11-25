@@ -19,7 +19,7 @@ const testimonials = [{
   rating: 5
 }, {
   id: 3,
-  name: "Arik Bouganim",
+  name: "Arik B",
   position: "Founder",
   company: "Innoveum",
   content: "As an engineering and energy auditing firm our time is critical. The AI agent streamlines our lead qualification process ensuring we only engage with serious clients who are genuinely interested in our services.",
