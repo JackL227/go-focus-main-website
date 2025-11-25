@@ -31,6 +31,13 @@ const testimonials = [{
   company: "SpotOnBuilding Solutions",
   content: "Working with Ethan and Jack has made me over $105k in the last 2 months. Their systems got me top quality leads and I closed them in person. They are very good people and treat you like family.",
   rating: 5
+}, {
+  id: 5,
+  name: "Yosef Hadad",
+  position: "Restaurant Owner",
+  company: "Deli 770",
+  content: "Love working with Ethan and Jack. They answer very quickly and make sure to always make changes needed for better results. They care about their work and they want us to win.",
+  rating: 5
 }];
 const SocialProofSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
