@@ -13,7 +13,7 @@ const testimonials = [{
   rating: 5
 }, {
   id: 2,
-  name: "Ethan",
+  name: "Nick Gallegos",
   position: "Trading Mentor",
   company: "Boogienomics",
   content: "Jack and Ethan from GoFocus are top tier. Within 24 hours of launching all the systems they build, my MRR went from $500 to $4800. Highly recommend.",
