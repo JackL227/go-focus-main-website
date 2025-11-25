@@ -16,7 +16,7 @@ const testimonials = [{
   name: "Ethan",
   position: "Trading Mentor",
   company: "Boogienomics",
-  content: "Go Focus AI is a game-changer for my trading education business. The AI handles inquiries, filters potential students, and books high-quality calls, allowing me to concentrate on delivering top-tier trading insights.",
+  content: "Jack and Ethan from GoFocus are top tier. Within 24 hours of launching all the systems they build, my MRR went from $500 to $4800. Highly recommend.",
   rating: 5
 }, {
   id: 3,
