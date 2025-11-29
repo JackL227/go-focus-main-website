@@ -38,6 +38,18 @@ const testimonials = [{
   company: "Deli 770",
   content: "Love working with Ethan and Jack. They answer very quickly and make sure to always make changes needed for better results. They care about their work and they want us to win.",
   rating: 5
+}, {
+  id: 6,
+  name: "Ayden S.",
+  position: "OfferPulse Marketing Agency",
+  content: "Ethan and Jack are true professionals. In the last week alone we've onboarded 5 new clients. I could now recommend them enough.",
+  rating: 5
+}, {
+  id: 7,
+  name: "Matt Bergin",
+  position: "The Trading Club",
+  content: "GoFocus AI has helped me scale my brand so heavily. Without their systems and expertise in growth, my business wouldn't be where it is today. Highly recommend these guys.",
+  rating: 5
 }];
 const SocialProofSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
