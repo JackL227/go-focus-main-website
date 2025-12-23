@@ -90,7 +90,7 @@ const ProjectInquiry = () => {
               Project Inquiry
             </h1>
             <p className="text-lg text-foreground/80">
-              Share your project idea and information and we'll get back to you within 24 hours.
+              Share your information and we'll have our experts get back to you within 24 hours to discuss your project inquiry
             </p>
           </div>
           
