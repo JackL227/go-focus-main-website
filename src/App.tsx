@@ -24,6 +24,7 @@ const CourseCreatorFunnel = lazy(() => import("./pages/funnels/CourseCreatorFunn
 const RealEstateFunnel = lazy(() => import("./pages/funnels/RealEstateFunnel"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Create a query client with optimized settings
@@ -112,6 +113,7 @@ const App = () => {
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/thank-you" element={<ThankYou />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
                   
                   {/* Protected Dashboard Routes */}
                   <Route path="/dashboard" element={
