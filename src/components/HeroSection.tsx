@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -7,6 +8,7 @@ import AIAgentDemo from './AIAgentDemo';
 import HeroAnimation from './hero-animation/HeroAnimation';
 import { useIsMobile } from '@/hooks/use-mobile';
 const HeroSection = () => {
+  const navigate = useNavigate();
   const {
     user
   } = useAuth();
@@ -33,7 +35,7 @@ const HeroSection = () => {
             <BookingWidget variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300 flex-1 min-w-[180px]">
               Get My Personalised Demo
             </BookingWidget>
-            <Button variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300 flex-1 min-w-[180px]" onClick={() => window.open('https://gofocus.ai', '_blank')}>
+            <Button variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300 flex-1 min-w-[180px]" onClick={() => navigate('/project-inquiry')}>
               Inquire AI Project
             </Button>
           </div>

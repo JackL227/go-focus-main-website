@@ -25,6 +25,7 @@ const RealEstateFunnel = lazy(() => import("./pages/funnels/RealEstateFunnel"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const ProjectInquiry = lazy(() => import("./pages/ProjectInquiry"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Create a query client with optimized settings
@@ -114,6 +115,7 @@ const App = () => {
             <Route path="/thank-you" element={<ThankYou />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/project-inquiry" element={<ProjectInquiry />} />
                   
                   {/* Protected Dashboard Routes */}
                   <Route path="/dashboard" element={
