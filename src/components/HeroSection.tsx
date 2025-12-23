@@ -29,12 +29,13 @@ const HeroSection = () => {
             </p>
           </div>
           
-          <div className={`${isMobile ? 'flex flex-col space-y-4 w-full max-w-[300px]' : 'flex flex-row gap-4 max-w-md'} animate-fade-in [animation-delay:700ms] mb-4 md:mb-6 mx-auto`}>
-            
-            
-            <BookingWidget variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300 w-full">
+          <div className={`${isMobile ? 'flex flex-col space-y-4 w-full max-w-[300px]' : 'flex flex-row gap-4 justify-center'} animate-fade-in [animation-delay:700ms] mb-4 md:mb-6 mx-auto`}>
+            <BookingWidget variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300 flex-1 min-w-[180px]">
               Get My Personalised Demo
             </BookingWidget>
+            <Button variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300 flex-1 min-w-[180px]" onClick={() => window.open('https://gofocus.ai', '_blank')}>
+              Inquire AI Project
+            </Button>
           </div>
         </div>
         
