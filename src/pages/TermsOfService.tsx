@@ -8,10 +8,10 @@ const TermsOfService = () => {
   return (
     <>
       <Helmet>
-        <title>Terms of Service | GoFocus AI</title>
+        <title>Terms of Service | IA GFOCUS INC.</title>
         <meta 
           name="description" 
-          content="Read GoFocus AI's SMS Messaging Terms of Service to understand our messaging program policies." 
+          content="Read IA GFOCUS INC.'s SMS Messaging Terms of Service to understand our messaging program policies." 
         />
       </Helmet>
 
@@ -23,7 +23,7 @@ const TermsOfService = () => {
             
             {/* Header */}
             <header className="mb-12 text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">GoFocus AI SMS Messaging Terms</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">IA GFOCUS INC. SMS Messaging Terms</h1>
             </header>
 
             {/* Content Sections */}
@@ -33,7 +33,7 @@ const TermsOfService = () => {
               <section>
                 <h2 className="text-2xl font-bold mb-4">Program Name</h2>
                 <p className="text-foreground/80">
-                  GoFocus AI SMS Messaging Program
+                  IA GFOCUS INC. SMS Messaging Program
                 </p>
               </section>
 
@@ -41,7 +41,7 @@ const TermsOfService = () => {
               <section>
                 <h2 className="text-2xl font-bold mb-4">Program Description</h2>
                 <p className="text-foreground/80 mb-4">
-                  By opting in, you agree to receive SMS messages from GoFocus AI related to service updates, appointment confirmations, account notifications, and relevant business communications associated with our AI-powered marketing and lead management services. Message frequency varies based on your interaction with our services.
+                  By opting in, you agree to receive SMS messages from IA GFOCUS INC. related to service updates, appointment confirmations, account notifications, and relevant business communications associated with our AI-powered marketing and lead management services. Message frequency varies based on your interaction with our services.
                 </p>
                 <p className="text-foreground/80 mb-4">
                   You can cancel the SMS service at any time by texting <strong>"STOP"</strong> to the number from which you received the message. Upon sending <strong>"STOP,"</strong> we will confirm your unsubscribe status via SMS. After this confirmation, you will no longer receive SMS messages from us. To rejoin, you may opt in again through the same method you originally used.
