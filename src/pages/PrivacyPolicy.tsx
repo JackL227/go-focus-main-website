@@ -8,10 +8,10 @@ const PrivacyPolicy = () => {
   return (
     <>
       <Helmet>
-        <title>Privacy Policy | GoFocus AI</title>
+        <title>Privacy Policy | IA GFOCUS INC.</title>
         <meta 
           name="description" 
-          content="Read GoFocus AI's privacy policy to understand how we collect, use, and protect your personal information." 
+          content="Read IA GFOCUS INC.'s privacy policy to understand how we collect, use, and protect your personal information." 
         />
       </Helmet>
 
@@ -30,7 +30,7 @@ const PrivacyPolicy = () => {
             {/* Intro */}
             <div className="mb-8 text-base md:text-lg leading-relaxed text-foreground/80">
               <p>
-                GoFocus AI ("we," "us," or "our") respects your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard information when you visit our website or engage with our services.
+                IA GFOCUS INC. ("we," "us," or "our") respects your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard information when you visit our website or engage with our services.
               </p>
             </div>
 
@@ -67,7 +67,7 @@ const PrivacyPolicy = () => {
               <section>
                 <h2 className="text-2xl font-bold mb-4">3. Sharing of Personal Information</h2>
                 <p className="text-foreground/80 mb-3">
-                  GoFocus AI does <strong>not sell, rent, or trade</strong> your personal information to third parties.
+                  IA GFOCUS INC. does <strong>not sell, rent, or trade</strong> your personal information to third parties.
                 </p>
                 <p className="text-foreground/80 mb-3">
                   We may share information only with trusted service providers and subcontractors that assist us in operating our services, such as payment processors, advertising platforms, hosting providers, analytics tools, messaging platforms, and customer support services. These third parties are permitted to use personal information <strong>only as necessary to provide services on our behalf</strong> and are contractually obligated to keep such information confidential.
@@ -101,7 +101,7 @@ const PrivacyPolicy = () => {
               <section>
                 <h2 className="text-2xl font-bold mb-4">5. SMS Opt-Out & User Control</h2>
                 <p className="text-foreground/80 mb-3">
-                  You may opt out of receiving SMS communications from GoFocus AI at any time by replying <strong>STOP</strong> to any message. Upon opting out, you will no longer receive SMS messages from us unless you choose to opt in again.
+                  You may opt out of receiving SMS communications from IA GFOCUS INC. at any time by replying <strong>STOP</strong> to any message. Upon opting out, you will no longer receive SMS messages from us unless you choose to opt in again.
                 </p>
                 <p className="text-foreground/80">
                   For assistance, reply <strong>HELP</strong> or contact us at <a href="mailto:support@gofocus.ai" className="text-primary hover:underline">support@gofocus.ai</a>.
@@ -112,7 +112,7 @@ const PrivacyPolicy = () => {
               <section>
                 <h2 className="text-2xl font-bold mb-4">6. Data Storage & Security</h2>
                 <p className="text-foreground/80 mb-3">
-                  All data is stored securely using encrypted systems and industry-standard safeguards. Access to personal information is restricted to authorized GoFocus AI team members only.
+                  All data is stored securely using encrypted systems and industry-standard safeguards. Access to personal information is restricted to authorized IA GFOCUS INC. team members only.
                 </p>
                 <p className="text-foreground/80">
                   While we take reasonable measures to protect your information, no system is completely secure. You share information with us at your own risk.
@@ -181,7 +181,7 @@ const PrivacyPolicy = () => {
                     <Mail size={18} className="text-primary" />
                     <span><strong>Email:</strong> <a href="mailto:support@gofocus.ai" className="text-primary hover:underline">support@gofocus.ai</a></span>
                   </div>
-                  <p><strong>Company:</strong> GoFocus AI</p>
+                  <p><strong>Company:</strong> IA GFOCUS INC.</p>
                 </div>
               </section>
 
