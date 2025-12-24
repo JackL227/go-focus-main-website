@@ -193,11 +193,11 @@ const ProjectInquiry = () => {
                       </FormControl>
                       <div className="space-y-1 leading-none">
                         <Label className="text-sm text-foreground/80 font-normal cursor-pointer leading-relaxed">
-                          I Consent to Receive SMS Notifications, Alerts from GoFocus AI.
+                          I Consent to Receive SMS Notifications, Alerts from IA GFOCUS INC.
                           <br />
                           Message frequency varies. Message & data rates may apply.
                           <br />
-                          Text HELP to (XXX) XXX-XXXX for assistance.
+                          Text HELP to 514-566-7802 for assistance.
                           <br />
                           You can reply STOP to unsubscribe at any time.
                         </Label>
@@ -220,7 +220,9 @@ const ProjectInquiry = () => {
                       </FormControl>
                       <div className="space-y-1 leading-none">
                         <Label className="text-sm text-foreground/80 font-normal cursor-pointer leading-relaxed">
-                          By checking this box I agree to receive occasional marketing messages from GoFocus AI.
+                          By checking this box I agree to receive occasional marketing messages from IA GFOCUS INC.
+                          <br />
+                          Message & data rates may apply.
                         </Label>
                       </div>
                     </FormItem>
