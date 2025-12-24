@@ -23,7 +23,7 @@ import {
 const formSchema = z.object({
   firstName: z.string().max(100, "First name must be less than 100 characters").optional().or(z.literal('')),
   lastName: z.string().max(100, "Last name must be less than 100 characters").optional().or(z.literal('')),
-  phone: z.string().max(20, "Phone must be less than 20 characters").optional().or(z.literal('')),
+  phone: z.string().min(1, { message: "Phone number is required" }).max(20, "Phone must be less than 20 characters"),
   email: z.string().trim().email({ message: "Please enter a valid email address" }).max(255, "Email must be less than 255 characters"),
   smsConsent: z.boolean().optional(),
   marketingConsent: z.boolean().optional(),
@@ -141,7 +141,9 @@ const ProjectInquiry = () => {
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-foreground">Phone</FormLabel>
+                      <FormLabel className="text-foreground">
+                        Phone <span className="text-destructive">*</span>
+                      </FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="Phone" 
