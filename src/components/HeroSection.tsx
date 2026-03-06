@@ -1,53 +1,116 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from './ui/button';
+import React, { useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { Button } from './ui/button';
 import BookingWidget from './BookingWidget';
-import AIAgentDemo from './AIAgentDemo';
-import HeroAnimation from './hero-animation/HeroAnimation';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import WorkHubPreview from './WorkHubPreview';
+
 const HeroSection = () => {
-  const navigate = useNavigate();
-  const {
-    user
-  } = useAuth();
-  const [showAgentDemo, setShowAgentDemo] = useState(false);
   const isMobile = useIsMobile();
-  const handleDemoClick = () => {
-    setShowAgentDemo(true);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Dashboard image: starts small/rounded, expands to full width on scroll
+  const scale = useTransform(scrollYProgress, [0, 0.3], [0.85, 1]);
+  const borderRadius = useTransform(scrollYProgress, [0, 0.3], [24, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.5], [0, -60]);
+  const opacity = useTransform(scrollYProgress, [0.4, 0.6], [1, 0.3]);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.1
+      }
+    }
   };
-  return <section className="relative min-h-screen flex flex-col items-center pt-20 md:pt-24 pb-12 md:pb-16 overflow-hidden" aria-label="Hero section">
-      <div className="container-custom relative z-10 pt-6 md:pt-8">
-        <div className="flex flex-col items-center max-w-4xl mx-auto text-center mb-6 md:mb-8">
-          <div className="space-y-4 md:space-y-6 mb-6 md:mb-8">
-            <h1 aria-label="Main headline" className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight text-gradient-primary py-[20px] md:py-[35px]">
-              AI Agents That Convert Leads Into Revenue — 
-              <span className="text-primary">While You Sleep.</span>
-            </h1>
-            
-            <p className={`${isMobile ? 'text-lg' : 'text-xl'} text-foreground/90 animate-fade-in [animation-delay:500ms]`} aria-label="Subheadline">
-              <span className="block mt-2 text-primary/90">AI powered systems that automate your lead generation, client follow-up, and call booking processes, helping you scale efficiently.</span>
-            </p>
-          </div>
-          
-          <div className={`${isMobile ? 'flex flex-col space-y-4 w-full max-w-[300px]' : 'flex flex-row gap-4 justify-center'} animate-fade-in [animation-delay:700ms] mb-4 md:mb-6 mx-auto`}>
-            <BookingWidget variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300 flex-1 min-w-[180px]">
-              Get My Personalised Demo
-            </BookingWidget>
-            <Button variant="outline" className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary transition-all duration-300 flex-1 min-w-[180px]" onClick={() => navigate('/project-inquiry')}>
-              Inquire AI Project
-            </Button>
-          </div>
-        </div>
-        
-        {/* Enhanced Hero Animation Container with increased height for mobile */}
-        <div className="relative mx-auto w-full max-w-5xl bg-transparent">
-          <HeroAnimation />
-        </div>
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: 'easeOut' }
+    }
+  };
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative min-h-[140vh] flex flex-col items-center pt-28 md:pt-36"
+      aria-label="Hero section"
+    >
+      {/* Subtle gradient background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-primary/8 rounded-full blur-[120px]" />
       </div>
-      
-      {showAgentDemo && <AIAgentDemo onClose={() => setShowAgentDemo(false)} initialNiche="trading" />}
-    </section>;
+
+      <div className="container-custom relative z-10">
+        <motion.div
+          className="flex flex-col items-center max-w-4xl mx-auto text-center mb-16"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div
+            variants={itemVariants}
+            className="section-label mb-8"
+          >
+            <span>AI Agents for Service Businesses</span>
+          </motion.div>
+
+          <motion.div variants={itemVariants} className="space-y-6 mb-10">
+            <h1 aria-label="Main headline">
+              <span className="block text-white">Stop chasing leads.</span>
+              <span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">Start closing them.</span>
+            </h1>
+
+            <p className={`mx-auto max-w-2xl text-muted-foreground ${isMobile ? 'text-base' : 'text-lg'} leading-relaxed`} aria-label="Subheadline">
+              GoFocus AI builds custom agents that respond to every lead in seconds, qualify prospects through natural conversation, and book calls on your calendar — so you never miss another opportunity.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={itemVariants}
+            className={`${isMobile ? 'flex flex-col space-y-3 w-full max-w-[300px]' : 'flex flex-row gap-3 justify-center'} mb-10 mx-auto`}
+          >
+            <BookingWidget className="btn-primary min-w-[160px]">
+              Book a Demo
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </BookingWidget>
+            <Button
+              variant="outline"
+              className="btn-secondary min-w-[160px]"
+              onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              See How It Works
+            </Button>
+          </motion.div>
+
+          <motion.div variants={itemVariants} className="flex items-center gap-4 text-sm text-muted-foreground">
+            <span>Trusted by 50+ service businesses</span>
+            <span className="w-1 h-1 rounded-full bg-white/20" />
+            <span>$2M+ revenue generated</span>
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll-driven WorkHub preview */}
+        <motion.div
+          style={{ scale, borderRadius, y, opacity }}
+          className="sticky top-24 mx-auto w-full max-w-5xl overflow-hidden border border-white/8 shadow-2xl shadow-primary/10"
+        >
+          <WorkHubPreview />
+        </motion.div>
+      </div>
+    </section>
+  );
 };
+
 export default HeroSection;
