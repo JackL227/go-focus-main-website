@@ -78,7 +78,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         <div className="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto border-r border-gray-800 bg-gray-900">
           <div className="flex items-center flex-shrink-0 px-4 mb-5">
             <img
-              src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png"
+              src="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png"
               alt="Go Focus AI"
               className="h-8 w-auto"
             />
@@ -120,7 +120,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center">
             <img
-              src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png"
+              src="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png"
               alt="Go Focus AI"
               className="h-8 w-auto"
             />

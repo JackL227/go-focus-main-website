@@ -13,11 +13,19 @@ import {
   Zap,
   LayoutGrid,
   Users,
+  Gamepad2,
+  Bot,
+  CheckCircle2,
+  Circle,
+  Loader2,
+  GitBranch,
+  Terminal,
 } from 'lucide-react';
+import GoFocusGame from './dashboard/GoFocusGame';
 
 /* ─── Types ──────────────────────────────────────────────────────────── */
-type TabId = 'hub' | 'tasks' | 'finance' | 'ads' | 'sales';
-const TAB_IDS: TabId[] = ['hub', 'tasks', 'finance', 'ads', 'sales'];
+type TabId = 'hub' | 'tasks' | 'finance' | 'ads' | 'sales' | 'game' | 'agi';
+const TAB_IDS: TabId[] = ['hub', 'tasks', 'finance', 'ads', 'sales', 'game', 'agi'];
 
 /* ─── Animated Counter ───────────────────────────────────────────────── */
 const Counter = ({
@@ -94,7 +102,7 @@ const Ring = ({ pct, size = 42 }: { pct: number; size?: number }) => {
 };
 
 /* ─── VIEW 1: Hub Landing ────────────────────────────────────────────── */
-const HubView = () => (
+const HubView = ({ onNavigate }: { onNavigate?: (tab: TabId) => void }) => (
   <div className="flex flex-col items-center justify-center h-full p-4 md:p-6">
     <motion.p
       initial={{ opacity: 0, y: -8 }}
@@ -115,16 +123,17 @@ const HubView = () => (
 
     <div className="grid grid-cols-4 gap-2 w-full max-w-lg mb-2">
       {[
-        { Icon: Briefcase, title: 'Work Hub', desc: 'Manage tasks and client projects efficiently.' },
-        { Icon: Users, title: 'Client Analytics', desc: 'Track revenue, hours, and costs per client.' },
-        { Icon: TrendingUp, title: 'Internal Analytics', desc: 'Monthly P&L, ad metrics, and sales data.' },
-        { Icon: Megaphone, title: 'Ads Hub', desc: 'Daily Meta ads metrics, CPL, CTR, and funnels.' },
-      ].map(({ Icon, title, desc }, i) => (
+        { Icon: Briefcase, title: 'Work Hub', desc: 'Manage tasks and client projects efficiently.', tab: 'tasks' as TabId },
+        { Icon: Users, title: 'Client Analytics', desc: 'Track revenue, hours, and costs per client.', tab: 'finance' as TabId },
+        { Icon: TrendingUp, title: 'Internal Analytics', desc: 'Monthly P&L, ad metrics, and sales data.', tab: 'finance' as TabId },
+        { Icon: Megaphone, title: 'Ads Hub', desc: 'Daily Meta ads metrics, CPL, CTR, and funnels.', tab: 'ads' as TabId },
+      ].map(({ Icon, title, desc, tab }, i) => (
         <motion.div
           key={title}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 + i * 0.08 }}
+          onClick={() => onNavigate?.(tab)}
           className="bg-white/[0.04] border border-white/[0.07] rounded-xl p-2 md:p-2.5 cursor-pointer hover:border-white/[0.18] hover:bg-white/[0.07] transition-all duration-200"
         >
           <div className="w-6 h-6 bg-white/[0.07] rounded-md flex items-center justify-center text-white/50 mb-1.5">
@@ -141,6 +150,7 @@ const HubView = () => (
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.42 }}
+        onClick={() => onNavigate?.('sales')}
         className="bg-white/[0.04] border border-white/[0.07] rounded-xl p-2 md:p-2.5 cursor-pointer hover:border-white/[0.18] hover:bg-white/[0.07] transition-all duration-200"
       >
         <div className="w-6 h-6 bg-white/[0.07] rounded-md flex items-center justify-center text-white/50 mb-1.5">
@@ -149,6 +159,38 @@ const HubView = () => (
         <p className="text-white text-[9px] font-semibold leading-tight mb-0.5">Sales Advisor</p>
         <p className="text-white/35 text-[8px] leading-tight hidden md:block">
           AI-powered Socratic coaching for sales calls.
+        </p>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.50 }}
+        onClick={() => onNavigate?.('game')}
+        className="bg-white/[0.04] border border-white/[0.07] rounded-xl p-2 md:p-2.5 cursor-pointer hover:border-cyan-500/30 hover:bg-cyan-500/[0.05] transition-all duration-200 group"
+      >
+        <div className="w-6 h-6 bg-cyan-500/[0.08] rounded-md flex items-center justify-center text-cyan-400/60 mb-1.5 group-hover:text-cyan-400 transition-colors">
+          <Gamepad2 size={12} />
+        </div>
+        <p className="text-white text-[9px] font-semibold leading-tight mb-0.5">Arcade</p>
+        <p className="text-white/35 text-[8px] leading-tight hidden md:block">
+          GoFocus Invaders. Destroy the logos.
+        </p>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.58 }}
+        onClick={() => onNavigate?.('agi')}
+        className="bg-white/[0.04] border border-white/[0.07] rounded-xl p-2 md:p-2.5 cursor-pointer hover:border-violet-500/30 hover:bg-violet-500/[0.05] transition-all duration-200 group"
+      >
+        <div className="w-6 h-6 bg-violet-500/[0.08] rounded-md flex items-center justify-center text-violet-400/60 mb-1.5 group-hover:text-violet-400 transition-colors">
+          <Bot size={12} />
+        </div>
+        <p className="text-white text-[9px] font-semibold leading-tight mb-0.5">Dev AGI</p>
+        <p className="text-white/35 text-[8px] leading-tight hidden md:block">
+          Multi-model AI for dev tasks.
         </p>
       </motion.div>
     </div>
@@ -166,19 +208,19 @@ const HubView = () => (
 
 /* ─── VIEW 2: Task Board ─────────────────────────────────────────────── */
 const CLIENTS = [
-  { name: 'GF AI', color: 'bg-blue-600', active: true },
-  { name: 'Innoveum', color: 'bg-indigo-600' },
-  { name: 'Myles AI', color: 'bg-purple-600' },
-  { name: 'Chris AI', color: 'bg-pink-600' },
-  { name: 'Sellaa AI', color: 'bg-emerald-600' },
-  { name: 'Avelo AI', color: 'bg-orange-600' },
-  { name: 'Cerevo AI', color: 'bg-red-600' },
+  { name: 'Client 1', color: 'bg-blue-600', active: true },
+  { name: 'Client 2', color: 'bg-indigo-600' },
+  { name: 'Client 3', color: 'bg-purple-600' },
+  { name: 'Client 4', color: 'bg-pink-600' },
+  { name: 'Client 5', color: 'bg-emerald-600' },
+  { name: 'Client 6', color: 'bg-orange-600' },
+  { name: 'Client 7', color: 'bg-red-600' },
 ];
 
 const TASK_COLS = [
   {
     title: 'Client Related',
-    tasks: ['Close deal with Ronan', 'Follow up on proposal', 'Review service agreement'],
+    tasks: ['Close deal with prospect', 'Follow up on proposal', 'Review service agreement'],
   },
   {
     title: 'Internal Related',
@@ -192,7 +234,7 @@ const TaskView = () => (
     <div className="w-28 md:w-36 border-r border-white/5 flex flex-col p-2 shrink-0 overflow-hidden">
       <div className="flex items-center gap-1.5 mb-2 px-1">
         <img
-          src="/lovable-uploads/gofocus-logo.png"
+          src="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png"
           alt="GoFocus"
           className="w-4 h-4 rounded-full object-cover"
         />
@@ -233,7 +275,7 @@ const TaskView = () => (
         <div>
           <p className="text-white text-[11px] font-bold">Task Board</p>
           <p className="text-white/40 text-[8px]">
-            Managing <span className="text-primary font-medium">GF AI</span>
+            Managing <span className="text-primary font-medium">Client 1</span>
           </p>
         </div>
         <button className="bg-white/90 text-black text-[8px] px-2 py-1 rounded-lg flex items-center gap-1 cursor-pointer hover:bg-white transition-colors duration-150 font-semibold">
@@ -633,22 +675,187 @@ const SalesView = () => (
   </div>
 );
 
+/* ─── VIEW 6: Development AGI ────────────────────────────────────────── */
+const AI_MODELS = [
+  { name: 'Claude', version: 'Opus 4', color: '#d97706', bg: 'bg-amber-950/50', border: 'border-amber-700/25', status: 'active' as const },
+  { name: 'GPT', version: '4.1', color: '#10b981', bg: 'bg-emerald-950/50', border: 'border-emerald-700/25', status: 'active' as const },
+  { name: 'Gemini', version: '2.5 Pro', color: '#3b82f6', bg: 'bg-blue-950/50', border: 'border-blue-700/25', status: 'standby' as const },
+  { name: 'Llama', version: '4', color: '#8b5cf6', bg: 'bg-violet-950/50', border: 'border-violet-700/25', status: 'standby' as const },
+];
+
+const AGI_TASKS = [
+  { label: 'Build AI lead scoring API endpoint', status: 'complete' as const, model: 'Claude', time: '2m 14s' },
+  { label: 'Generate Prisma schema migrations', status: 'complete' as const, model: 'GPT', time: '1m 08s' },
+  { label: 'Implement webhook retry logic', status: 'running' as const, model: 'Claude', progress: 72 },
+  { label: 'Write integration tests for auth flow', status: 'queued' as const, model: 'GPT' },
+  { label: 'Optimize database query performance', status: 'queued' as const, model: 'Gemini' },
+];
+
+const AgiView = () => (
+  <div className="h-full p-3 md:p-4 overflow-hidden flex flex-col gap-2">
+    {/* Header */}
+    <div className="flex items-center gap-2 shrink-0">
+      <button className="text-white/35 text-[8px] flex items-center gap-0.5 cursor-pointer hover:text-white/55 transition-colors duration-150">
+        <ArrowLeft size={8} />
+        Back
+      </button>
+      <span className="text-white/15">|</span>
+      <span className="text-white/60 text-[9px] flex items-center gap-1">
+        <Bot size={9} />
+        Dev AGI
+      </span>
+      <div className="ml-auto flex items-center gap-1.5">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="text-emerald-400/70 text-[7px] font-medium">Online</span>
+      </div>
+    </div>
+
+    <div className="shrink-0">
+      <p className="text-white text-[13px] font-bold mb-0.5" style={{ fontFamily: 'Poppins, sans-serif' }}>
+        Development AGI
+      </p>
+      <p className="text-white/35 text-[8px]">Multi-model AI agent for autonomous development tasks</p>
+    </div>
+
+    {/* Model connections */}
+    <div className="grid grid-cols-4 gap-1 shrink-0">
+      {AI_MODELS.map(({ name, version, color, bg, border, status }, i) => (
+        <motion.div
+          key={name}
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.06 }}
+          className={`${bg} border ${border} rounded-lg p-1.5 relative`}
+        >
+          <div className="flex items-center gap-1 mb-0.5">
+            <div
+              className="w-1.5 h-1.5 rounded-full shrink-0"
+              style={{ background: status === 'active' ? color : `${color}44` }}
+            />
+            <p className="text-[7px] font-semibold truncate" style={{ color: status === 'active' ? color : `${color}88` }}>
+              {name}
+            </p>
+          </div>
+          <p className="text-white/40 text-[6.5px]">{version}</p>
+          <p className="text-[5.5px] mt-0.5" style={{ color: status === 'active' ? `${color}99` : 'rgba(255,255,255,0.15)' }}>
+            {status === 'active' ? 'Connected' : 'Standby'}
+          </p>
+        </motion.div>
+      ))}
+    </div>
+
+    {/* Active pipeline */}
+    <div className="flex items-center gap-2 shrink-0">
+      <p className="text-white/45 text-[8px] font-semibold flex items-center gap-1">
+        <GitBranch size={8} />
+        Task Pipeline
+      </p>
+      <div className="ml-auto flex items-center gap-1.5 text-[7px]">
+        <span className="text-emerald-400/60">2 done</span>
+        <span className="text-white/15">·</span>
+        <span className="text-cyan-400/60">1 running</span>
+        <span className="text-white/15">·</span>
+        <span className="text-white/25">2 queued</span>
+      </div>
+    </div>
+
+    {/* Task list */}
+    <div className="flex-1 min-h-0 overflow-hidden flex flex-col gap-1">
+      {AGI_TASKS.map(({ label, status, model, time, progress }, i) => (
+        <motion.div
+          key={label}
+          initial={{ opacity: 0, x: 8 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.15 + i * 0.07 }}
+          className={`rounded-lg px-2 py-1.5 flex items-center gap-2 ${
+            status === 'running'
+              ? 'bg-cyan-500/[0.06] border border-cyan-500/15'
+              : 'bg-white/[0.02] border border-white/[0.05]'
+          }`}
+        >
+          <div className="shrink-0">
+            {status === 'complete' && <CheckCircle2 size={10} className="text-emerald-400" />}
+            {status === 'running' && <Loader2 size={10} className="text-cyan-400 animate-spin" />}
+            {status === 'queued' && <Circle size={10} className="text-white/15" />}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className={`text-[8px] leading-tight truncate ${
+              status === 'complete' ? 'text-white/40 line-through' : status === 'running' ? 'text-white/80' : 'text-white/30'
+            }`}>
+              {label}
+            </p>
+            {status === 'running' && progress !== undefined && (
+              <div className="mt-0.5 h-[2px] rounded-full bg-white/[0.06] overflow-hidden">
+                <motion.div
+                  className="h-full bg-cyan-400/60 rounded-full"
+                  initial={{ width: '0%' }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ duration: 1.5, ease: 'easeOut' }}
+                />
+              </div>
+            )}
+          </div>
+          <div className="shrink-0 flex items-center gap-1">
+            <span className="text-[6.5px] text-white/20 font-medium">{model}</span>
+            {time && <span className="text-[6px] text-white/15">{time}</span>}
+          </div>
+        </motion.div>
+      ))}
+    </div>
+
+    {/* Terminal output preview */}
+    <div className="shrink-0 bg-[#0a0e1a] border border-white/[0.06] rounded-lg p-2 overflow-hidden">
+      <div className="flex items-center gap-1 mb-1">
+        <Terminal size={7} className="text-cyan-400/50" />
+        <p className="text-[7px] text-cyan-400/50 font-medium">Live Output</p>
+        <div className="ml-auto flex gap-0.5">
+          <div className="w-1 h-1 rounded-full bg-red-500/40" />
+          <div className="w-1 h-1 rounded-full bg-yellow-500/40" />
+          <div className="w-1 h-1 rounded-full bg-green-500/40" />
+        </div>
+      </div>
+      <div className="space-y-0.5">
+        {[
+          { text: '$ Implementing webhook retry logic...', color: 'text-white/35' },
+          { text: '  ✓ Created retry queue with exponential backoff', color: 'text-emerald-400/50' },
+          { text: '  ✓ Added dead letter queue handler', color: 'text-emerald-400/50' },
+          { text: '  ⟳ Writing circuit breaker pattern...', color: 'text-cyan-400/50' },
+        ].map(({ text, color }, i) => (
+          <motion.p
+            key={i}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 + i * 0.2 }}
+            className={`text-[7px] font-mono leading-tight ${color}`}
+          >
+            {text}
+          </motion.p>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
 /* ─── Tab Config ─────────────────────────────────────────────────────── */
 type TabConfig = { id: TabId; label: string; Icon: React.ComponentType<{ size?: number }> };
 const TABS: TabConfig[] = [
-  { id: 'hub', label: 'Hub', Icon: LayoutGrid },
-  { id: 'tasks', label: 'Work Hub', Icon: Briefcase },
-  { id: 'finance', label: 'Analytics', Icon: TrendingUp },
-  { id: 'ads', label: 'Ads Hub', Icon: Megaphone },
-  { id: 'sales', label: 'Sales AI', Icon: MessageCircle },
+  { id: 'hub',     label: 'Hub',      Icon: LayoutGrid    },
+  { id: 'tasks',   label: 'Work Hub', Icon: Briefcase     },
+  { id: 'finance', label: 'Analytics',Icon: TrendingUp    },
+  { id: 'ads',     label: 'Ads Hub',  Icon: Megaphone     },
+  { id: 'sales',   label: 'Sales AI', Icon: MessageCircle },
+  { id: 'game',    label: 'Arcade',   Icon: Gamepad2      },
+  { id: 'agi',     label: 'Dev AGI',  Icon: Bot           },
 ];
 
 const VIEW_COMPONENTS: Record<TabId, React.ComponentType> = {
-  hub: HubView,
-  tasks: TaskView,
+  hub:     HubView,
+  tasks:   TaskView,
   finance: FinanceView,
-  ads: AdsView,
-  sales: SalesView,
+  ads:     AdsView,
+  sales:   SalesView,
+  game:    GoFocusGame,
+  agi:     AgiView,
 };
 
 /* ─── Main Component ─────────────────────────────────────────────────── */
@@ -682,38 +889,39 @@ const WorkHubPreview = () => {
         <div className="flex-1 flex justify-center">
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-white/5 border border-white/[0.06]">
             <img
-              src="/lovable-uploads/gofocus-logo.png"
+              src="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png"
               alt="GoFocus AI"
-              className="w-3.5 h-3.5 rounded-full object-cover"
+              className="h-4 w-auto object-contain"
             />
-            <span className="text-[9px] text-white/40">app.gofocus.ai</span>
           </div>
         </div>
         <div className="text-white/20 text-[8px] shrink-0 hidden md:block">support@gofocus.ai</div>
       </div>
 
       {/* Tab Bar */}
-      <div className="flex items-center px-2 md:px-3 py-1.5 bg-[#0a1322] border-b border-white/[0.06] gap-0.5 shrink-0">
-        {TABS.map(({ id, label, Icon }) => (
-          <button
-            key={id}
-            onClick={() => {
-              setActive(id);
-              setPaused(true);
-            }}
-            className={`flex items-center gap-1 px-2 md:px-2.5 py-1 rounded-lg text-[8px] md:text-[9px] font-medium transition-all duration-150 cursor-pointer whitespace-nowrap ${
-              active === id
-                ? 'bg-primary/15 text-primary border border-primary/25'
-                : 'text-white/35 hover:text-white/65 hover:bg-white/5 border border-transparent'
-            }`}
-          >
-            <Icon size={9} />
-            <span className="hidden sm:inline">{label}</span>
-          </button>
-        ))}
+      <div className="flex items-center px-2 md:px-3 py-1.5 bg-[#0a1322] border-b border-white/[0.06] shrink-0 overflow-x-auto scrollbar-hide">
+        <div className="flex items-center gap-0.5">
+          {TABS.map(({ id, label, Icon }) => (
+            <button
+              key={id}
+              onClick={() => {
+                setActive(id);
+                setPaused(true);
+              }}
+              className={`flex items-center gap-1 px-1.5 md:px-2.5 py-1 rounded-lg text-[7px] md:text-[9px] font-medium transition-all duration-150 cursor-pointer whitespace-nowrap shrink-0 ${
+                active === id
+                  ? 'bg-primary/15 text-primary border border-primary/25'
+                  : 'text-white/35 hover:text-white/65 hover:bg-white/5 border border-transparent'
+              }`}
+            >
+              <Icon size={9} />
+              <span className="hidden sm:inline">{label}</span>
+            </button>
+          ))}
+        </div>
 
         {/* Progress pills */}
-        <div className="ml-auto flex items-center gap-1 shrink-0">
+        <div className="ml-auto flex items-center gap-1 shrink-0 pl-2 hidden sm:flex">
           {TAB_IDS.map((id) => (
             <button
               key={id}
@@ -737,7 +945,7 @@ const WorkHubPreview = () => {
       </div>
 
       {/* Content Area */}
-      <div className="relative overflow-hidden" style={{ height: '360px' }}>
+      <div className="relative overflow-hidden h-[300px] sm:h-[340px] md:h-[360px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={active}
@@ -747,7 +955,11 @@ const WorkHubPreview = () => {
             transition={{ duration: 0.22, ease: 'easeInOut' }}
             className="absolute inset-0"
           >
-            <ViewComponent />
+            {active === 'hub' ? (
+              <HubView onNavigate={(tab) => { setActive(tab); setPaused(true); }} />
+            ) : (
+              <ViewComponent />
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

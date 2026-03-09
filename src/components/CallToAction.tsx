@@ -1,63 +1,30 @@
 
-import React, { useState } from 'react';
-import { CheckCircle, ArrowRight } from 'lucide-react';
-import { Button } from './ui/button';
+import React from 'react';
+import { ArrowRight } from 'lucide-react';
 import BookingWidget from './BookingWidget';
-import ServiceSlideshow from './ServiceSlideshow';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { motion } from 'framer-motion';
 
 const CallToAction = () => {
-  const isMobile = useIsMobile();
-  
   return (
-    <section className="relative bg-gradient-to-b from-background/90 to-background py-20">
-      <div className="container-custom relative z-10">
-        <div className="bg-background/40 backdrop-blur-lg border border-primary/20 rounded-xl p-8 md:p-12 shadow-lg relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 z-0"></div>
-          <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-32 -left-16 w-80 h-80 bg-accent/10 rounded-full blur-3xl"></div>
-          
-          <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Ready to <span className="text-primary">Transform Your Business</span> with 24/7 AI Support?
-              </h2>
-              
-              <ul className="space-y-4 mb-8">
-                {[
-                  'Convert more leads with instant 24/7 responses',
-                  'Qualify prospects automatically with smart AI conversations',
-                  'Book more client calls without manual intervention',
-                  'Secure client data with enterprise-grade encryption'
-                ].map((item, index) => (
-                  <li key={index} className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-primary mr-2 mt-1 flex-shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              
-              <div className={`${isMobile ? 'flex flex-col space-y-4' : 'flex flex-row gap-4'}`}>
-                <BookingWidget 
-                  className="bg-primary hover:bg-primary/90 text-background group flex items-center"
-                >
-                  Get My Personalised Demo
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </BookingWidget>
-                <BookingWidget 
-                  variant="outline"
-                  className="border-primary/60 text-primary hover:bg-primary/10 hover:border-primary"
-                >
-                  Speak To An Expert
-                </BookingWidget>
-              </div>
-            </div>
-            
-            <div className="relative">
-              <ServiceSlideshow />
-            </div>
-          </div>
-        </div>
+    <section className="py-24 md:py-32 border-t border-white/5">
+      <div className="container-custom">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto text-center bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/10 rounded-3xl p-8 md:p-12 lg:p-16"
+        >
+          <h2 className="mb-6">
+            Ready to scale your AI agency?
+          </h2>
+          <p className="text-muted-foreground text-lg mb-10 max-w-xl mx-auto">
+            Book a strategy call and we'll map out exactly how our systems and Meta ads management can help you hit your next revenue milestone.
+          </p>
+          <BookingWidget className="btn-primary inline-flex items-center gap-2 text-base px-8 py-4">
+            Book Your Strategy Call
+            <ArrowRight className="h-4 w-4" />
+          </BookingWidget>
+        </motion.div>
       </div>
     </section>
   );

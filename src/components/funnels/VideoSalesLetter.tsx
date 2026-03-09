@@ -75,7 +75,7 @@ const VideoSalesLetter = ({
                 <video 
                   id="vsl-video" 
                   className="absolute inset-0 w-full h-full object-cover" 
-                  poster="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
+                  poster="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png" 
                   playsInline
                 >
                   <source src={actualVideoUrl} type="video/mp4" />

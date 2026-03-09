@@ -1,11 +1,11 @@
 
-import React, { useEffect, useCallback, useState, useRef } from 'react';
-import { getCalApi } from "@calcom/embed-react";
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
 import { type ButtonProps } from '@/components/ui/button';
 import { trackEvent } from '@/utils/metaPixel';
-import { useIsMobile } from '@/hooks/use-mobile';
+
+const CALENDLY_URL =
+  'https://calendly.com/ethan-gofocus/1?background_color=1a1a1a&text_color=ffffff';
 
 interface BookingWidgetProps extends Omit<ButtonProps, 'onClick'> {
   className?: string;
@@ -13,138 +13,27 @@ interface BookingWidgetProps extends Omit<ButtonProps, 'onClick'> {
   isDemoButton?: boolean;
 }
 
-const BookingWidget = ({ 
-  className, 
-  variant = "default", 
-  size = "default",
-  children, 
+const BookingWidget = ({
+  className,
+  variant = 'default',
+  size = 'default',
+  children,
   isDemoButton,
-  ...props 
+  ...props
 }: BookingWidgetProps) => {
-  const [isIntersecting, setIsIntersecting] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const calInitialized = useRef(false);
-  const isMobile = useIsMobile();
-
-  const initCalCom = useCallback(async () => {
-    if (calInitialized.current) return;
-    
-    try {
-      // Initialize Cal using the floating popup approach
-      (function (C, A, L) { 
-        let p = function (a: any, ar: any) { a.q.push(ar); }; 
-        let d = C.document; 
-        C.Cal = C.Cal || function () { 
-          let cal = C.Cal; 
-          let ar = arguments; 
-          if (!cal.loaded) { 
-            cal.ns = {}; 
-            cal.q = cal.q || []; 
-            d.head.appendChild(d.createElement("script")).src = A; 
-            cal.loaded = true; 
-          } 
-          if (ar[0] === L) { 
-            const api = function () { p(api, arguments); }; 
-            const namespace = ar[1]; 
-            api.q = api.q || []; 
-            if(typeof namespace === "string"){
-              cal.ns[namespace] = cal.ns[namespace] || api;
-              p(cal.ns[namespace], ar);
-              p(cal, ["initNamespace", namespace]);
-            } else p(cal, ar); 
-            return;
-          }
-          p(cal, ar); 
-        }; 
-      })(window, "https://app.cal.com/embed/embed.js", "init");
-      
-      // Initialize with the provided configuration
-      window.Cal("init", "45-minute-strategy-call-with-gofocus-ai", {origin:"https://app.cal.com"});
-      
-      window.Cal.ns["45-minute-strategy-call-with-gofocus-ai"]("ui", {
-        "hideEventTypeDetails": false,
-        "layout": "month_view"
-      });
-
-      // Set up event tracking
-      try {
-        const cal = await getCalApi();
-        if (cal) {
-          cal("on", {
-            action: "BOOKING_PAGE_LOADED",
-            callback: () => {
-              trackEvent('InitiateBooking');
-              console.log("Meta Pixel: Tracked InitiateBooking event");
-            }
-          });
-          
-          cal("on", {
-            action: "BOOKING_SUCCESSFUL",
-            callback: () => {
-              trackEvent('Schedule');
-              console.log("Meta Pixel: Tracked Schedule event");
-            }
-          });
-        }
-      } catch (trackingError) {
-        console.log("Cal API tracking setup failed, but widget will still work:", trackingError);
-      }
-      
-      calInitialized.current = true;
-    } catch (error) {
-      console.error("Error initializing Cal.com:", error);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!buttonRef.current) return;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setIsIntersecting(true);
-        }
-      },
-      { threshold: 0.1, rootMargin: '200px' }
-    );
-    
-    observer.observe(buttonRef.current);
-    
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-  
-  // Initialize Cal.com when the button is in viewport or close
-  useEffect(() => {
-    if (isIntersecting) {
-      initCalCom();
-    }
-  }, [isIntersecting, initCalCom]);
-
   const handleClick = () => {
     trackEvent('BookingButtonClick');
-    console.log("Meta Pixel: Tracked BookingButtonClick event");
-    
-    // Ensure Cal is initialized
-    if (!window.Cal) {
-      initCalCom();
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({ url: CALENDLY_URL });
+    } else {
+      window.open(CALENDLY_URL, '_blank');
     }
-    // Cal.com will handle the click automatically via data attributes
   };
 
-  // Apply mobile-specific styling when on mobile
-  const mobileVariant = isMobile ? "funnel-mobile" : variant;
-  const buttonClassName = `${isMobile ? "text-base py-3" : ""} ${className || ""}`;
-
   return (
-    <Button 
-      ref={buttonRef}
-      data-cal-link="ethan-gofocus.ai/45-minute-strategy-call-with-gofocus-ai"
-      data-cal-namespace="45-minute-strategy-call-with-gofocus-ai"
-      data-cal-config='{"layout":"month_view"}'
-      className={`transform transition-all duration-300 hover:scale-105 hover:shadow-glow ${buttonClassName}`}
-      variant={mobileVariant}
+    <Button
+      className={`transition-all duration-200 hover:shadow-md ${className || ''}`}
+      variant={variant}
       size={size}
       onClick={handleClick}
       {...props}
@@ -154,10 +43,12 @@ const BookingWidget = ({
   );
 };
 
-// Add Cal to the window object for TypeScript
 declare global {
   interface Window {
-    Cal: any;
+    Calendly: {
+      initPopupWidget: (options: { url: string }) => void;
+      initInlineWidget: (options: { url: string; parentElement: Element }) => void;
+    };
   }
 }
 

@@ -20,7 +20,7 @@ const ThankYou = () => {
           <Card className="glass-card border-foreground/10 p-8 md:p-12">
             <div className="flex flex-col items-center text-center">
               <img 
-                src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
+                src="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png" 
                 alt="GoFocus.ai" 
                 className="w-20 h-auto mb-6" 
               />

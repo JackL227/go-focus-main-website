@@ -52,15 +52,8 @@ const App = () => {
         
         // Log core metrics only in development
         if (import.meta.env.DEV) {
-          console.log('📊 Performance Metrics:');
-          console.log(`⚡ Time to Interactive: ${Math.round(navigationEntry.domInteractive)}ms`);
-          console.log(`✅ Page Load Complete: ${Math.round(navigationEntry.loadEventEnd)}ms`);
+          console.log('Performance:', Math.round(navigationEntry.domInteractive) + 'ms TTI,', Math.round(navigationEntry.loadEventEnd) + 'ms load');
         }
-        
-        // Debug routing information
-        console.log('🔍 Current URL:', window.location.href);
-        console.log('🔍 Current pathname:', window.location.pathname);
-        console.log('🔍 Current origin:', window.location.origin);
       }, 1000);
     }
   };
@@ -102,7 +95,7 @@ const App = () => {
               <Suspense fallback={<div className="w-full h-screen flex items-center justify-center">
                 <div className="animate-pulse">
                   <img 
-                    src="/lovable-uploads/65599be5-2766-4e8b-ad1f-126661cb6124.png" 
+                    src="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png" 
                     alt="GoFocus.ai" 
                     className="w-20 h-auto opacity-60" 
                   />

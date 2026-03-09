@@ -1,24 +1,12 @@
 
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronRight, LogIn, UserCircle } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
-import { useAuth } from '@/contexts/AuthContext';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Link } from 'react-router-dom';
+import BookingWidget from './BookingWidget';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,60 +20,28 @@ const Navigation = () => {
   return (
     <header className={cn(
       "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-      isScrolled ? "bg-background/95 backdrop-blur-sm shadow-sm py-3" : "bg-transparent py-5"
+      isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border py-3" : "bg-transparent py-5"
     )}>
-      <div className="container-custom max-w-5xl flex items-center justify-between">
+      <div className="container-custom flex items-center justify-between">
         <a href="/" className="flex items-center gap-2">
-          <img 
-            src="/lovable-uploads/9dc911d9-ffea-4dc9-8c9f-53a8114665de.png" 
-            alt="Company Logo" 
-            className="h-32 w-auto" 
+          <img
+            src="/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png"
+            alt="GoFocus AI"
+            className="h-8 w-auto"
           />
         </a>
-        
-        <nav className="hidden md:flex items-center space-x-8">
-          <a href="#how-it-works" className="text-foreground hover:text-primary transition-colors font-medium">How It Works</a>
-          <a href="#results" className="text-foreground hover:text-primary transition-colors font-medium">Results</a>
-          <a href="#testimonials" className="text-foreground hover:text-primary transition-colors font-medium">Testimonials</a>
-          
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                  <UserCircle className="h-6 w-6" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Dashboard
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Settings
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => signOut()}>
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Link to="/auth">
-              <Button className="bg-primary hover:bg-primary/90 text-foreground group">
-                Log In / Sign Up
-                <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </Button>
-            </Link>
-          )}
+
+        <nav className="hidden md:flex items-center gap-8">
+          <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">How It Works</a>
+          <a href="#results" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">Results</a>
+          <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">Testimonials</a>
+
+          <BookingWidget className="btn-primary text-sm h-9 px-5">
+            Book a Demo
+          </BookingWidget>
         </nav>
 
-        <button 
+        <button
           className="md:hidden text-foreground hover:text-primary"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
@@ -94,62 +50,33 @@ const Navigation = () => {
       </div>
 
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md shadow-lg animate-fade-in">
-          <div className="container-custom py-6 flex flex-col space-y-6">
-            <a 
-              href="#how-it-works" 
-              className="text-foreground hover:text-primary transition-colors py-2 flex items-center justify-between group"
+        <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border animate-fade-in">
+          <div className="container-custom py-6 flex flex-col space-y-4">
+            <a
+              href="#how-it-works"
+              className="text-muted-foreground hover:text-foreground transition-colors py-2 text-sm font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               How It Works
-              <ChevronRight className="h-4 w-4 text-foreground/50 transition-transform group-hover:translate-x-1" />
             </a>
-            <a 
-              href="#results" 
-              className="text-foreground hover:text-primary transition-colors py-2 flex items-center justify-between group"
+            <a
+              href="#results"
+              className="text-muted-foreground hover:text-foreground transition-colors py-2 text-sm font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               Results
-              <ChevronRight className="h-4 w-4 text-foreground/50 transition-transform group-hover:translate-x-1" />
             </a>
-            <a 
-              href="#testimonials" 
-              className="text-foreground hover:text-primary transition-colors py-2 flex items-center justify-between group"
+            <a
+              href="#testimonials"
+              className="text-muted-foreground hover:text-foreground transition-colors py-2 text-sm font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               Testimonials
-              <ChevronRight className="h-4 w-4 text-foreground/50 transition-transform group-hover:translate-x-1" />
             </a>
-            
-            {user ? (
-              <>
-                <Link
-                  to="/dashboard"
-                  className="text-foreground hover:text-primary transition-colors py-2 flex items-center justify-between group"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Dashboard
-                  <ChevronRight className="h-4 w-4 text-foreground/50 transition-transform group-hover:translate-x-1" />
-                </Link>
-                <Button 
-                  variant="outline" 
-                  className="w-full"
-                  onClick={() => {
-                    signOut();
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Log Out
-                </Button>
-              </>
-            ) : (
-              <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                <Button className="w-full bg-primary hover:bg-primary/90 text-foreground">
-                  <LogIn className="mr-2 h-4 w-4" />
-                  Log In / Sign Up
-                </Button>
-              </Link>
-            )}
+
+            <BookingWidget className="btn-primary w-full text-sm mt-2">
+              Book a Demo
+            </BookingWidget>
           </div>
         </div>
       )}

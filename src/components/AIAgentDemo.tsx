@@ -71,7 +71,7 @@ const AIAgentDemo: React.FC<AIAgentDemoProps> = ({ onClose, initialNiche = 'trad
     course: {
       name: 'Emma - Course Creator AI',
       greeting: "Hello! I'm Emma, the virtual assistant for Course Creator Academy. What type of online course or info product are you looking to create?",
-      avatar: '/lovable-uploads/9dc911d9-ffea-4dc9-8c9f-53a8114665de.png',
+      avatar: '/lovable-uploads/856246fc-384e-4f3b-b0de-1a21af8dbc2d.png',
       messages: [
         {
           text: "That sounds interesting! Many of our clients have had great success with similar courses. What's your current course creation experience level?",

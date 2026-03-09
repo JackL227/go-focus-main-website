@@ -44,7 +44,7 @@ const HeroSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[140vh] flex flex-col items-center pt-28 md:pt-36"
+      className="relative min-h-[105vh] md:min-h-[140vh] flex flex-col items-center pt-20 md:pt-36"
       aria-label="Hero section"
     >
       {/* Subtle gradient background */}
@@ -54,7 +54,7 @@ const HeroSection = () => {
 
       <div className="container-custom relative z-10">
         <motion.div
-          className="flex flex-col items-center max-w-4xl mx-auto text-center mb-16"
+          className="flex flex-col items-center max-w-4xl mx-auto text-center mb-8 md:mb-16"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -63,17 +63,17 @@ const HeroSection = () => {
             variants={itemVariants}
             className="section-label mb-8"
           >
-            <span>AI Agents for Service Businesses</span>
+            <span>Scale Your AI Agency</span>
           </motion.div>
 
           <motion.div variants={itemVariants} className="space-y-6 mb-10">
             <h1 aria-label="Main headline">
-              <span className="block text-white">Stop chasing leads.</span>
-              <span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">Start closing them.</span>
+              <span className="block text-white">Stop trading time for revenue.</span>
+              <span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">Start scaling with systems.</span>
             </h1>
 
             <p className={`mx-auto max-w-2xl text-muted-foreground ${isMobile ? 'text-base' : 'text-lg'} leading-relaxed`} aria-label="Subheadline">
-              GoFocus AI builds custom agents that respond to every lead in seconds, qualify prospects through natural conversation, and book calls on your calendar — so you never miss another opportunity.
+              GoFocus AI helps AI agencies break past plateaus with proven operational systems and done-for-you Meta ads management — so you can sign more clients, retain them longer, and build a business that scales without burning out.
             </p>
           </motion.div>
 
@@ -82,7 +82,7 @@ const HeroSection = () => {
             className={`${isMobile ? 'flex flex-col space-y-3 w-full max-w-[300px]' : 'flex flex-row gap-3 justify-center'} mb-10 mx-auto`}
           >
             <BookingWidget className="btn-primary min-w-[160px]">
-              Book a Demo
+              Book a Strategy Call
               <ArrowRight className="ml-2 h-4 w-4" />
             </BookingWidget>
             <Button
@@ -94,10 +94,10 @@ const HeroSection = () => {
             </Button>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span>Trusted by 50+ service businesses</span>
-            <span className="w-1 h-1 rounded-full bg-white/20" />
-            <span>$2M+ revenue generated</span>
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+            <span>Trusted by 30+ AI agency owners</span>
+            <span className="hidden sm:block w-1 h-1 rounded-full bg-white/20" />
+            <span>$2M+ in client revenue generated</span>
           </motion.div>
         </motion.div>
 
