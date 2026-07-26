@@ -1,88 +1,33 @@
-
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 export default {
-  darkMode: ["class"],
-  content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-  ],
-  prefix: "",
+  content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './lib/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: {
-          DEFAULT: 'hsl(var(--background))',
-          foreground: 'hsl(var(--foreground))'
-        },
-        foreground: {
-          DEFAULT: 'hsl(var(--foreground))',
-          secondary: 'hsl(var(--muted-foreground))'
-        },
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))'
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))'
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))'
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))'
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))'
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))'
-        }
+        ground: 'var(--ground)',
+        paper: 'var(--paper)',
+        rule: 'var(--rule)',
+        ink: 'var(--ink)',
+        body: 'var(--body)',
+        muted: 'var(--muted)',
+        blue: 'var(--blue)',
+        'blue-text': 'var(--blue-text)',
+        'blue-on-dark': 'var(--blue-on-dark)',
+        dark: 'var(--dark)',
+        'dark-body': 'var(--dark-body)',
+        'dark-muted': 'var(--dark-muted)',
       },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
+      fontFamily: {
+        display: 'var(--font-display)',
+        sans: 'var(--font-body)',
+        mono: 'var(--font-mono)',
       },
-      keyframes: {
-        'accordion-down': {
-          from: { height: '0', opacity: '0' },
-          to: { height: 'var(--radix-accordion-content-height)', opacity: '1' }
-        },
-        'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)', opacity: '1' },
-          to: { height: '0', opacity: '0' }
-        },
-        'fade-in': {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' }
-        },
-        'typing-dot': {
-          '0%, 100%': { opacity: '0.4', transform: 'translateY(0)' },
-          '50%': { opacity: '1', transform: 'translateY(-2px)' }
-        }
+      maxWidth: {
+        shell: '76rem',
+        prose: '44rem',
       },
-      animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-        'fade-in': 'fade-in 0.5s ease-out forwards',
-        'typing-dot': 'typing-dot 1s ease-in-out infinite'
-      }
-    }
+    },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 } satisfies Config;
