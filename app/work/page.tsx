@@ -6,7 +6,7 @@ import { CtaBand } from '@/components/CtaBand';
 import { Reveal } from '@/components/Reveal';
 
 export const metadata: Metadata = {
-  title: 'Work',
+  title: 'Case Studies',
   description:
     'Nine engagements since 2023, across engineering, real estate, hospitality, financial advisory and agencies. The problem we found, the work we did, what happened.',
   alternates: { canonical: '/work' },

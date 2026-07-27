@@ -27,7 +27,7 @@ export const site = {
 
 export const nav = [
   { label: 'Services', href: '/services' },
-  { label: 'Work', href: '/work' },
+  { label: 'Case Studies', href: '/work' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'About', href: '/about' },
 ] as const;
@@ -596,7 +596,7 @@ export const services = {
 
 export const work = {
   header: {
-    breadcrumb: 'Work',
+    breadcrumb: 'Case Studies',
     h1: 'The problem we found, the work we did, what happened.',
     standfirst:
       'Nine engagements since 2023, across engineering, real estate, hospitality, financial advisory and agencies. Figures are client outcomes, not our fees.',
