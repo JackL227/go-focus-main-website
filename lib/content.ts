@@ -435,7 +435,7 @@ export const workFilters = [
 export const home = {
   hero: {
     eyebrow: 'Acquisition · Systems · AI · Talent',
-    h1: "Full Stack Advisory for SME's",
+    h1: 'Full Stack Advisory for SMEs',
     standfirst:
       'We remove the constraint holding a business back, whether it sits in acquisition, in a process the founder personally runs, or in a role nobody has filled.',
     primary: 'Book a call',
